@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML: Estructura del Documento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'html-orange': {
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+              950: '#431407',
+            },
+            'dark-orange': {
+              900: '#1a0f0a',
+              950: '#0f0805',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .feature-card {
+        @apply bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800 hover:border-html-orange-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-html-orange-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+      .element-card {
+        @apply bg-dark-orange-900/80 p-6 rounded-lg border border-gray-800 hover:border-html-orange-700/50 transition-all duration-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-orange-950 text-gray-200">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-orange-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="#" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-html-orange-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-orange-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-html-orange-500">📄</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">Estructura HTML</span>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#doctype" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">DOCTYPE</a>
+          <a href="#html" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">HTML Tag</a>
+          <a href="#head" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Head</a>
+          <a href="#body" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Body</a>
+          <a href="#metadatos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Metadatos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#doctype" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">DOCTYPE</a>
+        <a href="#html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">HTML Tag</a>
+        <a href="#head" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Head</a>
+        <a href="#body" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Body</a>
+        <a href="#metadatos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Metadatos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-html-orange-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-5xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          HTML
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-html-orange-400">Estructura del Documento</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-4xl mx-auto animate-slide-up">
+          Todo documento HTML tiene una estructura fundamental que define cómo los navegadores interpretan y muestran el contenido. Desde la declaración DOCTYPE hasta los metadatos en el head, cada parte cumple una función específica para crear páginas web válidas, accesibles y optimizadas.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <div class="bg-html-orange-600/20 border border-html-orange-600/50 rounded-lg px-6 py-3">
+            <span class="text-html-orange-400 font-bold">&lt;!DOCTYPE&gt;</span>
+          </div>
+          <div class="bg-html-orange-600/20 border border-html-orange-600/50 rounded-lg px-6 py-3">
+            <span class="text-html-orange-400 font-bold">&lt;html&gt;</span>
+          </div>
+          <div class="bg-html-orange-600/20 border border-html-orange-600/50 rounded-lg px-6 py-3">
+            <span class="text-html-orange-400 font-bold">&lt;head&gt;</span>
+          </div>
+          <div class="bg-html-orange-600/20 border border-html-orange-600/50 rounded-lg px-6 py-3">
+            <span class="text-html-orange-400 font-bold">&lt;body&gt;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What is Document Structure Section -->
+  <section class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué es la <span class="text-html-orange-400 font-bold">Estructura del Documento?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-html-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Anatomía de un Documento</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Un documento HTML válido sigue una estructura específica que comienza con la declaración <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;!DOCTYPE html&gt;</code>, seguida de la etiqueta <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;html&gt;</code> que contiene dos secciones principales.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Esta estructura es obligatoria y permite a los navegadores renderizar correctamente el contenido.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-html-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Head vs Body</h3>
+        <p class="text-gray-300 leading-relaxed">
+          El <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;head&gt;</code> contiene información sobre el documento (metadatos, títulos, enlaces a CSS) que NO se muestra directamente en la página. El <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;body&gt;</code> contiene todo el contenido visible.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Separar metadatos de contenido es fundamental para la organización y optimización web.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-html-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Metadatos Esenciales</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los metadatos en el <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;head&gt;</code> incluyen: codificación de caracteres, viewport para responsive design, descripción para SEO, y enlaces a recursos externos como CSS y JavaScript.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Configurar correctamente los metadatos es crucial para SEO, accesibilidad y rendimiento.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-html-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Validación y Estándares</h3>
+        <p class="text-gray-300 leading-relaxed">
+          La declaración <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;!DOCTYPE html&gt;</code> asegura que el navegador use el modo de estándares más reciente. Sin ella, los navegadores pueden entrar en "quirks mode" con comportamiento impredecible.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Siempre incluye el DOCTYPE para garantizar compatibilidad y comportamiento consistente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Complete Structure Section -->
+  <section class="py-20 bg-gradient-to-b from-dark-orange-950 to-dark-orange-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Estructura <span class="text-html-orange-400 font-bold">Completa</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Visualiza la anatomía completa de un documento HTML5
+      </p>
+
+      <div class="max-w-5xl mx-auto">
+        <!-- Visual Diagram -->
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+          <h3 class="text-xl font-bold mb-6 text-html-orange-400 text-center">Diagrama Visual</h3>
+          
+          <div class="bg-black/30 p-6 rounded-lg">
+            <!-- DOCTYPE -->
+            <div class="bg-red-900/20 border-2 border-red-500 p-4 rounded-lg mb-4">
+              <div class="flex items-center justify-between">
+                <code class="text-red-400 font-bold">&lt;!DOCTYPE html&gt;</code>
+                <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">Declaración DOCTYPE</span>
+              </div>
+            </div>
+
+            <!-- HTML -->
+            <div class="bg-blue-900/20 border-2 border-blue-500 p-4 rounded-lg">
+              <div class="flex items-center justify-between mb-4">
+                <code class="text-blue-400 font-bold">&lt;html lang="es"&gt;</code>
+                <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">Elemento Raíz</span>
+              </div>
+
+              <!-- HEAD -->
+              <div class="bg-purple-900/20 border-2 border-purple-500 p-4 rounded-lg mb-4">
+                <div class="flex items-center justify-between mb-3">
+                  <code class="text-purple-400 font-bold">&lt;head&gt;</code>
+                  <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">Metadatos (No visible)</span>
+                </div>
+                <div class="space-y-2 text-sm pl-4">
+                  <div><code class="text-gray-400">&lt;meta charset="UTF-8"&gt;</code></div>
+                  <div><code class="text-gray-400">&lt;meta name="viewport" content="..."&gt;</code></div>
+                  <div><code class="text-gray-400">&lt;title&gt;</code><span class="text-white">Título</span><code class="text-gray-400">&lt;/title&gt;</code></div>
+                  <div><code class="text-gray-400">&lt;link rel="stylesheet" href="..."&gt;</code></div>
+                </div>
+                <code class="text-purple-400 font-bold mt-3 block">&lt;/head&gt;</code>
+              </div>
+
+              <!-- BODY -->
+              <div class="bg-green-900/20 border-2 border-green-500 p-4 rounded-lg">
+                <div class="flex items-center justify-between mb-3">
+                  <code class="text-green-400 font-bold">&lt;body&gt;</code>
+                  <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">Contenido Visible</span>
+                </div>
+                <div class="space-y-2 text-sm pl-4">
+                  <div><code class="text-gray-400">&lt;header&gt;</code><span class="text-white">...</span><code class="text-gray-400">&lt;/header&gt;</code></div>
+                  <div><code class="text-gray-400">&lt;main&gt;</code><span class="text-white">...</span><code class="text-gray-400">&lt;/main&gt;</code></div>
+                  <div><code class="text-gray-400">&lt;footer&gt;</code><span class="text-white">...</span><code class="text-gray-400">&lt;/footer&gt;</code></div>
+                </div>
+                <code class="text-green-400 font-bold mt-3 block">&lt;/body&gt;</code>
+              </div>
+
+              <code class="text-blue-400 font-bold mt-4 block">&lt;/html&gt;</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Complete Code Example -->
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-6 text-html-orange-400 text-center">Plantilla Completa</h3>
+          
+          <pre class="code-block text-xs">
+<span class="text-red-400">&lt;!DOCTYPE html&gt;</span>
+<span class="text-blue-400">&lt;html</span> <span class="text-green-400">lang</span>=<span class="text-orange-400">"es"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;head&gt;</span>
+  <span class="text-gray-500">&lt;!-- Codificación de caracteres --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">charset</span>=<span class="text-orange-400">"UTF-8"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Viewport para responsive design --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"viewport"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"width=device-width, initial-scale=1.0"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Título de la página (aparece en la pestaña) --&gt;</span>
+  <span class="text-blue-400">&lt;title&gt;Mi Página Web<span class="text-blue-400">&lt;/title&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Descripción para SEO --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"description"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"Descripción de mi página"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Palabras clave --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"keywords"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"html, web, desarrollo"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Autor --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"author"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"Tu Nombre"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Hoja de estilos CSS --&gt;</span>
+  <span class="text-blue-400">&lt;link</span> <span class="text-green-400">rel</span>=<span class="text-orange-400">"stylesheet"</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"styles.css"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Favicon --&gt;</span>
+  <span class="text-blue-400">&lt;link</span> <span class="text-green-400">rel</span>=<span class="text-orange-400">"icon"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"image/x-icon"</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"favicon.ico"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;/head&gt;</span>
+
+<span class="text-blue-400">&lt;body&gt;</span>
+  <span class="text-gray-500">&lt;!-- Contenido visible de la página --&gt;</span>
+  <span class="text-blue-400">&lt;header&gt;</span>
+    <span class="text-blue-400">&lt;h1&gt;</span>Bienvenido a mi sitio web<span class="text-blue-400">&lt;/h1&gt;</span>
+  <span class="text-blue-400">&lt;/header&gt;</span>
+  
+  <span class="text-blue-400">&lt;main&gt;</span>
+    <span class="text-blue-400">&lt;p&gt;</span>Este es el contenido principal.<span class="text-blue-400">&lt;/p&gt;</span>
+  <span class="text-blue-400">&lt;/main&gt;</span>
+  
+  <span class="text-blue-400">&lt;footer&gt;</span>
+    <span class="text-blue-400">&lt;p&gt;</span>&copy; 2025 Mi Sitio Web<span class="text-blue-400">&lt;/p&gt;</span>
+  <span class="text-blue-400">&lt;/footer&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Scripts al final para mejor rendimiento --&gt;</span>
+  <span class="text-blue-400">&lt;script</span> <span class="text-green-400">src</span>=<span class="text-orange-400">"script.js"</span><span class="text-blue-400">&gt;&lt;/script&gt;</span>
+<span class="text-blue-400">&lt;/body&gt;</span>
+<span class="text-blue-400">&lt;/html&gt;</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCTYPE Section -->
+  <section id="doctype" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Declaración <span class="text-html-orange-400 font-bold">&lt;!DOCTYPE&gt;</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      La primera línea de cualquier documento HTML
+    </p>
+
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Explanation -->
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-html-orange-400">¿Qué es DOCTYPE?</h3>
+          
+          <p class="text-gray-300 mb-4">
+            <strong class="text-html-orange-400">DOCTYPE</strong> (Document Type Declaration) le indica al navegador qué versión de HTML estás usando. En HTML5, es simple y corto.
+          </p>
+
+          <pre class="code-block text-sm mb-6">
+<span class="text-red-400">&lt;!DOCTYPE html&gt;</span></pre>
+
+          <div class="space-y-3 text-sm">
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-3 rounded">
+              <strong class="text-html-orange-400">✓ HTML5 (Actual):</strong>
+              <code class="block mt-1 text-gray-300">&lt;!DOCTYPE html&gt;</code>
+            </div>
+
+            <div class="bg-gray-900/50 border border-gray-700 p-3 rounded">
+              <strong class="text-gray-400">✗ HTML 4.01 (Obsoleto):</strong>
+              <code class="block mt-1 text-gray-500 text-xs">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"...&gt;</code>
+            </div>
+
+            <div class="bg-gray-900/50 border border-gray-700 p-3 rounded">
+              <strong class="text-gray-400">✗ XHTML (Obsoleto):</strong>
+              <code class="block mt-1 text-gray-500 text-xs">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0...&gt;</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Importance -->
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-html-orange-400">¿Por qué es Importante?</h3>
+          
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center mr-3 flex-shrink-0">
+                <span>✓</span>
+              </div>
+              <div>
+                <strong class="text-white">Modo Estándares</strong>
+                <p class="text-gray-400 text-sm mt-1">Activa el modo de renderizado moderno y consistente</p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center mr-3 flex-shrink-0">
+                <span>✓</span>
+              </div>
+              <div>
+                <strong class="text-white">Evita Quirks Mode</strong>
+                <p class="text-gray-400 text-sm mt-1">Sin DOCTYPE, el navegador entra en modo compatible (comportamiento antiguo e impredecible)</p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center mr-3 flex-shrink-0">
+                <span>✓</span>
+              </div>
+              <div>
+                <strong class="text-white">Validación HTML</strong>
+                <p class="text-gray-400 text-sm mt-1">Permite que validadores verifiquen tu código correctamente</p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center mr-3 flex-shrink-0">
+                <span>✓</span>
+              </div>
+              <div>
+                <strong class="text-white">SEO</strong>
+                <p class="text-gray-400 text-sm mt-1">Los motores de búsqueda prefieren HTML válido</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-red-900/20 border border-red-700/30 p-4 rounded-lg mt-6">
+            <p class="text-sm text-gray-300">
+              <strong class="text-red-400">⚠️ Importante:</strong> SIEMPRE incluye <code class="text-html-orange-400 bg-gray-800 px-1 rounded">&lt;!DOCTYPE html&gt;</code> como la primera línea de tu documento HTML.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HTML Tag Section -->
+  <section id="html" class="py-20 bg-gradient-to-b from-dark-orange-950 to-dark-orange-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Elemento <span class="text-html-orange-400 font-bold">&lt;html&gt;</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        El elemento raíz que contiene todo el documento
+      </p>
+
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Left -->
+          <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-html-orange-400">Elemento Raíz</h3>
+            
+            <p class="text-gray-300 mb-4">
+              La etiqueta <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;html&gt;</code> es el contenedor principal de todo el documento HTML. Contiene dos secciones: <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;head&gt;</code> y <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;body&gt;</code>.
+            </p>
+
+            <pre class="code-block text-sm mb-6">
+<span class="text-red-400">&lt;!DOCTYPE html&gt;</span>
+<span class="text-blue-400">&lt;html</span> <span class="text-green-400">lang</span>=<span class="text-orange-400">"es"</span><span class="text-blue-400">&gt;</span>
+  <span class="text-blue-400">&lt;head&gt;</span>
+    <span class="text-gray-500">&lt;!-- Metadatos --&gt;</span>
+  <span class="text-blue-400">&lt;/head&gt;</span>
+  <span class="text-blue-400">&lt;body&gt;</span>
+    <span class="text-gray-500">&lt;!-- Contenido --&gt;</span>
+  <span class="text-blue-400">&lt;/body&gt;</span>
+<span class="text-blue-400">&lt;/html&gt;</span></pre>
+
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg">
+              <p class="text-sm text-gray-300">
+                <strong class="text-html-orange-400">Nota:</strong> Todo el contenido visible e invisible debe estar dentro de <code class="text-html-orange-400 bg-gray-800 px-1 rounded">&lt;html&gt;</code>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right -->
+          <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-html-orange-400">Atributo lang</h3>
+            
+            <p class="text-gray-300 mb-4">
+              El atributo <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">lang</code> especifica el idioma del documento. Es crucial para accesibilidad y SEO.
+            </p>
+
+            <div class="space-y-3 mb-6">
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;html</code> <code class="text-green-400">lang</code>=<code class="text-orange-400">"es"</code><code class="text-blue-400">&gt;</code>
+                <span class="text-gray-400 text-xs block mt-1">Español</span>
+              </div>
+
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;html</code> <code class="text-green-400">lang</code>=<code class="text-orange-400">"en"</code><code class="text-blue-400">&gt;</code>
+                <span class="text-gray-400 text-xs block mt-1">Inglés</span>
+              </div>
+
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;html</code> <code class="text-green-400">lang</code>=<code class="text-orange-400">"fr"</code><code class="text-blue-400">&gt;</code>
+                <span class="text-gray-400 text-xs block mt-1">Francés</span>
+              </div>
+
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;html</code> <code class="text-green-400">lang</code>=<code class="text-orange-400">"pt-BR"</code><code class="text-blue-400">&gt;</code>
+                <span class="text-gray-400 text-xs block mt-1">Portugués (Brasil)</span>
+              </div>
+            </div>
+
+            <h4 class="text-lg font-semibold text-white mb-3">Beneficios:</h4>
+            <ul class="space-y-2 text-sm text-gray-300">
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">✓</span>
+                <div>Lectores de pantalla usan la pronunciación correcta</div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">✓</span>
+                <div>Motores de búsqueda indexan en el idioma correcto</div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">✓</span>
+                <div>Los navegadores pueden ofrecer traducción automática</div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">✓</span>
+                <div>CSS puede aplicar estilos según el idioma</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Head Section -->
+  <section id="head" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Elemento <span class="text-html-orange-400 font-bold">&lt;head&gt;</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Metadatos e información sobre el documento
+    </p>
+
+    <div class="max-w-6xl mx-auto">
+      <!-- Main Explanation -->
+      <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-2xl font-bold mb-4 text-html-orange-400">¿Qué contiene el Head?</h3>
+            <p class="text-gray-300 mb-4">
+              El <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;head&gt;</code> contiene metadatos sobre el documento que NO se muestran en la página. Incluye:
+            </p>
+            <ul class="space-y-2 text-sm text-gray-300">
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">•</span>
+                <div>Título de la página</div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">•</span>
+                <div>Codificación de caracteres</div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">•</span>
+                <div>Meta tags para SEO</div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">•</span>
+                <div>Enlaces a hojas de estilo CSS</div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">•</span>
+                <div>Scripts de JavaScript</div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-html-orange-400 mr-2">•</span>
+                <div>Favicon y otros iconos</div>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-3">Ejemplo Básico:</h4>
+            <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;head&gt;</span>
+  <span class="text-gray-500">&lt;!-- Obligatorio: Codificación --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">charset</span>=<span class="text-orange-400">"UTF-8"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Obligatorio: Título --&gt;</span>
+  <span class="text-blue-400">&lt;title&gt;</span>Mi Página<span class="text-blue-400">&lt;/title&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Recomendado: Viewport --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"viewport"</span> 
+        <span class="text-green-400">content</span>=<span class="text-orange-400">"width=device-width, initial-scale=1.0"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Opcional: CSS --&gt;</span>
+  <span class="text-blue-400">&lt;link</span> <span class="text-green-400">rel</span>=<span class="text-orange-400">"stylesheet"</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"style.css"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;/head&gt;</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="element-card mb-6">
+        <h3 class="text-xl font-bold mb-4 text-html-orange-400">&lt;title&gt; - Título del Documento</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <p class="text-gray-300 text-sm mb-3">
+              El título aparece en la pestaña del navegador, en resultados de búsqueda, y al compartir en redes sociales. Es <strong>obligatorio</strong>.
+            </p>
+            <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;title&gt;</span>Mi Sitio Web - Inicio<span class="text-blue-400">&lt;/title&gt;</span></pre>
+          </div>
+          <div>
+            <div class="bg-white p-4 rounded-lg">
+              <div class="bg-gray-200 rounded-t px-3 py-2 flex items-center gap-2">
+                <div class="flex gap-1">
+                  <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <span class="text-gray-700 text-xs font-medium">Mi Sitio Web - Inicio</span>
+              </div>
+              <div class="bg-white p-4 text-gray-900 text-sm">
+                <p>Contenido de la página...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-3 rounded-lg mt-4">
+          <p class="text-xs text-gray-300">
+            <strong class="text-html-orange-400">SEO Tip:</strong> Mantén el título entre 50-60 caracteres. Incluye palabras clave importantes al inicio.
+          </p>
+        </div>
+      </div>
+
+      <!-- Meta Charset -->
+      <div class="element-card mb-6">
+        <h3 class="text-xl font-bold mb-4 text-html-orange-400">&lt;meta charset&gt; - Codificación de Caracteres</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <p class="text-gray-300 text-sm mb-3">
+              Define cómo el navegador interpreta los caracteres del documento. UTF-8 soporta todos los idiomas y caracteres especiales.
+            </p>
+            <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">charset</span>=<span class="text-orange-400">"UTF-8"</span><span class="text-blue-400">&gt;</span></pre>
+            <div class="bg-green-900/20 border border-green-700/30 p-3 rounded">
+              <p class="text-xs text-gray-300">
+                <strong class="text-green-400">✓ Con UTF-8:</strong> ñ, á, é, í, ó, ú, ü, €, ©, ™, 你好, مرحبا
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="bg-red-900/20 border border-red-700/30 p-3 rounded mb-3">
+              <p class="text-xs text-gray-300">
+                <strong class="text-red-400">✗ Sin UTF-8:</strong> �, �, �, � (caracteres rotos)
+              </p>
+            </div>
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-3 rounded">
+              <p class="text-xs text-gray-300">
+                <strong class="text-html-orange-400">Importante:</strong> Debe ser la PRIMERA etiqueta meta en el <code class="bg-gray-800 px-1 rounded">&lt;head&gt;</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meta Viewport -->
+      <div class="element-card mb-6">
+        <h3 class="text-xl font-bold mb-4 text-html-orange-400">&lt;meta viewport&gt; - Diseño Responsive</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <p class="text-gray-300 text-sm mb-3">
+              Esencial para que tu sitio se vea bien en dispositivos móviles. Controla cómo se escala la página en diferentes tamaños de pantalla.
+            </p>
+            <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"viewport"</span> 
+      <span class="text-green-400">content</span>=<span class="text-orange-400">"width=device-width, initial-scale=1.0"</span><span class="text-blue-400">&gt;</span></pre>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white mb-2">Parámetros del content:</h4>
+            <ul class="space-y-1 text-xs text-gray-300">
+              <li><code class="text-html-orange-400 bg-gray-800 px-1 rounded">width=device-width</code> - Ancho = ancho del dispositivo</li>
+              <li><code class="text-html-orange-400 bg-gray-800 px-1 rounded">initial-scale=1.0</code> - Zoom inicial al 100%</li>
+              <li><code class="text-html-orange-400 bg-gray-800 px-1 rounded">maximum-scale=5.0</code> - Zoom máximo (opcional)</li>
+              <li><code class="text-html-orange-400 bg-gray-800 px-1 rounded">user-scalable=yes</code> - Permitir zoom (opcional)</li>
+            </ul>
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-3 rounded mt-3">
+              <p class="text-xs text-gray-300">
+                <strong class="text-html-orange-400">⚠️ Accesibilidad:</strong> No uses <code class="bg-gray-800 px-1 rounded">user-scalable=no</code>, impide que usuarios con baja visión amplíen el contenido.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Link CSS -->
+      <div class="element-card">
+        <h3 class="text-xl font-bold mb-4 text-html-orange-400">&lt;link&gt; - Vincular Recursos Externos</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-sm font-semibold text-white mb-2">Hoja de Estilos CSS:</h4>
+            <pre class="code-block text-xs mb-4">
+<span class="text-blue-400">&lt;link</span> <span class="text-green-400">rel</span>=<span class="text-orange-400">"stylesheet"</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"styles.css"</span><span class="text-blue-400">&gt;</span></pre>
+
+            <h4 class="text-sm font-semibold text-white mb-2">Favicon:</h4>
+            <pre class="code-block text-xs mb-4">
+<span class="text-blue-400">&lt;link</span> <span class="text-green-400">rel</span>=<span class="text-orange-400">"icon"</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"favicon.ico"</span><span class="text-blue-400">&gt;</span></pre>
+
+            <h4 class="text-sm font-semibold text-white mb-2">Fuentes de Google:</h4>
+            <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;link</span> <span class="text-green-400">rel</span>=<span class="text-orange-400">"preconnect"</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"https://fonts.googleapis.com"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;link</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"https://fonts.googleapis.com/css2?family=Roboto"</span> 
+      <span class="text-green-400">rel</span>=<span class="text-orange-400">"stylesheet"</span><span class="text-blue-400">&gt;</span></pre>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white mb-2">Valores comunes de rel:</h4>
+            <div class="space-y-2 text-xs">
+              <div class="bg-black/30 p-2 rounded">
+                <code class="text-html-orange-400">stylesheet</code> - Hoja de estilos CSS
+              </div>
+              <div class="bg-black/30 p-2 rounded">
+                <code class="text-html-orange-400">icon</code> - Favicon del sitio
+              </div>
+              <div class="bg-black/30 p-2 rounded">
+                <code class="text-html-orange-400">canonical</code> - URL canónica (SEO)
+              </div>
+              <div class="bg-black/30 p-2 rounded">
+                <code class="text-html-orange-400">alternate</code> - Versión alternativa
+              </div>
+              <div class="bg-black/30 p-2 rounded">
+                <code class="text-html-orange-400">preload</code> - Precargar recurso
+              </div>
+              <div class="bg-black/30 p-2 rounded">
+                <code class="text-html-orange-400">preconnect</code> - Conectar anticipadamente
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body Section -->
+  <section id="body" class="py-20 bg-gradient-to-b from-dark-orange-950 to-dark-orange-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Elemento <span class="text-html-orange-400 font-bold">&lt;body&gt;</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        El contenido visible de tu página web
+      </p>
+
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <!-- Explanation -->
+          <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-html-orange-400">¿Qué es el Body?</h3>
+            
+            <p class="text-gray-300 mb-4">
+              El <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;body&gt;</code> contiene <strong>TODO</strong> el contenido visible de la página: texto, imágenes, videos, formularios, etc.
+            </p>
+
+            <pre class="code-block text-xs mb-4">
+<span class="text-blue-400">&lt;body&gt;</span>
+  <span class="text-blue-400">&lt;header&gt;</span>
+    <span class="text-blue-400">&lt;h1&gt;</span>Título Principal<span class="text-blue-400">&lt;/h1&gt;</span>
+    <span class="text-blue-400">&lt;nav&gt;</span>Navegación<span class="text-blue-400">&lt;/nav&gt;</span>
+  <span class="text-blue-400">&lt;/header&gt;</span>
+  
+  <span class="text-blue-400">&lt;main&gt;</span>
+    <span class="text-blue-400">&lt;article&gt;</span>Contenido<span class="text-blue-400">&lt;/article&gt;</span>
+  <span class="text-blue-400">&lt;/main&gt;</span>
+  
+  <span class="text-blue-400">&lt;footer&gt;</span>Pie de página<span class="text-blue-400">&lt;/footer&gt;</span>
+<span class="text-blue-400">&lt;/body&gt;</span></pre>
+
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg">
+              <p class="text-sm text-gray-300">
+                <strong class="text-html-orange-400">Nota:</strong> Solo debe haber UN elemento <code class="bg-gray-800 px-1 rounded">&lt;body&gt;</code> por documento.
+              </p>
+            </div>
+          </div>
+
+          <!-- Structure -->
+          <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-html-orange-400">Estructura Semántica</h3>
+            
+            <p class="text-gray-300 text-sm mb-4">
+              Usa elementos semánticos HTML5 para estructurar el body:
+            </p>
+
+            <div class="space-y-3 text-sm">
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;header&gt;</code>
+                <p class="text-gray-400 text-xs mt-1">Encabezado de la página o sección</p>
+              </div>
+
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;nav&gt;</code>
+                <p class="text-gray-400 text-xs mt-1">Navegación principal</p>
+              </div>
+
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;main&gt;</code>
+                <p class="text-gray-400 text-xs mt-1">Contenido principal (solo uno)</p>
+              </div>
+
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;article&gt;</code>
+                <p class="text-gray-400 text-xs mt-1">Contenido independiente</p>
+              </div>
+
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;section&gt;</code>
+                <p class="text-gray-400 text-xs mt-1">Sección temática</p>
+              </div>
+
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;aside&gt;</code>
+                <p class="text-gray-400 text-xs mt-1">Contenido relacionado/sidebar</p>
+              </div>
+
+              <div class="bg-black/30 p-3 rounded">
+                <code class="text-blue-400">&lt;footer&gt;</code>
+                <p class="text-gray-400 text-xs mt-1">Pie de página</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scripts Location -->
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-html-orange-400">¿Dónde colocar los Scripts?</h3>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h4 class="text-md font-semibold text-white mb-3">❌ Mal (en el head):</h4>
+              <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;head&gt;</span>
+  <span class="text-gray-500">&lt;!-- Bloquea el renderizado --&gt;</span>
+  <span class="text-blue-400">&lt;script</span> <span class="text-green-400">src</span>=<span class="text-orange-400">"script.js"</span><span class="text-blue-400">&gt;&lt;/script&gt;</span>
+<span class="text-blue-400">&lt;/head&gt;</span></pre>
+              <div class="bg-red-900/20 border border-red-700/30 p-3 rounded">
+                <p class="text-xs text-gray-300">
+                  Problema: El navegador espera a descargar el script antes de mostrar la página.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="text-md font-semibold text-white mb-3">✓ Bien (antes de cerrar body):</h4>
+              <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;body&gt;</span>
+  <span class="text-gray-500">&lt;!-- Todo el contenido --&gt;</span>
+  
+  <span class="text-gray-500">&lt;!-- Scripts al final --&gt;</span>
+  <span class="text-blue-400">&lt;script</span> <span class="text-green-400">src</span>=<span class="text-orange-400">"script.js"</span><span class="text-blue-400">&gt;&lt;/script&gt;</span>
+<span class="text-blue-400">&lt;/body&gt;</span></pre>
+              <div class="bg-green-900/20 border border-green-700/30 p-3 rounded">
+                <p class="text-xs text-gray-300">
+                  Ventaja: La página se muestra primero, luego se carga el JavaScript.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <h4 class="text-md font-semibold text-white mb-3">Alternativa moderna (con defer):</h4>
+            <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;head&gt;</span>
+  <span class="text-gray-500">&lt;!-- Se descarga en paralelo, se ejecuta después del HTML --&gt;</span>
+  <span class="text-blue-400">&lt;script</span> <span class="text-green-400">src</span>=<span class="text-orange-400">"script.js"</span> <span class="text-green-400">defer</span><span class="text-blue-400">&gt;&lt;/script&gt;</span>
+<span class="text-blue-400">&lt;/head&gt;</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metadatos Section -->
+  <section id="metadatos" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Metadatos <span class="text-html-orange-400 font-bold">Básicos</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Información esencial para navegadores, motores de búsqueda y redes sociales
+    </p>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Description -->
+      <div class="element-card">
+        <h3 class="text-lg font-bold mb-3 text-html-orange-400">Description - Descripción SEO</h3>
+        <p class="text-sm text-gray-400 mb-3">Aparece en resultados de búsqueda. Máximo 155-160 caracteres.</p>
+        <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"description"</span> 
+      <span class="text-green-400">content</span>=<span class="text-orange-400">"Aprende HTML desde cero con ejemplos prácticos y guías completas."</span><span class="text-blue-400">&gt;</span></pre>
+        <div class="bg-white p-3 rounded text-gray-900 text-xs">
+          <div class="text-blue-600 hover:underline mb-1">Mi Sitio Web - Aprende HTML</div>
+          <div class="text-green-700 text-xs">https://ejemplo.com</div>
+          <div class="text-gray-700 mt-1">Aprende HTML desde cero con ejemplos prácticos y guías completas.</div>
+        </div>
+      </div>
+
+      <!-- Keywords -->
+      <div class="element-card">
+        <h3 class="text-lg font-bold mb-3 text-html-orange-400">Keywords - Palabras Clave</h3>
+        <p class="text-sm text-gray-400 mb-3">Palabras clave relevantes (ya no usado por Google, pero otros buscadores sí).</p>
+        <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"keywords"</span> 
+      <span class="text-green-400">content</span>=<span class="text-orange-400">"HTML, CSS, JavaScript, desarrollo web, tutoriales"</span><span class="text-blue-400">&gt;</span></pre>
+        <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-3 rounded">
+          <p class="text-xs text-gray-300">
+            <strong class="text-html-orange-400">Nota:</strong> Google ignora este meta tag, pero otros buscadores aún lo usan.
+          </p>
+        </div>
+      </div>
+
+      <!-- Author -->
+      <div class="element-card">
+        <h3 class="text-lg font-bold mb-3 text-html-orange-400">Author - Autor del Documento</h3>
+        <p class="text-sm text-gray-400 mb-3">Especifica quién creó el contenido.</p>
+        <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"author"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"Juan Pérez"</span><span class="text-blue-400">&gt;</span></pre>
+      </div>
+
+      <!-- Robots -->
+      <div class="element-card">
+        <h3 class="text-lg font-bold mb-3 text-html-orange-400">Robots - Instrucciones para Rastreadores</h3>
+        <p class="text-sm text-gray-400 mb-3">Controla cómo los motores de búsqueda indexan tu página.</p>
+        <pre class="code-block text-xs mb-3">
+<span class="text-gray-500">&lt;!-- Permitir indexación y seguir enlaces --&gt;</span>
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"robots"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"index, follow"</span><span class="text-blue-400">&gt;</span>
+
+<span class="text-gray-500">&lt;!-- No indexar --&gt;</span>
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"robots"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"noindex, nofollow"</span><span class="text-blue-400">&gt;</span></pre>
+      </div>
+
+      <!-- Open Graph (Facebook) -->
+      <div class="element-card">
+        <h3 class="text-lg font-bold mb-3 text-html-orange-400">Open Graph - Compartir en Redes Sociales</h3>
+        <p class="text-sm text-gray-400 mb-3">Controla cómo se ve tu página al compartirla en Facebook, LinkedIn, etc.</p>
+        <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">property</span>=<span class="text-orange-400">"og:title"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"Título para Redes"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">property</span>=<span class="text-orange-400">"og:description"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"Descripción"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">property</span>=<span class="text-orange-400">"og:image"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"imagen.jpg"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">property</span>=<span class="text-orange-400">"og:url"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"https://ejemplo.com"</span><span class="text-blue-400">&gt;</span></pre>
+      </div>
+
+      <!-- Twitter Card -->
+      <div class="element-card">
+        <h3 class="text-lg font-bold mb-3 text-html-orange-400">Twitter Card - Compartir en Twitter/X</h3>
+        <p class="text-sm text-gray-400 mb-3">Específico para Twitter/X, controla la apariencia de las tarjetas.</p>
+        <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"twitter:card"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"summary_large_image"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"twitter:title"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"Título"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"twitter:description"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"Descripción"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"twitter:image"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"imagen.jpg"</span><span class="text-blue-400">&gt;</span></pre>
+      </div>
+
+      <!-- Theme Color -->
+      <div class="element-card">
+        <h3 class="text-lg font-bold mb-3 text-html-orange-400">Theme Color - Color del Navegador</h3>
+        <p class="text-sm text-gray-400 mb-3">Define el color de la barra de navegación en móviles.</p>
+        <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"theme-color"</span> <span class="text-green-400">content</span>=<span class="text-orange-400">"#f97316"</span><span class="text-blue-400">&gt;</span></pre>
+        <div class="bg-html-orange-600 p-4 rounded">
+          <p class="text-white text-xs">Así se ve la barra en móvil con theme-color naranja</p>
+        </div>
+      </div>
+
+      <!-- Canonical -->
+      <div class="element-card">
+        <h3 class="text-lg font-bold mb-3 text-html-orange-400">Canonical URL - URL Canónica</h3>
+        <p class="text-sm text-gray-400 mb-3">Evita contenido duplicado indicando la URL preferida.</p>
+        <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;link</span> <span class="text-green-400">rel</span>=<span class="text-orange-400">"canonical"</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"https://ejemplo.com/pagina"</span><span class="text-blue-400">&gt;</span></pre>
+        <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-3 rounded">
+          <p class="text-xs text-gray-300">
+            <strong class="text-html-orange-400">SEO:</strong> Útil cuando la misma página es accesible desde múltiples URLs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activity Section -->
+  <section id="actividad" class="py-20 bg-gradient-to-b from-dark-orange-950 to-dark-orange-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-html-orange-400 font-bold">Interactiva</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Completa el documento HTML arrastrando los elementos al lugar correcto
+      </p>
+
+      <div class="max-w-5xl mx-auto">
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <!-- Replaced quiz with a document structure builder activity -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left: Elementos disponibles -->
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-html-orange-400">Elementos Disponibles</h3>
+              <div class="space-y-3" id="availableElements">
+                <!-- Elements will be inserted via JavaScript -->
+              </div>
+              <div class="mt-6 bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg">
+                <p class="text-sm text-gray-300">
+                  <strong class="text-html-orange-400">Instrucciones:</strong> Haz clic en los elementos de la izquierda y colócalos en el orden correcto en la derecha.
+                </p>
+              </div>
+            </div>
+
+            <!-- Right: Área para construir -->
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-html-orange-400">Tu Documento HTML</h3>
+              <div id="documentBuilder" class="bg-black/30 p-6 rounded-lg border-2 border-dashed border-gray-600 min-h-96 space-y-2">
+                <!-- Dropped elements will appear here -->
+                <div class="text-gray-500 text-sm text-center py-12">
+                  Haz clic en los elementos para agregarlos aquí
+                </div>
+              </div>
+              <div class="flex gap-3 mt-4">
+                <button id="checkBtn" class="flex-1 bg-html-orange-500 hover:bg-html-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                  ✓ Verificar Orden
+                </button>
+                <button id="resetActivityBtn" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                  🔄 Reset
+                </button>
+              </div>
+              <div id="feedback" class="hidden mt-4 p-4 rounded-lg"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="mt-8 bg-dark-orange-900/80 p-6 rounded-lg border border-gray-800">
+          <h3 class="text-lg font-bold mb-4 text-html-orange-400">Recuerda el orden correcto</h3>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+            <div class="bg-red-900/20 border border-red-700/30 p-3 rounded text-gray-300">
+              <strong class="text-red-400">1.</strong> &lt;!DOCTYPE html&gt;
+            </div>
+            <div class="bg-blue-900/20 border border-blue-700/30 p-3 rounded text-gray-300">
+              <strong class="text-blue-400">2.</strong> &lt;html lang&gt;
+            </div>
+            <div class="bg-purple-900/20 border border-purple-700/30 p-3 rounded text-gray-300">
+              <strong class="text-purple-400">3.</strong> &lt;head&gt; con metadatos
+            </div>
+            <div class="bg-green-900/20 border border-green-700/30 p-3 rounded text-gray-300">
+              <strong class="text-green-400">4.</strong> &lt;body&gt; con contenido
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exercises Section -->
+  <section id="ejercicios" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      <span class="text-html-orange-400 font-bold">Ejercicios Prácticos</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Resuelve estos ejercicios para consolidar tu aprendizaje
+    </p>
+
+    <div class="max-w-6xl mx-auto space-y-8">
+      <!-- Exercise 1 -->
+      <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Ejercicio 1: Completa el Documento HTML</h3>
+        <p class="text-gray-300 mb-6">
+          Se te proporciona un documento HTML incompleto. Añade los elementos que faltan en el head para que sea válido y optimizado para SEO.
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Problema -->
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-3">Código Incompleto:</h4>
+            <pre class="code-block text-xs mb-4">
+<span class="text-red-400">&lt;!DOCTYPE html&gt;</span>
+<span class="text-blue-400">&lt;html</span> <span class="text-green-400">lang</span>=<span class="text-orange-400">"es"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;head&gt;</span>
+  <span class="text-blue-400">&lt;title&gt;</span>Mi Blog<span class="text-blue-400">&lt;/title&gt;</span>
+  <span class="text-red-500">&lt;!-- Falta: meta charset --&gt;</span>
+  <span class="text-red-500">&lt;!-- Falta: meta viewport --&gt;</span>
+  <span class="text-red-500">&lt;!-- Falta: meta description --&gt;</span>
+<span class="text-blue-400">&lt;/head&gt;</span>
+<span class="text-blue-400">&lt;body&gt;</span>
+  <span class="text-blue-400">&lt;h1&gt;</span>Bienvenido a mi blog<span class="text-blue-400">&lt;/h1&gt;</span>
+<span class="text-blue-400">&lt;/body&gt;</span>
+<span class="text-blue-400">&lt;/html&gt;</span></pre>
+
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg">
+              <p class="text-sm text-gray-300">
+                <strong class="text-html-orange-400">Objetivo:</strong> Agrega los 3 meta tags faltantes en el order correcto.
+              </p>
+            </div>
+          </div>
+
+          <!-- Solución -->
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-3">Solución Correcta:</h4>
+            <pre class="code-block text-xs">
+<span class="text-red-400">&lt;!DOCTYPE html&gt;</span>
+<span class="text-blue-400">&lt;html</span> <span class="text-green-400">lang</span>=<span class="text-orange-400">"es"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;head&gt;</span>
+  <span class="text-green-400">&lt;!-- PRIMERO: charset --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">charset</span>=<span class="text-orange-400">"UTF-8"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-green-400">&lt;!-- SEGUNDO: viewport --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"viewport"</span> 
+        <span class="text-green-400">content</span>=<span class="text-orange-400">"width=device-width, initial-scale=1.0"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-green-400">&lt;!-- TERCERO: description --&gt;</span>
+  <span class="text-blue-400">&lt;meta</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"description"</span> 
+        <span class="text-green-400">content</span>=<span class="text-orange-400">"Mi blog personal con artículos sobre desarrollo web"</span><span class="text-blue-400">&gt;</span>
+  
+  <span class="text-blue-400">&lt;title&gt;</span>Mi Blog<span class="text-blue-400">&lt;/title&gt;</span>
+<span class="text-blue-400">&lt;/head&gt;</span>
+<span class="text-blue-400">&lt;body&gt;</span>
+  <span class="text-blue-400">&lt;h1&gt;</span>Bienvenido a mi blog<span class="text-blue-400">&lt;/h1&gt;</span>
+<span class="text-blue-400">&lt;/body&gt;</span>
+<span class="text-blue-400">&lt;/html&gt;</span></pre>
+
+            <div class="bg-green-900/20 border border-green-700/30 p-4 rounded-lg mt-4">
+              <p class="text-sm text-gray-300">
+                <strong class="text-green-400">Explicación:</strong> El charset debe ser PRIMERO, luego viewport, y la description es opcional pero recomendada para SEO.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exercise 2 -->
+      <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Ejercicio 2: Estructura HTML Semántica</h3>
+        <p class="text-gray-300 mb-6">
+          Organiza correctamente los elementos semánticos HTML en el body. Identifica qué elemento debería ir en cada sección.
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Problema -->
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-3">Estructura sin Organizar:</h4>
+            <pre class="code-block text-xs mb-4">
+<span class="text-blue-400">&lt;body&gt;</span>
+  <span class="text-gray-500">&lt;!-- ¿Dónde va cada elemento? --&gt;</span>
+  
+  <span class="text-gray-400">Logo y Menú de navegación</span>
+  <span class="text-gray-500">&lt;!-- Elemento: ? --&gt;</span>
+  
+  <span class="text-gray-400">Artículo principal del sitio</span>
+  <span class="text-gray-500">&lt;!-- Elemento: ? --&gt;</span>
+  
+  <span class="text-gray-400">Información de copyright</span>
+  <span class="text-gray-500">&lt;!-- Elemento: ? --&gt;</span>
+  
+  <span class="text-gray-400">Publicidad y enlaces relacionados</span>
+  <span class="text-gray-500">&lt;!-- Elemento: ? --&gt;</span>
+
+<span class="text-blue-400">&lt;/body&gt;</span></pre>
+
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg">
+              <p class="text-sm text-gray-300">
+                <strong class="text-html-orange-400">Objetivo:</strong> Usa &lt;header&gt;, &lt;main&gt;, &lt;footer&gt;, &lt;aside&gt; correctamente.
+              </p>
+            </div>
+          </div>
+
+          <!-- Solución -->
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-3">Estructura Correcta:</h4>
+            <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;body&gt;</span>
+  <span class="text-green-400">&lt;header&gt;</span>
+    <span class="text-gray-400">&lt;!-- Logo y navegación --&gt;</span>
+    <span class="text-blue-400">&lt;nav&gt;</span>...<span class="text-blue-400">&lt;/nav&gt;</span>
+  <span class="text-green-400">&lt;/header&gt;</span>
+
+  <span class="text-green-400">&lt;main&gt;</span>
+    <span class="text-gray-400">&lt;!-- Contenido principal --&gt;</span>
+    <span class="text-blue-400">&lt;article&gt;</span>...<span class="text-blue-400">&lt;/article&gt;</span>
+  <span class="text-green-400">&lt;/main&gt;</span>
+
+  <span class="text-green-400">&lt;aside&gt;</span>
+    <span class="text-gray-400">&lt;!-- Sidebar/publicidad --&gt;</span>
+  <span class="text-green-400">&lt;/aside&gt;</span>
+
+  <span class="text-green-400">&lt;footer&gt;</span>
+    <span class="text-gray-400">&lt;!-- Copyright e info --&gt;</span>
+  <span class="text-green-400">&lt;/footer&gt;</span>
+<span class="text-blue-400">&lt;/body&gt;</span></pre>
+
+            <div class="bg-green-900/20 border border-green-700/30 p-4 rounded-lg mt-4">
+              <p class="text-sm text-gray-300">
+                <strong class="text-green-400">Explicación:</strong> &lt;header&gt; encabezado, &lt;main&gt; contenido principal, &lt;aside&gt; información adicional, &lt;footer&gt; pie de página.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="container mx-auto px-4 py-16 text-center">
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'html';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-html.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark-orange-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <h4 class="text-white font-bold mb-3">Navegación</h4>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li><a href="#introduccion" class="hover:text-html-orange-400">Introducción</a></li>
+            <li><a href="#metadatos" class="hover:text-html-orange-400">Metadatos</a></li>
+            <li><a href="#actividad" class="hover:text-html-orange-400">Actividad</a></li>
+            <li><a href="#ejercicios" class="hover:text-html-orange-400">Ejercicios</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-3">Temas</h4>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li><a href="#doctype" class="hover:text-html-orange-400">DOCTYPE</a></li>
+            <li><a href="#head" class="hover:text-html-orange-400">Head</a></li>
+            <li><a href="#body" class="hover:text-html-orange-400">Body</a></li>
+            <li><a href="#html" class="hover:text-html-orange-400">HTML Tag</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-3">Recursos</h4>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li>Tutoriales HTML</li>
+            <li>Referencia MDN</li>
+            <li>W3C Standards</li>
+            <li>Validador HTML</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+        <p>© 2025 Aprende HTML: Estructura del Documento - Todos los derechos reservados</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    const availableElements = document.getElementById('availableElements');
+    const documentBuilder = document.getElementById('documentBuilder');
+    const checkBtn = document.getElementById('checkBtn');
+    const resetActivityBtn = document.getElementById('resetActivityBtn');
+    const feedback = document.getElementById('feedback');
+
+    const elements = [
+      { id: 1, name: '&lt;!DOCTYPE html&gt;', order: 1, color: 'red' },
+      { id: 2, name: '&lt;html lang="es"&gt;', order: 2, color: 'blue' },
+      { id: 3, name: '&lt;head&gt; con metadatos', order: 3, color: 'purple' },
+      { id: 4, name: '&lt;body&gt; con contenido', order: 4, color: 'green' }
+    ];
+
+    // Shuffled elements
+    let shuffled = [...elements].sort(() => Math.random() - 0.5);
+
+    function renderAvailableElements() {
+      availableElements.innerHTML = shuffled.map(el => `
+        <button 
+          class="element-btn w-full text-left p-4 rounded-lg border-2 border-${el.color}-500 bg-${el.color}-900/20 hover:bg-${el.color}-900/40 text-gray-300 cursor-move transition-all transform hover:scale-105"
+          data-id="${el.id}"
+          data-order="${el.order}"
+        >
+          <span class="font-bold text-${el.color}-400">${el.order}.</span> ${el.name}
+        </button>
+      `).join('');
+
+      document.querySelectorAll('.element-btn').forEach(btn => {
+        btn.addEventListener('click', () => addElement(btn));
+      });
+    }
+
+    function addElement(btn) {
+      const clone = btn.cloneNode(true);
+      clone.className = `element-item p-3 rounded-lg bg-${btn.dataset.color}-900/30 border-2 border-${btn.dataset.color}-500 text-gray-300 cursor-pointer hover:opacity-75 transition-all`;
+      clone.innerHTML = `<span class="font-bold text-${btn.dataset.color}-400">${btn.dataset.order}.</span> ${btn.textContent}`;
+      
+      const firstDiv = documentBuilder.querySelector('div');
+      if (firstDiv) firstDiv.remove();
+
+      clone.addEventListener('click', () => clone.remove());
+      documentBuilder.appendChild(clone);
+      feedback.classList.add('hidden');
+    }
+
+    checkBtn.addEventListener('click', () => {
+      const items = Array.from(documentBuilder.querySelectorAll('.element-item'));
+      
+      if (items.length === 0) {
+        feedback.className = 'mt-4 p-4 rounded-lg bg-red-900/20 border border-red-700/30';
+        feedback.innerHTML = '<p class="text-red-400 font-bold">Agrega elementos al documento primero</p>';
+        feedback.classList.remove('hidden');
+        return;
+      }
+
+      if (items.length !== 4) {
+        feedback.className = 'mt-4 p-4 rounded-lg bg-orange-900/20 border border-orange-700/30';
+        feedback.innerHTML = `<p class="text-orange-400 font-bold">Te faltan ${4 - items.length} elemento(s)</p>`;
+        feedback.classList.remove('hidden');
+        return;
+      }
+
+      const orders = items.map(item => parseInt(item.textContent.split('.')[0]));
+      const isCorrect = JSON.stringify(orders) === JSON.stringify([1, 2, 3, 4]);
+
+      if (isCorrect) {
+        feedback.className = 'mt-4 p-4 rounded-lg bg-green-900/20 border border-green-700/30';
+        feedback.innerHTML = '<p class="text-green-400 font-bold">✓ ¡Perfecto! ¡Estructura correcta!</p>';
+      } else {
+        feedback.className = 'mt-4 p-4 rounded-lg bg-red-900/20 border border-red-700/30';
+        feedback.innerHTML = '<p class="text-red-400 font-bold">✗ Orden incorrecto. Verifica el orden correcto en los recordatorios</p>';
+      }
+      feedback.classList.remove('hidden');
+    });
+
+    resetActivityBtn.addEventListener('click', () => {
+      documentBuilder.innerHTML = '<div class="text-gray-500 text-sm text-center py-12">Haz clic en los elementos para agregarlos aquí</div>';
+      feedback.classList.add('hidden');
+      shuffled = [...elements].sort(() => Math.random() - 0.5);
+      renderAvailableElements();
+    });
+
+    renderAvailableElements();
+
+    // Intersection Observer for animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .element-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

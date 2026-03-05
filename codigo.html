@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conceptos JavaScript Principales</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white">
+  <!-- Hero Section -->
+  <section class="relative h-[70vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-yellow-900/20 to-black/80 z-0"></div>
+    <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-500/10 via-transparent to-transparent"></div>
+
+    <div class="container mx-auto px-4 z-10 text-center">
+      <h1 class="text-5xl md:text-7xl font-thin tracking-wider mb-4">
+        Codigo y conceptos en
+        <span class="block text-6xl md:text-8xl font-bold mt-2 text-yellow-400">JavaScript</span>
+      </h1>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto mt-6 text-gray-300">
+        Bienvenido al mundo de JavaScript, el lenguaje que da interactividad y dinamismo a tus páginas web.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="container mx-auto px-4 py-16">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-light mb-4">
+        Conceptos <span class="text-yellow-400 font-bold">JavaScript</span> Principales
+      </h2>
+      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+        Conoce los fundamentos para dar vida y funcionalidad a tu sitio web
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Fundamentals -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-yellow-800/30 hover:border-yellow-500/50 transition-all group">
+        <div class="bg-yellow-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-yellow-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-yellow-400">Fundamentos</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">var, let, const</code>
+            <span class="text-gray-300 text-sm">Declaración de variables</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">String, Number, Boolean</code>
+            <span class="text-gray-300 text-sm">Tipos de datos primitivos</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">null, undefined</code>
+            <span class="text-gray-300 text-sm">Valores especiales</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">+, -, *, /, %</code>
+            <span class="text-gray-300 text-sm">Operadores aritméticos</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">==, ===, !=, !==</code>
+            <span class="text-gray-300 text-sm">Operadores de comparación</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">&&, ||, !</code>
+            <span class="text-gray-300 text-sm">Operadores lógicos</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">typeof, instanceof</code>
+            <span class="text-gray-300 text-sm">Operadores de tipo</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Control Structures -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-yellow-800/30 hover:border-yellow-500/50 transition-all group">
+        <div class="bg-yellow-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-yellow-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400">
+            <path d="M16 3h5v5"></path>
+            <path d="M8 3H3v5"></path>
+            <path d="M3 16v5h5"></path>
+            <path d="M16 21h5v-5"></path>
+            <rect width="4" height="4" x="10" y="10"></rect>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-yellow-400">Estructuras de Control</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">if...else</code>
+            <span class="text-gray-300 text-sm">Condicional básico</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">switch</code>
+            <span class="text-gray-300 text-sm">Condicional múltiple</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">for</code>
+            <span class="text-gray-300 text-sm">Bucle con contador</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">while, do...while</code>
+            <span class="text-gray-300 text-sm">Bucles con condición</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">for...of</code>
+            <span class="text-gray-300 text-sm">Iteración sobre elementos iterables</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">for...in</code>
+            <span class="text-gray-300 text-sm">Iteración sobre propiedades de objetos</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">break, continue</code>
+            <span class="text-gray-300 text-sm">Control de flujo en bucles</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Functions -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-yellow-800/30 hover:border-yellow-500/50 transition-all group">
+        <div class="bg-yellow-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-yellow-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400">
+            <path d="M18 6H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h13l4-3.5L18 6Z"></path>
+            <path d="M12 13v8"></path>
+            <path d="M5 13v6a2 2 0 0 0 2 2h8"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-yellow-400">Funciones</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">function declaration</code>
+            <span class="text-gray-300 text-sm">Declaración de función</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">function expression</code>
+            <span class="text-gray-300 text-sm">Expresión de función</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">arrow functions</code>
+            <span class="text-gray-300 text-sm">Funciones flecha</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">parameters, arguments</code>
+            <span class="text-gray-300 text-sm">Parámetros y argumentos</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">return</code>
+            <span class="text-gray-300 text-sm">Valor de retorno</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">callback</code>
+            <span class="text-gray-300 text-sm">Funciones como argumentos</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">closure</code>
+            <span class="text-gray-300 text-sm">Funciones que recuerdan su entorno</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Objects & Arrays -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-yellow-800/30 hover:border-yellow-500/50 transition-all group">
+        <div class="bg-yellow-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-yellow-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400">
+            <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+            <line x1="3" x2="21" y1="9" y2="9"></line>
+            <line x1="3" x2="21" y1="15" y2="15"></line>
+            <line x1="9" x2="9" y1="3" y2="21"></line>
+            <line x1="15" x2="15" y1="3" y2="21"></line>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-yellow-400">Objetos y Arrays</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">{}, new Object()</code>
+            <span class="text-gray-300 text-sm">Creación de objetos</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">[], new Array()</code>
+            <span class="text-gray-300 text-sm">Creación de arrays</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">object.property</code>
+            <span class="text-gray-300 text-sm">Acceso a propiedades</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">array[index]</code>
+            <span class="text-gray-300 text-sm">Acceso a elementos de array</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">push, pop, shift, unshift</code>
+            <span class="text-gray-300 text-sm">Métodos de array para añadir/eliminar</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">map, filter, reduce</code>
+            <span class="text-gray-300 text-sm">Métodos de array para transformar</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">Object.keys, Object.values</code>
+            <span class="text-gray-300 text-sm">Métodos para trabajar con objetos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- DOM & Events -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-yellow-800/30 hover:border-yellow-500/50 transition-all group">
+        <div class="bg-yellow-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-yellow-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <path d="M10 12a1 1 0 0 0-1 1v1a1 1 0 0 1-1 1 1 1 0 0 1 1 1v1a1 1 0 0 0 1 1"></path>
+            <path d="M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-yellow-400">DOM y Eventos</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">document.getElementById()</code>
+            <span class="text-gray-300 text-sm">Seleccionar elemento por ID</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">querySelector, querySelectorAll</code>
+            <span class="text-gray-300 text-sm">Seleccionar elementos con selectores CSS</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">element.innerHTML</code>
+            <span class="text-gray-300 text-sm">Modificar el contenido HTML</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">element.style</code>
+            <span class="text-gray-300 text-sm">Modificar estilos CSS</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">addEventListener()</code>
+            <span class="text-gray-300 text-sm">Registrar manejadores de eventos</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">click, submit, keydown</code>
+            <span class="text-gray-300 text-sm">Tipos de eventos comunes</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">event.preventDefault()</code>
+            <span class="text-gray-300 text-sm">Prevenir comportamiento por defecto</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Asynchronous JS -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-yellow-800/30 hover:border-yellow-500/50 transition-all group">
+        <div class="bg-yellow-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-yellow-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-yellow-400">Asincronía</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">setTimeout, setInterval</code>
+            <span class="text-gray-300 text-sm">Temporizadores</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">Promise</code>
+            <span class="text-gray-300 text-sm">Objeto para operaciones asíncronas</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">.then(), .catch()</code>
+            <span class="text-gray-300 text-sm">Manejo de promesas</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">async/await</code>
+            <span class="text-gray-300 text-sm">Sintaxis para código asíncrono</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">fetch()</code>
+            <span class="text-gray-300 text-sm">API para realizar peticiones HTTP</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">try/catch</code>
+            <span class="text-gray-300 text-sm">Manejo de errores</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-yellow-400 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">JSON.parse(), JSON.stringify()</code>
+            <span class="text-gray-300 text-sm">Conversión de datos JSON</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+
+  <!-- JavaScript para efectos adicionales y demo -->
+  <script>
+    // Añadir efecto de desplazamiento suave a los enlaces
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Añadir efecto de aparición al hacer scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.grid > div').forEach(card => {
+      card.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(card);
+    });
+
+    // Demo interactiva
+    document.addEventListener('DOMContentLoaded', () => {
+      const nombreInput = document.getElementById('nombreInput');
+      const saludarBtn = document.getElementById('saludarBtn');
+      const resultadoDemo = document.getElementById('resultadoDemo');
+
+      saludarBtn.addEventListener('click', () => {
+        const nombre = nombreInput.value.trim();
+        if (nombre) {
+          resultadoDemo.textContent = `¡Hola, ${nombre}! Bienvenido al mundo de JavaScript.`;
+          resultadoDemo.classList.add('text-yellow-400');
+        } else {
+          resultadoDemo.textContent = 'Por favor, escribe tu nombre primero.';
+          resultadoDemo.classList.remove('text-yellow-400');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Events - Interactividad Web</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'js-yellow': {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+              950: '#451a03',
+            },
+            'dark-blue': {
+              900: '#0a1020',
+              950: '#050a14',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .timeline-circle {
+        @apply w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center text-white font-bold text-lg z-10;
+      }
+      .timeline-line {
+        @apply absolute left-6 top-0 bottom-0 w-0.5 bg-js-yellow-800/50 transform translate-x-0;
+      }
+      .feature-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 hover:border-js-yellow-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-js-yellow-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-blue-950 text-gray-200">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-blue-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="s-js.html" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-js-yellow-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-blue-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-js-yellow-500">⚡</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">Events JS</span>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#caracteristicas" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Características</a>
+          <a href="#tipos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Tipos</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#caracteristicas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Características</a>
+        <a href="#tipos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Tipos</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-js-yellow-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          JavaScript
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-js-yellow-400">Events</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-3xl mx-auto animate-slide-up">
+          Los eventos son acciones o sucesos que ocurren en el navegador, como clics, movimientos del mouse o pulsaciones de teclas. JavaScript puede "escuchar" estos eventos y ejecutar código en respuesta, creando experiencias web interactivas y dinámicas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="caracteristicas" class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué son los <span class="text-js-yellow-400 font-bold">Eventos?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Interacción del Usuario</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los eventos permiten capturar las acciones del usuario como clics en botones, escritura en formularios, movimientos del mouse y mucho más. Sin eventos, las páginas web serían estáticas.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Cada vez que un usuario interactúa con tu página, se dispara un evento que JavaScript puede detectar y manejar con <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">addEventListener()</code>.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Event Listeners</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Un event listener (oyente de eventos) es una función que "escucha" un evento específico en un elemento. Cuando el evento ocurre, se ejecuta el código dentro del listener.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Puedes agregar múltiples listeners al mismo elemento para diferentes eventos, proporcionando gran flexibilidad y control sobre el comportamiento de tu aplicación.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Event Object</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Cuando ocurre un evento, JavaScript crea automáticamente un objeto de evento que contiene información útil: qué elemento disparó el evento, coordenadas del mouse, tecla presionada, etc.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Este objeto se pasa como parámetro a la función listener y puedes acceder a propiedades como <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">event.target</code>, <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">event.preventDefault()</code> y más.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Event Propagation</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los eventos se propagan a través del DOM en dos fases: bubbling (de hijo a padre) y capturing (de padre a hijo). Esto permite capturar eventos en elementos padres para múltiples hijos.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Puedes controlar esta propagación con métodos como <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">stopPropagation()</code> para evitar que el evento suba por el árbol del DOM.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Event Types Section -->
+  <section id="tipos" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Tipos de <span class="text-js-yellow-400 font-bold">Eventos</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Conoce los tipos de eventos más comunes en JavaScript
+      </p>
+
+      <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Mouse Events -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Eventos del Mouse</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">click</h4>
+              <pre class="code-block text-xs mb-2">
+element.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'click'</span>, (<span class="text-blue-400">e</span>) => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'¡Clic!'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando el usuario hace clic en un elemento.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">dblclick</h4>
+              <pre class="code-block text-xs mb-2">
+element.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'dblclick'</span>, (<span class="text-blue-400">e</span>) => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'¡Doble clic!'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando el usuario hace doble clic.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">mouseenter / mouseleave</h4>
+              <pre class="code-block text-xs mb-2">
+element.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'mouseenter'</span>, () => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Mouse dentro'</span>);
+});
+element.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'mouseleave'</span>, () => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Mouse fuera'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se disparan cuando el mouse entra o sale de un elemento.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">mousemove</h4>
+              <pre class="code-block text-xs mb-2">
+element.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'mousemove'</span>, (<span class="text-blue-400">e</span>) => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">`X: </span>${e.clientX}<span class="text-orange-400">, Y: </span>${e.clientY}<span class="text-orange-400">`</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando el mouse se mueve sobre un elemento.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">contextmenu</h4>
+              <pre class="code-block text-xs mb-2">
+element.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'contextmenu'</span>, (<span class="text-blue-400">e</span>) => {
+  e.<span class="text-green-400">preventDefault</span>();
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Clic derecho'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando se hace clic derecho (menú contextual).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Keyboard Events -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Eventos del Teclado</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">keydown</h4>
+              <pre class="code-block text-xs mb-2">
+document.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'keydown'</span>, (<span class="text-blue-400">e</span>) => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">`Tecla: </span>${e.key}<span class="text-orange-400">`</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando una tecla es presionada.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">keyup</h4>
+              <pre class="code-block text-xs mb-2">
+document.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'keyup'</span>, (<span class="text-blue-400">e</span>) => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Tecla liberada'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando una tecla es liberada.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">keypress (deprecated)</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-gray-500">// Ya no se recomienda usar keypress</span>
+<span class="text-gray-500">// Usar keydown en su lugar</span></pre>
+              <p class="text-gray-400 text-sm">Evento obsoleto, usar keydown en su lugar.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">Propiedades útiles</h4>
+              <pre class="code-block text-xs mb-2">
+document.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'keydown'</span>, (<span class="text-blue-400">e</span>) => {
+  console.<span class="text-green-400">log</span>(e.key);      <span class="text-gray-500">// 'a', 'Enter', etc.</span>
+  console.<span class="text-green-400">log</span>(e.code);     <span class="text-gray-500">// 'KeyA', 'Enter', etc.</span>
+  console.<span class="text-green-400">log</span>(e.ctrlKey);  <span class="text-gray-500">// true si Ctrl está presionado</span>
+  console.<span class="text-green-400">log</span>(e.shiftKey); <span class="text-gray-500">// true si Shift está presionado</span>
+});</pre>
+              <p class="text-gray-400 text-sm">Propiedades del evento de teclado.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Events -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Eventos de Formularios</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">submit</h4>
+              <pre class="code-block text-xs mb-2">
+form.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'submit'</span>, (<span class="text-blue-400">e</span>) => {
+  e.<span class="text-green-400">preventDefault</span>();
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Formulario enviado'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando se envía un formulario.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">input</h4>
+              <pre class="code-block text-xs mb-2">
+input.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'input'</span>, (<span class="text-blue-400">e</span>) => {
+  console.<span class="text-green-400">log</span>(e.target.value);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cada vez que cambia el valor de un input.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">change</h4>
+              <pre class="code-block text-xs mb-2">
+select.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'change'</span>, (<span class="text-blue-400">e</span>) => {
+  console.<span class="text-green-400">log</span>(e.target.value);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando un elemento pierde el foco después de cambiar.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">focus / blur</h4>
+              <pre class="code-block text-xs mb-2">
+input.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'focus'</span>, () => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Input enfocado'</span>);
+});
+input.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'blur'</span>, () => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Input desenfocado'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se disparan cuando un elemento gana o pierde el foco.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Window/Document Events -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Eventos de Window/Document</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">DOMContentLoaded</h4>
+              <pre class="code-block text-xs mb-2">
+document.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'DOMContentLoaded'</span>, () => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'DOM cargado'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando el HTML está completamente cargado y parseado.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">load</h4>
+              <pre class="code-block text-xs mb-2">
+window.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'load'</span>, () => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Página completamente cargada'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando toda la página (incluyendo recursos) está cargada.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">resize</h4>
+              <pre class="code-block text-xs mb-2">
+window.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'resize'</span>, () => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">`Ancho: </span>${window.innerWidth}<span class="text-orange-400">`</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando se redimensiona la ventana del navegador.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">scroll</h4>
+              <pre class="code-block text-xs mb-2">
+window.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'scroll'</span>, () => {
+  console.<span class="text-green-400">log</span>(window.scrollY);
+});</pre>
+              <p class="text-gray-400 text-sm">Se dispara cuando el usuario hace scroll en la página.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section id="ejemplos" class="container mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      Ejemplos <span class="text-js-yellow-400 font-bold">Prácticos</span>
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+      <!-- Example 1 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Contador de Clics</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// HTML: &lt;button id="btn">Clic aquí&lt;/button> &lt;span id="contador">0&lt;/span></span>
+
+<span class="text-purple-400">let</span> <span class="text-blue-400">count</span> = <span class="text-orange-400">0</span>;
+<span class="text-purple-400">const</span> <span class="text-blue-400">button</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'btn'</span>);
+<span class="text-purple-400">const</span> <span class="text-blue-400">contador</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'contador'</span>);
+
+button.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'click'</span>, () => {
+  count++;
+  contador.textContent = count;
+});</pre>
+        <p class="text-gray-400 text-sm">
+          Ejemplo básico de evento click que incrementa un contador.
+        </p>
+      </div>
+
+      <!-- Example 2 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Validación en Tiempo Real</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// HTML: &lt;input id="email" type="email"> &lt;span id="error">&lt;/span></span>
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">email</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'email'</span>);
+<span class="text-purple-400">const</span> <span class="text-blue-400">error</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'error'</span>);
+
+email.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'input'</span>, (<span class="text-blue-400">e</span>) => {
+  <span class="text-purple-400">const</span> <span class="text-blue-400">value</span> = e.target.value;
+  <span class="text-purple-400">const</span> <span class="text-blue-400">regex</span> = <span class="text-orange-400">/^[^\s@]+@[^\s@]+\.[^\s@]+$/</span>;
+  
+  <span class="text-purple-400">if</span> (!regex.<span class="text-green-400">test</span>(value) && value !== <span class="text-orange-400">''</span>) {
+    error.textContent = <span class="text-orange-400">'Email inválido'</span>;
+  } <span class="text-purple-400">else</span> {
+    error.textContent = <span class="text-orange-400">''</span>;
+  }
+});</pre>
+        <p class="text-gray-400 text-sm">
+          Validar un email en tiempo real mientras el usuario escribe.
+        </p>
+      </div>
+
+      <!-- Example 3 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Hover Effect</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// HTML: &lt;div id="box" style="width:100px;height:100px;background:blue">&lt;/div></span>
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">box</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'box'</span>);
+
+box.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'mouseenter'</span>, () => {
+  box.style.backgroundColor = <span class="text-orange-400">'red'</span>;
+  box.style.transform = <span class="text-orange-400">'scale(1.2)'</span>;
+});
+
+box.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'mouseleave'</span>, () => {
+  box.style.backgroundColor = <span class="text-orange-400">'blue'</span>;
+  box.style.transform = <span class="text-orange-400">'scale(1)'</span>;
+});</pre>
+        <p class="text-gray-400 text-sm">
+          Cambiar estilos cuando el mouse entra y sale de un elemento.
+        </p>
+      </div>
+
+      <!-- Example 4 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Prevenir Submit de Formulario</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// HTML: &lt;form id="form">&lt;input type="text" required>&lt;button>Enviar&lt;/button>&lt;/form></span>
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">form</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'form'</span>);
+
+form.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'submit'</span>, (<span class="text-blue-400">e</span>) => {
+  e.<span class="text-green-400">preventDefault</span>(); <span class="text-gray-500">// Evita recargar la página</span>
+  
+  <span class="text-purple-400">const</span> <span class="text-blue-400">formData</span> = <span class="text-purple-400">new</span> <span class="text-green-400">FormData</span>(form);
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Datos del formulario:'</span>, formData);
+  
+  <span class="text-gray-500">// Aquí puedes enviar los datos con fetch</span>
+});</pre>
+        <p class="text-gray-400 text-sm">
+          Prevenir el comportamiento por defecto y manejar el submit con JavaScript.
+        </p>
+      </div>
+
+      <!-- Example 5 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 lg:col-span-2">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Event Delegation (Delegación de Eventos)</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// HTML: &lt;ul id="lista">&lt;li>Item 1&lt;/li>&lt;li>Item 2&lt;/li>&lt;li>Item 3&lt;/li>&lt;/ul></span>
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">lista</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'lista'</span>);
+
+<span class="text-gray-500">// En lugar de agregar un listener a cada &lt;li>, lo agregamos al padre</span>
+lista.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'click'</span>, (<span class="text-blue-400">e</span>) => {
+  <span class="text-gray-500">// Verificamos si el elemento clickeado es un &lt;li></span>
+  <span class="text-purple-400">if</span> (e.target.tagName === <span class="text-orange-400">'LI'</span>) {
+    console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Clickeaste:'</span>, e.target.textContent);
+    e.target.style.backgroundColor = <span class="text-orange-400">'yellow'</span>;
+  }
+});
+
+<span class="text-gray-500">// Agregar nuevos elementos dinámicamente también funcionará</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">newItem</span> = document.<span class="text-green-400">createElement</span>(<span class="text-orange-400">'li'</span>);
+newItem.textContent = <span class="text-orange-400">'Item nuevo'</span>;
+lista.<span class="text-green-400">appendChild</span>(newItem);</pre>
+        <p class="text-gray-400 text-sm">
+          La delegación de eventos es una técnica eficiente para manejar eventos en múltiples elementos similares, especialmente cuando se agregan dinámicamente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activity Section -->
+  <section id="actividad" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-js-yellow-400 font-bold">Interactiva</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Prueba diferentes eventos en tiempo real!
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left Column - Interactive Elements -->
+            <div class="space-y-6">
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Elementos Interactivos</h3>
+
+              <!-- Click Counter -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-3">1. Contador de Clics</h4>
+                <button id="clickBtn" class="bg-js-yellow-500 hover:bg-js-yellow-600 text-white font-bold py-3 px-6 rounded-lg transition-colors w-full">
+                  Haz clic aquí
+                </button>
+                <p class="text-gray-300 mt-3">Clics totales: <span id="clickCount" class="text-js-yellow-400 font-bold text-xl">0</span></p>
+              </div>
+
+              <!-- Mouse Tracker -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-3">2. Rastreador de Mouse</h4>
+                <div id="mouseBox" class="bg-gray-800 rounded-lg p-8 text-center cursor-crosshair hover:bg-gray-700 transition-colors">
+                  Mueve el mouse aquí
+                </div>
+                <p class="text-gray-300 mt-3">Posición X: <span id="mouseX" class="text-js-yellow-400 font-bold">0</span></p>
+                <p class="text-gray-300">Posición Y: <span id="mouseY" class="text-js-yellow-400 font-bold">0</span></p>
+              </div>
+
+              <!-- Keyboard Listener -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-3">3. Detector de Teclado</h4>
+                <input 
+                  type="text" 
+                  id="keyInput" 
+                  placeholder="Escribe algo..."
+                  class="w-full bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none"
+                />
+                <p class="text-gray-300 mt-3">Última tecla: <span id="lastKey" class="text-js-yellow-400 font-bold">Ninguna</span></p>
+                <p class="text-gray-300">Caracteres: <span id="charCount" class="text-js-yellow-400 font-bold">0</span></p>
+              </div>
+
+              <!-- Hover Effect -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-3">4. Efecto Hover</h4>
+                <div id="hoverBox" class="bg-js-yellow-500 rounded-lg p-8 text-center text-white font-bold transition-all duration-300 transform hover:scale-110 hover:bg-js-yellow-600 cursor-pointer">
+                  Pasa el mouse sobre mí
+                </div>
+                <p class="text-gray-300 mt-3">Estado: <span id="hoverStatus" class="text-js-yellow-400 font-bold">Fuera</span></p>
+              </div>
+            </div>
+
+            <!-- Right Column - Event Log -->
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Registro de Eventos</h3>
+              
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700 h-[600px] flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                  <p class="text-gray-400 text-sm">Eventos capturados en tiempo real:</p>
+                  <button id="clearLog" class="text-red-400 hover:text-red-300 text-sm font-semibold">
+                    Limpiar
+                  </button>
+                </div>
+                
+                <div id="eventLog" class="flex-1 overflow-y-auto space-y-2 bg-black/50 rounded p-4 font-mono text-xs">
+                  <div class="text-gray-500 italic">Los eventos aparecerán aquí...</div>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-gray-700">
+                  <p class="text-gray-400 text-sm">Total de eventos: <span id="eventCount" class="text-js-yellow-400 font-bold">0</span></p>
+                </div>
+              </div>
+
+              <!-- Event Type Filter -->
+              <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg mt-6">
+                <h4 class="text-sm font-semibold mb-3 text-js-yellow-400">Filtrar por tipo de evento:</h4>
+                <div class="grid grid-cols-2 gap-2">
+                  <label class="flex items-center space-x-2 text-gray-300 text-sm cursor-pointer">
+                    <input type="checkbox" checked class="event-filter" data-type="click" />
+                    <span>Click</span>
+                  </label>
+                  <label class="flex items-center space-x-2 text-gray-300 text-sm cursor-pointer">
+                    <input type="checkbox" checked class="event-filter" data-type="mousemove" />
+                    <span>Mouse Move</span>
+                  </label>
+                  <label class="flex items-center space-x-2 text-gray-300 text-sm cursor-pointer">
+                    <input type="checkbox" checked class="event-filter" data-type="keydown" />
+                    <span>Key Down</span>
+                  </label>
+                  <label class="flex items-center space-x-2 text-gray-300 text-sm cursor-pointer">
+                    <input type="checkbox" checked class="event-filter" data-type="hover" />
+                    <span>Hover</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="container mx-auto px-4 py-16 text-center">
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark-blue-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende JavaScript Events - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Interactive Activity
+    const eventLog = document.getElementById('eventLog');
+    const eventCountSpan = document.getElementById('eventCount');
+    const clearLogBtn = document.getElementById('clearLog');
+    let eventCount = 0;
+    let enabledEvents = {
+      click: true,
+      mousemove: true,
+      keydown: true,
+      hover: true
+    };
+
+    function logEvent(type, message, color = 'text-gray-300') {
+      if (!enabledEvents[type]) return;
+      
+      eventCount++;
+      eventCountSpan.textContent = eventCount;
+      
+      const timestamp = new Date().toLocaleTimeString();
+      const logEntry = document.createElement('div');
+      logEntry.className = `${color} py-1 border-b border-gray-800`;
+      logEntry.innerHTML = `<span class="text-gray-500">[${timestamp}]</span> <span class="text-js-yellow-400">${type.toUpperCase()}</span>: ${message}`;
+      
+      // Remove "empty" message if exists
+      const emptyMessage = eventLog.querySelector('.text-gray-500.italic');
+      if (emptyMessage) {
+        emptyMessage.remove();
+      }
+      
+      eventLog.insertBefore(logEntry, eventLog.firstChild);
+      
+      // Keep only last 50 events
+      if (eventLog.children.length > 50) {
+        eventLog.removeChild(eventLog.lastChild);
+      }
+    }
+
+    // 1. Click Counter
+    let clickCount = 0;
+    const clickBtn = document.getElementById('clickBtn');
+    const clickCountSpan = document.getElementById('clickCount');
+
+    clickBtn.addEventListener('click', () => {
+      clickCount++;
+      clickCountSpan.textContent = clickCount;
+      logEvent('click', `Botón clickeado (Total: ${clickCount})`, 'text-green-400');
+    });
+
+    // 2. Mouse Tracker
+    const mouseBox = document.getElementById('mouseBox');
+    const mouseXSpan = document.getElementById('mouseX');
+    const mouseYSpan = document.getElementById('mouseY');
+
+    mouseBox.addEventListener('mousemove', (e) => {
+      const rect = mouseBox.getBoundingClientRect();
+      const x = Math.floor(e.clientX - rect.left);
+      const y = Math.floor(e.clientY - rect.top);
+      
+      mouseXSpan.textContent = x;
+      mouseYSpan.textContent = y;
+      logEvent('mousemove', `Mouse en posición (${x}, ${y})`, 'text-blue-400');
+    });
+
+    // 3. Keyboard Listener
+    const keyInput = document.getElementById('keyInput');
+    const lastKeySpan = document.getElementById('lastKey');
+    const charCountSpan = document.getElementById('charCount');
+
+    keyInput.addEventListener('keydown', (e) => {
+      lastKeySpan.textContent = e.key;
+      charCountSpan.textContent = keyInput.value.length + 1;
+      logEvent('keydown', `Tecla presionada: "${e.key}"`, 'text-purple-400');
+    });
+
+    keyInput.addEventListener('input', (e) => {
+      charCountSpan.textContent = e.target.value.length;
+    });
+
+    // 4. Hover Effect
+    const hoverBox = document.getElementById('hoverBox');
+    const hoverStatus = document.getElementById('hoverStatus');
+
+    hoverBox.addEventListener('mouseenter', () => {
+      hoverStatus.textContent = 'Dentro';
+      hoverStatus.className = 'text-green-400 font-bold';
+      logEvent('hover', 'Mouse entró en el elemento', 'text-yellow-400');
+    });
+
+    hoverBox.addEventListener('mouseleave', () => {
+      hoverStatus.textContent = 'Fuera';
+      hoverStatus.className = 'text-js-yellow-400 font-bold';
+      logEvent('hover', 'Mouse salió del elemento', 'text-yellow-400');
+    });
+
+    // Clear Log
+    clearLogBtn.addEventListener('click', () => {
+      eventLog.innerHTML = '<div class="text-gray-500 italic">Los eventos aparecerán aquí...</div>';
+      eventCount = 0;
+      eventCountSpan.textContent = '0';
+    });
+
+    // Event Filters
+    const eventFilters = document.querySelectorAll('.event-filter');
+    eventFilters.forEach(filter => {
+      filter.addEventListener('change', (e) => {
+        const eventType = e.target.dataset.type;
+        enabledEvents[eventType] = e.target.checked;
+      });
+    });
+
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

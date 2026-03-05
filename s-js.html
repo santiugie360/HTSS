@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTSS - Temas de JavaScript</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'js-primary': '#F7DF1E',
+                        'js-secondary': '#FFD700',
+                        'js-dark': '#B8860B',
+                        'js-light': '#FFFF99',
+                        'js-accent': '#FFA500',
+                        'dark-bg': '#0a0a0a',
+                        'dark-secondary': '#1a1a1a',
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                        'fade-in-left': 'fadeInLeft 0.6s ease-out forwards',
+                        'fade-in-right': 'fadeInRight 0.6s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-bg text-white min-h-screen overflow-x-hidden">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-js-primary/20 via-dark-bg to-js-secondary/20"></div>
+        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-js-primary/5 to-transparent animate-pulse-slow"></div>
+        
+        <!-- Floating orbs with JavaScript colors -->
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-js-primary/10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute top-3/4 right-1/4 w-80 h-80 bg-js-secondary/10 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-js-light/5 rounded-full blur-3xl animate-float" style="animation-delay: -1.5s;"></div>
+        
+        <!-- JavaScript-themed decorative elements -->
+        <div class="absolute top-20 right-20 w-16 h-16 bg-js-primary/20 rounded-lg animate-bounce-slow"></div>
+        <div class="absolute bottom-20 left-20 w-12 h-12 bg-gradient-to-br from-js-secondary/20 to-js-primary/20 rounded-full animate-wiggle" style="animation-delay: -2s;"></div>
+        <div class="absolute top-1/3 right-1/3 w-8 h-8 bg-js-accent/30 rotate-45 animate-pulse-slow"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="relative z-50 w-full px-6 py-4 lg:px-12 transition-all duration-300">
+        <nav class="flex justify-between items-center max-w-7xl mx-auto">
+            <!-- Logo -->
+            <div class="text-3xl md:text-4xl font-bold text-white opacity-0 animate-fade-in-left">
+                <a href="index.html" class="hover:text-js-primary transition-colors duration-300">HTSS</a>
+            </div>
+            
+            <!-- Desktop Navigation (hidden, will show in hamburger) -->
+            <div class="hidden lg:flex space-x-6 text-gray-300 text-sm">
+                <a href="#fundamentos" class="hover:text-js-primary transition-colors">Introducción</a>
+                <a href="#dom" class="hover:text-js-primary transition-colors">Sintaxis y Tipos</a>
+                <a href="#asincrono" class="hover:text-js-primary transition-colors">Operadores</a>
+                <a href="#objetos" class="hover:text-js-primary transition-colors">Estructuras</a>
+                <a href="#moderno" class="hover:text-js-primary transition-colors">Funciones</a>
+                <a href="#moderno" class="hover:text-js-primary transition-colors">Arrays</a>
+                <a href="#moderno" class="hover:text-js-primary transition-colors">DOM</a>
+                <a class="hover:text-js-primary transition-colors">...</a>
+            </div>
+            
+            <!-- Hamburger Menu Button -->
+            <button id="menu-toggle" class="relative z-50 w-8 h-8 flex flex-col justify-center items-center space-y-1 opacity-0 animate-fade-in-right" style="animation-delay: 0.3s;">
+                <span class="block w-6 h-0.5 bg-white transition-all duration-300 transform origin-center" id="line1"></span>
+                <span class="block w-6 h-0.5 bg-white transition-all duration-300" id="line2"></span>
+                <span class="block w-6 h-0.5 bg-white transition-all duration-300 transform origin-center" id="line3"></span>
+            </button>
+        </nav>
+        
+        <!-- Fullscreen Menu -->
+        <div id="fullscreen-menu" class="fixed inset-0 bg-dark-bg/95 backdrop-blur-lg z-40 opacity-0 invisible transition-all duration-500">
+            <div class="flex items-center justify-center min-h-screen">
+                <nav class="text-center space-y-8">
+                    <a href="#fundamentos" class="block text-3xl md:text-4xl text-gray-300 hover:text-js-primary transition-all duration-300 transform hover:scale-110">Introducción</a>
+                    <a href="#dom" class="block text-3xl md:text-4xl text-gray-300 hover:text-js-primary transition-all duration-300 transform hover:scale-110">Sintaxis y Tipos</a>
+                    <a href="#asincrono" class="block text-3xl md:text-4xl text-gray-300 hover:text-js-primary transition-all duration-300 transform hover:scale-110">Operadores</a>
+                    <a href="#objetos" class="block text-3xl md:text-4xl text-gray-300 hover:text-js-primary transition-all duration-300 transform hover:scale-110">Estructuras</a>
+                    <a href="#moderno" class="block text-3xl md:text-4xl text-gray-300 hover:text-js-primary transition-all duration-300 transform hover:scale-110">Funciones</a>
+                    <a href="#poo" class="block text-3xl md:text-4xl text-gray-300 hover:text-js-primary transition-all duration-300 transform hover:scale-110">POO</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 py-20 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <!-- JavaScript Logo -->
+            <div class="mb-8 flex justify-center opacity-0 animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="w-32 h-32 md:w-40 md:h-40 bg-js-primary rounded-2xl flex items-center justify-center shadow-2xl shadow-js-primary/20 relative overflow-hidden">
+                    <span class="text-black text-4xl md:text-5xl font-bold">JS</span>
+                    <div class="absolute inset-0 bg-gradient-to-br from-js-light/20 to-transparent"></div>
+                </div>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 opacity-0 animate-fade-in-up" style="animation-delay: 0.4s;">
+                <span class="bg-gradient-to-r from-js-primary to-js-secondary bg-clip-text text-transparent">JavaScript</span>
+                <span class="text-gray-300 block mt-2">Temas de Estudio</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto opacity-0 animate-fade-in-up" style="animation-delay: 0.6s;">
+                Domina la programación web con nuestros 10 módulos de JavaScript. Desde fundamentos hasta técnicas avanzadas de desarrollo.
+            </p>
+        </div>
+    </section>
+
+    <!-- Topics Grid -->
+    <section class="relative z-10 py-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Tema 1: Fundamentos de JavaScript -->
+                <div class="topic-card opacity-0" id="fundamentos">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                        <!-- Imagen placeholder -->
+                        
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            1. Introducción a JavaScript
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Historia y evolución</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Características principales</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Usos comunes</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-1.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 2: Manipulación del DOM -->
+                <div class="topic-card opacity-0" id="dom">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            2. Sintaxis y Tipos de Datos
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Variables </span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Datos Primitivos</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Conversión de Tipos</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-2.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 3: JavaScript Asíncrono -->
+                <div class="topic-card opacity-0" id="asincrono">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                       
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            3. Operadores y Expresiones
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Operadores Aritméticos</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Operadores de Comparación</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Operadores Lógicos...</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-3.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 4: Objetos y Clases -->
+                <div class="topic-card opacity-0" id="objetos">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            4. Estructuras de Control
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Estructuras Condicionales</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Estructuras de Bucles</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Control de Flujo</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-4.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 5: JavaScript Moderno -->
+                <div class="topic-card opacity-0" id="moderno">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            5. Funciones en JavaScript
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Declaración y Ejecución de Funciones</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Parámetros y Valores de Retorno</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Funciones Anónimas y Funciones Flecha</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-5.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+                <!-- Tema 6: Arrays -->
+                <div class="topic-card opacity-0" id="moderno">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            6. Arrays
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Métodos Básicos</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Arrow Functions (=>)</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Métodos Avanzados</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-6.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+                <!-- Tema 7: Object Model (DOM) -->
+                <div class="topic-card opacity-0" id="moderno">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            7. Object Model (DOM)
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Métodos Principales</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Métodos de Manipulación</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Métodos de Selección</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-7.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+                <!-- Tema 8: Events -->
+                <div class="topic-card opacity-0" id="moderno">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            8. Events
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Tipos de Eventos</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Eventos de Window/Document</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Eventos de Window/Document</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-9.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+                <!-- Tema 9: Objects -->
+                <div class="topic-card opacity-0" id="moderno">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            9. Objects
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Estructura de un Objeto</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Métodos de Object</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Object.values()</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-10.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+                <!-- Tema 5: POO -->
+                <div class="topic-card opacity-0" id="moderno">
+                    <div class="bg-gradient-to-br from-js-primary/10 to-js-secondary/10 rounded-2xl p-6 border border-js-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-js-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-js-primary mb-4 group-hover:text-js-secondary transition-colors">
+                            10. POO
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Los Cuatro Pilares de la POO</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Clases en JavaScript</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-js-primary rounded-full"></div>
+                                <span>Herencia y Jerarquías</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-js-11.html"><button class="w-full bg-gradient-to-r from-js-primary to-js-secondary text-black py-3 rounded-lg font-semibold hover:from-js-secondary hover:to-js-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+    <!-- Footer -->
+    <footer class="relative z-10 py-12 px-6 border-t border-js-primary/20">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-gray-400 text-lg">© 2025 HTSS. Aprende JavaScript paso a paso.</p>
+            <div class="mt-4 space-x-6">
+                <a href="s-html.html" class="text-js-primary hover:text-js-secondary transition-colors">Ver temas de HTML</a>
+                <a href="s-css.html" class="text-js-primary hover:text-js-secondary transition-colors">Ver temas de CSS</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Hamburger menu functionality
+        const menuToggle = document.getElementById('menu-toggle');
+        const fullscreenMenu = document.getElementById('fullscreen-menu');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+        const line3 = document.getElementById('line3');
+        let isMenuOpen = false;
+
+        if (menuToggle && fullscreenMenu && line1 && line2 && line3) {
+            menuToggle.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                
+                if (isMenuOpen) {
+                    // Open menu
+                    fullscreenMenu.classList.remove('opacity-0', 'invisible');
+                    fullscreenMenu.classList.add('opacity-100', 'visible');
+                    
+                    // Animate hamburger to X
+                    line1.style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    line2.style.opacity = '0';
+                    line3.style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    
+                    // Prevent body scroll
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    // Close menu
+                    fullscreenMenu.classList.remove('opacity-100', 'visible');
+                    fullscreenMenu.classList.add('opacity-0', 'invisible');
+                    
+                    // Animate X back to hamburger
+                    line1.style.transform = 'rotate(0) translate(0, 0)';
+                    line2.style.opacity = '1';
+                    line3.style.transform = 'rotate(0) translate(0, 0)';
+                    
+                    // Restore body scroll
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Close menu when clicking on a link
+            document.querySelectorAll('#fullscreen-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    isMenuOpen = false;
+                    fullscreenMenu.classList.remove('opacity-100', 'visible');
+                    fullscreenMenu.classList.add('opacity-0', 'invisible');
+                    
+                    line1.style.transform = 'rotate(0) translate(0, 0)';
+                    line2.style.opacity = '1';
+                    line3.style.transform = 'rotate(0) translate(0, 0)';
+                    
+                    document.body.style.overflow = 'auto';
+                });
+            });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all topic cards
+        document.querySelectorAll('.topic-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Header scroll effect
+        let ticking = false;
+        function updateHeader() {
+            const header = document.querySelector('header');
+            if (header) {
+                if (window.scrollY > 100) {
+                    header.classList.add('bg-dark-bg/80', 'backdrop-blur-sm', 'border-b', 'border-js-primary/20');
+                } else {
+                    header.classList.remove('bg-dark-bg/80', 'backdrop-blur-sm', 'border-b', 'border-js-primary/20');
+                }
+            }
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add dynamic JavaScript-like effects
+        function addJavaScriptEffects() {
+            // Random floating animation delays
+            const decorativeElements = document.querySelectorAll('.absolute');
+            decorativeElements.forEach((element, index) => {
+                element.style.animationDelay = `${Math.random() * 2}s`;
+            });
+
+            // Add interactive hover effects to topic cards
+            const topicCards = document.querySelectorAll('.topic-card');
+            topicCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'scale(1.02) rotateY(5deg)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'scale(1) rotateY(0deg)';
+                });
+            });
+        }
+
+        // Initialize animations when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            addJavaScriptEffects();
+            
+            // Add staggered animation delays to topic cards
+            const topicCards = document.querySelectorAll('.topic-card');
+            topicCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Add some JavaScript-themed interactive elements
+        function createInteractiveElements() {
+            // Add click effect to buttons
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Create ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: rgba(255, 255, 255, 0.3);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        pointer-events: none;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        }
+
+        // Initialize interactive elements
+        createInteractiveElements();
+    </script>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Custom scrollbar with JavaScript colors */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #F7DF1E, #FFD700);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #FFD700, #F7DF1E);
+        }
+
+        /* Ensure animations work */
+        .animate-fade-in-up,
+        .animate-fade-in-left,
+        .animate-fade-in-right {
+            animation-fill-mode: forwards;
+        }
+
+        /* Hide elements initially */
+        .opacity-0 {
+            opacity: 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .lg\:grid-cols-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Performance optimizations */
+        .topic-card {
+            will-change: transform, opacity;
+            perspective: 1000px;
+        }
+
+        .animate-float {
+            will-change: transform;
+        }
+
+        /* Smooth transitions */
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        /* JavaScript-themed effects */
+        .topic-card:hover {
+            transform-style: preserve-3d;
+        }
+
+        /* mejorar el contraste del boton */
+        button {
+            color: #000 !important;
+        }
+    </style>
+</body>
+</html>

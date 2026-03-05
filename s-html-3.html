@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML: Elementos de Texto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'html-orange': {
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+              950: '#431407',
+            },
+            'dark-orange': {
+              900: '#1a0f0a',
+              950: '#0f0805',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .feature-card {
+        @apply bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800 hover:border-html-orange-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-html-orange-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+      .element-card {
+        @apply bg-dark-orange-900/80 p-6 rounded-lg border border-gray-800 hover:border-html-orange-700/50 transition-all duration-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-orange-950 text-gray-200">
+    
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-orange-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+          
+        <div class="flex-shrink-0 flex items-center">
+          <a href="#" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-html-orange-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-orange-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-html-orange-500">&lt;T&gt;</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">Texto HTML</span>
+          </a>
+        </div>
+
+          
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#encabezados" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Encabezados</a>
+          <a href="#parrafos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Párrafos</a>
+          <a href="#formato" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Formato</a>
+          <a href="#listas" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Listas</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#encabezados" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Encabezados</a>
+        <a href="#parrafos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Párrafos</a>
+        <a href="#formato" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Formato</a>
+        <a href="#listas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Listas</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-html-orange-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-5xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          HTML
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-html-orange-400">Elementos de Texto</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-4xl mx-auto animate-slide-up">
+          Los elementos de texto son la base de cualquier página web. HTML proporciona una variedad de etiquetas para estructurar y dar formato al contenido textual: desde encabezados jerárquicos hasta listas organizadas, pasando por párrafos y formato de texto como negrita y cursiva.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <div class="bg-html-orange-600/20 border border-html-orange-600/50 rounded-lg px-6 py-3">
+            <span class="text-html-orange-400 font-bold">Encabezados</span>
+          </div>
+          <div class="bg-html-orange-600/20 border border-html-orange-600/50 rounded-lg px-6 py-3">
+            <span class="text-html-orange-400 font-bold">Párrafos</span>
+          </div>
+          <div class="bg-html-orange-600/20 border border-html-orange-600/50 rounded-lg px-6 py-3">
+            <span class="text-html-orange-400 font-bold">Formato</span>
+          </div>
+          <div class="bg-html-orange-600/20 border border-html-orange-600/50 rounded-lg px-6 py-3">
+            <span class="text-html-orange-400 font-bold">Listas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué son los <span class="text-html-orange-400 font-bold">Elementos de Texto?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-html-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Estructura Semántica</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los elementos de texto en HTML no solo definen cómo se ve el contenido, sino también su significado y jerarquía. Los navegadores y motores de búsqueda utilizan estas etiquetas para entender la estructura del documento.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Usar las etiquetas correctas mejora la accesibilidad y el SEO de tu sitio web.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-html-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Jerarquía Visual</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los encabezados (<code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;h1&gt;</code> a <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;h6&gt;</code>) crean una jerarquía visual y lógica. El <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;h1&gt;</code> es el más importante y debe usarse solo una vez por página.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Esta jerarquía ayuda a los usuarios a escanear y entender el contenido rápidamente.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-html-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Formato de Texto</h3>
+        <p class="text-gray-300 leading-relaxed">
+          HTML proporciona etiquetas para dar énfasis y formato al texto: <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;strong&gt;</code> para negrita (importancia), <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;em&gt;</code> para cursiva (énfasis), y más.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Cada etiqueta tiene un significado semántico que va más allá de su apariencia visual.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-html-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-html-orange-400">Listas Organizadas</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Las listas permiten organizar información de forma estructurada. Puedes crear listas ordenadas (<code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;ol&gt;</code>), desordenadas (<code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;ul&gt;</code>) o de definición (<code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;dl&gt;</code>).
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Son perfectas para menús de navegación, características de productos, pasos de instrucciones, etc.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="encabezados" class="py-20 bg-gradient-to-b from-dark-orange-950 to-dark-orange-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Encabezados <span class="text-html-orange-400 font-bold">&lt;h1&gt; - &lt;h6&gt;</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Los encabezados definen la estructura y jerarquía del contenido
+      </p>
+
+      <div class="max-w-6xl mx-auto">
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+          <h3 class="text-xl font-bold mb-6 text-html-orange-400 text-center">Jerarquía Visual</h3>
+          
+          <div class="space-y-6 mb-8">
+            <div class="bg-black/30 p-6 rounded-lg">
+              <h1 class="text-5xl font-bold text-html-orange-400 mb-2">Encabezado h1</h1>
+              <p class="text-sm text-gray-400 font-mono">&lt;h1&gt;Encabezado h1&lt;/h1&gt;</p>
+              <p class="text-xs text-gray-500 mt-2">El más importante - Solo uno por página</p>
+            </div>
+
+            <div class="bg-black/30 p-6 rounded-lg">
+              <h2 class="text-4xl font-bold text-html-orange-400 mb-2">Encabezado h2</h2>
+              <p class="text-sm text-gray-400 font-mono">&lt;h2&gt;Encabezado h2&lt;/h2&gt;</p>
+              <p class="text-xs text-gray-500 mt-2">Secciones principales</p>
+            </div>
+
+            <div class="bg-black/30 p-6 rounded-lg">
+              <h3 class="text-3xl font-bold text-html-orange-400 mb-2">Encabezado h3</h3>
+              <p class="text-sm text-gray-400 font-mono">&lt;h3&gt;Encabezado h3&lt;/h3&gt;</p>
+              <p class="text-xs text-gray-500 mt-2">Subsecciones</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-black/30 p-4 rounded-lg">
+                <h4 class="text-2xl font-bold text-html-orange-400 mb-2">h4</h4>
+                <p class="text-xs text-gray-400 font-mono">&lt;h4&gt;</p>
+              </div>
+              <div class="bg-black/30 p-4 rounded-lg">
+                <h5 class="text-xl font-bold text-html-orange-400 mb-2">h5</h5>
+                <p class="text-xs text-gray-400 font-mono">&lt;h5&gt;</p>
+              </div>
+              <div class="bg-black/30 p-4 rounded-lg">
+                <h6 class="text-lg font-bold text-html-orange-400 mb-2">h6</h6>
+                <p class="text-xs text-gray-400 font-mono">&lt;h6&gt;</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-3">Ejemplo de Código:</h4>
+              <pre class="code-block text-xs">
+<span class="text-gray-500">&lt;!-- Estructura jerárquica correcta --&gt;</span>
+<span class="text-blue-400">&lt;h1&gt;</span>Título Principal de la Página<span class="text-blue-400">&lt;/h1&gt;</span>
+
+<span class="text-blue-400">&lt;h2&gt;</span>Sección 1<span class="text-blue-400">&lt;/h2&gt;</span>
+<span class="text-blue-400">&lt;p&gt;</span>Contenido de la sección...<span class="text-blue-400">&lt;/p&gt;</span>
+
+  <span class="text-blue-400">&lt;h3&gt;</span>Subsección 1.1<span class="text-blue-400">&lt;/h3&gt;</span>
+  <span class="text-blue-400">&lt;p&gt;</span>Contenido...<span class="text-blue-400">&lt;/p&gt;</span>
+
+  <span class="text-blue-400">&lt;h3&gt;</span>Subsección 1.2<span class="text-blue-400">&lt;/h3&gt;</span>
+  <span class="text-blue-400">&lt;p&gt;</span>Contenido...<span class="text-blue-400">&lt;/p&gt;</span>
+
+<span class="text-blue-400">&lt;h2&gt;</span>Sección 2<span class="text-blue-400">&lt;/h2&gt;</span>
+<span class="text-blue-400">&lt;p&gt;</span>Contenido de la sección...<span class="text-blue-400">&lt;/p&gt;</span></pre>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-3">Mejores Prácticas:</h4>
+              <ul class="space-y-2 text-gray-300 text-sm">
+                <li class="flex items-start">
+                  <span class="text-html-orange-400 mr-2">✓</span>
+                  <div>Usa solo un <code class="text-html-orange-400 bg-gray-800 px-1 rounded text-xs">&lt;h1&gt;</code> por página</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-html-orange-400 mr-2">✓</span>
+                  <div>Mantén la jerarquía en orden (no saltes niveles)</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-html-orange-400 mr-2">✓</span>
+                  <div>No uses encabezados solo por su tamaño (usa CSS)</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-html-orange-400 mr-2">✓</span>
+                  <div>Los encabezados deben describir el contenido que sigue</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-html-orange-400 mr-2">✓</span>
+                  <div>Son importantes para SEO y accesibilidad</div>
+                </li>
+              </ul>
+
+              <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg mt-4">
+                <p class="text-xs text-gray-300">
+                  <strong class="text-html-orange-400">Importante:</strong> Los lectores de pantalla usan los encabezados para navegar. Una estructura correcta mejora la accesibilidad.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="parrafos" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Párrafos <span class="text-html-orange-400 font-bold">&lt;p&gt;</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Los párrafos son los bloques fundamentales de texto en HTML
+    </p>
+
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-html-orange-400">Elemento &lt;p&gt;</h3>
+          
+          <p class="text-gray-300 mb-4">
+            La etiqueta <code class="text-html-orange-400 bg-gray-800 px-2 py-1 rounded">&lt;p&gt;</code> define un párrafo de texto. Los navegadores automáticamente agregan espacio antes y después de cada párrafo.
+          </p>
+
+          <pre class="code-block text-xs mb-6">
+<span class="text-blue-400">&lt;p&gt;</span>
+  Este es un párrafo de texto. Puede contener 
+  múltiples líneas y el navegador las ajustará 
+  automáticamente según el ancho disponible.
+<span class="text-blue-400">&lt;/p&gt;</span>
+
+<span class="text-blue-400">&lt;p&gt;</span>
+  Este es otro párrafo. Los párrafos están 
+  separados visualmente por espacio vertical.
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+
+          <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg">
+            <p class="text-sm text-gray-300 mb-2">
+              <strong class="text-html-orange-400">Resultado visual:</strong>
+            </p>
+            <div class="bg-white p-4 rounded text-gray-900 text-sm">
+              <p>Este es un párrafo de texto. Puede contener múltiples líneas y el navegador las ajustará automáticamente según el ancho disponible.</p>
+              <p>Este es otro párrafo. Los párrafos están separados visualmente por espacio vertical.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-html-orange-400">Saltos de Línea y Otros</h3>
+          
+          <h4 class="text-lg font-semibold text-white mb-3">Salto de Línea &lt;br&gt;</h4>
+          <p class="text-gray-300 text-sm mb-3">
+            Crea un salto de línea sin iniciar un nuevo párrafo.
+          </p>
+          <pre class="code-block text-xs mb-6">
+<span class="text-blue-400">&lt;p&gt;</span>
+  Primera línea<span class="text-blue-400">&lt;br&gt;</span>
+  Segunda línea<span class="text-blue-400">&lt;br&gt;</span>
+  Tercera línea
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+
+          <h4 class="text-lg font-semibold text-white mb-3">Línea Horizontal &lt;hr&gt;</h4>
+          <p class="text-gray-300 text-sm mb-3">
+            Crea una línea horizontal divisoria temática.
+          </p>
+          <pre class="code-block text-xs mb-6">
+<span class="text-blue-400">&lt;p&gt;</span>Sección 1<span class="text-blue-400">&lt;/p&gt;</span>
+<span class="text-blue-400">&lt;hr&gt;</span>
+<span class="text-blue-400">&lt;p&gt;</span>Sección 2<span class="text-blue-400">&lt;/p&gt;</span></pre>
+
+          <h4 class="text-lg font-semibold text-white mb-3">Texto Preformateado &lt;pre&gt;</h4>
+          <p class="text-gray-300 text-sm mb-3">
+            Preserva espacios y saltos de línea exactamente como están escritos.
+          </p>
+          <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;pre&gt;</span>
+  Texto    con    espacios
+       y saltos
+           preservados
+<span class="text-blue-400">&lt;/pre&gt;</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="formato" class="py-20 bg-gradient-to-b from-dark-orange-950 to-dark-orange-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Formato de Texto <span class="text-html-orange-400 font-bold">HTML</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Etiquetas para dar énfasis y significado al texto
+      </p>
+
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;strong&gt; - Texto Importante</h3>
+          <p class="text-sm text-gray-400 mb-3">Define texto con gran importancia (generalmente negrita)</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  Esto es <span class="text-blue-400">&lt;strong&gt;</span>muy importante<span class="text-blue-400">&lt;/strong&gt;</span>.
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            Esto es <strong>muy importante</strong>.
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;em&gt; - Texto con Énfasis</h3>
+          <p class="text-sm text-gray-400 mb-3">Define texto enfatizado (generalmente cursiva)</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  Debes <span class="text-blue-400">&lt;em&gt;</span>realmente<span class="text-blue-400">&lt;/em&gt;</span> leer esto.
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            Debes <em>realmente</em> leer esto.
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;b&gt; - Negrita Visual</h3>
+          <p class="text-sm text-gray-400 mb-3">Texto en negrita sin importancia semántica extra</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  Palabras clave: <span class="text-blue-400">&lt;b&gt;</span>HTML<span class="text-blue-400">&lt;/b&gt;</span>, <span class="text-blue-400">&lt;b&gt;</span>CSS<span class="text-blue-400">&lt;/b&gt;</span>
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            Palabras clave: <b>HTML</b>, <b>CSS</b>
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;i&gt; - Cursiva Visual</h3>
+          <p class="text-sm text-gray-400 mb-3">Texto en cursiva sin énfasis semántico</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  El término <span class="text-blue-400">&lt;i&gt;</span>smartphone<span class="text-blue-400">&lt;/i&gt;</span> es común.
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            El término <i>smartphone</i> es común.
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;mark&gt; - Texto Resaltado</h3>
+          <p class="text-sm text-gray-400 mb-3">Texto marcado o resaltado con fondo amarillo</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  <span class="text-blue-400">&lt;mark&gt;</span>Resalta<span class="text-blue-400">&lt;/mark&gt;</span> información importante.
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            <mark>Resalta</mark> información importante.
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;small&gt; - Texto Pequeño</h3>
+          <p class="text-sm text-gray-400 mb-3">Texto de menor importancia (como notas al pie)</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  Precio: $99 <span class="text-blue-400">&lt;small&gt;</span>IVA incluido<span class="text-blue-400">&lt;/small&gt;</span>
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            Precio: $99 <small>IVA incluido</small>
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;del&gt; - Texto Eliminado</h3>
+          <p class="text-sm text-gray-400 mb-3">Texto que ha sido eliminado (tachado)</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  Precio: <span class="text-blue-400">&lt;del&gt;</span>$150<span class="text-blue-400">&lt;/del&gt;</span> $99
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            Precio: <del>$150</del> $99
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;ins&gt; - Texto Insertado</h3>
+          <p class="text-sm text-gray-400 mb-3">Texto que ha sido añadido (subrayado)</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  Texto <span class="text-blue-400">&lt;ins&gt;</span>insertado<span class="text-blue-400">&lt;/ins&gt;</span> en el documento.
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            Texto <ins>insertado</ins> en el documento.
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;sub&gt; - Subíndice</h3>
+          <p class="text-sm text-gray-400 mb-3">Texto en subíndice (fórmulas químicas)</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  H<span class="text-blue-400">&lt;sub&gt;</span>2<span class="text-blue-400">&lt;/sub&gt;</span>O es agua
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            H<sub>2</sub>O es agua
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;sup&gt; - Superíndice</h3>
+          <p class="text-sm text-gray-400 mb-3">Texto en superíndice (potencias, notas al pie)</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  E = mc<span class="text-blue-400">&lt;sup&gt;</span>2<span class="text-blue-400">&lt;/sup&gt;</span>
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            E = mc<sup>2</sup>
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;code&gt; - Código</h3>
+          <p class="text-sm text-gray-400 mb-3">Fragmento de código de programación</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  Usa <span class="text-blue-400">&lt;code&gt;</span>console.log()<span class="text-blue-400">&lt;/code&gt;</span>
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            Usa <code>console.log()</code>
+          </div>
+        </div>
+
+        <div class="element-card">
+          <h3 class="text-lg font-bold mb-3 text-html-orange-400">&lt;abbr&gt; - Abreviatura</h3>
+          <p class="text-sm text-gray-400 mb-3">Define una abreviatura o acrónimo</p>
+          <pre class="code-block text-xs mb-3">
+<span class="text-blue-400">&lt;p&gt;</span>
+  <span class="text-blue-400">&lt;abbr</span> <span class="text-green-400">title</span>=<span class="text-orange-400">"Organización Mundial de la Salud"</span><span class="text-blue-400">&gt;</span>OMS<span class="text-blue-400">&lt;/abbr&gt;</span>
+<span class="text-blue-400">&lt;/p&gt;</span></pre>
+          <div class="bg-white p-3 rounded text-gray-900 text-sm">
+            <abbr title="Organización Mundial de la Salud">OMS</abbr>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-6xl mx-auto mt-12">
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-html-orange-400 text-center">Diferencias Semánticas</h3>
+          
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-gray-700">
+                  <th class="text-left p-3 text-html-orange-400">Etiqueta</th>
+                  <th class="text-left p-3 text-html-orange-400">Significado Semántico</th>
+                  <th class="text-left p-3 text-html-orange-400">Cuándo Usar</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-300">
+                <tr class="border-b border-gray-700/50">
+                  <td class="p-3"><code class="text-html-orange-400">&lt;strong&gt;</code></td>
+                  <td class="p-3">Importancia fuerte</td>
+                  <td class="p-3">Advertencias, información crucial</td>
+                </tr>
+                <tr class="border-b border-gray-700/50">
+                  <td class="p-3"><code class="text-html-orange-400">&lt;b&gt;</code></td>
+                  <td class="p-3">Sin significado extra</td>
+                  <td class="p-3">Palabras clave, nombres de productos</td>
+                </tr>
+                <tr class="border-b border-gray-700/50">
+                  <td class="p-3"><code class="text-html-orange-400">&lt;em&gt;</code></td>
+                  <td class="p-3">Énfasis de estrés</td>
+                  <td class="p-3">Cambiar el significado de una frase</td>
+                </tr>
+                <tr class="border-b border-gray-700/50">
+                  <td class="p-3"><code class="text-html-orange-400">&lt;i&gt;</code></td>
+                  <td class="p-3">Sin significado extra</td>
+                  <td class="p-3">Términos técnicos, palabras extranjeras</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="listas" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Listas en <span class="text-html-orange-400 font-bold">HTML</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Organiza información de manera estructurada con listas
+    </p>
+
+    <div class="max-w-7xl mx-auto space-y-8">
+      <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-html-orange-500 flex items-center justify-center mr-4">
+            <span class="text-2xl">•</span>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-html-orange-400">Listas Desordenadas &lt;ul&gt;</h3>
+            <p class="text-gray-400 text-sm">Lista con viñetas (bullets)</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Código:</h4>
+            <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;ul&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Manzanas<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Naranjas<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Plátanos<span class="text-blue-400">&lt;/li&gt;</span>
+<span class="text-blue-400">&lt;/ul&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Con sublistas --&gt;</span>
+<span class="text-blue-400">&lt;ul&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Frutas
+    <span class="text-blue-400">&lt;ul&gt;</span>
+      <span class="text-blue-400">&lt;li&gt;</span>Manzanas<span class="text-blue-400">&lt;/li&gt;</span>
+      <span class="text-blue-400">&lt;li&gt;</span>Naranjas<span class="text-blue-400">&lt;/li&gt;</span>
+    <span class="text-blue-400">&lt;/ul&gt;</span>
+  <span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Verduras<span class="text-blue-400">&lt;/li&gt;</span>
+<span class="text-blue-400">&lt;/ul&gt;</span></pre>
+          </div>
+
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Resultado:</h4>
+            <div class="bg-white p-6 rounded text-gray-900">
+              <ul class="list-disc ml-6 space-y-2">
+                <li>Manzanas</li>
+                <li>Naranjas</li>
+                <li>Plátanos</li>
+              </ul>
+
+              <ul class="list-disc ml-6 space-y-2 mt-4">
+                <li>Frutas
+                  <ul class="list-circle ml-6 mt-2 space-y-1">
+                    <li>Manzanas</li>
+                    <li>Naranjas</li>
+                  </ul>
+                </li>
+                <li>Verduras</li>
+              </ul>
+            </div>
+
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg mt-4">
+              <p class="text-xs text-gray-300">
+                <strong class="text-html-orange-400">Uso:</strong> Cuando el orden de los elementos NO es importante (ingredientes, características, etc.)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-html-orange-500 flex items-center justify-center mr-4">
+            <span class="text-2xl font-bold">1.</span>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-html-orange-400">Listas Ordenadas &lt;ol&gt;</h3>
+            <p class="text-gray-400 text-sm">Lista numerada secuencialmente</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Código:</h4>
+            <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;ol&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Precalentar el horno<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Mezclar ingredientes<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Hornear por 20 minutos<span class="text-blue-400">&lt;/li&gt;</span>
+<span class="text-blue-400">&lt;/ol&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Comenzar en número específico --&gt;</span>
+<span class="text-blue-400">&lt;ol</span> <span class="text-green-400">start</span>=<span class="text-orange-400">"5"</span><span class="text-blue-400">&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Elemento 5<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Elemento 6<span class="text-blue-400">&lt;/li&gt;</span>
+<span class="text-blue-400">&lt;/ol&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Orden inverso --&gt;</span>
+<span class="text-blue-400">&lt;ol</span> <span class="text-green-400">reversed</span><span class="text-blue-400">&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Tercero<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Segundo<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;li&gt;</span>Primero<span class="text-blue-400">&lt;/li&gt;</span>
+<span class="text-blue-400">&lt;/ol&gt;</span></pre>
+          </div>
+
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Resultado:</h4>
+            <div class="bg-white p-6 rounded text-gray-900 space-y-4">
+              <ol class="list-decimal ml-6 space-y-2">
+                <li>Precalentar el horno</li>
+                <li>Mezclar ingredientes</li>
+                <li>Hornear por 20 minutos</li>
+              </ol>
+
+              <ol start="5" class="list-decimal ml-6 space-y-2">
+                <li>Elemento 5</li>
+                <li>Elemento 6</li>
+              </ol>
+
+              <ol reversed class="list-decimal ml-6 space-y-2">
+                <li value="3">Tercero</li>
+                <li value="2">Segundo</li>
+                <li value="1">Primero</li>
+              </ol>
+            </div>
+
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg mt-4">
+              <p class="text-xs text-gray-300">
+                <strong class="text-html-orange-400">Uso:</strong> Cuando el orden ES importante (pasos de receta, instrucciones, rankings)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-html-orange-500 flex items-center justify-center mr-4">
+            <span class="text-2xl">📝</span>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-html-orange-400">Listas de Definición &lt;dl&gt;</h3>
+            <p class="text-gray-400 text-sm">Lista de términos y sus definiciones</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Código:</h4>
+            <pre class="code-block text-xs">
+<span class="text-blue-400">&lt;dl&gt;</span>
+  <span class="text-blue-400">&lt;dt&gt;</span>HTML<span class="text-blue-400">&lt;/dt&gt;</span>
+  <span class="text-blue-400">&lt;dd&gt;</span>Lenguaje de marcado para crear páginas web<span class="text-blue-400">&lt;/dd&gt;</span>
+  
+  <span class="text-blue-400">&lt;dt&gt;</span>CSS<span class="text-blue-400">&lt;/dt&gt;</span>
+  <span class="text-blue-400">&lt;dd&gt;</span>Lenguaje para dar estilo a páginas web<span class="text-blue-400">&lt;/dd&gt;</span>
+  
+  <span class="text-blue-400">&lt;dt&gt;</span>JavaScript<span class="text-blue-400">&lt;/dt&gt;</span>
+  <span class="text-blue-400">&lt;dd&gt;</span>Lenguaje de programación para interactividad<span class="text-blue-400">&lt;/dd&gt;</span>
+<span class="text-blue-400">&lt;/dl&gt;</span></pre>
+          </div>
+
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Resultado:</h4>
+            <div class="bg-white p-6 rounded text-gray-900">
+              <dl class="space-y-3">
+                <div>
+                  <dt class="font-bold text-html-orange-600">HTML</dt>
+                  <dd class="ml-6 text-gray-700">Lenguaje de marcado para crear páginas web</dd>
+                </div>
+                <div>
+                  <dt class="font-bold text-html-orange-600">CSS</dt>
+                  <dd class="ml-6 text-gray-700">Lenguaje para dar estilo a páginas web</dd>
+                </div>
+                <div>
+                  <dt class="font-bold text-html-orange-600">JavaScript</dt>
+                  <dd class="ml-6 text-gray-700">Lenguaje de programación para interactividad</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg mt-4">
+              <p class="text-xs text-gray-300">
+                <strong class="text-html-orange-400">Uso:</strong> Glosarios, metadatos, pares clave-valor
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ejemplos" class="py-20 bg-gradient-to-b from-dark-orange-950 to-dark-orange-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+        Ejemplos <span class="text-html-orange-400 font-bold">Prácticos</span>
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-html-orange-400">Artículo de Blog</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-blue-400">&lt;article&gt;</span>
+  <span class="text-blue-400">&lt;h1&gt;</span>Guía de HTML<span class="text-blue-400">&lt;/h1&gt;</span>
+  
+  <span class="text-blue-400">&lt;h2&gt;</span>Introducción<span class="text-blue-400">&lt;/h2&gt;</span>
+  <span class="text-blue-400">&lt;p&gt;</span>
+    HTML es el <span class="text-blue-400">&lt;strong&gt;</span>lenguaje fundamental<span class="text-blue-400">&lt;/strong&gt;</span> 
+    para crear páginas web.
+  <span class="text-blue-400">&lt;/p&gt;</span>
+  
+  <span class="text-blue-400">&lt;h2&gt;</span>Características<span class="text-blue-400">&lt;/h2&gt;</span>
+  <span class="text-blue-400">&lt;ul&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span>Fácil de aprender<span class="text-blue-400">&lt;/li&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span>Amplio soporte<span class="text-blue-400">&lt;/li&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span>Semántico<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;/ul&gt;</span>
+<span class="text-blue-400">&lt;/article&gt;</span></pre>
+          <p class="text-gray-400 text-sm">
+            Estructura típica de un artículo con encabezados, párrafos y lista.
+          </p>
+        </div>
+
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-html-orange-400">Receta de Cocina</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-blue-400">&lt;article&gt;</span>
+  <span class="text-blue-400">&lt;h1&gt;</span>Galletas de Chocolate<span class="text-blue-400">&lt;/h1&gt;</span>
+  
+  <span class="text-blue-400">&lt;h2&gt;</span>Ingredientes<span class="text-blue-400">&lt;/h2&gt;</span>
+  <span class="text-blue-400">&lt;ul&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span>200g de harina<span class="text-blue-400">&lt;/li&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span>150g de azúcar<span class="text-blue-400">&lt;/li&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span>100g de chocolate<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;/ul&gt;</span>
+  
+  <span class="text-blue-400">&lt;h2&gt;</span>Instrucciones<span class="text-blue-400">&lt;/h2&gt;</span>
+  <span class="text-blue-400">&lt;ol&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span>Precalentar horno a 180°C<span class="text-blue-400">&lt;/li&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span>Mezclar ingredientes<span class="text-blue-400">&lt;/li&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span>Hornear 15 minutos<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;/ol&gt;</span>
+<span class="text-blue-400">&lt;/article&gt;</span></pre>
+          <p class="text-gray-400 text-sm">
+            Combina listas ordenadas y desordenadas para ingredientes e instrucciones.
+          </p>
+        </div>
+
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-html-orange-400">Descripción de Producto</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-blue-400">&lt;div&gt;</span>
+  <span class="text-blue-400">&lt;h2&gt;</span>Laptop Pro X<span class="text-blue-400">&lt;/h2&gt;</span>
+  
+  <span class="text-blue-400">&lt;p&gt;</span>
+    <span class="text-blue-400">&lt;strong&gt;</span>La mejor laptop<span class="text-blue-400">&lt;/strong&gt;</span> para 
+    profesionales. <span class="text-blue-400">&lt;del&gt;</span>$1,500<span class="text-blue-400">&lt;/del&gt;</span> 
+    <span class="text-blue-400">&lt;mark&gt;</span>$1,200<span class="text-blue-400">&lt;/mark&gt;</span>
+  <span class="text-blue-400">&lt;/p&gt;</span>
+  
+  <span class="text-blue-400">&lt;h3&gt;</span>Especificaciones<span class="text-blue-400">&lt;/h3&gt;</span>
+  <span class="text-blue-400">&lt;dl&gt;</span>
+    <span class="text-blue-400">&lt;dt&gt;</span>Procesador<span class="text-blue-400">&lt;/dt&gt;</span>
+    <span class="text-blue-400">&lt;dd&gt;</span>Intel i7<span class="text-blue-400">&lt;/dd&gt;</span>
+    
+    <span class="text-blue-400">&lt;dt&gt;</span>RAM<span class="text-blue-400">&lt;/dt&gt;</span>
+    <span class="text-blue-400">&lt;dd&gt;</span>16GB<span class="text-blue-400">&lt;/dd&gt;</span>
+  <span class="text-blue-400">&lt;/dl&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span></pre>
+          <p class="text-gray-400 text-sm">
+            Usa formato de texto y listas de definición para especificaciones.
+          </p>
+        </div>
+
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-html-orange-400">Documentación Técnica</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-blue-400">&lt;section&gt;</span>
+  <span class="text-blue-400">&lt;h1&gt;</span>API Reference<span class="text-blue-400">&lt;/h1&gt;</span>
+  
+  <span class="text-blue-400">&lt;p&gt;</span>
+    Usa <span class="text-blue-400">&lt;code&gt;</span>fetch()<span class="text-blue-400">&lt;/code&gt;</span> para hacer 
+    peticiones <span class="text-blue-400">&lt;abbr</span> <span class="text-green-400">title</span>=<span class="text-orange-400">"HyperText Transfer Protocol"</span><span class="text-blue-400">&gt;</span>HTTP<span class="text-blue-400">&lt;/abbr&gt;</span>.
+  <span class="text-blue-400">&lt;/p&gt;</span>
+  
+  <span class="text-blue-400">&lt;h2&gt;</span>Parámetros<span class="text-blue-400">&lt;/h2&gt;</span>
+  <span class="text-blue-400">&lt;ul&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span><span class="text-blue-400">&lt;code&gt;</span>url<span class="text-blue-400">&lt;/code&gt;</span> - <span class="text-blue-400">&lt;em&gt;</span>requerido<span class="text-blue-400">&lt;/em&gt;</span><span class="text-blue-400">&lt;/li&gt;</span>
+    <span class="text-blue-400">&lt;li&gt;</span><span class="text-blue-400">&lt;code&gt;</span>options<span class="text-blue-400">&lt;/code&gt;</span> - opcional<span class="text-blue-400">&lt;/li&gt;</span>
+  <span class="text-blue-400">&lt;/ul&gt;</span>
+<span class="text-blue-400">&lt;/section&gt;</span></pre>
+          <p class="text-gray-400 text-sm">
+            Combina código, abreviaturas y énfasis para documentación clara.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="actividad" class="container mx-auto px-4 py-20">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-html-orange-400 font-bold">Interactiva</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Crea tu propio contenido HTML en tiempo real!
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+        <div class="bg-dark-orange-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-6">
+              <h3 class="text-xl font-bold mb-6 text-html-orange-400">Editor HTML</h3>
+
+              <div class="bg-dark-orange-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Insertar Rápido</h4>
+                <div class="grid grid-cols-3 gap-2">
+                  <button class="insert-btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="h1">
+                    H1
+                  </button>
+                  <button class="insert-btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="h2">
+                    H2
+                  </button>
+                  <button class="insert-btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="h3">
+                    H3
+                  </button>
+                  <button class="insert-btn bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="p">
+                    Párrafo
+                  </button>
+                  <button class="insert-btn bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="strong">
+                    Negrita
+                  </button>
+                  <button class="insert-btn bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="em">
+                    Cursiva
+                  </button>
+                  <button class="insert-btn bg-orange-600 hover:bg-orange-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="ul">
+                    Lista •
+                  </button>
+                  <button class="insert-btn bg-orange-600 hover:bg-orange-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="ol">
+                    Lista 1.
+                  </button>
+                  <button class="insert-btn bg-orange-600 hover:bg-orange-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="dl">
+                    Lista DL
+                  </button>
+                  <button class="insert-btn bg-gray-600 hover:bg-gray-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="mark">
+                    Resaltar
+                  </button>
+                  <button class="insert-btn bg-gray-600 hover:bg-gray-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="code">
+                    Código
+                  </button>
+                  <button class="insert-btn bg-gray-600 hover:bg-gray-700 text-white py-2 px-3 rounded text-xs transition-colors" data-tag="br">
+                    Salto
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-dark-orange-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Plantillas</h4>
+                <div class="grid grid-cols-2 gap-3">
+                  <button id="templateArticle" class="bg-html-orange-600 hover:bg-html-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                    📄 Artículo
+                  </button>
+                  <button id="templateRecipe" class="bg-html-orange-600 hover:bg-html-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                    🍳 Receta
+                  </button>
+                  <button id="templateProduct" class="bg-html-orange-600 hover:bg-html-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                    🛒 Producto
+                  </button>
+                  <button id="templateBio" class="bg-html-orange-600 hover:bg-html-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                    👤 Biografía
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-dark-orange-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Tu HTML</h4>
+                <textarea 
+                  id="htmlInput" 
+                  placeholder="Escribe o usa los botones para insertar HTML..."
+                  class="w-full bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-700 focus:border-html-orange-500 focus:outline-none text-sm font-mono min-h-[300px] resize-vertical"
+                ></textarea>
+                <div class="mt-3 flex gap-3">
+                  <button 
+                    id="renderBtn"
+                    class="flex-1 bg-html-orange-500 hover:bg-html-orange-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                  >
+                    👁️ Renderizar
+                  </button>
+                  <button 
+                    id="clearBtn"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                  >
+                    🗑️ Limpiar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-html-orange-400">Vista Previa</h3>
+              
+              <div class="bg-dark-orange-900/50 p-6 rounded-lg border border-gray-700 mb-6 min-h-[500px]">
+                <div id="htmlPreview" class="bg-white p-6 rounded-lg text-gray-900 min-h-[450px]">
+                  <div class="text-gray-400 italic text-center py-20">
+                    Escribe HTML y presiona "Renderizar" para ver el resultado...
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-dark-orange-900/50 p-6 rounded-lg border border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                  <h4 class="text-white font-semibold">Código HTML</h4>
+                  <button id="copyHtmlBtn" class="text-html-orange-400 hover:text-html-orange-300 text-sm font-semibold">
+                    📋 Copiar
+                  </button>
+                </div>
+                <pre id="htmlSource" class="code-block text-xs max-h-[250px] overflow-y-auto"><span class="text-gray-500">// El código aparecerá aquí...</span></pre>
+              </div>
+
+              <div class="bg-html-orange-900/20 border border-html-orange-700/30 p-4 rounded-lg mt-6">
+                <p class="text-xs text-gray-300">
+                  <strong class="text-html-orange-400">💡 Tip:</strong> Usa las plantillas para comenzar rápidamente, luego personaliza el contenido. ¡Experimenta con diferentes combinaciones!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-gradient-to-b from-dark-orange-950 to-dark-orange-900">
+    
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'html';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-html.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <footer class="bg-dark-orange-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende HTML: Elementos de Texto - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // HTML Editor Activity
+    const htmlInput = document.getElementById('htmlInput');
+    const htmlPreview = document.getElementById('htmlPreview');
+    const htmlSource = document.getElementById('htmlSource');
+    const renderBtn = document.getElementById('renderBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+
+    // Templates
+    const templates = {
+      article: `<article>
+  <h1>Mi Primer Artículo</h1>
+  
+  <h2>Introducción</h2>
+  <p>Este es un <strong>artículo de ejemplo</strong> que muestra cómo estructurar contenido en HTML.</p>
+  
+  <h2>Puntos Importantes</h2>
+  <ul>
+    <li>HTML es fácil de aprender</li>
+    <li>La semántica es importante</li>
+    <li>Estructura tu contenido correctamente</li>
+  </ul>
+  
+  <h2>Conclusión</h2>
+  <p>Con práctica, dominarás HTML en <em>poco tiempo</em>.</p>
+</article>`,
+      recipe: `<article>
+  <h1>Galletas de Chocolate 🍪</h1>
+  
+  <p>Tiempo: <strong>30 minutos</strong> | Porciones: <strong>24 galletas</strong></p>
+  
+  <h2>Ingredientes</h2>
+  <ul>
+    <li>200g de harina</li>
+    <li>150g de azúcar</li>
+    <li>100g de mantequilla</li>
+    <li>200g de chips de chocolate</li>
+    <li>2 huevos</li>
+  </ul>
+  
+  <h2>Instrucciones</h2>
+  <ol>
+    <li>Precalentar el horno a 180°C</li>
+    <li>Mezclar ingredientes</li>
+    <li>Hornear por 12-15 minutos</li>
+  </ol>
+  
+  <p><mark>¡Disfruta con un vaso de leche!</mark></p>
+</article>`,
+      product: `<div>
+  <h1>Laptop Pro X 💻</h1>
+  
+  <p><strong>La mejor laptop</strong> para profesionales creativos.</p>
+  
+  <p>Precio: <del>$1,500</del> <mark>$1,200</mark> <small>(Oferta limitada)</small></p>
+  
+  <h2>Características Principales</h2>
+  <ul>
+    <li>Pantalla <strong>15.6"</strong> Retina</li>
+    <li>Procesador <em>Intel i7</em></li>
+    <li>16GB RAM</li>
+    <li>512GB SSD</li>
+  </ul>
+  
+  <h2>Especificaciones Técnicas</h2>
+  <dl>
+    <dt>Peso</dt>
+    <dd>1.8 kg</dd>
+    
+    <dt>Batería</dt>
+    <dd>Hasta 10 horas</dd>
+    
+    <dt>Sistema Operativo</dt>
+    <dd>Windows 11 Pro</dd>
+  </dl>
+</div>`,
+      bio: `<article>
+  <h1>Ada Lovelace</h1>
+  <h2>Primera Programadora del Mundo</h2>
+  
+  <p><strong>Ada Lovelace</strong> (1815-1852) fue una <em>matemática y escritora</em> británica, conocida principalmente por su trabajo sobre la <mark>máquina analítica</mark> de Charles Babbage.</p>
+  
+  <h3>Logros Destacados</h3>
+  <ul>
+    <li>Escribió el primer algoritmo</li>
+    <li>Visionó el potencial de las computadoras</li>
+    <li>Predijo aplicaciones más allá del cálculo</li>
+  </ul>
+  
+  <h3>Fechas Importantes</h3>
+  <dl>
+    <dt>Nacimiento</dt>
+    <dd>10 de diciembre de 1815</dd>
+    
+    <dt>Publicación de Notas</dt>
+    <dd>1843</dd>
+    
+    <dt>Fallecimiento</dt>
+    <dd>27 de noviembre de 1852</dd>
+  </dl>
+  
+  <p><small>Su legado continúa inspirando a programadores de todo el mundo.</small></p>
+</article>`
+    };
+
+    // Load templates
+    document.getElementById('templateArticle').addEventListener('click', () => {
+      htmlInput.value = templates.article;
+    });
+
+    document.getElementById('templateRecipe').addEventListener('click', () => {
+      htmlInput.value = templates.recipe;
+    });
+
+    document.getElementById('templateProduct').addEventListener('click', () => {
+      htmlInput.value = templates.product;
+    });
+
+    document.getElementById('templateBio').addEventListener('click', () => {
+      htmlInput.value = templates.bio;
+    });
+
+    // Insert buttons
+    document.querySelectorAll('.insert-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tag = btn.dataset.tag;
+        let insertion = '';
+        
+        switch(tag) {
+          case 'h1':
+          case 'h2':
+          case 'h3':
+            insertion = `<${tag}>Tu encabezado aquí</${tag}>`;
+            break;
+          case 'p':
+            insertion = '<p>Tu párrafo aquí</p>';
+            break;
+          case 'strong':
+            insertion = '<strong>texto importante</strong>';
+            break;
+          case 'em':
+            insertion = '<em>texto enfatizado</em>';
+            break;
+          case 'ul':
+            insertion = '<ul>\n  <li>Elemento 1</li>\n  <li>Elemento 2</li>\n  <li>Elemento 3</li>\n</ul>';
+            break;
+          case 'ol':
+            insertion = '<ol>\n  <li>Paso 1</li>\n  <li>Paso 2</li>\n  <li>Paso 3</li>\n</ol>';
+            break;
+          case 'dl':
+            insertion = '<dl>\n  <dt>Término</dt>\n  <dd>Definición</dd>\n</dl>';
+            break;
+          case 'mark':
+            insertion = '<mark>texto resaltado</mark>';
+            break;
+          case 'code':
+            insertion = '<code>código</code>';
+            break;
+          case 'br':
+            insertion = '<br>';
+            break;
+        }
+        
+        const cursorPos = htmlInput.selectionStart;
+        const textBefore = htmlInput.value.substring(0, cursorPos);
+        const textAfter = htmlInput.value.substring(cursorPos);
+        
+        htmlInput.value = textBefore + insertion + textAfter;
+        htmlInput.focus();
+        htmlInput.selectionStart = htmlInput.selectionEnd = cursorPos + insertion.length;
+      });
+    });
+
+    // Render HTML
+    function renderHTML() {
+      const html = htmlInput.value.trim();
+      
+      if (!html) {
+        htmlPreview.innerHTML = '<div class="text-gray-400 italic text-center py-20">Escribe HTML y presiona "Renderizar" para ver el resultado...</div>';
+        htmlSource.innerHTML = '<span class="text-gray-500">// El código aparecerá aquí...</span>';
+        return;
+      }
+      
+      // Render preview
+      htmlPreview.innerHTML = html;
+      
+      // Show source with syntax highlighting
+      const highlighted = html
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/(&lt;\/?)(\w+)/g, '<span class="text-blue-400">$1$2</span>')
+        .replace(/(&lt;\w+\s+)(\w+)/g, '$1<span class="text-green-400">$2</span>')
+        .replace(/=("[^"]*")/g, '=<span class="text-orange-400">$1</span>');
+      
+      htmlSource.innerHTML = highlighted;
+    }
+
+    renderBtn.addEventListener('click', renderHTML);
+
+    // Clear
+    clearBtn.addEventListener('click', () => {
+      htmlInput.value = '';
+      htmlPreview.innerHTML = '<div class="text-gray-400 italic text-center py-20">Escribe HTML y presiona "Renderizar" para ver el resultado...</div>';
+      htmlSource.innerHTML = '<span class="text-gray-500">// El código aparecerá aquí...</span>';
+    });
+
+    // Copy HTML
+    copyHtmlBtn.addEventListener('click', () => {
+      const html = htmlInput.value;
+      if (!html) return;
+      
+      navigator.clipboard.writeText(html).then(() => {
+        const originalText = copyHtmlBtn.textContent;
+        copyHtmlBtn.textContent = '✓ Copiado!';
+        setTimeout(() => {
+          copyHtmlBtn.textContent = originalText;
+        }, 2000);
+      });
+    });
+
+    // Auto-render on Ctrl+Enter
+    htmlInput.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        renderHTML();
+      }
+    });
+
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .element-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

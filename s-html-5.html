@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imágenes en HTML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0f1a',
+                        darker: '#050a14',
+                        accent: '#ff6b00'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation:hover {
+            animation: float 2s ease-in-out infinite;
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+        }
+        .scale-effect:hover {
+            transform: scale(1.03);
+        }
+        .rotate-effect:hover .icon-container {
+            transform: rotate(10deg);
+        }
+        .code-block {
+            position: relative;
+            overflow: hidden;
+        }
+        .code-block::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 70%, #050a14);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .code-block:hover::before {
+            opacity: 1;
+        }
+        .img-preview {
+            transition: all 0.3s ease;
+        }
+        .slider {
+            -webkit-appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            background: #1f2937;
+            outline: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff6b00;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff6b00;
+            cursor: pointer;
+        }
+        .attribute-tag {
+            transition: all 0.2s ease;
+        }
+        .attribute-tag:hover {
+            background-color: rgba(255, 107, 0, 0.2);
+        }
+        .attribute-tag.active {
+            background-color: rgba(255, 107, 0, 0.3);
+            border-color: #ff6b00;
+        }
+    </style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+    <header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="s-html.html"><h1 class="text-2xl font-bold">HTML<span class="text-accent">Imágenes</span></h1></a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                    <a href="#etiqueta-img" class="hover:text-accent transition-colors duration-300">Etiqueta &lt;img&gt;</a>
+                    <a href="#atributos" class="hover:text-accent transition-colors duration-300">Atributos</a>
+                    <a href="#responsivas" class="hover:text-accent transition-colors duration-300">Imágenes Responsivas</a>
+                    <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+                </div>
+                <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+                <a href="#etiqueta-img" class="block py-2 hover:text-accent transition-colors duration-300">Etiqueta &lt;img&gt;</a>
+                <a href="#atributos" class="block py-2 hover:text-accent transition-colors duration-300">Atributos</a>
+                <a href="#responsivas" class="block py-2 hover:text-accent transition-colors duration-300">Imágenes Responsivas</a>
+                <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="text-center py-16">
+            <h1 class="text-5xl font-bold mb-4">Imágenes en <span class="text-accent">HTML</span></h1>
+            <p class="text-xl max-w-3xl mx-auto">Aprende a incorporar y optimizar imágenes en tus páginas web</p>
+        </section>
+
+        <section id="introduccion" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Introducción a las Imágenes</h2>
+            <p class="mb-8 text-lg leading-relaxed">Las imágenes son elementos fundamentales en el diseño web moderno. Permiten transmitir información de forma visual, mejorar la experiencia del usuario y hacer que las páginas sean más atractivas y memorables.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation h-full">
+                    <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-accent">Impacto Visual</h3>
+                    <p class="text-base">Las imágenes captan la atención del usuario inmediatamente y comunican ideas de forma más rápida y efectiva que el texto.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect rotate-effect h-full">
+                    <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-accent">Optimización</h3>
+                    <p class="text-base">Las imágenes bien optimizadas mejoran el rendimiento de la página, reducen los tiempos de carga y ahorran ancho de banda.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation h-full">
+                    <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-accent">Responsividad</h3>
+                    <p class="text-base">Las imágenes responsivas se adaptan a diferentes tamaños de pantalla, garantizando una experiencia óptima en todos los dispositivos.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="etiqueta-img" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">La Etiqueta &lt;img&gt;</h2>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Sintaxis básica</h3>
+                <div class="code-block mb-6">
+                    <pre class="text-gray-300 overflow-x-auto text-lg"><code>&lt;img src="ruta-de-la-imagen.jpg" alt="Descripción de la imagen"&gt;</code></pre>
+                </div>
+                <p class="text-lg mb-6">La etiqueta <code class="bg-dark px-2 py-1 rounded border border-gray-800">&lt;img&gt;</code> es un elemento vacío (no tiene etiqueta de cierre) que inserta una imagen en la página web.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Características principales:</h4>
+                        <ul class="list-disc pl-6 space-y-3 text-lg">
+                            <li>Es un elemento <strong>inline</strong> por defecto</li>
+                            <li>No requiere etiqueta de cierre</li>
+                            <li>Necesita al menos el atributo <code class="bg-dark px-2 py-1 rounded border border-gray-800">src</code></li>
+                            <li>Por accesibilidad, debe incluir el atributo <code class="bg-dark px-2 py-1 rounded border border-gray-800">alt</code></li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-6 rounded-lg flex flex-col items-center justify-center">
+                        <img src="https://via.placeholder.com/300x200/ff6b00/ffffff?text=Ejemplo+de+Imagen" alt="Imagen de ejemplo" class="rounded-lg mb-4 max-w-full">
+                        <p class="text-center text-sm text-gray-400">Ejemplo de una imagen insertada con la etiqueta &lt;img&gt;</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Formatos de imagen comunes</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">JPEG/JPG</h4>
+                        <div class="h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg mb-4 flex items-center justify-center">
+                            <span class="text-2xl font-bold">.jpg</span>
+                        </div>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Ideal para fotografías</li>
+                            <li>Compresión con pérdida</li>
+                            <li>No soporta transparencia</li>
+                            <li>Millones de colores</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">PNG</h4>
+                        <div class="h-32 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg mb-4 flex items-center justify-center">
+                            <span class="text-2xl font-bold">.png</span>
+                        </div>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Ideal para gráficos</li>
+                            <li>Compresión sin pérdida</li>
+                            <li>Soporta transparencia</li>
+                            <li>Archivos más pesados</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">GIF</h4>
+                        <div class="h-32 bg-gradient-to-r from-yellow-500 to-red-500 rounded-lg mb-4 flex items-center justify-center">
+                            <span class="text-2xl font-bold">.gif</span>
+                        </div>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Soporta animaciones</li>
+                            <li>Máximo 256 colores</li>
+                            <li>Transparencia limitada</li>
+                            <li>Ideal para iconos simples</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">WebP</h4>
+                        <div class="h-32 bg-gradient-to-r from-indigo-500 to-pink-500 rounded-lg mb-4 flex items-center justify-center">
+                            <span class="text-2xl font-bold">.webp</span>
+                        </div>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Formato moderno</li>
+                            <li>Mejor compresión</li>
+                            <li>Soporta transparencia</li>
+                            <li>Soporta animaciones</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="atributos" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Atributos de la Etiqueta &lt;img&gt;</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos esenciales</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">1</span>
+                                </span>
+                                <span>src</span>
+                            </h4>
+                            <p class="mb-3">Especifica la ruta (URL) de la imagen. Es el único atributo obligatorio.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;img src="images/foto.jpg"&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Puede ser una ruta relativa, absoluta o una URL completa.</p>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">2</span>
+                                </span>
+                                <span>alt</span>
+                            </h4>
+                            <p class="mb-3">Proporciona un texto alternativo que se muestra si la imagen no puede cargarse. Crucial para accesibilidad.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;img src="logo.png" alt="Logo de la empresa"&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Los lectores de pantalla utilizan este texto para describir la imagen a usuarios con discapacidad visual.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos de dimensión</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">3</span>
+                                </span>
+                                <span>width y height</span>
+                            </h4>
+                            <p class="mb-3">Especifican el ancho y alto de la imagen en píxeles o porcentaje.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;img src="banner.jpg" alt="Banner" width="800" height="400"&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Definir estas dimensiones ayuda a prevenir el desplazamiento del contenido durante la carga de la página.</p>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">4</span>
+                                </span>
+                                <span>loading</span>
+                            </h4>
+                            <p class="mb-3">Controla cómo el navegador debe cargar la imagen.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;img src="imagen.jpg" alt="Descripción" loading="lazy"&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">El valor "lazy" retrasa la carga de imágenes fuera de la pantalla hasta que el usuario se desplaza cerca de ellas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Atributos adicionales</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-dark">
+                                <th class="py-4 px-6 text-left">Atributo</th>
+                                <th class="py-4 px-6 text-left">Descripción</th>
+                                <th class="py-4 px-6 text-left">Ejemplo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-800 hover:bg-dark/50 transition-colors">
+                                <td class="py-4 px-6 font-bold text-accent">title</td>
+                                <td class="py-4 px-6">Muestra información adicional al pasar el cursor sobre la imagen.</td>
+                                <td class="py-4 px-6"><code>title="Fotografía del equipo"</code></td>
+                            </tr>
+                            <tr class="border-b border-gray-800 hover:bg-dark/50 transition-colors">
+                                <td class="py-4 px-6 font-bold text-accent">decoding</td>
+                                <td class="py-4 px-6">Indica cómo debe decodificarse la imagen (async, sync, auto).</td>
+                                <td class="py-4 px-6"><code>decoding="async"</code></td>
+                            </tr>
+                            <tr class="border-b border-gray-800 hover:bg-dark/50 transition-colors">
+                                <td class="py-4 px-6 font-bold text-accent">crossorigin</td>
+                                <td class="py-4 px-6">Especifica si la imagen debe cargarse con una solicitud CORS.</td>
+                                <td class="py-4 px-6"><code>crossorigin="anonymous"</code></td>
+                            </tr>
+                            <tr class="hover:bg-dark/50 transition-colors">
+                                <td class="py-4 px-6 font-bold text-accent">ismap / usemap</td>
+                                <td class="py-4 px-6">Utilizados para crear mapas de imagen (áreas clicables).</td>
+                                <td class="py-4 px-6"><code>usemap="#mapname"</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="responsivas" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Imágenes Responsivas</h2>
+            
+            <p class="mb-8 text-lg leading-relaxed">Las imágenes responsivas se adaptan a diferentes tamaños de pantalla y resoluciones, optimizando la experiencia del usuario y el rendimiento de la página.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Técnica 1: CSS max-width</h3>
+                    
+                    <p class="mb-6">La forma más sencilla de hacer que una imagen sea responsiva es utilizando CSS para limitar su ancho máximo.</p>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <h4 class="text-xl font-bold mb-3">HTML</h4>
+                        <div class="code-block">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;img src="imagen.jpg" alt="Descripción" class="responsive-img"&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <h4 class="text-xl font-bold mb-3">CSS</h4>
+                        <div class="code-block">
+                            <pre class="text-gray-300 overflow-x-auto"><code>.responsive-img {
+  max-width: 100%;
+  height: auto;
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-400">Esta técnica hace que la imagen se reduzca para ajustarse a su contenedor, pero nunca se expandirá más allá de su tamaño original.</p>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Técnica 2: Atributo srcset</h3>
+                    
+                    <p class="mb-6">El atributo <code class="bg-dark px-2 py-1 rounded border border-gray-800">srcset</code> permite especificar diferentes versiones de una imagen para diferentes resoluciones de pantalla.</p>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <div class="code-block">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;img src="imagen-small.jpg"
+     srcset="imagen-small.jpg 500w,
+             imagen-medium.jpg 1000w,
+             imagen-large.jpg 1500w"
+     alt="Descripción"&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-400 mb-4">El navegador elegirá automáticamente la imagen más adecuada según el tamaño de la ventana y la densidad de píxeles del dispositivo.</p>
+                    
+                    <ul class="list-disc pl-6 space-y-2 text-sm text-gray-400">
+                        <li>El valor <code>w</code> indica el ancho de cada imagen en píxeles</li>
+                        <li>El atributo <code>src</code> funciona como respaldo para navegadores que no soportan <code>srcset</code></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Técnica 3: Elemento picture</h3>
+                
+                <p class="mb-6">El elemento <code class="bg-dark px-2 py-1 rounded border border-gray-800">&lt;picture&gt;</code> ofrece un control más preciso sobre qué imagen mostrar en diferentes situaciones.</p>
+                
+                <div class="bg-dark p-5 rounded-lg mb-6">
+                    <div class="code-block">
+                        <pre class="text-gray-300 overflow-x-auto"><code>&lt;picture&gt;
+  &lt;source media="(max-width: 600px)" srcset="imagen-mobile.jpg"&gt;
+  &lt;source media="(max-width: 1200px)" srcset="imagen-tablet.jpg"&gt;
+  &lt;img src="imagen-desktop.jpg" alt="Descripción"&gt;
+&lt;/picture&gt;</code></pre>
+                    </div>
+                </div>
+                
+                <p class="text-sm text-gray-400 mb-4">El elemento <code>&lt;picture&gt;</code> permite:</p>
+                
+                <ul class="list-disc pl-6 space-y-2 text-sm text-gray-400">
+                    <li>Mostrar diferentes imágenes según el tamaño de la pantalla usando <code>media</code></li>
+                    <li>Ofrecer diferentes formatos de imagen con <code>&lt;source type="image/webp"&gt;</code></li>
+                    <li>Siempre incluir un elemento <code>&lt;img&gt;</code> como fallback</li>
+                </ul>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Mejores prácticas para imágenes responsivas</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">Optimización</h4>
+                        <ul class="list-disc pl-5 space-y-3">
+                            <li>Comprime las imágenes sin perder calidad visible</li>
+                            <li>Utiliza formatos modernos como WebP cuando sea posible</li>
+                            <li>Considera usar servicios de CDN para imágenes</li>
+                            <li>Elimina metadatos innecesarios de las imágenes</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">Rendimiento</h4>
+                        <ul class="list-disc pl-5 space-y-3">
+                            <li>Usa <code>loading="lazy"</code> para imágenes bajo el pliegue</li>
+                            <li>Proporciona dimensiones <code>width</code> y <code>height</code> para evitar saltos de diseño</li>
+                            <li>Considera usar miniaturas o imágenes de baja resolución como placeholders</li>
+                            <li>No escales imágenes más grandes de lo necesario</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="actividad" class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Constructor de Etiquetas de Imagen</h2>
+            
+            <p class="mb-8 text-lg leading-relaxed">Experimenta con diferentes atributos para crear una etiqueta de imagen personalizada y ver el resultado en tiempo real.</p>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-accent">Configuración</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block mb-2 font-bold">Selecciona una imagen:</label>
+                                <div class="grid grid-cols-3 gap-3 mb-3">
+                                    <div class="image-option cursor-pointer rounded-lg overflow-hidden border-2 border-transparent hover:border-accent transition-all duration-300 active" data-src="https://via.placeholder.com/400x300/ff6b00/ffffff?text=Imagen+1">
+                                        <img src="https://via.placeholder.com/400x300/ff6b00/ffffff?text=Imagen+1" alt="Opción 1" class="w-full h-auto">
+                                    </div>
+                                    <div class="image-option cursor-pointer rounded-lg overflow-hidden border-2 border-transparent hover:border-accent transition-all duration-300" data-src="https://via.placeholder.com/400x300/3498db/ffffff?text=Imagen+2">
+                                        <img src="https://via.placeholder.com/400x300/3498db/ffffff?text=Imagen+2" alt="Opción 2" class="w-full h-auto">
+                                    </div>
+                                    <div class="image-option cursor-pointer rounded-lg overflow-hidden border-2 border-transparent hover:border-accent transition-all duration-300" data-src="https://via.placeholder.com/400x300/2ecc71/ffffff?text=Imagen+3">
+                                        <img src="https://via.placeholder.com/400x300/2ecc71/ffffff?text=Imagen+3" alt="Opción 3" class="w-full h-auto">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-bold">Texto alternativo (alt):</label>
+                                <input type="text" id="alt-text" class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent transition-colors" placeholder="Descripción de la imagen" value="Imagen de ejemplo">
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-bold">Dimensiones:</label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block mb-1 text-sm">Ancho (px):</label>
+                                        <input type="range" title="." id="width-slider" min="100" max="400" value="300" class="slider w-full mb-1">
+                                        <div class="flex justify-between">
+                                            <span>100px</span>
+                                            <span id="width-value">300px</span>
+                                            <span>400px</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-sm">Alto (px):</label>
+                                        <input type="range" title="." id="height-slider" min="75" max="300" value="225" class="slider w-full mb-1">
+                                        <div class="flex justify-between">
+                                            <span>75px</span>
+                                            <span id="height-value">225px</span>
+                                            <span>300px</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-bold">Atributos adicionales:</label>
+                                <div class="flex flex-wrap gap-2">
+                                    <div class="attribute-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-attribute="loading" data-value="lazy">
+                                        loading="lazy"
+                                    </div>
+                                    <div class="attribute-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-attribute="title" data-value="Título al pasar el cursor">
+                                        title
+                                    </div>
+                                    <div class="attribute-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-attribute="class" data-value="img-fluid">
+                                        class="img-fluid"
+                                    </div>
+                                    <div class="attribute-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-attribute="style" data-value="border-radius: 10px;">
+                                        style
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-accent">Resultado</h3>
+                        
+                        <div class="bg-dark p-5 rounded-lg mb-6">
+                            <h4 class="text-xl font-bold mb-3">Código HTML:</h4>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code id="result-code">&lt;img src="https://via.placeholder.com/400x300/ff6b00/ffffff?text=Imagen+1" alt="Imagen de ejemplo" width="300" height="225"&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3">Vista previa:</h4>
+                            <div class="flex justify-center bg-white p-4 rounded-lg">
+                                <div id="image-preview">
+                                    <img src="https://via.placeholder.com/400x300/ff6b00/ffffff?text=Imagen+1" alt="Imagen de ejemplo" width="300" height="225" class="img-preview">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button id="copy-code-btn" class="bg-accent hover:bg-accent/80 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                                Copiar código
+                            </button>
+                            <span id="copy-message" class="ml-3 text-green-500 hidden">¡Código copiado!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'html';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-html.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+    </main>
+
+    <footer class="bg-darker py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <p>Imágenes en HTML - Guía completa para principiantes</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            menuBtn.addEventListener('click', function() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        if (!mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+            
+            // Image constructor activity
+            const imageOptions = document.querySelectorAll('.image-option');
+            const altText = document.getElementById('alt-text');
+            const widthSlider = document.getElementById('width-slider');
+            const heightSlider = document.getElementById('height-slider');
+            const widthValue = document.getElementById('width-value');
+            const heightValue = document.getElementById('height-value');
+            const attributeTags = document.querySelectorAll('.attribute-tag');
+            const resultCode = document.getElementById('result-code');
+            const imagePreview = document.getElementById('image-preview');
+            const copyCodeBtn = document.getElementById('copy-code-btn');
+            const copyMessage = document.getElementById('copy-message');
+            
+            // Variables to store current state
+            let currentSrc = "https://via.placeholder.com/400x300/ff6b00/ffffff?text=Imagen+1";
+            let currentAlt = "Imagen de ejemplo";
+            let currentWidth = 300;
+            let currentHeight = 225;
+            let activeAttributes = {};
+            
+            // Update the code and preview
+            function updateResult() {
+                // Build attributes string
+                let attributesStr = `src="${currentSrc}" alt="${currentAlt}" width="${currentWidth}" height="${currentHeight}"`;
+                
+                // Add additional attributes
+                for (const [attr, value] of Object.entries(activeAttributes)) {
+                    attributesStr += ` ${attr}="${value}"`;
+                }
+                
+                // Update code display
+                resultCode.textContent = `<img ${attributesStr}>`;
+                
+                // Update preview
+                imagePreview.innerHTML = `<img ${attributesStr} class="img-preview">`;
+            }
+            
+            // Image selection
+            imageOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    imageOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to selected option
+                    this.classList.add('active');
+                    
+                    // Update current source
+                    currentSrc = this.getAttribute('data-src');
+                    
+                    // Update result
+                    updateResult();
+                });
+            });
+            
+            // Alt text input
+            altText.addEventListener('input', function() {
+                currentAlt = this.value;
+                updateResult();
+            });
+            
+            // Width slider
+            widthSlider.addEventListener('input', function() {
+                currentWidth = this.value;
+                widthValue.textContent = `${currentWidth}px`;
+                updateResult();
+            });
+            
+            // Height slider
+            heightSlider.addEventListener('input', function() {
+                currentHeight = this.value;
+                heightValue.textContent = `${currentHeight}px`;
+                updateResult();
+            });
+            
+            // Additional attributes
+            attributeTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const attribute = this.getAttribute('data-attribute');
+                    const value = this.getAttribute('data-value');
+                    
+                    if (this.classList.contains('active')) {
+                        // Remove attribute
+                        this.classList.remove('active');
+                        delete activeAttributes[attribute];
+                    } else {
+                        // Add attribute
+                        this.classList.add('active');
+                        activeAttributes[attribute] = value;
+                    }
+                    
+                    updateResult();
+                });
+            });
+            
+            // Copy code button
+            copyCodeBtn.addEventListener('click', function() {
+                // Create a temporary textarea element
+                const textarea = document.createElement('textarea');
+                textarea.value = resultCode.textContent;
+                document.body.appendChild(textarea);
+                
+                // Select and copy the text
+                textarea.select();
+                document.execCommand('copy');
+                
+                // Remove the textarea
+                document.body.removeChild(textarea);
+                
+                // Show success message
+                copyMessage.classList.remove('hidden');
+                
+                // Hide message after 2 seconds
+                setTimeout(() => {
+                    copyMessage.classList.add('hidden');
+                }, 2000);
+            });
+            
+            // Initialize
+            updateResult();
+        });
+    </script>
+</body>
+</html>

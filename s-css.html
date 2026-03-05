@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTSS - Temas de CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'css-primary': '#663399',
+                        'css-secondary': '#8A2BE2',
+                        'css-dark': '#4B0082',
+                        'css-light': '#9370DB',
+                        'css-accent': '#BA55D3',
+                        'dark-bg': '#0a0a0a',
+                        'dark-secondary': '#1a1a1a',
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                        'fade-in-left': 'fadeInLeft 0.6s ease-out forwards',
+                        'fade-in-right': 'fadeInRight 0.6s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-bg text-white min-h-screen overflow-x-hidden">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-css-primary/20 via-dark-bg to-css-secondary/20"></div>
+        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-css-primary/5 to-transparent animate-pulse-slow"></div>
+        
+        <!-- Floating orbs with purple colors -->
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-css-primary/10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute top-3/4 right-1/4 w-80 h-80 bg-css-secondary/10 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-css-light/5 rounded-full blur-3xl animate-float" style="animation-delay: -1.5s;"></div>
+        
+        <!-- CSS-themed decorative elements -->
+        <div class="absolute top-20 right-20 w-32 h-32 border-2 border-css-primary/20 rounded-lg animate-spin-slow"></div>
+        <div class="absolute bottom-20 left-20 w-24 h-24 bg-gradient-to-br from-css-secondary/10 to-css-primary/10 rounded-full animate-float" style="animation-delay: -2s;"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="relative z-50 w-full px-6 py-4 lg:px-12 transition-all duration-300">
+        <nav class="flex justify-between items-center max-w-7xl mx-auto">
+            <!-- Logo -->
+            <div class="text-3xl md:text-4xl font-bold text-white opacity-0 animate-fade-in-left">
+                <a href="index.html" class="hover:text-css-primary transition-colors duration-300">HTSS</a>
+            </div>
+            
+            <!-- Desktop Navigation (hidden, will show in hamburger) -->
+            <div class="hidden lg:flex space-x-6 text-gray-300 text-sm">
+                <a href="#fundamentos" class="hover:text-css-primary transition-colors">Introducción</a>
+                <a href="#selectores" class="hover:text-css-primary transition-colors">Selectores</a>
+                <a href="#layout" class="hover:text-css-primary transition-colors">Unidades y colores</a>
+                <a href="#responsive" class="hover:text-css-primary transition-colors">Modelo de Caja</a>
+                <a href="#animaciones" class="hover:text-css-primary transition-colors">Posicionamiento </a>
+                <a href="#avanzado" class="hover:text-css-primary transition-colors">Display y Visibilidad</a>
+            </div>
+            
+            <!-- Hamburger Menu Button -->
+            <button id="menu-toggle" class="relative z-50 w-8 h-8 flex flex-col justify-center items-center space-y-1 opacity-0 animate-fade-in-right" style="animation-delay: 0.3s;">
+                <span class="block w-6 h-0.5 bg-white transition-all duration-300 transform origin-center" id="line1"></span>
+                <span class="block w-6 h-0.5 bg-white transition-all duration-300" id="line2"></span>
+                <span class="block w-6 h-0.5 bg-white transition-all duration-300 transform origin-center" id="line3"></span>
+            </button>
+        </nav>
+        
+        <!-- Fullscreen Menu -->
+        <div id="fullscreen-menu" class="fixed inset-0 bg-dark-bg/95 backdrop-blur-lg z-40 opacity-0 invisible transition-all duration-500">
+            <div class="flex items-center justify-center min-h-screen">
+                <nav class="text-center space-y-8">
+                    <a href="#fundamentos" class="block text-3xl md:text-4xl text-gray-300 hover:text-css-primary transition-all duration-300 transform hover:scale-110">Introducción</a>
+                    <a href="#selectores" class="block text-3xl md:text-4xl text-gray-300 hover:text-css-primary transition-all duration-300 transform hover:scale-110">Selectores y Especificidad</a>
+                    <a href="#layout" class="block text-3xl md:text-4xl text-gray-300 hover:text-css-primary transition-all duration-300 transform hover:scale-110">Unidades y colores</a>
+                    <a href="#responsive" class="block text-3xl md:text-4xl text-gray-300 hover:text-css-primary transition-all duration-300 transform hover:scale-110">Modelo de Caja</a>
+                    <a href="#animaciones" class="block text-3xl md:text-4xl text-gray-300 hover:text-css-primary transition-all duration-300 transform hover:scale-110">Posicionamiento</a>
+                    <a href="#avanzado" class="block text-3xl md:text-4xl text-gray-300 hover:text-css-primary transition-all duration-300 transform hover:scale-110">Display y Visibilidad</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 py-20 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <!-- CSS Logo -->
+            <div class="mb-8 flex justify-center opacity-0 animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-css-primary to-css-secondary rounded-2xl flex items-center justify-center shadow-2xl shadow-css-primary/20 relative overflow-hidden">
+                    <svg class="w-20 h-20 md:w-24 md:h-24" viewBox="0 0 384 512" fill="white">
+                        <path d="M0 32l34.9 395.8L192.5 480l157.6-52.2L384 32H0zm313.1 80l-4.8 47.3L193 208.6l-.3.1h111.5l-12.8 146.6-98.2 28.7-98.8-29.2-6.4-73.9h48.9l3.2 38.3 52.6 13.3 54.7-15.4 3.7-61.6-166.3-.5v-.1l-.2.1-3.6-46.3L193.1 162l6.5-2.7H76.7L70.9 112h242.2z"/>
+                    </svg>
+                    <div class="absolute inset-0 bg-gradient-to-br from-css-light/20 to-transparent"></div>
+                </div>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 opacity-0 animate-fade-in-up" style="animation-delay: 0.4s;">
+                <span class="bg-gradient-to-r from-css-primary to-css-secondary bg-clip-text text-transparent">CSS</span>
+                <span class="text-gray-300 block mt-2">Temas de Estudio</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto opacity-0 animate-fade-in-up" style="animation-delay: 0.6s;">
+                Domina el diseño web con nuestros 10 módulos de CSS. Desde fundamentos hasta técnicas avanzadas de estilizado.
+            </p>
+        </div>
+    </section>
+
+    <!-- Topics Grid -->
+    <section class="relative z-10 py-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Tema 1: Fundamentos de CSS -->
+                <div class="topic-card opacity-0" id="fundamentos">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        <!-- Imagen placeholder -->
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            1. Introducción a CSS
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>¿Qué es CSS?</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Historia y Evolución</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Ejemplos de Código CSS</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-1.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 2: Selectores y Especificidad -->
+                <div class="topic-card opacity-0" id="selectores">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            2. Selectores y Especificidad
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Tipos de selectores</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Combinadores</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Pseudo-clases y pseudo-elementos</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-2.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 3: Layout y Posicionamiento -->
+                <div class="topic-card opacity-0" id="layout">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            3. Unidades de Medida y Colores
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Unidades Absolutas</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Unidades Relativas</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Representación de Colores</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-3.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 4: Diseño Responsive -->
+                <div class="topic-card opacity-0" id="responsive">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            4. Modelo de Caja
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Dimensiones: Width y Height</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Dimensiones: Width y Height</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Box Sizing</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-4.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 5: Animaciones y Transiciones -->
+                <div class="topic-card opacity-0" id="animaciones">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            5. Posicionamiento de Elementos
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Position: Relative</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Position: Absolute</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Z-Index</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-5.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 6: CSS Avanzado -->
+                <div class="topic-card opacity-0" id="avanzado">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            6. Display y Visibilidad
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Propiedad Display</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Propiedades de Visibilidad</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>display: none vs. visibility: hidden</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-6.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+                <!-- Tema 7: CSS Avanzado -->
+                <div class="topic-card opacity-0" id="avanzado">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            7. Diseño con Flexbox
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Conceptos Básicos</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Contenedor Flex</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Laboratorio de Flexbox</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-7.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+                <!-- Tema 8: CSS Avanzado -->
+                <div class="topic-card opacity-0" id="avanzado">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            8. @keyframes
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Sintaxis Básica</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Propiedades de Animation</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Ejemplos Prácticos</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-8.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+                <!-- Tema 9: CSS Avanzado -->
+                <div class="topic-card opacity-0" id="avanzado">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            9. Flexbox +
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Propiedades Principales</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Ejemplos Visuales +</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Crear Flexbox</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-9.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+                <!-- Tema 10: Grid -->
+                <div class="topic-card opacity-0" id="avanzado">
+                    <div class="bg-gradient-to-br from-css-primary/10 to-css-secondary/10 rounded-2xl p-6 border border-css-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-css-primary/20 group h-full">
+                        
+                        
+                        <h3 class="text-2xl font-bold text-css-primary mb-4 group-hover:text-css-secondary transition-colors">
+                            10. Grid
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Sistema Bidimensional</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>Propiedades de Visibilidad</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <div class="w-2 h-2 bg-css-primary rounded-full"></div>
+                                <span>display: none vs. visibility: hidden</span>
+                            </div>
+                        </div>
+                        
+                        <a href="s-css-10.html"><button class="w-full bg-gradient-to-r from-css-primary to-css-secondary text-white py-3 rounded-lg font-semibold hover:from-css-secondary hover:to-css-primary transition-all duration-300 transform hover:scale-105">
+                            Comenzar tema
+                        </button></a>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-12 px-6 border-t border-css-primary/20">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-gray-400 text-lg">© 2025 HTSS. Aprende CSS paso a paso.</p>
+            <div class="mt-4">
+                <a href="s-html.html" class="text-css-primary hover:text-css-secondary transition-colors">Ver temas de HTML</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Hamburger menu functionality
+        const menuToggle = document.getElementById('menu-toggle');
+        const fullscreenMenu = document.getElementById('fullscreen-menu');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+        const line3 = document.getElementById('line3');
+        let isMenuOpen = false;
+
+        if (menuToggle && fullscreenMenu && line1 && line2 && line3) {
+            menuToggle.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                
+                if (isMenuOpen) {
+                    // Open menu
+                    fullscreenMenu.classList.remove('opacity-0', 'invisible');
+                    fullscreenMenu.classList.add('opacity-100', 'visible');
+                    
+                    // Animate hamburger to X
+                    line1.style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    line2.style.opacity = '0';
+                    line3.style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    
+                    // Prevent body scroll
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    // Close menu
+                    fullscreenMenu.classList.remove('opacity-100', 'visible');
+                    fullscreenMenu.classList.add('opacity-0', 'invisible');
+                    
+                    // Animate X back to hamburger
+                    line1.style.transform = 'rotate(0) translate(0, 0)';
+                    line2.style.opacity = '1';
+                    line3.style.transform = 'rotate(0) translate(0, 0)';
+                    
+                    // Restore body scroll
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Close menu when clicking on a link
+            document.querySelectorAll('#fullscreen-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    isMenuOpen = false;
+                    fullscreenMenu.classList.remove('opacity-100', 'visible');
+                    fullscreenMenu.classList.add('opacity-0', 'invisible');
+                    
+                    line1.style.transform = 'rotate(0) translate(0, 0)';
+                    line2.style.opacity = '1';
+                    line3.style.transform = 'rotate(0) translate(0, 0)';
+                    
+                    document.body.style.overflow = 'auto';
+                });
+            });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all topic cards
+        document.querySelectorAll('.topic-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Header scroll effect
+        let ticking = false;
+        function updateHeader() {
+            const header = document.querySelector('header');
+            if (header) {
+                if (window.scrollY > 100) {
+                    header.classList.add('bg-dark-bg/80', 'backdrop-blur-sm', 'border-b', 'border-css-primary/20');
+                } else {
+                    header.classList.remove('bg-dark-bg/80', 'backdrop-blur-sm', 'border-b', 'border-css-primary/20');
+                }
+            }
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize animations when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add staggered animation delays to topic cards
+            const topicCards = document.querySelectorAll('.topic-card');
+            topicCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        /* Custom scrollbar with purple colors */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #663399, #8A2BE2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #8A2BE2, #663399);
+        }
+
+        /* Ensure animations work */
+        .animate-fade-in-up,
+        .animate-fade-in-left,
+        .animate-fade-in-right {
+            animation-fill-mode: forwards;
+        }
+
+        /* Hide elements initially */
+        .opacity-0 {
+            opacity: 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .lg\:grid-cols-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Performance optimizations */
+        .topic-card {
+            will-change: transform, opacity;
+        }
+
+        .animate-float {
+            will-change: transform;
+        }
+
+        /* Smooth transitions */
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enlaces en HTML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0f1a',
+                        darker: '#050a14',
+                        accent: '#ff6b00'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation:hover {
+            animation: float 2s ease-in-out infinite;
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+        }
+        .scale-effect:hover {
+            transform: scale(1.03);
+        }
+        .rotate-effect:hover .icon-container {
+            transform: rotate(10deg);
+        }
+        .code-block {
+            position: relative;
+            overflow: hidden;
+        }
+        .code-block::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 70%, #050a14);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .code-block:hover::before {
+            opacity: 1;
+        }
+        .error-highlight {
+            position: relative;
+            background-color: rgba(239, 68, 68, 0.2);
+            cursor: pointer;
+        }
+        .error-highlight:hover {
+            background-color: rgba(239, 68, 68, 0.4);
+        }
+        .error-highlight.fixed {
+            background-color: rgba(16, 185, 129, 0.2);
+        }
+        .error-highlight.fixed:hover {
+            background-color: rgba(16, 185, 129, 0.4);
+        }
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #050a14;
+            color: white;
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 6px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            width: max-content;
+            max-width: 200px;
+            border: 1px solid #ff6b00;
+        }
+        .error-highlight:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-10 mx-auto md:mx-20">
+    <header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="s-html.html"><h1 class="text-2xl font-bold">HTML<span class="text-accent">Enlaces</span></h1></a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                    <a href="#etiqueta-a" class="hover:text-accent transition-colors duration-300">Etiqueta &lt;a&gt;</a>
+                    <a href="#atributos" class="hover:text-accent transition-colors duration-300">Atributos</a>
+                    <a href="#enlaces-internos" class="hover:text-accent transition-colors duration-300">Enlaces Internos</a>
+                    <a href="#enlaces-externos" class="hover:text-accent transition-colors duration-300">Enlaces Externos</a>
+                    <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+                </div>
+                <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+                <a href="#etiqueta-a" class="block py-2 hover:text-accent transition-colors duration-300">Etiqueta &lt;a&gt;</a>
+                <a href="#atributos" class="block py-2 hover:text-accent transition-colors duration-300">Atributos</a>
+                <a href="#enlaces-internos" class="block py-2 hover:text-accent transition-colors duration-300">Enlaces Internos</a>
+                <a href="#enlaces-externos" class="block py-2 hover:text-accent transition-colors duration-300">Enlaces Externos</a>
+                <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="text-center py-16">
+            <h1 class="text-5xl font-bold mb-4">Enlaces en <span class="text-accent">HTML</span></h1>
+            <p class="text-xl max-w-3xl mx-auto">Aprende a conectar páginas y recursos con hipervínculos</p>
+        </section>
+
+        <section id="introduccion" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Introducción a los Enlaces</h2>
+            <p class="mb-6">Los enlaces, también conocidos como hipervínculos, son uno de los elementos fundamentales de la web. Permiten a los usuarios navegar entre páginas y recursos con un simple clic, creando la estructura interconectada que define a Internet.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation">
+                    <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-accent">Conectividad</h3>
+                    <p>Los enlaces son la columna vertebral de la web, permitiendo la conexión entre diferentes páginas y recursos en Internet.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect rotate-effect">
+                    <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-accent">Navegación</h3>
+                    <p>Facilitan la navegación entre páginas, secciones de una misma página o incluso diferentes sitios web.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation">
+                    <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-accent">Versatilidad</h3>
+                    <p>Pueden enlazar a diferentes tipos de recursos: páginas web, archivos para descargar, direcciones de correo electrónico y más.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="etiqueta-a" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">La Etiqueta &lt;a&gt;</h2>
+            <p class="mb-6">La etiqueta <code class="bg-darker px-2 py-1 rounded border border-gray-800">&lt;a&gt;</code> (anchor) es el elemento HTML utilizado para crear enlaces. Esta etiqueta convierte su contenido en un hipervínculo que, al hacer clic, llevará al usuario a otra ubicación.</p>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-accent">Sintaxis básica</h3>
+                <div class="code-block">
+                    <pre class="text-gray-300 overflow-x-auto"><code>&lt;a href="url_destino"&gt;Texto del enlace&lt;/a&gt;</code></pre>
+                </div>
+                <p class="mt-4">Donde:</p>
+                <ul class="list-disc pl-5 mt-2 space-y-2">
+                    <li><code class="bg-dark px-2 py-1 rounded border border-gray-800">href</code>: Es el atributo obligatorio que especifica la URL de destino.</li>
+                    <li><code class="bg-dark px-2 py-1 rounded border border-gray-800">Texto del enlace</code>: Es el contenido visible que el usuario puede hacer clic.</li>
+                </ul>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Contenido de los enlaces</h3>
+                    <p class="mb-4">Los enlaces pueden contener diferentes tipos de contenido:</p>
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li>
+                            <p class="font-bold">Texto:</p>
+                            <div class="bg-dark p-3 rounded-lg mt-1">
+                                <code>&lt;a href="https://ejemplo.com"&gt;Visita nuestro sitio&lt;/a&gt;</code>
+                                <p class="mt-2">Resultado: <a href="#" class="text-accent hover:underline">Visita nuestro sitio</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="font-bold">Imágenes:</p>
+                            <div class="bg-dark p-3 rounded-lg mt-1">
+                                <code>&lt;a href="https://ejemplo.com"&gt;&lt;img src="logo.png" alt="Logo"&gt;&lt;/a&gt;</code>
+                                <p class="mt-2">Resultado: Una imagen que funciona como enlace</p>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="font-bold">Combinaciones:</p>
+                            <div class="bg-dark p-3 rounded-lg mt-1">
+                                <code>&lt;a href="https://ejemplo.com"&gt;&lt;img src="logo.png" alt="Logo"&gt; Texto adicional&lt;/a&gt;</code>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Estados de los enlaces</h3>
+                    <p class="mb-4">Los enlaces pueden tener diferentes estados que se pueden estilizar con CSS:</p>
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li>
+                            <p class="font-bold">Normal (a:link):</p>
+                            <div class="bg-dark p-3 rounded-lg mt-1">
+                                <p>Estado predeterminado de un enlace no visitado.</p>
+                                <p class="mt-1">Ejemplo: <a href="#" class="text-blue-400">Enlace no visitado</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="font-bold">Visitado (a:visited):</p>
+                            <div class="bg-dark p-3 rounded-lg mt-1">
+                                <p>Estado de un enlace que ya ha sido visitado.</p>
+                                <p class="mt-1">Ejemplo: <a href="#" class="text-purple-400">Enlace visitado</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="font-bold">Hover (a:hover):</p>
+                            <div class="bg-dark p-3 rounded-lg mt-1">
+                                <p>Estado cuando el cursor está sobre el enlace.</p>
+                                <p class="mt-1">Ejemplo: <a href="#" class="text-accent hover:underline hover:text-accent/80">Pasa el cursor por aquí</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="font-bold">Activo (a:active):</p>
+                            <div class="bg-dark p-3 rounded-lg mt-1">
+                                <p>Estado cuando se está haciendo clic en el enlace.</p>
+                                <p class="mt-1">Ejemplo: <a href="#" class="text-accent active:text-red-500">Haz clic y mantén</a></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-xl font-bold mb-4 text-accent">Buenas prácticas</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold mb-2">Hacer</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Usar texto descriptivo que indique claramente el destino del enlace</li>
+                            <li>Asegurarse de que los enlaces sean visualmente distinguibles del texto normal</li>
+                            <li>Proporcionar texto alternativo para enlaces que contienen solo imágenes</li>
+                            <li>Verificar que todos los enlaces funcionen correctamente</li>
+                            <li>Usar atributos como <code>title</code> para proporcionar información adicional</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">Evitar</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Usar texto genérico como "haz clic aquí" o "más información"</li>
+                            <li>Crear demasiados enlaces que distraigan al usuario</li>
+                            <li>Usar el mismo color para enlaces y texto normal</li>
+                            <li>Abrir nuevas ventanas sin avisar al usuario</li>
+                            <li>Crear enlaces a páginas que no existen o están en construcción</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="atributos" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Atributos de la Etiqueta &lt;a&gt;</h2>
+            <p class="mb-6">La etiqueta <code class="bg-darker px-2 py-1 rounded border border-gray-800">&lt;a&gt;</code> puede incluir varios atributos que modifican su comportamiento y proporcionan información adicional.</p>
+            
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full bg-darker border border-gray-800 rounded-lg">
+                    <thead>
+                        <tr class="bg-dark">
+                            <th class="py-3 px-4 text-left border-b border-gray-800">Atributo</th>
+                            <th class="py-3 px-4 text-left border-b border-gray-800">Descripción</th>
+                            <th class="py-3 px-4 text-left border-b border-gray-800">Ejemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-dark/50 transition-colors">
+                            <td class="py-3 px-4 border-b border-gray-800 font-bold text-accent">href</td>
+                            <td class="py-3 px-4 border-b border-gray-800">Especifica la URL de destino del enlace. Es el atributo más importante y obligatorio.</td>
+                            <td class="py-3 px-4 border-b border-gray-800"><code>&lt;a href="https://ejemplo.com"&gt;</code></td>
+                        </tr>
+                        <tr class="hover:bg-dark/50 transition-colors">
+                            <td class="py-3 px-4 border-b border-gray-800 font-bold text-accent">target</td>
+                            <td class="py-3 px-4 border-b border-gray-800">Especifica dónde abrir el enlace. Valores comunes: _blank (nueva ventana), _self (misma ventana).</td>
+                            <td class="py-3 px-4 border-b border-gray-800"><code>&lt;a href="url" target="_blank"&gt;</code></td>
+                        </tr>
+                        <tr class="hover:bg-dark/50 transition-colors">
+                            <td class="py-3 px-4 border-b border-gray-800 font-bold text-accent">rel</td>
+                            <td class="py-3 px-4 border-b border-gray-800">Define la relación entre la página actual y la página enlazada. Importante para SEO y seguridad.</td>
+                            <td class="py-3 px-4 border-b border-gray-800"><code>&lt;a href="url" rel="nofollow"&gt;</code></td>
+                        </tr>
+                        <tr class="hover:bg-dark/50 transition-colors">
+                            <td class="py-3 px-4 border-b border-gray-800 font-bold text-accent">title</td>
+                            <td class="py-3 px-4 border-b border-gray-800">Proporciona información adicional sobre el enlace. Se muestra como un tooltip al pasar el cursor.</td>
+                            <td class="py-3 px-4 border-b border-gray-800"><code>&lt;a href="url" title="Más información"&gt;</code></td>
+                        </tr>
+                        <tr class="hover:bg-dark/50 transition-colors">
+                            <td class="py-3 px-4 border-b border-gray-800 font-bold text-accent">download</td>
+                            <td class="py-3 px-4 border-b border-gray-800">Indica que el recurso enlazado debe descargarse en lugar de navegarse. Puede incluir un nombre de archivo.</td>
+                            <td class="py-3 px-4 border-b border-gray-800"><code>&lt;a href="archivo.pdf" download&gt;</code></td>
+                        </tr>
+                        <tr class="hover:bg-dark/50 transition-colors">
+                            <td class="py-3 px-4 border-b border-gray-800 font-bold text-accent">hreflang</td>
+                            <td class="py-3 px-4 border-b border-gray-800">Especifica el idioma del documento enlazado. Útil para sitios multilingües.</td>
+                            <td class="py-3 px-4 border-b border-gray-800"><code>&lt;a href="url" hreflang="es"&gt;</code></td>
+                        </tr>
+                        <tr class="hover:bg-dark/50 transition-colors">
+                            <td class="py-3 px-4 font-bold text-accent">id</td>
+                            <td class="py-3 px-4">Asigna un identificador único al enlace, que puede ser utilizado como destino de otros enlaces.</td>
+                            <td class="py-3 px-4"><code>&lt;a id="seccion1" href="#"&gt;</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">El atributo target</h3>
+                    <p class="mb-4">El atributo <code class="bg-dark px-2 py-1 rounded border border-gray-800">target</code> controla cómo se abre el enlace:</p>
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li>
+                            <code class="bg-dark px-2 py-1 rounded border border-gray-800">_self</code>: 
+                            <p class="mt-1">Abre el enlace en la misma ventana/pestaña (comportamiento predeterminado).</p>
+                            <div class="mt-2">
+                                <a href="#" class="text-accent hover:underline">Enlace en la misma ventana</a>
+                            </div>
+                        </li>
+                        <li>
+                            <code class="bg-dark px-2 py-1 rounded border border-gray-800">_blank</code>: 
+                            <p class="mt-1">Abre el enlace en una nueva ventana o pestaña.</p>
+                            <div class="mt-2">
+                                <a href="#" target="_blank" class="text-accent hover:underline">Enlace en nueva ventana</a>
+                            </div>
+                        </li>
+                        <li>
+                            <code class="bg-dark px-2 py-1 rounded border border-gray-800">_parent</code>: 
+                            <p class="mt-1">Abre el enlace en el marco padre (útil cuando se trabaja con frames).</p>
+                        </li>
+                        <li>
+                            <code class="bg-dark px-2 py-1 rounded border border-gray-800">_top</code>: 
+                            <p class="mt-1">Abre el enlace en el cuerpo completo de la ventana.</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">El atributo rel</h3>
+                    <p class="mb-4">El atributo <code class="bg-dark px-2 py-1 rounded border border-gray-800">rel</code> define la relación entre la página actual y la enlazada:</p>
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li>
+                            <code class="bg-dark px-2 py-1 rounded border border-gray-800">nofollow</code>: 
+                            <p class="mt-1">Indica a los motores de búsqueda que no sigan este enlace para indexación.</p>
+                        </li>
+                        <li>
+                            <code class="bg-dark px-2 py-1 rounded border border-gray-800">noopener</code>: 
+                            <p class="mt-1">Previene que la página enlazada acceda a la ventana que la abrió (importante para seguridad).</p>
+                        </li>
+                        <li>
+                            <code class="bg-dark px-2 py-1 rounded border border-gray-800">noreferrer</code>: 
+                            <p class="mt-1">Evita enviar información de referencia HTTP al sitio enlazado.</p>
+                        </li>
+                        <li>
+                            <code class="bg-dark px-2 py-1 rounded border border-gray-800">external</code>: 
+                            <p class="mt-1">Indica que el enlace apunta a un sitio externo.</p>
+                        </li>
+                    </ul>
+                    <p class="mt-4">Ejemplo de uso combinado:</p>
+                    <div class="bg-dark p-3 rounded-lg mt-1">
+                        <code>&lt;a href="https://ejemplo.com" target="_blank" rel="noopener noreferrer"&gt;Enlace seguro&lt;/a&gt;</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="enlaces-internos" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Enlaces Internos</h2>
+            <p class="mb-6">Los enlaces internos conectan diferentes partes de la misma página web o diferentes páginas dentro del mismo sitio web. Son fundamentales para la navegación y la estructura del sitio.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Enlaces a secciones de la misma página</h3>
+                    <p class="mb-4">Estos enlaces, también conocidos como "enlaces de anclaje", permiten saltar a secciones específicas dentro de la misma página.</p>
+                    <div class="bg-dark p-4 rounded-lg mb-4">
+                        <h4 class="font-bold mb-2">Paso 1: Crear un identificador</h4>
+                        <pre class="text-gray-300 overflow-x-auto"><code>&lt;h2 id="seccion1"&gt;Título de la sección&lt;/h2&gt;</code></pre>
+                    </div>
+                    <div class="bg-dark p-4 rounded-lg mb-4">
+                        <h4 class="font-bold mb-2">Paso 2: Crear el enlace al identificador</h4>
+                        <pre class="text-gray-300 overflow-x-auto"><code>&lt;a href="#seccion1"&gt;Ir a la sección 1&lt;/a&gt;</code></pre>
+                    </div>
+                    <p class="mt-4">Al hacer clic en el enlace, la página se desplazará automáticamente hasta la sección con el ID correspondiente.</p>
+                    <div class="mt-4">
+                        <p>Ejemplo en esta página:</p>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            <a href="#introduccion" class="bg-dark px-3 py-1 rounded-lg border border-gray-700 hover:border-accent transition-colors text-accent hover:bg-dark/80">Introducción</a>
+                            <a href="#etiqueta-a" class="bg-dark px-3 py-1 rounded-lg border border-gray-700 hover:border-accent transition-colors text-accent hover:bg-dark/80">Etiqueta &lt;a&gt;</a>
+                            <a href="#atributos" class="bg-dark px-3 py-1 rounded-lg border border-gray-700 hover:border-accent transition-colors text-accent hover:bg-dark/80">Atributos</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Enlaces a otras páginas del mismo sitio</h3>
+                    <p class="mb-4">Estos enlaces conectan diferentes páginas dentro del mismo sitio web. Se utilizan rutas relativas para mayor flexibilidad.</p>
+                    <div class="space-y-4">
+                        <div class="bg-dark p-3 rounded-lg">
+                            <h4 class="font-bold mb-2">Enlace a una página en el mismo directorio:</h4>
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;a href="contacto.html"&gt;Contacto&lt;/a&gt;</code></pre>
+                        </div>
+                        <div class="bg-dark p-3 rounded-lg">
+                            <h4 class="font-bold mb-2">Enlace a una página en un subdirectorio:</h4>
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;a href="servicios/precios.html"&gt;Precios&lt;/a&gt;</code></pre>
+                        </div>
+                        <div class="bg-dark p-3 rounded-lg">
+                            <h4 class="font-bold mb-2">Enlace a una página en el directorio padre:</h4>
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;a href="../index.html"&gt;Inicio&lt;/a&gt;</code></pre>
+                        </div>
+                        <div class="bg-dark p-3 rounded-lg">
+                            <h4 class="font-bold mb-2">Enlace a una sección específica de otra página:</h4>
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;a href="servicios.html#precios"&gt;Ver precios&lt;/a&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-xl font-bold mb-4 text-accent">Ventajas de los enlaces internos</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-dark p-4 rounded-lg">
+                        <h4 class="font-bold mb-2 text-accent">Mejora la navegación</h4>
+                        <p>Facilitan a los usuarios encontrar información relacionada dentro del sitio, mejorando la experiencia de usuario.</p>
+                    </div>
+                    <div class="bg-dark p-4 rounded-lg">
+                        <h4 class="font-bold mb-2 text-accent">Beneficia el SEO</h4>
+                        <p>Ayudan a los motores de búsqueda a entender la estructura del sitio y la relación entre las páginas.</p>
+                    </div>
+                    <div class="bg-dark p-4 rounded-lg">
+                        <h4 class="font-bold mb-2 text-accent">Reduce la tasa de rebote</h4>
+                        <p>Mantienen a los usuarios en el sitio más tiempo al ofrecerles contenido relacionado de interés.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="enlaces-externos" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Enlaces Externos</h2>
+            <p class="mb-6">Los enlaces externos conectan tu página web con otros sitios web. Son importantes para proporcionar referencias, citar fuentes o dirigir a los usuarios a recursos adicionales.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Estructura de enlaces externos</h3>
+                    <p class="mb-4">Los enlaces externos requieren la URL completa (absoluta) del sitio de destino, incluyendo el protocolo (http:// o https://).</p>
+                    <div class="bg-dark p-4 rounded-lg mb-4">
+                        <pre class="text-gray-300 overflow-x-auto"><code>&lt;a href="https://www.ejemplo.com"&gt;Visitar Ejemplo.com&lt;/a&gt;</code></pre>
+                    </div>
+                    <p>Elementos importantes a considerar:</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-2">
+                        <li>Usar siempre URLs absolutas (completas)</li>
+                        <li>Preferir enlaces HTTPS sobre HTTP por seguridad</li>
+                        <li>Verificar que los enlaces externos funcionen correctamente</li>
+                        <li>Considerar si el enlace debe abrirse en una nueva ventana</li>
+                    </ul>
+                </div>
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Mejores prácticas de seguridad</h3>
+                    <p class="mb-4">Al enlazar a sitios externos, es importante seguir estas prácticas de seguridad:</p>
+                    <div class="bg-dark p-4 rounded-lg mb-4">
+                        <h4 class="font-bold mb-2">Uso de rel="noopener noreferrer"</h4>
+                        <pre class="text-gray-300 overflow-x-auto"><code>&lt;a href="https://ejemplo.com" target="_blank" rel="noopener noreferrer"&gt;Enlace seguro&lt;/a&gt;</code></pre>
+                    </div>
+                    <p>¿Por qué es importante?</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-2">
+                        <li><strong>noopener</strong>: Previene que el sitio enlazado acceda a window.opener, protegiendo contra ataques de phishing</li>
+                        <li><strong>noreferrer</strong>: Evita enviar información de referencia al sitio de destino, protegiendo la privacidad</li>
+                        <li>Es especialmente importante cuando se usa target="_blank"</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-accent">Tipos especiales de enlaces</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-dark p-4 rounded-lg">
+                        <h4 class="font-bold mb-2">Enlaces de correo electrónico</h4>
+                        <p class="mb-2">Abren el cliente de correo del usuario con una dirección predefinida.</p>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code>&lt;a href="mailto:contacto@ejemplo.com"&gt;Enviar email&lt;/a&gt;</code></pre>
+                        <p class="mt-2">Ejemplo: <a href="mailto:contacto@ejemplo.com" class="text-accent hover:underline">Enviar email</a></p>
+                        <p class="mt-2 text-sm">También se pueden añadir asunto, cuerpo y otros campos:</p>
+                        <pre class="text-gray-300 text-sm overflow-x-auto mt-1"><code>&lt;a href="mailto:contacto@ejemplo.com?subject=Consulta&body=Hola"&gt;Email con asunto&lt;/a&gt;</code></pre>
+                    </div>
+                    <div class="bg-dark p-4 rounded-lg">
+                        <h4 class="font-bold mb-2">Enlaces telefónicos</h4>
+                        <p class="mb-2">Útiles para sitios móviles, inician una llamada al hacer clic.</p>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code>&lt;a href="tel:+123456789"&gt;Llamar ahora&lt;/a&gt;</code></pre>
+                        <p class="mt-2">Ejemplo: <a href="tel:+123456789" class="text-accent hover:underline">Llamar ahora</a></p>
+                        <p class="mt-2 text-sm">Funciona principalmente en dispositivos móviles o en computadoras con software de telefonía.</p>
+                    </div>
+                    <div class="bg-dark p-4 rounded-lg">
+                        <h4 class="font-bold mb-2">Enlaces de descarga</h4>
+                        <p class="mb-2">Permiten descargar archivos en lugar de navegar a ellos.</p>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code>&lt;a href="archivo.pdf" download="nombre-archivo.pdf"&gt;Descargar PDF&lt;/a&gt;</code></pre>
+                        <p class="mt-2">El atributo <code>download</code> indica al navegador que debe descargar el recurso en lugar de navegarlo.</p>
+                        <p class="mt-2 text-sm">Opcionalmente se puede especificar un nombre de archivo diferente.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-xl font-bold mb-4 text-accent">Consideraciones para SEO</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold mb-2">Texto de anclaje descriptivo</h4>
+                        <div class="bg-dark p-3 rounded-lg mt-1 mb-4">
+                            <p class="font-bold">Malo:</p>
+                            <code>&lt;a href="https://ejemplo.com"&gt;Haz clic aquí&lt;/a&gt;</code>
+                            <p class="font-bold mt-3">Bueno:</p>
+                            <code>&lt;a href="https://ejemplo.com"&gt;Guía completa de HTML&lt;/a&gt;</code>
+                        </div>
+                        <p>El texto de anclaje descriptivo ayuda a los motores de búsqueda a entender el contenido de la página enlazada.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">Uso estratégico de rel</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><code>rel="nofollow"</code>: Para enlaces no respaldados o pagados</li>
+                            <li><code>rel="sponsored"</code>: Para enlaces publicitarios o patrocinados</li>
+                            <li><code>rel="ugc"</code>: Para enlaces en contenido generado por usuarios</li>
+                            <li><code>rel="dofollow"</code>: Implícito cuando no se especifica rel, permite que los motores de búsqueda sigan el enlace</li>
+                        </ul>
+                        <p class="mt-3">Usar correctamente estos atributos ayuda a mantener la integridad de tu SEO y evitar penalizaciones.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="actividad" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Actividad: Encuentra y corrige los errores</h2>
+            <p class="mb-6">En el siguiente código HTML hay varios errores relacionados con los enlaces. Identifica y corrige los errores haciendo clic en ellos.</p>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800">
+                <h3 class="text-xl font-bold mb-4 text-accent">Instrucciones</h3>
+                <p class="mb-4">Haz clic en cada error para ver una explicación y corregirlo. Intenta encontrar todos los errores.</p>
+                
+                <div class="bg-dark p-4 rounded-lg mb-6">
+                    <pre id="error-code" class="text-gray-300 overflow-x-auto"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Mi Página Web&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Bienvenidos a mi sitio web&lt;/h1&gt;
+    
+    &lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;<span class="error-highlight" data-error="1" data-fix='<a href="index.html">Inicio</a>' data-explanation="Falta la etiqueta de apertura <a> y el atributo href">Inicio</span>&lt;/li&gt;
+            &lt;li&gt;<span class="error-highlight" data-error="2" data-fix='<a href="servicios.html">Servicios</a>' data-explanation="La etiqueta de cierre </a> está antes del texto del enlace">&lt;a href="servicios.html"&gt;&lt;/a&gt;Servicios</span>&lt;/li&gt;
+            &lt;li&gt;<span class="error-highlight" data-error="3" data-fix='<a href="contacto.html">Contacto</a>' data-explanation="El atributo href está mal escrito como 'href'">&lt;a hrf="contacto.html"&gt;Contacto&lt;/a&gt;</span>&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
+    
+    &lt;section&gt;
+        &lt;h2 id="acerca"&gt;Acerca de nosotros&lt;/h2&gt;
+        &lt;p&gt;Somos una empresa dedicada al desarrollo web. Para más información, <span class="error-highlight" data-error="4" data-fix='<a href="#contacto">contáctanos</a>' data-explanation="El enlace apunta a un ID que no existe en la página (debería ser #contacto)">&lt;a href="#contactanos"&gt;contáctanos&lt;/a&gt;</span>.&lt;/p&gt;
+    &lt;/section&gt;
+    
+    &lt;section&gt;
+        &lt;h2 id="contacto"&gt;Contacto&lt;/h2&gt;
+        &lt;p&gt;Puedes enviarnos un correo a <span class="error-highlight" data-error="5" data-fix='<a href="mailto:info@ejemplo.com">info@ejemplo.com</a>' data-explanation="Falta 'mailto:' para que funcione como enlace de correo electrónico">&lt;a href="info@ejemplo.com"&gt;info@ejemplo.com&lt;/a&gt;</span>&lt;/p&gt;
+        
+        &lt;p&gt;Visita nuestras redes sociales:&lt;/p&gt;
+        &lt;ul&gt;
+            &lt;li&gt;<span class="error-highlight" data-error="6" data-fix='<a href="https://twitter.com/ejemplo" target="_blank" rel="noopener noreferrer">Twitter</a>' data-explanation="Falta el protocolo 'https://' en la URL y es recomendable usar rel='noopener noreferrer' con target='_blank'">&lt;a href="twitter.com/ejemplo" target="_blank"&gt;Twitter&lt;/a&gt;</span>&lt;/li&gt;
+            &lt;li&gt;<span class="error-highlight" data-error="7" data-fix='<a href="https://facebook.com/ejemplo">Facebook</a>' data-explanation="La etiqueta de cierre </a> no coincide con la de apertura (está usando </i>)">&lt;a href="https://facebook.com/ejemplo"&gt;Facebook&lt;/i&gt;</span>&lt;/li&gt;
+        &lt;/ul&gt;
+        
+        &lt;p&gt;Descarga nuestro <span class="error-highlight" data-error="8" data-fix='<a href="archivos/catalogo.pdf" download>catálogo</a>' data-explanation="Falta el atributo 'download' para indicar que es un archivo para descargar">&lt;a href="archivos/catalogo.pdf"&gt;catálogo&lt;/a&gt;</span>&lt;/p&gt;
+    &lt;/section&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;<span class="error-highlight" data-error="9" data-fix='<a href="tel:+123456789">+123456789</a>' data-explanation="Falta 'tel:' para que funcione como enlace telefónico">&lt;a href="+123456789"&gt;+123456789&lt;/a&gt;</span>&lt;/p&gt;
+        &lt;p&gt;&copy; 2025 Mi Sitio Web&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span id="error-counter" class="bg-dark px-3 py-1 rounded-lg">Errores encontrados: <span id="found-count">0</span>/<span id="total-count">9</span></span>
+                    </div>
+                    <div>
+                        <button id="reset-activity-btn" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg">Reiniciar actividad</button>
+                    </div>
+                </div>
+                
+                <div id="explanation-box" class="mt-6 p-4 bg-dark rounded-lg hidden">
+                    <h4 class="font-bold mb-2">Explicación:</h4>
+                    <p id="explanation-text"></p>
+                </div>
+                
+                <div id="success-message" class="mt-6 p-4 bg-green-800 rounded-lg hidden">
+                    <h4 class="font-bold mb-2">¡Felicidades!</h4>
+                    <p>Has encontrado y corregido todos los errores. Ahora tienes un mejor entendimiento de cómo funcionan los enlaces en HTML.</p>
+                </div>
+            </div>
+        </section>
+        <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'html';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-html.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+    </main>
+
+    <footer class="bg-darker py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <p>Enlaces en HTML - Guía completa para principiantes</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const errorHighlights = document.querySelectorAll('.error-highlight');
+            const explanationBox = document.getElementById('explanation-box');
+            const explanationText = document.getElementById('explanation-text');
+            const foundCount = document.getElementById('found-count');
+            const totalCount = document.getElementById('total-count');
+            const successMessage = document.getElementById('success-message');
+            const resetActivityBtn = document.getElementById('reset-activity-btn');
+            
+            // Set total count
+            totalCount.textContent = errorHighlights.length;
+            
+            // Mobile menu toggle
+            menuBtn.addEventListener('click', function() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        if (!mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+            
+            // Error highlighting and fixing
+            errorHighlights.forEach(highlight => {
+                // Add tooltip
+                const tooltip = document.createElement('span');
+                tooltip.className = 'tooltip';
+                tooltip.textContent = 'Haz clic para ver el error';
+                highlight.appendChild(tooltip);
+                
+                highlight.addEventListener('click', function() {
+                    if (!this.classList.contains('fixed')) {
+                        // Show explanation
+                        explanationBox.classList.remove('hidden');
+                        explanationText.textContent = this.getAttribute('data-explanation');
+                        
+                        // Fix the error
+                        this.innerHTML = this.getAttribute('data-fix');
+                        this.classList.add('fixed');
+                        
+                        // Update counter
+                        const fixed = document.querySelectorAll('.error-highlight.fixed').length;
+                        foundCount.textContent = fixed;
+                        
+                        // Check if all errors are fixed
+                        if (fixed === errorHighlights.length) {
+                            successMessage.classList.remove('hidden');
+                        }
+                    }
+                });
+            });
+            
+            // Reset activity
+            resetActivityBtn.addEventListener('click', function() {
+                errorHighlights.forEach(highlight => {
+                    if (highlight.classList.contains('fixed')) {
+                        // Reset the error
+                        const errorNumber = highlight.getAttribute('data-error');
+                        let originalHTML = '';
+                        
+                        switch(errorNumber) {
+                            case '1':
+                                originalHTML = 'Inicio';
+                                break;
+                            case '2':
+                                originalHTML = '&lt;a href="servicios.html"&gt;&lt;/a&gt;Servicios';
+                                break;
+                            case '3':
+                                originalHTML = '&lt;a hrf="contacto.html"&gt;Contacto&lt;/a&gt;';
+                                break;
+                            case '4':
+                                originalHTML = '&lt;a href="#contactanos"&gt;contáctanos&lt;/a&gt;';
+                                break;
+                            case '5':
+                                originalHTML = '&lt;a href="info@ejemplo.com"&gt;info@ejemplo.com&lt;/a&gt;';
+                                break;
+                            case '6':
+                                originalHTML = '&lt;a href="twitter.com/ejemplo" target="_blank"&gt;Twitter&lt;/a&gt;';
+                                break;
+                            case '7':
+                                originalHTML = '&lt;a href="https://facebook.com/ejemplo"&gt;Facebook&lt;/i&gt;';
+                                break;
+                            case '8':
+                                originalHTML = '&lt;a href="archivos/catalogo.pdf"&gt;catálogo&lt;/a&gt;';
+                                break;
+                            case '9':
+                                originalHTML = '&lt;a href="+123456789"&gt;+123456789&lt;/a&gt;';
+                                break;
+                        }
+                        
+                        highlight.innerHTML = originalHTML;
+                        
+                        // Add tooltip back
+                        const tooltip = document.createElement('span');
+                        tooltip.className = 'tooltip';
+                        tooltip.textContent = 'Haz clic para ver el error';
+                        highlight.appendChild(tooltip);
+                        
+                        highlight.classList.remove('fixed');
+                    }
+                });
+                
+                // Reset counter and hide messages
+                foundCount.textContent = '0';
+                explanationBox.classList.add('hidden');
+                successMessage.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

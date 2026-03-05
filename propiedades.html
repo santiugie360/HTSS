@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propiedades CSS Principales</title>
+  <link href="./output.css" rel="stylesheet">
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Dosis:wght@200..800&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Inconsolata:wdth,wght@62.5,200..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lexend+Deca:wght@100..900&family=Major+Mono+Display&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Playwrite+HU:wght@100..400&family=Press+Start+2P&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rock+Salt&family=Sansita+Swashed:wght@300..900&family=Silkscreen:wght@400;700&family=Sora:wght@100..800&family=Space+Grotesk:wght@300..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body class="bg-black text-white sora">
+  <!-- Hero Section -->
+  <section class="relative h-[70vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-black/80 z-0"></div>
+    <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent"></div>
+
+    <div class="container mx-auto px-4 z-10 text-center">
+      <h1 class="text-5xl md:text-7xl font-thin tracking-wider mb-4 lexend-deca">
+        Propiedades en
+        <span class="block text-7xl md:text-8xl font-bold mt-2 text-purple-500">CSS</span>
+      </h1>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto mt-6 text-gray-300 lexend-deca">
+        Bienvenido al mundo del CSS, el lenguaje que da estilo y diseño a tus páginas web.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- Main Content -->
+  <section class="container mx-auto px-4 py-16">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-light mb-4">
+        Propiedades <span class="text-purple-500 font-bold">CSS</span> Principales
+      </h2>
+      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+        Conoce las propiedades fundamentales para dar estilo a tu sitio web
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Selectors -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-purple-800/30 hover:border-purple-500/50 transition-all group">
+        <div class="bg-purple-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-purple-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500">
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+            <circle cx="12" cy="12" r="4"></circle>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-purple-400">Selectores</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">elemento</code>
+            <span class="text-gray-300 text-sm">Selecciona todos los elementos de ese tipo</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">#id</code>
+            <span class="text-gray-300 text-sm">Selecciona el elemento con ese ID</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">.clase</code>
+            <span class="text-gray-300 text-sm">Selecciona todos los elementos con esa clase</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">elemento:pseudo-clase</code>
+            <span class="text-gray-300 text-sm">Selecciona elementos en un estado específico</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">elemento::pseudo-elemento</code>
+            <span class="text-gray-300 text-sm">Selecciona parte de un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">selector[atributo]</code>
+            <span class="text-gray-300 text-sm">Selecciona elementos con un atributo específico</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">selector1, selector2</code>
+            <span class="text-gray-300 text-sm">Selecciona todos los elementos que coincidan</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Layout & Positioning -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-purple-800/30 hover:border-purple-500/50 transition-all group">
+        <div class="bg-purple-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-purple-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500">
+            <rect width="18" height="18" x="3" y="3" rx="2" />
+            <path d="M3 9h18" />
+            <path d="M9 21V9" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-purple-400">Layout y Posicionamiento</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">display</code>
+            <span class="text-gray-300 text-sm">Define cómo se muestra un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">position</code>
+            <span class="text-gray-300 text-sm">Especifica el método de posicionamiento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">top, right, bottom, left</code>
+            <span class="text-gray-300 text-sm">Posiciona un elemento en relación a su contenedor</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">float</code>
+            <span class="text-gray-300 text-sm">Coloca un elemento a la izquierda o derecha</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">z-index</code>
+            <span class="text-gray-300 text-sm">Controla el orden de apilamiento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">flex</code>
+            <span class="text-gray-300 text-sm">Establece cómo un elemento flexible crece o se encoge</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">grid</code>
+            <span class="text-gray-300 text-sm">Define un contenedor de cuadrícula</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Typography -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-purple-800/30 hover:border-purple-500/50 transition-all group">
+        <div class="bg-purple-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-purple-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500">
+            <polyline points="4 7 4 4 20 4 20 7" />
+            <line x1="9" x2="15" y1="20" y2="20" />
+            <line x1="12" x2="12" y1="4" y2="20" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-purple-400">Tipografía</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">font-family</code>
+            <span class="text-gray-300 text-sm">Define la familia de fuentes</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">font-size</code>
+            <span class="text-gray-300 text-sm">Establece el tamaño de la fuente</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">font-weight</code>
+            <span class="text-gray-300 text-sm">Define el grosor de la fuente</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">line-height</code>
+            <span class="text-gray-300 text-sm">Establece la altura de línea</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">text-align</code>
+            <span class="text-gray-300 text-sm">Alinea el texto horizontalmente</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">text-decoration</code>
+            <span class="text-gray-300 text-sm">Añade decoración al texto (subrayado, tachado)</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">text-transform</code>
+            <span class="text-gray-300 text-sm">Controla la capitalización del texto</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Colors & Backgrounds -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-purple-800/30 hover:border-purple-500/50 transition-all group">
+        <div class="bg-purple-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-purple-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-purple-400">Colores y Fondos</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">color</code>
+            <span class="text-gray-300 text-sm">Define el color del texto</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">background-color</code>
+            <span class="text-gray-300 text-sm">Establece el color de fondo</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">background-image</code>
+            <span class="text-gray-300 text-sm">Define una imagen de fondo</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">background-size</code>
+            <span class="text-gray-300 text-sm">Especifica el tamaño de la imagen de fondo</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">background-position</code>
+            <span class="text-gray-300 text-sm">Define la posición inicial de la imagen de fondo</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">opacity</code>
+            <span class="text-gray-300 text-sm">Establece la transparencia de un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">gradient</code>
+            <span class="text-gray-300 text-sm">Crea transiciones suaves entre colores</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Borders & Effects -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-purple-800/30 hover:border-purple-500/50 transition-all group">
+        <div class="bg-purple-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-purple-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500">
+            <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-purple-400">Bordes y Efectos</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">border</code>
+            <span class="text-gray-300 text-sm">Define el borde de un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">border-radius</code>
+            <span class="text-gray-300 text-sm">Redondea las esquinas de un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">box-shadow</code>
+            <span class="text-gray-300 text-sm">Añade sombras a un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">text-shadow</code>
+            <span class="text-gray-300 text-sm">Añade sombras al texto</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">filter</code>
+            <span class="text-gray-300 text-sm">Aplica efectos visuales (blur, brightness, etc.)</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">backdrop-filter</code>
+            <span class="text-gray-300 text-sm">Aplica efectos al área detrás de un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">clip-path</code>
+            <span class="text-gray-300 text-sm">Crea formas complejas recortando un elemento</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Animations & Transitions -->
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-purple-800/30 hover:border-purple-500/50 transition-all group">
+        <div class="bg-purple-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-purple-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500">
+            <path d="M5 22V12C5 6.5 8 3 12 3c5 0 7 3 7 9v10"></path>
+            <path d="M5 12a15.15 15.15 0 0 1 2-6"></path>
+            <path d="M19 12a15.15 15.15 0 0 0-2-6"></path>
+            <path d="M5 16.5a16 16 0 0 1 14 0"></path>
+            <path d="M5 19.5a16 16 0 0 1 14 0"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-purple-400">Animaciones y Transiciones</h3>
+        <ul class="space-y-3">
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">transition</code>
+            <span class="text-gray-300 text-sm">Define transiciones entre estados de un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">animation</code>
+            <span class="text-gray-300 text-sm">Aplica animaciones a elementos</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">@keyframes</code>
+            <span class="text-gray-300 text-sm">Define los pasos de una animación</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">transform</code>
+            <span class="text-gray-300 text-sm">Aplica transformaciones 2D o 3D a un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">translate</code>
+            <span class="text-gray-300 text-sm">Mueve un elemento horizontal o verticalmente</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">rotate</code>
+            <span class="text-gray-300 text-sm">Rota un elemento</span>
+          </li>
+          <li class="flex flex-col">
+            <code class="text-purple-500 font-mono bg-black/50 px-2 py-1 rounded mb-1 inline-block">scale</code>
+            <span class="text-gray-300 text-sm">Cambia el tamaño de un elemento</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- JavaScript para efectos adicionales -->
+  <script>
+    // Añadir efecto de desplazamiento suave a los enlaces
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Añadir efecto de aparición al hacer scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.grid > div').forEach(card => {
+      card.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>

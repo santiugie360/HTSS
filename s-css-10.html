@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Grid - Diseño en Cuadrícula</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'css-purple': {
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+              950: '#2e1065',
+            },
+            'dark-blue': {
+              900: '#0a1020',
+              950: '#050a14',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .timeline-circle {
+        @apply w-12 h-12 rounded-full bg-css-purple-500 flex items-center justify-center text-white font-bold text-lg z-10;
+      }
+      .timeline-line {
+        @apply absolute left-6 top-0 bottom-0 w-0.5 bg-css-purple-800/50 transform translate-x-0;
+      }
+      .feature-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 hover:border-css-purple-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-css-purple-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-blue-950 text-gray-200">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-blue-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="#" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-css-purple-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-blue-950 rounded-md grid grid-cols-2 grid-rows-2 gap-[2px] p-[2px]">
+                <div class="bg-css-purple-500"></div>
+                <div class="bg-css-purple-500"></div>
+                <div class="bg-css-purple-500"></div>
+                <div class="bg-css-purple-500"></div>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">Grid</span>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#caracteristicas" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Características</a>
+          <a href="#propiedades" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Propiedades</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#caracteristicas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Características</a>
+        <a href="#propiedades" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Propiedades</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-css-purple-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          CSS
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-css-purple-400">Grid</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-3xl mx-auto animate-slide-up">
+          CSS Grid es el sistema de diseño bidimensional más poderoso de CSS, permitiendo crear layouts complejos con filas y columnas de manera elegante y eficiente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="caracteristicas" class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué es <span class="text-css-purple-400 font-bold">CSS Grid?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Sistema Bidimensional</h3>
+        <p class="text-gray-300 leading-relaxed">
+          A diferencia de Flexbox que trabaja en una dimensión, CSS Grid maneja tanto filas como columnas simultáneamente, permitiendo crear layouts complejos de forma más natural.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Grid divide el espacio en celdas, organizadas en filas y columnas, donde puedes colocar elementos de manera precisa y crear diseños sofisticados con menos código.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Áreas de Grid</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Grid permite nombrar áreas de tu layout con <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">grid-template-areas</code>, haciendo el código más legible y fácil de mantener.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Puedes visualizar tu layout directamente en el CSS, creando una representación ASCII que muestra exactamente cómo se organizan los elementos en la página.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Unidades Fraccionales</h3>
+        <p class="text-gray-300 leading-relaxed">
+          La unidad <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">fr</code> (fracción) distribuye el espacio disponible proporcionalmente. <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">1fr</code> toma una fracción del espacio disponible.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Esta unidad flexible hace que sea fácil crear layouts que se adaptan al tamaño del contenedor, sin necesidad de calcular porcentajes complejos.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Posicionamiento Automático</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Grid puede posicionar elementos automáticamente en las celdas disponibles, o puedes especificar exactamente dónde debe ir cada elemento usando líneas de grid.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Los elementos pueden expandirse a través de múltiples filas o columnas usando <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">grid-column</code> y <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">grid-row</code>, creando layouts asimétricos con facilidad.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Properties Section -->
+  <section id="propiedades" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Propiedades <span class="text-css-purple-400 font-bold">Principales</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Conoce las propiedades esenciales de CSS Grid
+      </p>
+
+      <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Container Properties -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Propiedades del Contenedor</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">display</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">grid</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define un contenedor grid. Todos sus hijos directos se convierten en elementos grid.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">grid-template-columns</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">grid-template-columns</span>: <span class="text-orange-400">1fr 2fr 1fr</span>;
+  <span class="text-purple-400">grid-template-columns</span>: <span class="text-green-400">repeat(3, 1fr)</span>;
+  <span class="text-purple-400">grid-template-columns</span>: <span class="text-orange-400">200px auto 100px</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define el ancho de las columnas del grid.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">grid-template-rows</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">grid-template-rows</span>: <span class="text-orange-400">100px 200px</span>;
+  <span class="text-purple-400">grid-template-rows</span>: <span class="text-green-400">repeat(3, 150px)</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define la altura de las filas del grid.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">gap</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">gap</span>: <span class="text-orange-400">20px</span>;
+  <span class="text-purple-400">gap</span>: <span class="text-orange-400">20px 10px</span>; <span class="text-css-purple-400">/* fila columna */</span>
+  <span class="text-purple-400">row-gap</span>: <span class="text-orange-400">20px</span>;
+  <span class="text-purple-400">column-gap</span>: <span class="text-orange-400">10px</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define el espacio entre filas y columnas.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">justify-items / align-items</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">justify-items</span>: <span class="text-green-400">start</span> | <span class="text-green-400">center</span> | <span class="text-green-400">end</span> | <span class="text-green-400">stretch</span>;
+  <span class="text-purple-400">align-items</span>: <span class="text-green-400">start</span> | <span class="text-green-400">center</span> | <span class="text-green-400">end</span> | <span class="text-green-400">stretch</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Alinea elementos dentro de sus celdas (horizontal y vertical).</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">grid-template-areas</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">grid-template-areas</span>:
+    <span class="text-orange-400">"header header header"</span>
+    <span class="text-orange-400">"sidebar main main"</span>
+    <span class="text-orange-400">"footer footer footer"</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define áreas nombradas en el grid para posicionamiento intuitivo.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item Properties -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Propiedades de los Elementos</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">grid-column</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">grid-column</span>: <span class="text-orange-400">1 / 3</span>; <span class="text-css-purple-400">/* desde línea 1 a 3 */</span>
+  <span class="text-purple-400">grid-column</span>: <span class="text-green-400">span 2</span>; <span class="text-css-purple-400">/* ocupa 2 columnas */</span>
+  <span class="text-purple-400">grid-column-start</span>: <span class="text-orange-400">1</span>;
+  <span class="text-purple-400">grid-column-end</span>: <span class="text-orange-400">3</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define qué columnas ocupa el elemento.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">grid-row</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">grid-row</span>: <span class="text-orange-400">1 / 3</span>; <span class="text-css-purple-400">/* desde línea 1 a 3 */</span>
+  <span class="text-purple-400">grid-row</span>: <span class="text-green-400">span 2</span>; <span class="text-css-purple-400">/* ocupa 2 filas */</span>
+  <span class="text-purple-400">grid-row-start</span>: <span class="text-orange-400">1</span>;
+  <span class="text-purple-400">grid-row-end</span>: <span class="text-orange-400">3</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define qué filas ocupa el elemento.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">grid-area</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">grid-area</span>: <span class="text-green-400">header</span>; <span class="text-css-purple-400">/* usa área nombrada */</span>
+  <span class="text-purple-400">grid-area</span>: <span class="text-orange-400">1 / 1 / 2 / 4</span>; <span class="text-css-purple-400">/* row-start / col-start / row-end / col-end */</span>
+}</pre>
+              <p class="text-gray-400 text-sm">Asigna el elemento a un área nombrada o especifica todas las líneas.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">justify-self / align-self</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">justify-self</span>: <span class="text-green-400">start</span> | <span class="text-green-400">center</span> | <span class="text-green-400">end</span> | <span class="text-green-400">stretch</span>;
+  <span class="text-purple-400">align-self</span>: <span class="text-green-400">start</span> | <span class="text-green-400">center</span> | <span class="text-green-400">end</span> | <span class="text-green-400">stretch</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Alinea un elemento individual dentro de su celda.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">Funciones Útiles</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-400">/* repeat() - repite patrones */</span>
+<span class="text-purple-400">grid-template-columns</span>: <span class="text-green-400">repeat(4, 1fr)</span>;
+
+<span class="text-css-purple-400">/* minmax() - mínimo y máximo */</span>
+<span class="text-purple-400">grid-template-columns</span>: <span class="text-green-400">minmax(200px, 1fr)</span>;
+
+<span class="text-css-purple-400">/* auto-fit / auto-fill - responsivo */</span>
+<span class="text-purple-400">grid-template-columns</span>: 
+  <span class="text-green-400">repeat(auto-fit, minmax(200px, 1fr))</span>;</pre>
+              <p class="text-gray-400 text-sm">Funciones que hacen Grid más poderoso y flexible.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section id="ejemplos" class="container mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      Ejemplos <span class="text-css-purple-400 font-bold">Visuales</span>
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+      <!-- Example 1: Basic Grid -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Grid Básico 3x3</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">1</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">2</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">3</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">4</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">5</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">6</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">7</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">8</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">9</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">grid</span>;
+  <span class="text-purple-400">grid-template-columns</span>: <span class="text-green-400">repeat(3, 1fr)</span>;
+  <span class="text-purple-400">gap</span>: <span class="text-orange-400">8px</span>;
+}</pre>
+      </div>
+
+      <!-- Example 2: Spanning -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Expansión de Celdas</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center col-span-2">Span 2</div>
+            <div class="bg-pink-500 p-4 rounded text-white text-center">1</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">2</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">3</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">4</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.item-1</span> {
+  <span class="text-purple-400">grid-column</span>: <span class="text-green-400">span 2</span>;
+}</pre>
+      </div>
+
+      <!-- Example 3: Layout -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Layout Típico</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="grid grid-cols-4 grid-rows-3 gap-2 h-48">
+            <div class="bg-css-purple-500 p-2 rounded text-white text-center text-xs col-span-4">Header</div>
+            <div class="bg-pink-500 p-2 rounded text-white text-center text-xs">Side</div>
+            <div class="bg-css-purple-500 p-2 rounded text-white text-center text-xs col-span-3">Main</div>
+            <div class="bg-css-purple-500 p-2 rounded text-white text-center text-xs col-span-4">Footer</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">grid</span>;
+  <span class="text-purple-400">grid-template-columns</span>: <span class="text-orange-400">1fr 3fr</span>;
+  <span class="text-purple-400">grid-template-rows</span>: <span class="text-green-400">auto 1fr auto</span>;
+}</pre>
+      </div>
+
+      <!-- Example 4: Auto-fit -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Grid Responsivo</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="grid gap-2" style="grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));">
+            <div class="bg-css-purple-500 p-3 rounded text-white text-center text-xs">1</div>
+            <div class="bg-css-purple-500 p-3 rounded text-white text-center text-xs">2</div>
+            <div class="bg-css-purple-500 p-3 rounded text-white text-center text-xs">3</div>
+            <div class="bg-css-purple-500 p-3 rounded text-white text-center text-xs">4</div>
+            <div class="bg-css-purple-500 p-3 rounded text-white text-center text-xs">5</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">grid</span>;
+  <span class="text-purple-400">grid-template-columns</span>: 
+    <span class="text-green-400">repeat(auto-fit, minmax(100px, 1fr))</span>;
+}</pre>
+      </div>
+
+      <!-- Example 5: Named Areas -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Áreas Nombradas</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="grid gap-2 h-48" style="grid-template-areas: 'header header' 'sidebar main' 'footer footer'; grid-template-columns: 1fr 3fr;">
+            <div class="bg-css-purple-500 p-2 rounded text-white text-center text-xs" style="grid-area: header;">Header</div>
+            <div class="bg-pink-500 p-2 rounded text-white text-center text-xs" style="grid-area: sidebar;">Sidebar</div>
+            <div class="bg-css-purple-500 p-2 rounded text-white text-center text-xs" style="grid-area: main;">Main</div>
+            <div class="bg-css-purple-500 p-2 rounded text-white text-center text-xs" style="grid-area: footer;">Footer</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">grid-template-areas</span>:
+    <span class="text-orange-400">"header header"</span>
+    <span class="text-orange-400">"sidebar main"</span>
+    <span class="text-orange-400">"footer footer"</span>;
+}</pre>
+      </div>
+
+      <!-- Example 6: Alignment -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Alineación</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="grid grid-cols-3 gap-2 h-32 items-center justify-items-center">
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center w-12 h-12 flex items-center justify-center">1</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center w-12 h-12 flex items-center justify-center">2</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center w-12 h-12 flex items-center justify-center">3</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">align-items</span>: <span class="text-green-400">center</span>;
+  <span class="text-purple-400">justify-items</span>: <span class="text-green-400">center</span>;
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activity Section -->
+  <section id="actividad" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-css-purple-400 font-bold">Práctica</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Crea tu propio layout con CSS Grid!
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Controls Column 1 -->
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-css-purple-400">Configuración del Grid</h3>
+              
+              <div class="space-y-5">
+                <!-- Columns -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Número de Columnas: <span id="colsDisplay">3</span></label>
+                  <input type="range" title="." id="gridCols" min="1" max="6" value="3" class="w-full">
+                </div>
+
+                <!-- Rows -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Número de Filas: <span id="rowsDisplay">3</span></label>
+                  <input type="range" title="." id="gridRows" min="1" max="6" value="3" class="w-full">
+                </div>
+
+                <!-- Gap -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Gap: <span id="gridGapDisplay">10</span>px</label>
+                  <input type="range" title="." id="gridGap" min="0" max="40" value="10" class="w-full">
+                </div>
+
+                <!-- Justify Items -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">justify-items</label>
+                  <select id="justifyItems" title="." class="w-full bg-gray-800 text-white p-2 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none text-sm">
+                    <option value="stretch">stretch</option>
+                    <option value="start">start</option>
+                    <option value="end">end</option>
+                    <option value="center">center</option>
+                  </select>
+                </div>
+
+                <!-- Align Items -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">align-items</label>
+                  <select id="alignItemsGrid" title="." class="w-full bg-gray-800 text-white p-2 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none text-sm">
+                    <option value="stretch">stretch</option>
+                    <option value="start">start</option>
+                    <option value="end">end</option>
+                    <option value="center">center</option>
+                  </select>
+                </div>
+
+                <!-- Auto Flow -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">grid-auto-flow</label>
+                  <select id="autoFlow" title="." class="w-full bg-gray-800 text-white p-2 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none text-sm">
+                    <option value="row">row</option>
+                    <option value="column">column</option>
+                    <option value="dense">dense</option>
+                  </select>
+                </div>
+
+                <!-- Number of Items -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Número de elementos: <span id="gridItemsDisplay">9</span></label>
+                  <input type="range" title="." id="gridNumItems" min="1" max="20" value="9" class="w-full">
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview Column -->
+            <div class="lg:col-span-2">
+              <h3 class="text-xl font-bold mb-6 text-css-purple-400">Vista Previa</h3>
+              
+              <!-- Grid Container Preview -->
+              <div class="bg-black p-6 rounded-lg mb-6" style="min-height: 400px;">
+                <div id="gridContainer" class="border-2 border-dashed border-gray-600 rounded h-full grid">
+                  <!-- Items will be generated here -->
+                </div>
+              </div>
+
+              <!-- Generated Code -->
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="text-lg font-semibold text-white">Código CSS Generado:</h4>
+                  <button id="copyGridCode" class="bg-gray-700 hover:bg-gray-600 text-white text-sm font-bold py-2 px-4 rounded transition-colors flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+                <pre id="gridGeneratedCode" class="code-block text-xs max-h-64 overflow-y-auto"></pre>
+              </div>
+
+              <!-- Tips -->
+              <div class="mt-6 p-4 bg-css-purple-900/20 border border-css-purple-700/30 rounded-lg">
+                <h4 class="text-sm font-semibold mb-2 text-css-purple-400 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Consejos
+                </h4>
+                <ul class="space-y-1 text-gray-300 text-sm">
+                  <li>• Usa <strong>repeat()</strong> para crear patrones</li>
+                  <li>• La unidad <strong>fr</strong> distribuye el espacio disponible</li>
+                  <li>• <strong>auto-fit</strong> crea grids responsivos automáticamente</li>
+                  <li>• <strong>minmax()</strong> controla tamaños mínimos y máximos</li>
+                  <li>• Grid es ideal para layouts bidimensionales complejos</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="container mx-auto px-4 py-16 text-center">
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark-blue-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende CSS Grid - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Grid Activity
+    const gridCols = document.getElementById('gridCols');
+    const gridRows = document.getElementById('gridRows');
+    const gridGap = document.getElementById('gridGap');
+    const justifyItems = document.getElementById('justifyItems');
+    const alignItemsGrid = document.getElementById('alignItemsGrid');
+    const autoFlow = document.getElementById('autoFlow');
+    const gridNumItems = document.getElementById('gridNumItems');
+    const gridContainer = document.getElementById('gridContainer');
+    const gridGeneratedCode = document.getElementById('gridGeneratedCode');
+    const copyGridCode = document.getElementById('copyGridCode');
+    const colsDisplay = document.getElementById('colsDisplay');
+    const rowsDisplay = document.getElementById('rowsDisplay');
+    const gridGapDisplay = document.getElementById('gridGapDisplay');
+    const gridItemsDisplay = document.getElementById('gridItemsDisplay');
+
+    const gridColors = ['#8b5cf6', '#ec4899', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#a855f7', '#ec4899', '#14b8a6', '#f97316', '#8b5cf6', '#ec4899', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#a855f7', '#ec4899'];
+
+    function updateGridDisplay() {
+      const cols = gridCols.value;
+      const rows = gridRows.value;
+      const gap = gridGap.value;
+      const justify = justifyItems.value;
+      const align = alignItemsGrid.value;
+      const flow = autoFlow.value;
+      const itemCount = parseInt(gridNumItems.value);
+
+      // Update displays
+      colsDisplay.textContent = cols;
+      rowsDisplay.textContent = rows;
+      gridGapDisplay.textContent = gap;
+      gridItemsDisplay.textContent = itemCount;
+
+      // Apply styles to container
+      gridContainer.style.display = 'grid';
+      gridContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+      gridContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+      gridContainer.style.gap = `${gap}px`;
+      gridContainer.style.justifyItems = justify;
+      gridContainer.style.alignItems = align;
+      gridContainer.style.gridAutoFlow = flow;
+      gridContainer.style.padding = '16px';
+
+      // Generate items
+      gridContainer.innerHTML = '';
+      for (let i = 0; i < itemCount; i++) {
+        const item = document.createElement('div');
+        item.className = 'p-4 rounded-lg text-white font-bold text-center flex items-center justify-center';
+        item.style.backgroundColor = gridColors[i % gridColors.length];
+        item.style.minHeight = '60px';
+        item.textContent = i + 1;
+        gridContainer.appendChild(item);
+      }
+
+      // Update generated code
+      gridGeneratedCode.innerHTML = `<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">grid</span>;
+  <span class="text-purple-400">grid-template-columns</span>: <span class="text-green-400">repeat(${cols}, 1fr)</span>;
+  <span class="text-purple-400">grid-template-rows</span>: <span class="text-green-400">repeat(${rows}, 1fr)</span>;
+  <span class="text-purple-400">gap</span>: <span class="text-orange-400">${gap}px</span>;
+  <span class="text-purple-400">justify-items</span>: <span class="text-green-400">${justify}</span>;
+  <span class="text-purple-400">align-items</span>: <span class="text-green-400">${align}</span>;
+  <span class="text-purple-400">grid-auto-flow</span>: <span class="text-green-400">${flow}</span>;
+}`;
+    }
+
+    // Event listeners
+    gridCols.addEventListener('input', updateGridDisplay);
+    gridRows.addEventListener('input', updateGridDisplay);
+    gridGap.addEventListener('input', updateGridDisplay);
+    justifyItems.addEventListener('change', updateGridDisplay);
+    alignItemsGrid.addEventListener('change', updateGridDisplay);
+    autoFlow.addEventListener('change', updateGridDisplay);
+    gridNumItems.addEventListener('input', updateGridDisplay);
+
+    copyGridCode.addEventListener('click', () => {
+      const codeText = gridGeneratedCode.textContent;
+      navigator.clipboard.writeText(codeText).then(() => {
+        const originalHTML = copyGridCode.innerHTML;
+        copyGridCode.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>¡Copiado!</span>
+        `;
+        copyGridCode.classList.add('bg-green-600');
+        copyGridCode.classList.remove('bg-gray-700');
+        
+        setTimeout(() => {
+          copyGridCode.innerHTML = originalHTML;
+          copyGridCode.classList.remove('bg-green-600');
+          copyGridCode.classList.add('bg-gray-700');
+        }, 2000);
+      });
+    });
+
+    // Initialize
+    updateGridDisplay();
+
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

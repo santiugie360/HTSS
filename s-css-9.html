@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Flexbox - Diseño Flexible</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'css-purple': {
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+              950: '#2e1065',
+            },
+            'dark-blue': {
+              900: '#0a1020',
+              950: '#050a14',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .timeline-circle {
+        @apply w-12 h-12 rounded-full bg-css-purple-500 flex items-center justify-center text-white font-bold text-lg z-10;
+      }
+      .timeline-line {
+        @apply absolute left-6 top-0 bottom-0 w-0.5 bg-css-purple-800/50 transform translate-x-0;
+      }
+      .feature-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 hover:border-css-purple-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-css-purple-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-blue-950 text-gray-200">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-blue-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="#" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-css-purple-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-blue-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-css-purple-500">F</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">Flexbox</span>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#caracteristicas" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Características</a>
+          <a href="#propiedades" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Propiedades</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#caracteristicas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Características</a>
+        <a href="#propiedades" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Propiedades</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-css-purple-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          CSS
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-css-purple-400">Flexbox</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-3xl mx-auto animate-slide-up">
+          Flexbox es un modelo de diseño CSS que permite crear layouts flexibles y responsivos de manera eficiente, distribuyendo el espacio y alineando elementos con facilidad.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="caracteristicas" class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué es <span class="text-css-purple-400 font-bold">Flexbox?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Modelo de Diseño Unidimensional</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Flexbox es un modelo de diseño CSS que trabaja en una sola dimensión a la vez (fila o columna). Permite distribuir el espacio disponible entre los elementos de un contenedor y controlar su alineación.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          A diferencia de los layouts tradicionales basados en bloques, Flexbox está diseñado específicamente para crear interfaces de usuario modernas y adaptables.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Contenedor y Elementos</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Flexbox funciona con dos tipos de entidades: el contenedor flex (flex container) que contiene los elementos, y los elementos flex (flex items) que son los hijos directos del contenedor.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Al aplicar <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">display: flex</code> a un elemento, este se convierte en un contenedor flex y sus hijos se convierten automáticamente en elementos flex.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Eje Principal y Eje Cruzado</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Flexbox trabaja con dos ejes: el eje principal (main axis) definido por <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">flex-direction</code>, y el eje cruzado (cross axis) perpendicular al principal.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Entender estos ejes es fundamental para dominar Flexbox, ya que propiedades como <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">justify-content</code> y <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">align-items</code> trabajan en ejes diferentes.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Diseño Responsivo</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Flexbox facilita enormemente la creación de diseños responsivos. Los elementos pueden crecer, encogerse y reorganizarse automáticamente según el espacio disponible.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Con propiedades como <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">flex-wrap</code> y <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">flex-grow</code>, puedes crear layouts que se adaptan perfectamente a diferentes tamaños de pantalla sin media queries complejos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Properties Section -->
+  <section id="propiedades" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Propiedades <span class="text-css-purple-400 font-bold">Principales</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Conoce las propiedades esenciales de Flexbox
+      </p>
+
+      <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Container Properties -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Propiedades del Contenedor</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">display</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">flex</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define un contenedor flex. Todos sus hijos directos se convierten en elementos flex.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">flex-direction</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">flex-direction</span>: <span class="text-green-400">row</span> | <span class="text-green-400">column</span> | <span class="text-green-400">row-reverse</span> | <span class="text-green-400">column-reverse</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Establece la dirección del eje principal (horizontal o vertical).</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">justify-content</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">justify-content</span>: <span class="text-green-400">flex-start</span> | <span class="text-green-400">center</span> | <span class="text-green-400">space-between</span> | <span class="text-green-400">space-around</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Alinea los elementos a lo largo del eje principal.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">align-items</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">align-items</span>: <span class="text-green-400">stretch</span> | <span class="text-green-400">center</span> | <span class="text-green-400">flex-start</span> | <span class="text-green-400">flex-end</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Alinea los elementos a lo largo del eje cruzado.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">flex-wrap</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">flex-wrap</span>: <span class="text-green-400">nowrap</span> | <span class="text-green-400">wrap</span> | <span class="text-green-400">wrap-reverse</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Controla si los elementos deben envolverse en múltiples líneas.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">gap</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">gap</span>: <span class="text-orange-400">20px</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define el espacio entre elementos flex.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item Properties -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Propiedades de los Elementos</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">flex-grow</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">flex-grow</span>: <span class="text-orange-400">1</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define la capacidad del elemento para crecer si es necesario.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">flex-shrink</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">flex-shrink</span>: <span class="text-orange-400">1</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define la capacidad del elemento para encogerse si es necesario.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">flex-basis</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">flex-basis</span>: <span class="text-orange-400">200px</span> | <span class="text-green-400">auto</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Define el tamaño base del elemento antes de distribuir el espacio restante.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">flex (abreviado)</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">flex</span>: <span class="text-orange-400">1 1 200px</span>;
+  <span class="text-css-purple-400">/* grow shrink basis */</span>
+}</pre>
+              <p class="text-gray-400 text-sm">Forma abreviada para flex-grow, flex-shrink y flex-basis.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">align-self</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">align-self</span>: <span class="text-green-400">auto</span> | <span class="text-green-400">center</span> | <span class="text-green-400">flex-start</span> | <span class="text-green-400">flex-end</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Permite sobrescribir la alineación para un elemento individual.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">order</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-css-purple-500">.item</span> {
+  <span class="text-purple-400">order</span>: <span class="text-orange-400">2</span>;
+}</pre>
+              <p class="text-gray-400 text-sm">Controla el orden de los elementos. Por defecto es 0.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section id="ejemplos" class="container mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      Ejemplos <span class="text-css-purple-400 font-bold">Visuales</span>
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+      <!-- Example 1: Basic Row -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Fila Básica</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="flex gap-2">
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">1</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">2</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">3</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">flex</span>;
+  <span class="text-purple-400">gap</span>: <span class="text-orange-400">8px</span>;
+}</pre>
+      </div>
+
+      <!-- Example 2: Center -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Centrado</h3>
+        <div class="bg-black p-6 rounded-lg mb-4 h-32">
+          <div class="flex justify-center items-center h-full">
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">Centrado</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">flex</span>;
+  <span class="text-purple-400">justify-content</span>: <span class="text-green-400">center</span>;
+  <span class="text-purple-400">align-items</span>: <span class="text-green-400">center</span>;
+}</pre>
+      </div>
+
+      <!-- Example 3: Space Between -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Espacio Entre Elementos</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="flex justify-between">
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">1</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">2</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">3</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">flex</span>;
+  <span class="text-purple-400">justify-content</span>: <span class="text-green-400">space-between</span>;
+}</pre>
+      </div>
+
+      <!-- Example 4: Column -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Columna</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="flex flex-col gap-2">
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">1</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">2</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center">3</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">flex</span>;
+  <span class="text-purple-400">flex-direction</span>: <span class="text-green-400">column</span>;
+  <span class="text-purple-400">gap</span>: <span class="text-orange-400">8px</span>;
+}</pre>
+      </div>
+
+      <!-- Example 5: Flex Grow -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Crecimiento Flexible</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="flex gap-2">
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center flex-1">flex: 1</div>
+            <div class="bg-pink-500 p-4 rounded text-white text-center flex-[2]">flex: 2</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center flex-1">flex: 1</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.item-1</span> { <span class="text-purple-400">flex</span>: <span class="text-orange-400">1</span>; }
+<span class="text-css-purple-500">.item-2</span> { <span class="text-purple-400">flex</span>: <span class="text-orange-400">2</span>; }
+<span class="text-css-purple-500">.item-3</span> { <span class="text-purple-400">flex</span>: <span class="text-orange-400">1</span>; }</pre>
+      </div>
+
+      <!-- Example 6: Wrap -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Envoltura</h3>
+        <div class="bg-black p-6 rounded-lg mb-4">
+          <div class="flex flex-wrap gap-2">
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center w-20">1</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center w-20">2</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center w-20">3</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center w-20">4</div>
+            <div class="bg-css-purple-500 p-4 rounded text-white text-center w-20">5</div>
+          </div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">flex</span>;
+  <span class="text-purple-400">flex-wrap</span>: <span class="text-green-400">wrap</span>;
+  <span class="text-purple-400">gap</span>: <span class="text-orange-400">8px</span>;
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activity Section -->
+  <section id="actividad" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-css-purple-400 font-bold">Práctica</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Experimenta con Flexbox en tiempo real!
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Controls Column 1 -->
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-css-purple-400">Propiedades del Contenedor</h3>
+              
+              <div class="space-y-5">
+                <!-- Flex Direction -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">flex-direction</label>
+                  <select id="flexDirection" title="." class="w-full bg-gray-800 text-white p-2 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none text-sm">
+                    <option value="row">row</option>
+                    <option value="row-reverse">row-reverse</option>
+                    <option value="column">column</option>
+                    <option value="column-reverse">column-reverse</option>
+                  </select>
+                </div>
+
+                <!-- Justify Content -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">justify-content</label>
+                  <select id="justifyContent" title="." class="w-full bg-gray-800 text-white p-2 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none text-sm">
+                    <option value="flex-start">flex-start</option>
+                    <option value="flex-end">flex-end</option>
+                    <option value="center">center</option>
+                    <option value="space-between">space-between</option>
+                    <option value="space-around">space-around</option>
+                    <option value="space-evenly">space-evenly</option>
+                  </select>
+                </div>
+
+                <!-- Align Items -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">align-items</label>
+                  <select id="alignItems" title="." class="w-full bg-gray-800 text-white p-2 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none text-sm">
+                    <option value="stretch">stretch</option>
+                    <option value="flex-start">flex-start</option>
+                    <option value="flex-end">flex-end</option>
+                    <option value="center">center</option>
+                    <option value="baseline">baseline</option>
+                  </select>
+                </div>
+
+                <!-- Flex Wrap -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">flex-wrap</label>
+                  <select id="flexWrap" title="." class="w-full bg-gray-800 text-white p-2 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none text-sm">
+                    <option value="nowrap">nowrap</option>
+                    <option value="wrap">wrap</option>
+                    <option value="wrap-reverse">wrap-reverse</option>
+                  </select>
+                </div>
+
+                <!-- Gap -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">gap: <span id="gapDisplay">10</span>px</label>
+                  <input type="range" title="." id="gap" min="0" max="40" value="10" class="w-full">
+                </div>
+
+                <!-- Number of Items -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Número de elementos: <span id="numItemsDisplay">5</span></label>
+                  <input type="range" title="." id="numItems" min="1" max="10" value="5" class="w-full">
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview Column -->
+            <div class="lg:col-span-2">
+              <h3 class="text-xl font-bold mb-6 text-css-purple-400">Vista Previa</h3>
+              
+              <!-- Flex Container Preview -->
+              <div class="bg-black p-6 rounded-lg mb-6" style="min-height: 400px;">
+                <div id="flexContainer" class="border-2 border-dashed border-gray-600 p-4 rounded h-full flex">
+                  <!-- Items will be generated here -->
+                </div>
+              </div>
+
+              <!-- Generated Code -->
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="text-lg font-semibold text-white">Código CSS Generado:</h4>
+                  <button id="copyFlexCode" class="bg-gray-700 hover:bg-gray-600 text-white text-sm font-bold py-2 px-4 rounded transition-colors flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+                <pre id="flexGeneratedCode" class="code-block text-xs max-h-64 overflow-y-auto"></pre>
+              </div>
+
+              <!-- Tips -->
+              <div class="mt-6 p-4 bg-css-purple-900/20 border border-css-purple-700/30 rounded-lg">
+                <h4 class="text-sm font-semibold mb-2 text-css-purple-400 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Consejos
+                </h4>
+                <ul class="space-y-1 text-gray-300 text-sm">
+                  <li>• <strong>justify-content</strong> alinea en el eje principal</li>
+                  <li>• <strong>align-items</strong> alinea en el eje cruzado</li>
+                  <li>• <strong>flex-direction: column</strong> invierte los ejes</li>
+                  <li>• <strong>gap</strong> es más limpio que usar margin</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="container mx-auto px-4 py-16 text-center">
+    
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark-blue-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende CSS Flexbox - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Flexbox Activity
+    const flexDirection = document.getElementById('flexDirection');
+    const justifyContent = document.getElementById('justifyContent');
+    const alignItems = document.getElementById('alignItems');
+    const flexWrap = document.getElementById('flexWrap');
+    const gap = document.getElementById('gap');
+    const numItems = document.getElementById('numItems');
+    const flexContainer = document.getElementById('flexContainer');
+    const flexGeneratedCode = document.getElementById('flexGeneratedCode');
+    const copyFlexCode = document.getElementById('copyFlexCode');
+    const gapDisplay = document.getElementById('gapDisplay');
+    const numItemsDisplay = document.getElementById('numItemsDisplay');
+
+    const colors = ['#8b5cf6', '#ec4899', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6', '#ec4899', '#3b82f6'];
+
+    function updateFlexDisplay() {
+      const direction = flexDirection.value;
+      const justify = justifyContent.value;
+      const align = alignItems.value;
+      const wrap = flexWrap.value;
+      const gapValue = gap.value;
+      const itemCount = parseInt(numItems.value);
+
+      // Update displays
+      gapDisplay.textContent = gapValue;
+      numItemsDisplay.textContent = itemCount;
+
+      // Apply styles to container
+      flexContainer.style.display = 'flex';
+      flexContainer.style.flexDirection = direction;
+      flexContainer.style.justifyContent = justify;
+      flexContainer.style.alignItems = align;
+      flexContainer.style.flexWrap = wrap;
+      flexContainer.style.gap = `${gapValue}px`;
+
+      // Generate items
+      flexContainer.innerHTML = '';
+      for (let i = 0; i < itemCount; i++) {
+        const item = document.createElement('div');
+        item.className = 'flex-shrink-0 p-6 rounded-lg text-white font-bold text-center';
+        item.style.backgroundColor = colors[i];
+        item.style.minWidth = '80px';
+        item.textContent = i + 1;
+        flexContainer.appendChild(item);
+      }
+
+      // Update generated code
+      flexGeneratedCode.innerHTML = `<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">flex</span>;
+  <span class="text-purple-400">flex-direction</span>: <span class="text-green-400">${direction}</span>;
+  <span class="text-purple-400">justify-content</span>: <span class="text-green-400">${justify}</span>;
+  <span class="text-purple-400">align-items</span>: <span class="text-green-400">${align}</span>;
+  <span class="text-purple-400">flex-wrap</span>: <span class="text-green-400">${wrap}</span>;
+  <span class="text-purple-400">gap</span>: <span class="text-orange-400">${gapValue}px</span>;
+}`;
+    }
+
+    // Event listeners
+    flexDirection.addEventListener('change', updateFlexDisplay);
+    justifyContent.addEventListener('change', updateFlexDisplay);
+    alignItems.addEventListener('change', updateFlexDisplay);
+    flexWrap.addEventListener('change', updateFlexDisplay);
+    gap.addEventListener('input', updateFlexDisplay);
+    numItems.addEventListener('input', updateFlexDisplay);
+
+    copyFlexCode.addEventListener('click', () => {
+      const codeText = flexGeneratedCode.textContent;
+      navigator.clipboard.writeText(codeText).then(() => {
+        const originalHTML = copyFlexCode.innerHTML;
+        copyFlexCode.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>¡Copiado!</span>
+        `;
+        copyFlexCode.classList.add('bg-green-600');
+        copyFlexCode.classList.remove('bg-gray-700');
+        
+        setTimeout(() => {
+          copyFlexCode.innerHTML = originalHTML;
+          copyFlexCode.classList.remove('bg-green-600');
+          copyFlexCode.classList.add('bg-gray-700');
+        }, 2000);
+      });
+    });
+
+    // Initialize
+    updateFlexDisplay();
+
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

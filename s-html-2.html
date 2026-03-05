@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etiquetas Básicas de HTML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0f1a',
+                        darker: '#050a14',
+                        accent: '#ff6b00'
+                    },
+                    keyframes: {
+                        pulse: {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: 0.8 }
+                        }
+                    },
+                    animation: {
+                        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation:hover {
+            animation: float 2s ease-in-out infinite;
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+        }
+        .scale-effect:hover {
+            transform: scale(1.03);
+        }
+        .rotate-effect:hover .icon-container {
+            transform: rotate(10deg);
+        }
+    </style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+    <header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="s-html.html"><h1 class="text-2xl font-bold">HTML<span class="text-accent">Básico</span></h1></a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                    <a href="#estructura" class="hover:text-accent transition-colors duration-300">Estructura</a>
+                    <a href="#texto" class="hover:text-accent transition-colors duration-300">Texto</a>
+                    <a href="#enlaces" class="hover:text-accent transition-colors duration-300">Enlaces</a>
+                    <a href="#listas" class="hover:text-accent transition-colors duration-300">Listas</a>
+                    <a href="#imagenes" class="hover:text-accent transition-colors duration-300">Imágenes</a>
+                    <a href="#practica" class="hover:text-accent transition-colors duration-300">Práctica</a>
+                </div>
+                <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+                <a href="#estructura" class="block py-2 hover:text-accent transition-colors duration-300">Estructura</a>
+                <a href="#texto" class="block py-2 hover:text-accent transition-colors duration-300">Texto</a>
+                <a href="#enlaces" class="block py-2 hover:text-accent transition-colors duration-300">Enlaces</a>
+                <a href="#listas" class="block py-2 hover:text-accent transition-colors duration-300">Listas</a>
+                <a href="#imagenes" class="block py-2 hover:text-accent transition-colors duration-300">Imágenes</a>
+                <a href="#practica" class="block py-2 hover:text-accent transition-colors duration-300">Práctica</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="text-center py-16">
+            <h1 class="text-5xl font-bold mb-4">Etiquetas básicas de <span class="text-accent">HTML</span></h1>
+            <p class="text-xl max-w-3xl mx-auto">¿Qué son y cómo se usan las etiquetas fundamentales para crear páginas web?</p>
+        </section>
+
+        <section id="introduccion" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Introducción a HTML</h2>
+            <p class="mb-4">HTML (HyperText Markup Language) es el lenguaje estándar para crear páginas web. No es un lenguaje de programación, sino un lenguaje de marcado que define la estructura de tu contenido.</p>
+            <p>HTML usa "etiquetas" para definir diferentes elementos en una página web. Estas etiquetas le dicen al navegador cómo mostrar el contenido.</p>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation">
+                <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-accent">Fácil de aprender</h3>
+                <p>HTML tiene una estructura simple y lógica que cualquier persona puede aprender, incluso sin experiencia previa en programación.</p>
+            </div>
+            <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect rotate-effect">
+                <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-accent">Universal</h3>
+                <p>Todos los navegadores web entienden HTML, lo que significa que tu contenido será accesible para cualquier persona con acceso a internet.</p>
+            </div>
+            <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation">
+                <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-accent">Base de todo</h3>
+                <p>HTML es el fundamento de cualquier sitio web. Incluso las páginas más complejas comienzan con una estructura HTML básica.</p>
+            </div>
+        </section>
+
+        <section id="estructura" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Estructura básica</h2>
+            <div class="bg-darker p-6 rounded-lg mb-6 border border-gray-800 hover:border-accent transition-all duration-300">
+                <pre class="text-gray-300 overflow-x-auto"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Título de la página&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    Contenido de la página
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+            <p class="mb-4">Toda página HTML comienza con la declaración <code class="bg-darker px-2 py-1 rounded border border-gray-800">!DOCTYPE html</code> que le dice al navegador que estamos usando HTML5.</p>
+            <p class="mb-4">La etiqueta <code class="bg-darker px-2 py-1 rounded border border-gray-800">html</code> es el elemento raíz que contiene toda la página.</p>
+            <p class="mb-4">Dentro de <code class="bg-darker px-2 py-1 rounded border border-gray-800">head</code> colocamos información sobre la página, como el título que aparece en la pestaña del navegador.</p>
+            <p>Todo lo que queremos mostrar en la página va dentro de <code class="bg-darker px-2 py-1 rounded border border-gray-800">body</code>.</p>
+        </section>
+
+        <section id="texto" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Etiquetas de texto</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Encabezados</h3>
+                    <p class="mb-4">HTML tiene seis niveles de encabezados, desde <code class="bg-dark px-2 py-1 rounded border border-gray-800">h1</code> (el más importante) hasta <code class="bg-dark px-2 py-1 rounded border border-gray-800">h6</code> (el menos importante).</p>
+                    <div class="mt-4">
+                        <h1 class="text-2xl font-bold">Esto es un h1</h1>
+                        <h2 class="text-xl font-bold">Esto es un h2</h2>
+                        <h3 class="text-lg font-bold">Esto es un h3</h3>
+                    </div>
+                </div>
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Párrafos y formato</h3>
+                    <p class="mb-4">La etiqueta <code class="bg-dark px-2 py-1 rounded border border-gray-800">p</code> se usa para crear párrafos de texto.</p>
+                    <p class="mb-4">Para dar <strong>énfasis</strong> al texto usamos <code class="bg-dark px-2 py-1 rounded border border-gray-800">strong</code> o <code class="bg-dark px-2 py-1 rounded border border-gray-800">em</code> para <em>texto en cursiva</em>.</p>
+                    <p>Para crear un <br>salto de línea usamos <code class="bg-dark px-2 py-1 rounded border border-gray-800">br</code>.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="enlaces" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Enlaces</h2>
+            <p class="mb-4">Los enlaces o hipervínculos son la base de la navegación web. Se crean con la etiqueta <code class="bg-darker px-2 py-1 rounded border border-gray-800">a</code>.</p>
+            <div class="bg-darker p-6 rounded-lg mb-6 border border-gray-800 hover:border-accent transition-all duration-300">
+                <pre class="text-gray-300 overflow-x-auto"><code>&lt;a href="https://www.ejemplo.com"&gt;Visita Ejemplo.com&lt;/a&gt;</code></pre>
+            </div>
+            <p>El atributo <code class="bg-darker px-2 py-1 rounded border border-gray-800">href</code> especifica la dirección a la que apunta el enlace. Puede ser una URL externa, una página dentro de tu sitio, o incluso una sección específica de la página actual usando un identificador con #.</p>
+            <div class="mt-6 p-4 bg-darker rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <p class="mb-2">Ejemplo de enlace:</p>
+                <a href="#practica" class="text-accent hover:text-white hover:bg-accent px-4 py-2 rounded-full transition-all duration-300 inline-block">Ir a la sección de práctica</a>
+            </div>
+        </section>
+
+        <section id="listas" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Listas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Listas ordenadas</h3>
+                    <p class="mb-4">Las listas ordenadas usan <code class="bg-dark px-2 py-1 rounded border border-gray-800">ol</code> y cada elemento se define con <code class="bg-dark px-2 py-1 rounded border border-gray-800">li</code>.</p>
+                    <ol class="list-decimal pl-5">
+                        <li class="hover:text-accent transition-colors duration-300">Primer elemento</li>
+                        <li class="hover:text-accent transition-colors duration-300">Segundo elemento</li>
+                        <li class="hover:text-accent transition-colors duration-300">Tercer elemento</li>
+                    </ol>
+                </div>
+                <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 scale-effect">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Listas no ordenadas</h3>
+                    <p class="mb-4">Las listas no ordenadas usan <code class="bg-dark px-2 py-1 rounded border border-gray-800">ul</code> y cada elemento también se define con <code class="bg-dark px-2 py-1 rounded border border-gray-800">li</code>.</p>
+                    <ul class="list-disc pl-5">
+                        <li class="hover:text-accent transition-colors duration-300">Elemento</li>
+                        <li class="hover:text-accent transition-colors duration-300">Otro elemento</li>
+                        <li class="hover:text-accent transition-colors duration-300">Un elemento más</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="imagenes" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Imágenes</h2>
+            <p class="mb-4">Las imágenes se insertan con la etiqueta <code class="bg-darker px-2 py-1 rounded border border-gray-800">img</code>, que es una etiqueta de cierre automático (no necesita etiqueta de cierre).</p>
+            <div class="bg-darker p-6 rounded-lg mb-6 border border-gray-800 hover:border-accent transition-all duration-300">
+                <pre class="text-gray-300 overflow-x-auto"><code>&lt;img src="ruta-de-la-imagen.jpg" alt="Descripción de la imagen"&gt;</code></pre>
+            </div>
+            <p class="mb-4">El atributo <code class="bg-darker px-2 py-1 rounded border border-gray-800">src</code> especifica la ruta de la imagen.</p>
+            <p>El atributo <code class="bg-darker px-2 py-1 rounded border border-gray-800">alt</code> proporciona una descripción textual de la imagen, importante para la accesibilidad y SEO.</p>
+        </section>
+
+        <section id="practica" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-accent">Práctica interactiva</h2>
+            <p class="mb-6">¡Ahora es tu turno! Prueba tus conocimientos con este editor interactivo. Escribe código HTML en el área de texto y ve el resultado en tiempo real.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-darker p-4 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                    <h3 class="text-xl font-bold mb-2 text-accent">Código HTML</h3>
+                    <textarea id="htmlEditor" class="w-full h-64 bg-dark text-gray-200 p-4 rounded-lg font-mono border border-gray-800 focus:border-accent focus:outline-none transition-colors duration-300" placeholder="Escribe tu código HTML aquí..."></textarea>
+                </div>
+                <div class="bg-darker p-4 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                    <h3 class="text-xl font-bold mb-2 text-accent">Resultado</h3>
+                    <div id="htmlResult" class="w-full h-64 bg-white text-black p-4 rounded-lg overflow-auto"></div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <button id="runCode" class="bg-accent hover:bg-accent/80 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg">Ejecutar código</button>
+                <button id="resetCode" class="ml-2 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg">Reiniciar</button>
+            </div>
+            
+            <div class="mt-6">
+                <h3 class="text-xl font-bold mb-2 text-accent">Ejemplos para probar:</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button class="example-btn bg-darker hover:bg-dark p-3 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 transform hover:scale-105" data-code="<h1>Mi primer título</h1>\n<p>Este es un párrafo de ejemplo.</p>">Título y párrafo</button>
+                    <button class="example-btn bg-darker hover:bg-dark p-3 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 transform hover:scale-105" data-code="<ul>\n  <li>Elemento 1</li>\n  <li>Elemento 2</li>\n  <li>Elemento 3</li>\n</ul>">Lista no ordenada</button>
+                    <button class="example-btn bg-darker hover:bg-dark p-3 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 transform hover:scale-105" data-code="<a href='https://www.google.com'>Visita Google</a>">Enlace</button>
+                </div>
+            </div>
+        </section>
+        <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'html';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-html.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+    </main>
+
+    <footer class="bg-darker py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <p>Aprende HTML - Etiquetas básicas para principiantes</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a href="#" class="text-gray-400 hover:text-accent transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-accent transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                    </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-accent transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const htmlEditor = document.getElementById('htmlEditor');
+            const htmlResult = document.getElementById('htmlResult');
+            const runCodeBtn = document.getElementById('runCode');
+            const resetCodeBtn = document.getElementById('resetCode');
+            const exampleBtns = document.querySelectorAll('.example-btn');
+
+            menuBtn.addEventListener('click', function() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+
+            function updateResult() {
+                htmlResult.innerHTML = htmlEditor.value;
+            }
+
+            runCodeBtn.addEventListener('click', updateResult);
+
+            resetCodeBtn.addEventListener('click', function() {
+                htmlEditor.value = '';
+                htmlResult.innerHTML = '';
+            });
+
+            exampleBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    htmlEditor.value = this.getAttribute('data-code');
+                    updateResult();
+                });
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        if (!mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+
+            // Añadir efecto de escritura automática en el editor
+            setTimeout(() => {
+                const demoCode = "<h1>Bienvenido a HTML</h1>\n<p>¡Prueba a escribir tu código aquí!</p>";
+                let i = 0;
+                const typeWriter = () => {
+                    if (i < demoCode.length) {
+                        htmlEditor.value += demoCode.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 50);
+                    } else {
+                        updateResult();
+                    }
+                };
+                typeWriter();
+            }, 1000);
+
+            // Añadir efecto de pulso a los elementos importantes
+            const pulseElements = document.querySelectorAll('h2.text-accent');
+            pulseElements.forEach(el => {
+                el.classList.add('animate-pulse');
+            });
+        });
+    </script>
+</body>
+</html>

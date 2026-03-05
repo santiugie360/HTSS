@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios en HTML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0f1a',
+                        darker: '#050a14',
+                        accent: '#ff6b00'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation:hover {
+            animation: float 2s ease-in-out infinite;
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+        }
+        .scale-effect:hover {
+            transform: scale(1.03);
+        }
+        .rotate-effect:hover .icon-container {
+            transform: rotate(10deg);
+        }
+        .code-block {
+            position: relative;
+            overflow: hidden;
+        }
+        .code-block::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 70%, #050a14);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .code-block:hover::before {
+            opacity: 1;
+        }
+        .slider {
+            -webkit-appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            background: #1f2937;
+            outline: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff6b00;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff6b00;
+            cursor: pointer;
+        }
+        .option-tag {
+            transition: all 0.2s ease;
+        }
+        .option-tag:hover {
+            background-color: rgba(255, 107, 0, 0.2);
+        }
+        .option-tag.active {
+            background-color: rgba(255, 107, 0, 0.3);
+            border-color: #ff6b00;
+        }
+        .form-element-card {
+            transition: all 0.3s ease;
+        }
+        .form-element-card:hover {
+            transform: translateY(-5px);
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #ff6b00;
+            color: white;
+        }
+        .form-preview {
+            transition: all 0.3s ease;
+        }
+        .form-preview-element {
+            transition: all 0.3s ease;
+            border: 2px dashed transparent;
+        }
+        .form-preview-element:hover {
+            border-color: #ff6b00;
+        }
+        .form-builder-element {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .form-builder-element:hover {
+            background-color: rgba(255, 107, 0, 0.1);
+        }
+        .form-builder-element.selected {
+            background-color: rgba(255, 107, 0, 0.2);
+            border-color: #ff6b00;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        .checkmark {
+            height: 20px;
+            width: 20px;
+            background-color: #1f2937;
+            border-radius: 4px;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .checkbox-container:hover .checkmark {
+            background-color: #374151;
+        }
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: #ff6b00;
+        }
+        .checkmark:after {
+            content: "";
+            display: none;
+        }
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+        .checkbox-container .checkmark:after {
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+    <header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="s-html.html"><h1 class="text-2xl font-bold">HTML<span class="text-accent">Formularios</span></h1></a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                    <a href="#etiqueta-form" class="hover:text-accent transition-colors duration-300">Etiqueta Form</a>
+                    <a href="#campos-entrada" class="hover:text-accent transition-colors duration-300">Campos de Entrada</a>
+                    <a href="#elementos-form" class="hover:text-accent transition-colors duration-300">Elementos de Formulario</a>
+                    <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+                </div>
+                <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+                <a href="#etiqueta-form" class="block py-2 hover:text-accent transition-colors duration-300">Etiqueta Form</a>
+                <a href="#campos-entrada" class="block py-2 hover:text-accent transition-colors duration-300">Campos de Entrada</a>
+                <a href="#elementos-form" class="block py-2 hover:text-accent transition-colors duration-300">Elementos de Formulario</a>
+                <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="text-center py-16">
+            <h1 class="text-5xl font-bold mb-4">Formularios en <span class="text-accent">HTML</span></h1>
+            <p class="text-xl max-w-3xl mx-auto">Aprende a crear formularios interactivos para recopilar información de los usuarios</p>
+        </section>
+
+        <section id="introduccion" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Introducción a los Formularios</h2>
+            <p class="mb-8 text-lg leading-relaxed">Los formularios son elementos fundamentales en la web que permiten a los usuarios interactuar con las páginas y enviar información. Desde inicios de sesión hasta encuestas, los formularios son la principal herramienta para la recopilación de datos.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation h-full">
+                    <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-accent">Recopilación de Datos</h3>
+                    <p class="text-base">Los formularios permiten recopilar información de los usuarios de manera estructurada y organizada para su posterior procesamiento.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect rotate-effect h-full">
+                    <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-accent">Interactividad</h3>
+                    <p class="text-base">Proporcionan una forma directa de interacción entre el usuario y la aplicación web, mejorando la experiencia del usuario.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation h-full">
+                    <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-accent">Validación</h3>
+                    <p class="text-base">Permiten implementar validaciones para asegurar que los datos ingresados cumplen con los requisitos necesarios antes de ser enviados.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="etiqueta-form" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">La Etiqueta &lt;form&gt;</h2>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Estructura básica</h3>
+                <div class="code-block mb-6">
+                    <pre class="text-gray-300 overflow-x-auto text-lg"><code>&lt;form action="/procesar-formulario" method="post"&gt;
+  &lt;!-- Elementos del formulario --&gt;
+  &lt;input type="text" name="nombre"&gt;
+  &lt;input type="submit" value="Enviar"&gt;
+&lt;/form&gt;</code></pre>
+                </div>
+                <p class="text-lg mb-6">La etiqueta <code class="bg-dark px-2 py-1 rounded border border-gray-800">&lt;form&gt;</code> es el contenedor principal para todos los elementos de un formulario. Define un formulario que se utiliza para recopilar datos de entrada del usuario.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Características principales:</h4>
+                        <ul class="list-disc pl-6 space-y-3 text-lg">
+                            <li>Actúa como contenedor para todos los controles de formulario</li>
+                            <li>Define cómo y dónde se enviarán los datos</li>
+                            <li>Permite agrupar elementos relacionados</li>
+                            <li>Facilita la validación de datos</li>
+                            <li>Mejora la accesibilidad y la experiencia del usuario</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-6 rounded-lg flex flex-col items-center justify-center">
+                        <div class="w-full max-w-md bg-white p-6 rounded-lg text-gray-800">
+                            <h5 class="text-lg font-bold mb-4">Ejemplo de Formulario</h5>
+                            <form>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium mb-1">Nombre:</label>
+                                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Tu nombre">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium mb-1">Email:</label>
+                                    <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="tu@email.com">
+                                </div>
+                                <button type="submit" class="bg-accent text-white px-4 py-2 rounded-md">Enviar</button>
+                            </form>
+                        </div>
+                        <p class="text-center text-sm text-gray-400 mt-4">Ejemplo visual de un formulario básico</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos principales</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">1</span>
+                                </span>
+                                <span>action</span>
+                            </h4>
+                            <p class="mb-3">Especifica la URL a la que se enviarán los datos del formulario cuando se envíe.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;form action="/procesar-datos.php"&gt;...&lt;/form&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Si se omite, los datos se envían a la página actual.</p>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">2</span>
+                                </span>
+                                <span>method</span>
+                            </h4>
+                            <p class="mb-3">Define el método HTTP para enviar los datos del formulario.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;form method="post"&gt;...&lt;/form&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Valores comunes: "get" (por defecto) y "post".</p>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">3</span>
+                                </span>
+                                <span>name</span>
+                            </h4>
+                            <p class="mb-3">Especifica un nombre para el formulario, útil para referenciarlo desde scripts.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;form name="registro"&gt;...&lt;/form&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos adicionales</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">4</span>
+                                </span>
+                                <span>enctype</span>
+                            </h4>
+                            <p class="mb-3">Especifica cómo se deben codificar los datos del formulario al enviarlos.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;form enctype="multipart/form-data"&gt;...&lt;/form&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Necesario cuando se incluyen archivos en el formulario.</p>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">5</span>
+                                </span>
+                                <span>target</span>
+                            </h4>
+                            <p class="mb-3">Especifica dónde mostrar la respuesta recibida después de enviar el formulario.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;form target="_blank"&gt;...&lt;/form&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Valores: _blank, _self, _parent, _top, o nombre de un iframe.</p>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">6</span>
+                                </span>
+                                <span>autocomplete</span>
+                            </h4>
+                            <p class="mb-3">Indica si el formulario debe tener la función de autocompletado activada.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;form autocomplete="off"&gt;...&lt;/form&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Valores: "on" (por defecto) u "off".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Métodos HTTP: GET vs POST</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-dark p-6 rounded-lg">
+                        <h4 class="text-xl font-bold mb-4 text-accent">GET</h4>
+                        <ul class="list-disc pl-6 space-y-3">
+                            <li>Los datos se envían como parte de la URL</li>
+                            <li>Visible en la barra de direcciones del navegador</li>
+                            <li>Limitado a aproximadamente 2000 caracteres</li>
+                            <li>No seguro para datos sensibles</li>
+                            <li>Se puede marcar como favorito</li>
+                            <li>Ideal para búsquedas y filtros</li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-darker rounded-lg">
+                            <p class="text-sm">Ejemplo de URL con método GET:</p>
+                            <code class="text-xs text-gray-300">https://ejemplo.com/buscar?q=html&categoria=web</code>
+                        </div>
+                    </div>
+                    <div class="bg-dark p-6 rounded-lg">
+                        <h4 class="text-xl font-bold mb-4 text-accent">POST</h4>
+                        <ul class="list-disc pl-6 space-y-3">
+                            <li>Los datos se envían en el cuerpo de la solicitud HTTP</li>
+                            <li>No visible en la URL</li>
+                            <li>Sin limitación de tamaño</li>
+                            <li>Más seguro para datos sensibles</li>
+                            <li>No se puede marcar como favorito</li>
+                            <li>Ideal para envío de formularios con datos personales</li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-darker rounded-lg">
+                            <p class="text-sm">Ejemplo de código con método POST:</p>
+                            <code class="text-xs text-gray-300">&lt;form method="post" action="/procesar"&gt;...&lt;/form&gt;</code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-dark rounded-lg">
+                    <h4 class="text-lg font-bold mb-2">¿Cuándo usar cada método?</h4>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>GET:</strong> Para operaciones de solo lectura, como búsquedas o filtros.</li>
+                        <li><strong>POST:</strong> Para operaciones que modifican datos, envían información sensible o archivos.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="campos-entrada" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Campos de Entrada</h2>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">La Etiqueta &lt;input&gt;</h3>
+                <div class="code-block mb-6">
+                    <pre class="text-gray-300 overflow-x-auto text-lg"><code>&lt;input type="text" name="nombre" placeholder="Escribe tu nombre"&gt;</code></pre>
+                </div>
+                <p class="text-lg mb-6">La etiqueta <code class="bg-dark px-2 py-1 rounded border border-gray-800">&lt;input&gt;</code> es el elemento más utilizado en formularios. Crea diferentes tipos de controles de entrada dependiendo del atributo <code class="bg-dark px-2 py-1 rounded border border-gray-800">type</code>.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Atributos comunes:</h4>
+                        <ul class="list-disc pl-6 space-y-3 text-lg">
+                            <li><strong>type:</strong> Define el tipo de campo (text, password, email, etc.)</li>
+                            <li><strong>name:</strong> Identifica el campo cuando se envía el formulario</li>
+                            <li><strong>value:</strong> Especifica el valor inicial del campo</li>
+                            <li><strong>placeholder:</strong> Muestra un texto de ejemplo en el campo</li>
+                            <li><strong>required:</strong> Indica que el campo es obligatorio</li>
+                            <li><strong>disabled:</strong> Desactiva el campo</li>
+                            <li><strong>readonly:</strong> Hace que el campo sea de solo lectura</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg text-gray-800">
+                        <h4 class="text-xl font-bold mb-4">Ejemplos:</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Campo de texto:</label>
+                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Escribe aquí">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Contraseña:</label>
+                                <input type="password" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Contraseña">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Email:</label>
+                                <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="tu@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Número:</label>
+                                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="123">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Tipos de Input: Texto</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">1</span>
+                                </span>
+                                <span>text</span>
+                            </h4>
+                            <p class="mb-3">Campo básico para entrada de texto de una sola línea.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="text" name="nombre" placeholder="Tu nombre"&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Tu nombre">
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">2</span>
+                                </span>
+                                <span>password</span>
+                            </h4>
+                            <p class="mb-3">Campo para contraseñas, oculta los caracteres ingresados.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="password" name="clave" placeholder="Contraseña"&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <input type="password" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Contraseña">
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">3</span>
+                                </span>
+                                <span>email</span>
+                            </h4>
+                            <p class="mb-3">Campo para direcciones de correo electrónico con validación básica.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="email" name="correo" placeholder="tu@email.com"&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="tu@email.com">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Tipos de Input: Numéricos</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">4</span>
+                                </span>
+                                <span>number</span>
+                            </h4>
+                            <p class="mb-3">Campo para valores numéricos con controles para incrementar/decrementar.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="number" name="edad" min="18" max="100"&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md" min="18" max="100" placeholder="Edad">
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">5</span>
+                                </span>
+                                <span>range</span>
+                            </h4>
+                            <p class="mb-3">Control deslizante para seleccionar un valor dentro de un rango.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="range" name="volumen" min="0" max="100" step="10"&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <input type="range" title="." class="w-full" min="0" max="100" step="10">
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">6</span>
+                                </span>
+                                <span>date</span>
+                            </h4>
+                            <p class="mb-3">Campo para seleccionar una fecha con un selector de calendario.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="date" name="fecha_nacimiento"&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <input type="date" title="." class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Tipos de Input: Selección</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">7</span>
+                                </span>
+                                <span>checkbox</span>
+                            </h4>
+                            <p class="mb-3">Casilla de verificación que permite seleccionar múltiples opciones.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="checkbox" name="acepto" id="acepto"&gt;
+&lt;label for="acepto"&gt;Acepto los términos&lt;/label&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="demo-checkbox" class="mr-2">
+                                    <label for="demo-checkbox">Acepto los términos</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">8</span>
+                                </span>
+                                <span>radio</span>
+                            </h4>
+                            <p class="mb-3">Botón de opción que permite seleccionar una sola opción de un grupo.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="radio" name="genero" id="masculino" value="M"&gt;
+&lt;label for="masculino"&gt;Masculino&lt;/label&gt;
+&lt;input type="radio" name="genero" id="femenino" value="F"&gt;
+&lt;label for="femenino"&gt;Femenino&lt;/label&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <div class="flex space-x-4">
+                                    <div class="flex items-center">
+                                        <input type="radio" id="demo-radio-1" name="demo-radio" class="mr-2">
+                                        <label for="demo-radio-1">Masculino</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="radio" id="demo-radio-2" name="demo-radio" class="mr-2">
+                                        <label for="demo-radio-2">Femenino</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">9</span>
+                                </span>
+                                <span>color</span>
+                            </h4>
+                            <p class="mb-3">Selector de color que muestra una paleta de colores.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="color" name="color_favorito" value="#ff6b00"&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <input type="color" title="." value="#ff6b00" class="w-12 h-10">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Tipos de Input: Especiales</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">10</span>
+                                </span>
+                                <span>file</span>
+                            </h4>
+                            <p class="mb-3">Campo para seleccionar y subir archivos.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="file" name="documento" accept=".pdf,.doc"&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                                <input type="file" title="." class="w-full">
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">11</span>
+                                </span>
+                                <span>hidden</span>
+                            </h4>
+                            <p class="mb-3">Campo oculto que no se muestra pero envía datos con el formulario.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="hidden" name="id_usuario" value="12345"&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Este campo no es visible para el usuario pero envía el valor al servidor.</p>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">12</span>
+                                </span>
+                                <span>submit y reset</span>
+                            </h4>
+                            <p class="mb-3">Botones para enviar o reiniciar el formulario.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="submit" value="Enviar"&gt;
+&lt;input type="reset" value="Limpiar"&gt;</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded-lg text-gray-800 flex space-x-2">
+                                <input type="submit" value="Enviar" class="px-4 py-2 bg-accent text-white rounded-md">
+                                <input type="reset" value="Limpiar" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Atributos de Validación</h3>
+                
+                <p class="mb-6 text-lg">HTML5 introdujo varios atributos que permiten validar los datos del formulario directamente en el navegador, sin necesidad de JavaScript.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">required</h4>
+                        <p class="mb-3">Especifica que un campo debe ser completado antes de enviar el formulario.</p>
+                        <div class="code-block mb-3">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="text" name="usuario" required&gt;</code></pre>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg text-gray-800">
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Campo requerido" required>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">pattern</h4>
+                        <p class="mb-3">Define un patrón (expresión regular) que debe cumplir el valor del campo.</p>
+                        <div class="code-block mb-3">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;input type="text" name="codigo" pattern="[A-Z]{3}[0-9]{4}" 
+       placeholder="Formato: ABC1234"&gt;</code></pre>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg text-gray-800">
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" pattern="[A-Z]{3}[0-9]{4}" placeholder="Formato: ABC1234">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="elementos-form" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Elementos de Formulario</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Etiqueta &lt;label&gt;</h3>
+                    
+                    <p class="mb-6 text-lg">Define una etiqueta para un elemento de formulario. Mejora la usabilidad y accesibilidad.</p>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <h4 class="text-xl font-bold mb-3">Uso básico</h4>
+                        <div class="code-block">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;label for="nombre"&gt;Nombre:&lt;/label&gt;
+&lt;input type="text" id="nombre" name="nombre"&gt;</code></pre>
+                        </div>
+                        <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                            <label for="demo-nombre" class="block mb-1">Nombre:</label>
+                            <input type="text" id="demo-nombre" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Etiqueta &lt;textarea&gt;</h3>
+                    
+                    <p class="mb-6 text-lg">Crea un campo de texto multilínea para ingresar texto largo.</p>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <h4 class="text-xl font-bold mb-3">Sintaxis básica</h4>
+                        <div class="code-block">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;textarea name="comentario" rows="4" cols="50"&gt;
+Texto inicial (opcional)
+&lt;/textarea&gt;</code></pre>
+                        </div>
+                        <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md" rows="4" placeholder="Escribe tu comentario aquí..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Etiqueta &lt;select&gt;</h3>
+                    
+                    <p class="mb-6 text-lg">Crea una lista desplegable que permite seleccionar una o varias opciones.</p>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <h4 class="text-xl font-bold mb-3">Lista desplegable simple</h4>
+                        <div class="code-block">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;select name="pais"&gt;
+  &lt;option value="es"&gt;España&lt;/option&gt;
+  &lt;option value="mx"&gt;México&lt;/option&gt;
+  &lt;option value="ar"&gt;Argentina&lt;/option&gt;
+  &lt;option value="co"&gt;Colombia&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+                        </div>
+                        <div class="mt-3 bg-white p-3 rounded-lg text-gray-800">
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md" title=".">
+                                <option value="es">España</option>
+                                <option value="mx">México</option>
+                                <option value="ar">Argentina</option>
+                                <option value="co">Colombia</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Etiqueta &lt;button&gt;</h3>
+                    
+                    <p class="mb-6 text-lg">Crea un botón que puede contener texto y elementos HTML, a diferencia de &lt;input type="button"&gt;.</p>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <h4 class="text-xl font-bold mb-3">Tipos de botones</h4>
+                        <div class="code-block">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;button type="submit"&gt;Enviar formulario&lt;/button&gt;
+&lt;button type="reset"&gt;Reiniciar formulario&lt;/button&gt;
+&lt;button type="button"&gt;Botón genérico&lt;/button&gt;</code></pre>
+                        </div>
+                        <div class="mt-3 bg-white p-3 rounded-lg text-gray-800 flex space-x-2">
+                            <button type="submit" class="px-4 py-2 bg-accent text-white rounded-md">Enviar formulario</button>
+                            <button type="reset" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Reiniciar formulario</button>
+                            <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded-md">Botón genérico</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="actividad" class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Constructor de Formularios</h2>
+            
+            <p class="mb-8 text-lg leading-relaxed">Crea tu propio formulario personalizado seleccionando diferentes tipos de campos y configurando sus propiedades.</p>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-1">
+                        <h3 class="text-2xl font-bold mb-6 text-accent">Elementos Disponibles</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="form-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="text">
+                                <div class="flex items-center">
+                                    <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold">Campo de Texto</p>
+                                        <p class="text-sm text-gray-400">Entrada de texto simple</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="email">
+                                <div class="flex items-center">
+                                    <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold">Email</p>
+                                        <p class="text-sm text-gray-400">Campo para correo electrónico</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="checkbox">
+                                <div class="flex items-center">
+                                    <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold">Casilla de Verificación</p>
+                                        <p class="text-sm text-gray-400">Opción que se puede marcar</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="button">
+                                <div class="flex items-center">
+                                    <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold">Botón</p>
+                                        <p class="text-sm text-gray-400">Botón de envío o acción</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-2">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-2xl font-bold text-accent">Vista Previa del Formulario</h3>
+                            <button id="clear-form" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
+                                Limpiar Formulario
+                            </button>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg text-gray-800">
+                            <form id="form-preview" class="space-y-4">
+                                <div class="text-center text-gray-500 py-8" id="empty-form-message">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <p class="text-lg">Arrastra elementos desde la izquierda para construir tu formulario</p>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h3 class="text-xl font-bold mb-4 text-accent">Código HTML Generado</h3>
+                            <div class="bg-dark p-5 rounded-lg">
+                                <pre class="text-gray-300 overflow-x-auto"><code id="form-code">&lt;form&gt;
+  &lt;!-- Arrastra elementos para generar el código --&gt;
+&lt;/form&gt;</code></pre>
+                            </div>
+                            <button id="copy-form-code" class="mt-4 bg-accent hover:bg-accent/80 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                                Copiar código
+                            </button>
+                            <span id="copy-form-message" class="ml-3 text-green-500 hidden">¡Código copiado!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'html';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-html.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+    </main>
+
+    <footer class="bg-darker py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <p>Formularios en HTML - Guía completa para principiantes</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            menuBtn.addEventListener('click', function() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        if (!mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+            
+            // Form Builder
+            const formBuilderElements = document.querySelectorAll('.form-builder-element');
+            const formPreview = document.getElementById('form-preview');
+            const formCode = document.getElementById('form-code');
+            const emptyFormMessage = document.getElementById('empty-form-message');
+            const clearFormBtn = document.getElementById('clear-form');
+            const copyFormCodeBtn = document.getElementById('copy-form-code');
+            const copyFormMessage = document.getElementById('copy-form-message');
+            
+            let formElements = [];
+            let elementCounter = 0;
+            
+            // Add form elements
+            formBuilderElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    addFormElement(type);
+                });
+            });
+            
+            // Clear form
+            clearFormBtn.addEventListener('click', function() {
+                formElements = [];
+                elementCounter = 0;
+                updateFormPreview();
+                updateFormCode();
+            });
+            
+            // Copy form code
+            copyFormCodeBtn.addEventListener('click', function() {
+                const textarea = document.createElement('textarea');
+                textarea.value = formCode.textContent;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                copyFormMessage.classList.remove('hidden');
+                setTimeout(() => {
+                    copyFormMessage.classList.add('hidden');
+                }, 2000);
+            });
+            
+            // Add form element
+            function addFormElement(type) {
+                elementCounter++;
+                const id = `element-${elementCounter}`;
+                
+                let element = {
+                    id: id,
+                    type: type,
+                    label: getDefaultLabel(type),
+                    name: getDefaultName(type),
+                    required: false,
+                    placeholder: getDefaultPlaceholder(type),
+                    options: type === 'select' ? ['Opción 1', 'Opción 2', 'Opción 3'] : [],
+                    value: type === 'button' ? 'Enviar' : ''
+                };
+                
+                formElements.push(element);
+                updateFormPreview();
+                updateFormCode();
+            }
+            
+            // Update form preview
+            function updateFormPreview() {
+                if (formElements.length === 0) {
+                    formPreview.innerHTML = '';
+                    formPreview.appendChild(emptyFormMessage);
+                    return;
+                }
+                
+                formPreview.innerHTML = '';
+                
+                formElements.forEach(element => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'form-preview-element p-3 rounded-lg';
+                    wrapper.id = element.id;
+                    
+                    switch (element.type) {
+                        case 'text':
+                        case 'email':
+                            wrapper.innerHTML = `
+                                <label class="block text-sm font-medium mb-1">${element.label}:</label>
+                                <input type="${element.type}" name="${element.name}" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="${element.placeholder}" ${element.required ? 'required' : ''}>
+                            `;
+                            break;
+                            
+                        case 'checkbox':
+                            wrapper.innerHTML = `
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="${element.id}-input" name="${element.name}" class="mr-2" ${element.required ? 'required' : ''}>
+                                    <label for="${element.id}-input">${element.label}</label>
+                                </div>
+                            `;
+                            break;
+                            
+                        case 'button':
+                            wrapper.innerHTML = `
+                                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">${element.value}</button>
+                            `;
+                            break;
+                    }
+                    
+                    // Add delete button
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'absolute top-2 right-2 text-red-500 hover:text-red-700';
+                    deleteBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    `;
+                    deleteBtn.addEventListener('click', function() {
+                        removeFormElement(element.id);
+                    });
+                    
+                    wrapper.style.position = 'relative';
+                    wrapper.appendChild(deleteBtn);
+                    
+                    formPreview.appendChild(wrapper);
+                });
+            }
+            
+            // Update form code
+            function updateFormCode() {
+                if (formElements.length === 0) {
+                    formCode.textContent = '<form>\n  <!-- Arrastra elementos para generar el código -->\n</form>';
+                    return;
+                }
+                
+                let code = '<form action="/procesar-formulario" method="post">\n';
+                
+                formElements.forEach(element => {
+                    switch (element.type) {
+                        case 'text':
+                        case 'email':
+                            code += `  <div>\n`;
+                            code += `    <label for="${element.id}-input">${element.label}:</label>\n`;
+                            code += `    <input type="${element.type}" id="${element.id}-input" name="${element.name}" placeholder="${element.placeholder}"${element.required ? ' required' : ''}>\n`;
+                            code += `  </div>\n`;
+                            break;
+                            
+                        case 'checkbox':
+                            code += `  <div>\n`;
+                            code += `    <input type="checkbox" id="${element.id}-input" name="${element.name}"${element.required ? ' required' : ''}>\n`;
+                            code += `    <label for="${element.id}-input">${element.label}</label>\n`;
+                            code += `  </div>\n`;
+                            break;
+                            
+                        case 'button':
+                            code += `  <button type="submit">${element.value}</button>\n`;
+                            break;
+                    }
+                });
+                
+                code += '</form>';
+                formCode.textContent = code;
+            }
+            
+            // Remove form element
+            function removeFormElement(id) {
+                formElements = formElements.filter(element => element.id !== id);
+                updateFormPreview();
+                updateFormCode();
+            }
+            
+            // Helper functions
+            function getDefaultLabel(type) {
+                switch (type) {
+                    case 'text': return 'Nombre';
+                    case 'email': return 'Correo electrónico';
+                    case 'checkbox': return 'Acepto los términos';
+                    default: return 'Etiqueta';
+                }
+            }
+            
+            function getDefaultName(type) {
+                switch (type) {
+                    case 'text': return 'nombre';
+                    case 'email': return 'email';
+                    case 'checkbox': return 'acepto';
+                    default: return 'campo';
+                }
+            }
+            
+            function getDefaultPlaceholder(type) {
+                switch (type) {
+                    case 'text': return 'Escribe tu nombre';
+                    case 'email': return 'tu@email.com';
+                    default: return '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

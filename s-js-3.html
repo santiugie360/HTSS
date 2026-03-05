@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript: Operadores y Expresiones</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                dark: '#0a0f1a',
+                darker: '#050a14',
+                accent: '#FFD700', // Amarillo dorado
+                accentLight: '#FFEB99', // Amarillo claro
+                accentDark: '#B8860B' // Amarillo oscuro (dark goldenrod)
+            }
+        }
+    }
+}
+</script>
+<style>
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+.float-animation:hover {
+    animation: float 2s ease-in-out infinite;
+}
+.glow-effect:hover {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+.scale-effect:hover {
+    transform: scale(1.03);
+}
+.rotate-effect:hover .icon-container {
+    transform: rotate(10deg);
+}
+.code-block {
+    position: relative;
+    overflow: hidden;
+}
+.js-slider {
+    -webkit-appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: #1f2937;
+    outline: none;
+}
+.js-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #FFD700;
+    cursor: pointer;
+}
+.js-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #FFD700;
+    cursor: pointer;
+}
+.js-container {
+    border: 2px dashed rgba(255, 215, 0, 0.3);
+    background-color: rgba(255, 215, 0, 0.05);
+    transition: all 0.3s ease;
+}
+.js-item {
+    background-color: rgba(255, 215, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    transition: all 0.3s ease;
+}
+.js-property-button {
+    transition: all 0.3s ease;
+}
+.js-property-button.active {
+    background-color: #FFD700;
+    color: #0a0f1a;
+}
+.code-editor {
+    font-family: monospace;
+    background-color: #1a1a1a;
+    color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #333;
+    resize: none;
+    width: 100%;
+    height: 150px;
+    tab-size: 2;
+}
+.console-output {
+    font-family: monospace;
+    background-color: #0a0a0a;
+    color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #333;
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.console-output .error {
+    color: #ff6b6b;
+}
+.console-output .success {
+    color: #51cf66;
+}
+.console-output .info {
+    color: #FFD700;
+}
+.quiz-option {
+    transition: all 0.3s ease;
+}
+.quiz-option:hover {
+    background-color: rgba(255, 215, 0, 0.1);
+}
+.quiz-option.selected {
+    background-color: rgba(255, 215, 0, 0.3);
+    border-color: #FFD700;
+}
+.quiz-option.correct {
+    background-color: rgba(80, 200, 120, 0.3);
+    border-color: #50c878;
+}
+.quiz-option.incorrect {
+    background-color: rgba(255, 107, 107, 0.3);
+    border-color: #ff6b6b;
+}
+.calculator {
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+.calculator-display {
+    font-family: monospace;
+    background-color: #0a0a0a;
+    color: #f8f8f8;
+    padding: 1rem;
+    text-align: right;
+    font-size: 1.5rem;
+    min-height: 60px;
+}
+.calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background-color: #333;
+}
+.calculator-button {
+    background-color: #1a1a1a;
+    border: none;
+    color: #f8f8f8;
+    font-size: 1.25rem;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+.calculator-button:hover {
+    background-color: #333;
+}
+.calculator-button.operator {
+    background-color: #2a2a2a;
+}
+.calculator-button.equals {
+    background-color: #FFD700;
+    color: #0a0f1a;
+}
+.calculator-button.equals:hover {
+    background-color: #B8860B;
+}
+</style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+<header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+<nav class="container mx-auto px-4 py-4">
+    <div class="flex justify-between items-center">
+        <a href="s-js.html"><h1 class="text-2xl font-bold">JS<span class="text-accent">Operadores</span></h1></a>
+        <div class="hidden md:flex space-x-6">
+            <a href="#aritmeticos" class="hover:text-accent transition-colors duration-300">Aritméticos</a>
+            <a href="#comparacion" class="hover:text-accent transition-colors duration-300">Comparación</a>
+            <a href="#logicos" class="hover:text-accent transition-colors duration-300">Lógicos</a>
+            <a href="#asignacion" class="hover:text-accent transition-colors duration-300">Asignación</a>
+            <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+        </div>
+        <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+        <a href="#aritmeticos" class="block py-2 hover:text-accent transition-colors duration-300">Aritméticos</a>
+        <a href="#comparacion" class="block py-2 hover:text-accent transition-colors duration-300">Comparación</a>
+        <a href="#logicos" class="block py-2 hover:text-accent transition-colors duration-300">Lógicos</a>
+        <a href="#asignacion" class="block py-2 hover:text-accent transition-colors duration-300">Asignación</a>
+        <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+    </div>
+</nav>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+<section class="text-center py-16">
+    <h1 class="text-5xl font-bold mb-4">Operadores y <span class="text-accent">Expresiones</span></h1>
+    <p class="text-xl max-w-3xl mx-auto">Aprende a realizar operaciones y crear expresiones en JavaScript</p>
+</section>
+
+<section id="aritmeticos" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Operadores Aritméticos</h2>
+    <p class="mb-8 text-lg leading-relaxed">Los operadores aritméticos te permiten realizar operaciones matemáticas básicas como suma, resta, multiplicación y división. Son como las operaciones que aprendiste en la escuela, pero aplicadas a la programación.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-2xl text-accent font-bold">+</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Suma (+)</h3>
+            <p class="text-base mb-3">Suma dos valores o concatena strings.</p>
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let suma = 5 + 3;     // 8
+let texto = "Hola " + "Mundo"; // "Hola Mundo"</code></pre>
+            </div>
+            <p class="text-sm">Cuidado: si sumas un número y un string, JavaScript convertirá el número a string y los concatenará.</p>
+        </div>
+        
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-2xl text-accent font-bold">-</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Resta (-)</h3>
+            <p class="text-base mb-3">Resta el segundo valor del primero.</p>
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let resta = 10 - 4;     // 6
+let negativo = -5;      // Número negativo</code></pre>
+            </div>
+            <p class="text-sm">También se usa como operador unario para convertir un valor a su versión negativa.</p>
+        </div>
+        
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-2xl text-accent font-bold">*</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Multiplicación (*)</h3>
+            <p class="text-base mb-3">Multiplica dos valores.</p>
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let producto = 4 * 5;     // 20
+let area = ancho * alto;  // Calcula área</code></pre>
+            </div>
+            <p class="text-sm">Útil para cálculos matemáticos como áreas, volúmenes o escalas.</p>
+        </div>
+        
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-2xl text-accent font-bold">/</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">División (/)</h3>
+            <p class="text-base mb-3">Divide el primer valor entre el segundo.</p>
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let division = 20 / 4;     // 5
+let decimal = 10 / 3;      // 3.3333...</code></pre>
+            </div>
+            <p class="text-sm">A diferencia de otros lenguajes, en JavaScript la división siempre devuelve un número decimal (float), incluso si el resultado es un número entero.</p>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-2xl text-accent font-bold">%</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Módulo (%)</h3>
+            <p class="text-base mb-3">Devuelve el resto de la división del primer valor entre el segundo.</p>
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let resto = 10 % 3;     // 1 (10 ÷ 3 = 3 con resto 1)
+let esPar = numero % 2 === 0; // true si es par</code></pre>
+            </div>
+            <p class="text-sm">Muy útil para determinar si un número es par o impar, o para operaciones cíclicas (como rotar entre 0-359 grados).</p>
+        </div>
+        
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">**</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Exponenciación (**)</h3>
+            <p class="text-base mb-3">Eleva el primer valor a la potencia del segundo valor.</p>
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let cuadrado = 5 ** 2;     // 25 (5 al cuadrado)
+let cubo = 2 ** 3;         // 8 (2 al cubo)</code></pre>
+            </div>
+            <p class="text-sm">Es una alternativa más legible a Math.pow(base, exponente).</p>
+        </div>
+        
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">++/--</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Incremento/Decremento</h3>
+            <p class="text-base mb-3">Incrementa (++) o decrementa (--) un valor en 1.</p>
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let contador = 5;
+contador++;      // contador ahora es 6
+contador--;      // contador ahora es 5 de nuevo
+
+// Diferencia entre prefijo y sufijo
+let a = 5;
+let b = ++a;     // a = 6, b = 6 (incrementa primero)
+let c = 5;
+let d = c++;     // c = 6, d = 5 (incrementa después)</code></pre>
+            </div>
+            <p class="text-sm">Pueden usarse como prefijo (++x) o sufijo (x++), con diferente comportamiento cuando se asignan a otra variable.</p>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Precedencia de Operadores</h3>
+        
+        <p class="mb-6">Al igual que en matemáticas, JavaScript sigue un orden específico al evaluar expresiones con múltiples operadores. Esto se llama "precedencia de operadores".</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Orden de evaluación</h4>
+                <ol class="list-decimal list-inside space-y-2 pl-4">
+                    <li>Paréntesis <code>()</code></li>
+                    <li>Exponenciación <code>**</code></li>
+                    <li>Multiplicación <code>*</code>, División <code>/</code>, Módulo <code>%</code></li>
+                    <li>Suma <code>+</code>, Resta <code>-</code></li>
+                </ol>
+                <p class="mt-4 text-sm">Si dos operadores tienen la misma precedencia, se evalúan de izquierda a derecha (excepto la exponenciación, que va de derecha a izquierda).</p>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Ejemplos</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Sin paréntesis (sigue precedencia)
+let resultado1 = 2 + 3 * 4;     // 14 (no 20)
+// 3 * 4 = 12, luego 2 + 12 = 14
+
+// Con paréntesis (cambia precedencia)
+let resultado2 = (2 + 3) * 4;   // 20
+// (2 + 3) = 5, luego 5 * 4 = 20
+
+// Expresión compleja
+let resultado3 = 2 ** 3 + 4 * 5 - 6 / 2;
+// 2 ** 3 = 8, 4 * 5 = 20, 6 / 2 = 3
+// 8 + 20 - 3 = 25</code></pre>
+                </div>
+                <p class="text-sm">Cuando tengas dudas sobre el orden de evaluación, usa paréntesis para hacerlo más claro y evitar errores.</p>
+            </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+            <p class="text-amber-400"><strong>Consejo:</strong> Cuando una expresión es compleja, es mejor usar paréntesis para hacer explícito el orden de las operaciones, incluso si coincide con la precedencia por defecto. Esto hace que tu código sea más legible y menos propenso a errores.</p>
+        </div>
+    </div>
+</section>
+
+<section id="comparacion" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Operadores de Comparación</h2>
+    
+    <p class="mb-8 text-lg">Los operadores de comparación te permiten comparar dos valores y devuelven un valor booleano (true o false). Son fundamentales para tomar decisiones en tu código, como en las estructuras condicionales.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">==</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Igualdad (==)</h3>
+            
+            <p class="mb-3">Comprueba si dos valores son iguales, con conversión de tipos.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>5 == 5;       // true
+"5" == 5;     // true (convierte string a número)
+true == 1;    // true (convierte booleano a número)
+null == undefined; // true</code></pre>
+            </div>
+            
+            <p class="text-sm">JavaScript intenta convertir los valores a un tipo común antes de compararlos, lo que puede llevar a resultados inesperados.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">===</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Igualdad estricta (===)</h3>
+            
+            <p class="mb-3">Comprueba si dos valores son iguales, sin conversión de tipos.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>5 === 5;       // true
+"5" === 5;     // false (tipos diferentes)
+true === 1;    // false (tipos diferentes)
+null === undefined; // false</code></pre>
+            </div>
+            
+            <p class="text-sm">Es más seguro usar === en la mayoría de los casos para evitar conversiones inesperadas.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">!=</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Desigualdad (!=)</h3>
+            
+            <p class="mb-3">Comprueba si dos valores son diferentes, con conversión de tipos.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>5 != 8;       // true
+"5" != 5;     // false (son iguales después de conversión)
+true != 0;    // true
+null != undefined; // false (son iguales con conversión)</code></pre>
+            </div>
+            
+            <p class="text-sm">Es el opuesto del operador de igualdad (==).</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">!==</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Desigualdad estricta (!==)</h3>
+            
+            <p class="mb-3">Comprueba si dos valores son diferentes, sin conversión de tipos.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>5 !== 8;       // true
+"5" !== 5;     // true (tipos diferentes)
+true !== 1;    // true (tipos diferentes)
+null !== undefined; // true</code></pre>
+            </div>
+            
+            <p class="text-sm">Es el opuesto del operador de igualdad estricta (===).</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">&lt; &gt;</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Mayor/Menor que</h3>
+            
+            <p class="mb-3">Comparan si un valor es mayor o menor que otro.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>5 > 3;        // true (5 es mayor que 3)
+5 < 3;        // false (5 no es menor que 3)
+5 >= 5;       // true (5 es mayor o igual a 5)
+5 <= 4;       // false (5 no es menor o igual a 4)</code></pre>
+            </div>
+            
+            <p class="text-sm">También funcionan con strings, comparando alfabéticamente ("a" < "b" es true).</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">?</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Operador ternario</h3>
+            
+            <p class="mb-3">Una forma corta de escribir una condición con tres operandos.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>// condición ? valorSiVerdadero : valorSiFalso
+let edad = 20;
+let mensaje = edad >= 18 ? "Adulto" : "Menor";
+// mensaje = "Adulto"
+
+// Equivalente a:
+let mensaje2;
+if (edad >= 18) {
+  mensaje2 = "Adulto";
+} else {
+  mensaje2 = "Menor";
+}</code></pre>
+            </div>
+            
+            <p class="text-sm">Útil para asignaciones condicionales simples, pero no abuses de él para lógica compleja.</p>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Comparaciones y Tipos de Datos</h3>
+        
+        <p class="mb-6">Las comparaciones en JavaScript pueden ser confusas debido a la conversión automática de tipos. Veamos algunos casos especiales:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Comparación de strings</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Comparación alfabética (basada en Unicode)
+"a" < "b";         // true
+"apple" < "banana"; // true
+
+// Cuidado con mayúsculas y minúsculas
+"A" < "a";         // true (mayúsculas vienen antes)
+
+// Comparación de números como strings
+"10" < "2";        // true (compara caracter por caracter)
+// "1" < "2", por lo que "10" < "2"</code></pre>
+                </div>
+                <p class="text-sm">Para comparar números almacenados como strings, conviértelos primero: <code>Number("10") > Number("2")</code></p>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Casos especiales</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// null y undefined
+null == undefined;  // true
+null === undefined; // false
+
+// NaN (Not a Number)
+NaN == NaN;         // false (NaN no es igual a nada, ni a sí mismo)
+isNaN(NaN);         // true (usa esta función para verificar NaN)
+
+// Objetos
+{} == {};           // false (compara referencias, no contenido)
+let obj = {};
+obj == obj;         // true (misma referencia)</code></pre>
+                </div>
+                <p class="text-sm">Para comparar objetos por su contenido, necesitas comparar sus propiedades o usar bibliotecas como Lodash.</p>
+            </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+            <p class="text-amber-400"><strong>Buena práctica:</strong> Usa siempre === y !== en lugar de == y != para evitar sorpresas con la conversión automática de tipos. Solo usa == cuando realmente necesites la conversión de tipos (lo cual es raro).</p>
+        </div>
+    </div>
+</section>
+
+<section id="logicos" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Operadores Lógicos</h2>
+    
+    <p class="mb-8 text-lg">Los operadores lógicos te permiten combinar múltiples condiciones y trabajar con valores booleanos. Son esenciales para crear lógica compleja en tus programas.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">&&</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">AND lógico (&&)</h3>
+            
+            <p class="mb-3">Devuelve true solo si ambas condiciones son true.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>true && true;    // true
+true && false;   // false
+false && true;   // false
+false && false;  // false
+
+// Ejemplo práctico
+let edad = 25;
+let tieneID = true;
+
+if (edad >= 18 && tieneID) {
+  console.log("Puede entrar al club");
+}</code></pre>
+            </div>
+            
+            <p class="text-sm">Es como decir "ambas condiciones deben ser verdaderas". Si la primera condición es false, la segunda ni siquiera se evalúa (evaluación de cortocircuito).</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">||</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">OR lógico (||)</h3>
+            
+            <p class="mb-3">Devuelve true si al menos una de las condiciones es true.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>true || true;    // true
+true || false;   // true
+false || true;   // true
+false || false;  // false
+
+// Ejemplo práctico
+let esFeriado = false;
+let esFinDeSemana = true;
+
+if (esFeriado || esFinDeSemana) {
+  console.log("No hay que trabajar");
+}</code></pre>
+            </div>
+            
+            <p class="text-sm">Es como decir "al menos una condición debe ser verdadera". Si la primera condición es true, la segunda ni siquiera se evalúa (evaluación de cortocircuito).</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">!</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">NOT lógico (!)</h3>
+            
+            <p class="mb-3">Invierte el valor booleano, convirtiendo true en false y viceversa.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>!true;     // false
+!false;    // true
+!!true;    // true (doble negación)
+
+// Ejemplo práctico
+let estaLogueado = false;
+
+if (!estaLogueado) {
+  console.log("Por favor, inicia sesión");
+}
+
+// Conversión a booleano
+!!"Hola";  // true (string no vacío es truthy)
+!!"";      // false (string vacío es falsy)
+!!0;       // false (0 es falsy)
+!!1;       // true (números distintos de 0 son truthy)</code></pre>
+            </div>
+            
+            <p class="text-sm">Útil para negar condiciones o convertir valores a booleanos con doble negación (!!).</p>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Valores Truthy y Falsy</h3>
+        
+        <p class="mb-6">En JavaScript, cualquier valor puede ser evaluado en un contexto booleano, como en una condición if. Los valores se clasifican como "truthy" (evaluados como true) o "falsy" (evaluados como false).</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Valores Falsy</h4>
+                <p class="mb-2">Estos valores se evalúan como false:</p>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li><code>false</code> - El booleano false</li>
+                    <li><code>0</code> - El número cero</li>
+                    <li><code>-0</code> - El número cero negativo</li>
+                    <li><code>0n</code> - BigInt cero</li>
+                    <li><code>""</code>, <code>''</code>, <code>``</code> - String vacío</li>
+                    <li><code>null</code> - Ausencia de valor</li>
+                    <li><code>undefined</code> - Valor no definido</li>
+                    <li><code>NaN</code> - Not a Number</li>
+                </ul>
+                <div class="code-block mt-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>if (0) {
+  // Este código nunca se ejecuta
+}
+
+if ("") {
+  // Este código nunca se ejecuta
+}</code></pre>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Valores Truthy</h4>
+                <p class="mb-2">Todo lo demás se evalúa como true, incluyendo:</p>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li><code>true</code> - El booleano true</li>
+                    <li>Cualquier número distinto de 0 (incluso negativos)</li>
+                    <li>Cualquier string no vacío, incluso <code>"0"</code> y <code>"false"</code></li>
+                    <li>Todos los objetos y arrays, incluso vacíos <code>{}</code>, <code>[]</code></li>
+                    <li>Funciones</li>
+                </ul>
+                <div class="code-block mt-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>if ("Hola") {
+  // Este código se ejecuta
+}
+
+if ([]) {
+  // Este código se ejecuta (¡un array vacío es truthy!)
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <h4 class="text-xl font-bold mb-4 text-accent">Operadores lógicos y cortocircuito</h4>
+            <p class="mb-4">Los operadores && y || no solo devuelven valores booleanos, sino que pueden devolver el valor de uno de sus operandos:</p>
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// OR (||) devuelve el primer valor truthy o el último valor
+let nombre = nombreUsuario || "Invitado";
+// Si nombreUsuario es undefined o "", nombre será "Invitado"
+
+// AND (&&) devuelve el primer valor falsy o el último valor
+let resultado = isAdmin && eliminarUsuario();
+// eliminarUsuario() solo se ejecuta si isAdmin es true</code></pre>
+            </div>
+            <p class="text-sm">Esto se llama "evaluación de cortocircuito" y es muy útil para establecer valores por defecto o ejecutar código condicionalmente.</p>
+        </div>
+        
+        <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+            <p class="text-amber-400"><strong>Consejo:</strong> Ten cuidado con los valores falsy inesperados. Por ejemplo, 0 es falsy, lo que puede causar problemas si estás verificando un número que podría ser cero legítimamente. En esos casos, usa comparaciones explícitas como <code>if (valor !== undefined)</code>.</p>
+        </div>
+    </div>
+</section>
+
+<section id="asignacion" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Operadores de Asignación</h2>
+    
+    <p class="mb-8 text-lg">Los operadores de asignación te permiten asignar valores a variables. Además del operador básico =, JavaScript ofrece operadores compuestos que combinan una operación con la asignación.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">=</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Asignación básica (=)</h3>
+            
+            <p class="mb-3">Asigna el valor de la derecha a la variable de la izquierda.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let x = 10;
+let nombre = "Juan";
+let activo = true;</code></pre>
+            </div>
+            
+            <p class="text-sm">Es el operador de asignación más básico y común.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">+=</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Suma y asignación (+=)</h3>
+            
+            <p class="mb-3">Suma el valor de la derecha al valor actual y asigna el resultado.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let x = 5;
+x += 3;  // Equivale a: x = x + 3;
+// x ahora es 8
+
+let texto = "Hola";
+texto += " Mundo";  // texto ahora es "Hola Mundo"</code></pre>
+            </div>
+            
+            <p class="text-sm">Funciona tanto con números (suma) como con strings (concatenación).</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">-=</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Resta y asignación (-=)</h3>
+            
+            <p class="mb-3">Resta el valor de la derecha al valor actual y asigna el resultado.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let x = 10;
+x -= 4;  // Equivale a: x = x - 4;
+// x ahora es 6</code></pre>
+            </div>
+            
+            <p class="text-sm">Útil para decrementar contadores o ajustar valores numéricos.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">*=</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Multiplicación y asignación (*=)</h3>
+            
+            <p class="mb-3">Multiplica el valor actual por el valor de la derecha y asigna el resultado.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let x = 3;
+x *= 4;  // Equivale a: x = x * 4;
+// x ahora es 12</code></pre>
+            </div>
+            
+            <p class="text-sm">Útil para escalas, factores o cálculos acumulativos.</p>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">/=</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">División y asignación (/=)</h3>
+            
+            <p class="mb-3">Divide el valor actual por el valor de la derecha y asigna el resultado.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let x = 15;
+x /= 3;  // Equivale a: x = x / 3;
+// x ahora es 5</code></pre>
+            </div>
+            
+            <p class="text-sm">Útil para divisiones proporcionales o reducciones de escala.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">%=</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Módulo y asignación (%=)</h3>
+            
+            <p class="mb-3">Calcula el resto de dividir el valor actual por el valor de la derecha y asigna el resultado.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let x = 17;
+x %= 5;  // Equivale a: x = x % 5;
+// x ahora es 2 (el resto de 17 ÷ 5)</code></pre>
+            </div>
+            
+            <p class="text-sm">Útil para operaciones cíclicas o para mantener un valor dentro de un rango.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">**=</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Exponenciación y asignación (**=)</h3>
+            
+            <p class="mb-3">Eleva el valor actual a la potencia del valor de la derecha y asigna el resultado.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let x = 2;
+x **= 3;  // Equivale a: x = x ** 3;
+// x ahora es 8 (2 al cubo)</code></pre>
+            </div>
+            
+            <p class="text-sm">Útil para cálculos exponenciales o geométricos.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4 icon-container transition-transform duration-500">
+                <span class="text-xl text-accent font-bold">??=</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-accent">Asignación de coalescencia nula (??=)</h3>
+            
+            <p class="mb-3">Asigna el valor de la derecha solo si el valor actual es null o undefined.</p>
+            
+            <div class="code-block mb-3">
+                <pre class="text-gray-300 overflow-x-auto"><code>let x;
+x ??= 10;  // x era undefined, ahora es 10
+
+let y = 5;
+y ??= 20;  // y ya tenía un valor, sigue siendo 5</code></pre>
+            </div>
+            
+            <p class="text-sm">Perfecto para asignar valores por defecto solo cuando es necesario.</p>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Asignación Desestructurante</h3>
+        
+        <p class="mb-6">La asignación desestructurante es una sintaxis especial que te permite extraer datos de arrays u objetos y asignarlos a variables de forma concisa.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Desestructuración de Arrays</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Asignación básica
+const numeros = [1, 2, 3, 4, 5];
+const [primero, segundo] = numeros;
+console.log(primero);  // 1
+console.log(segundo);  // 2
+
+// Saltar elementos
+const [a, , c] = numeros;
+console.log(a, c);  // 1, 3
+
+// Resto de elementos
+const [x, y, ...resto] = numeros;
+console.log(x, y);     // 1, 2
+console.log(resto);    // [3, 4, 5]
+
+// Valores por defecto
+const [p = 10, q = 20] = [5];
+console.log(p, q);     // 5, 20</code></pre>
+                </div>
+                <p class="text-sm">Muy útil para trabajar con funciones que devuelven arrays o para extraer elementos específicos.</p>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Desestructuración de Objetos</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Asignación básica
+const persona = {
+  nombre: "Ana",
+  edad: 28,
+  ciudad: "Madrid"
+};
+
+const { nombre, edad } = persona;
+console.log(nombre);  // "Ana"
+console.log(edad);    // 28
+
+// Renombrar propiedades
+const { nombre: nombreCompleto, ciudad: ubicacion } = persona;
+console.log(nombreCompleto);  // "Ana"
+console.log(ubicacion);       // "Madrid"
+
+// Valores por defecto
+const { profesion = "Desconocida" } = persona;
+console.log(profesion);  // "Desconocida"
+
+// Resto de propiedades
+const { nombre: n, ...datos } = persona;
+console.log(n);      // "Ana"
+console.log(datos);  // { edad: 28, ciudad: "Madrid" }</code></pre>
+                </div>
+                <p class="text-sm">Excelente para extraer propiedades específicas de objetos, especialmente en parámetros de funciones.</p>
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <h4 class="text-xl font-bold mb-4 text-accent">Casos de uso prácticos</h4>
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Intercambiar variables
+let a = 5, b = 10;
+[a, b] = [b, a];
+console.log(a, b);  // 10, 5
+
+// Parámetros de función
+function mostrarInfo({ nombre, edad = 'No especificada' }) {
+  console.log(`Nombre: ${nombre}, Edad: ${edad}`);
+}
+mostrarInfo({ nombre: "Carlos" });  // "Nombre: Carlos, Edad: No especificada"
+
+// Devolver múltiples valores
+function obtenerDimensiones() {
+  return [800, 600];
+}
+const [ancho, alto] = obtenerDimensiones();
+console.log(`Ancho: ${ancho}px, Alto: ${alto}px`);  // "Ancho: 800px, Alto: 600px"</code></pre>
+            </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+            <p class="text-amber-400"><strong>Consejo:</strong> La desestructuración hace que tu código sea más limpio y legible, especialmente cuando trabajas con objetos complejos o APIs que devuelven múltiples valores. Es una característica moderna de JavaScript que vale la pena dominar.</p>
+        </div>
+    </div>
+</section>
+
+<section id="actividad" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Calculadora Interactiva</h2>
+    
+    <p class="mb-8 text-lg leading-relaxed">Pon en práctica lo que has aprendido sobre operadores con esta calculadora interactiva. Prueba diferentes operaciones y observa cómo se aplican los operadores en JavaScript.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Calculadora</h3>
+            
+            <div class="calculator mb-6">
+                <div class="calculator-display" id="display">0</div>
+                <div class="calculator-buttons">
+                    <button class="calculator-button" onclick="appendToDisplay('7')">7</button>
+                    <button class="calculator-button" onclick="appendToDisplay('8')">8</button>
+                    <button class="calculator-button" onclick="appendToDisplay('9')">9</button>
+                    <button class="calculator-button operator" onclick="appendToDisplay('/')">/</button>
+                    <button class="calculator-button" onclick="appendToDisplay('4')">4</button>
+                    <button class="calculator-button" onclick="appendToDisplay('5')">5</button>
+                    <button class="calculator-button" onclick="appendToDisplay('6')">6</button>
+                    <button class="calculator-button operator" onclick="appendToDisplay('*')">*</button>
+                    <button class="calculator-button" onclick="appendToDisplay('1')">1</button>
+                    <button class="calculator-button" onclick="appendToDisplay('2')">2</button>
+                    <button class="calculator-button" onclick="appendToDisplay('3')">3</button>
+                    <button class="calculator-button operator" onclick="appendToDisplay('-')">-</button>
+                    <button class="calculator-button" onclick="appendToDisplay('0')">0</button>
+                    <button class="calculator-button" onclick="appendToDisplay('.')">.</button>
+                    <button class="calculator-button" onclick="clearDisplay()">C</button>
+                    <button class="calculator-button operator" onclick="appendToDisplay('+')">+</button>
+                    <button class="calculator-button" onclick="appendToDisplay('(')">(</button>
+                    <button class="calculator-button" onclick="appendToDisplay(')')">)</button>
+                    <button class="calculator-button" onclick="appendToDisplay('%')">%</button>
+                    <button class="calculator-button equals" onclick="calculate()">=</button>
+                </div>
+            </div>
+            
+            <div class="console-output" id="console">
+                <div class="text-gray-500 italic">Los resultados se mostrarán aquí</div>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Operaciones Especiales</h3>
+            
+            <p class="mb-4">Prueba estas operaciones especiales para ver cómo funcionan diferentes operadores:</p>
+            
+            <div class="space-y-4">
+                <button class="w-full p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors" onclick="testOperation('5 + 3 * 2')">
+                    Precedencia: 5 + 3 * 2
+                </button>
+                <button class="w-full p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors" onclick="testOperation('(5 + 3) * 2')">
+                    Agrupación: (5 + 3) * 2
+                </button>
+                <button class="w-full p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors" onclick="testOperation('10 % 3')">
+                    Módulo: 10 % 3
+                </button>
+                <button class="w-full p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors" onclick="testOperation('2 ** 3')">
+                    Exponenciación: 2 ** 3
+                </button>
+                <button class="w-full p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors" onclick="testLogical('true && false')">
+                    Lógico AND: true && false
+                </button>
+                <button class="w-full p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors" onclick="testLogical('true || false')">
+                    Lógico OR: true || false
+                </button>
+                <button class="w-full p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors" onclick="testLogical('!true')">
+                    Lógico NOT: !true
+                </button>
+                <button class="w-full p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors" onclick="testComparison('5 === 5')">
+                    Igualdad estricta: 5 === 5
+                </button>
+                <button class="w-full p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors" onclick="testComparison('5 == \'5\'')">
+                    Igualdad con conversión: 5 == '5'
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Quiz: Operadores y Expresiones</h3>
+        
+        <div id="quiz-container">
+            <div id="quiz-question" class="mb-6">
+                <h4 class="font-bold mb-2">Pregunta 1:</h4>
+                <p class="text-lg">¿Qué valor devuelve la expresión 5 + 3 * 2?</p>
+            </div>
+            
+            <div id="quiz-options" class="space-y-3 mb-6">
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                    <p>16</p>
+                </div>
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="true">
+                    <p>11</p>
+                </div>
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                    <p>13</p>
+                </div>
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                    <p>10</p>
+                </div>
+            </div>
+            
+            <div id="quiz-feedback" class="mb-6 hidden">
+                <p class="font-bold"></p>
+            </div>
+            
+            <div class="flex justify-between">
+                <button id="quiz-prev" class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Anterior
+                </button>
+                <button id="quiz-next" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                    Siguiente
+                </button>
+            </div>
+            
+            <div id="quiz-progress" class="mt-4">
+                <div class="flex justify-between text-sm mb-1">
+                    <span>Progreso</span>
+                    <span id="quiz-progress-text">1/5</span>
+                </div>
+                <div class="bg-gray-700 h-2 rounded-full">
+                    <div id="quiz-progress-bar" class="bg-accent h-2 rounded-full" style="width: 20%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="quiz-results" class="hidden">
+            <h4 class="font-bold text-xl mb-4 text-accent">Resultados del Quiz</h4>
+            <p class="text-lg mb-4">Has acertado <span id="quiz-score">0</span> de 5 preguntas.</p>
+            <div id="quiz-message" class="p-4 rounded-md mb-6"></div>
+            <button id="quiz-restart" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                Reiniciar Quiz
+            </button>
+        </div>
+    </div>
+    
+    <div class="mt-8 bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Ejercicios para practicar</h3>
+        
+        <p class="mb-6">Aquí tienes algunos ejercicios sencillos para practicar lo que has aprendido:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-dark p-5 rounded-lg">
+                <h4 class="text-xl font-bold mb-4">Ejercicio 1: Calculadora de IMC</h4>
+                <p class="mb-4">Escribe una expresión que calcule el Índice de Masa Corporal (IMC) usando la fórmula: peso (kg) / (altura (m) * altura (m))</p>
+                <div class="mt-4">
+                    <button class="ver-solucion-btn bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors" data-ejercicio="1">
+                        Ver solución
+                    </button>
+                    <div class="solucion hidden mt-4 p-4 bg-gray-800 rounded-lg">
+                        <h5 class="font-bold mb-2">Solución:</h5>
+                        <pre class="text-gray-300 overflow-x-auto"><code>// Calculadora de IMC
+let peso = 70; // en kilogramos
+let altura = 1.75; // en metros
+
+let imc = peso / (altura ** 2);
+console.log(`Tu IMC es: ${imc.toFixed(2)}`);</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-dark p-5 rounded-lg">
+                <h4 class="text-xl font-bold mb-4">Ejercicio 2: Verificar elegibilidad</h4>
+                <p class="mb-4">Escribe una expresión que determine si una persona es elegible para un descuento especial (debe ser mayor de 65 años O menor de 18 años Y tener membresía).</p>
+                <div class="mt-4">
+                    <button class="ver-solucion-btn bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors" data-ejercicio="2">
+                        Ver solución
+                    </button>
+                    <div class="solucion hidden mt-4 p-4 bg-gray-800 rounded-lg">
+                        <h5 class="font-bold mb-2">Solución:</h5>
+                        <pre class="text-gray-300 overflow-x-auto"><code>// Verificar elegibilidad para descuento
+let edad = 16;
+let tieneMembresía = true;
+
+let esElegible = (edad > 65 || (edad < 18 && tieneMembresía));
+console.log(`¿Es elegible para el descuento? ${esElegible}`);</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+</main>
+
+<footer class="bg-darker py-8 border-t border-gray-800">
+<div class="container mx-auto px-4 text-center">
+    <p>JavaScript: Operadores y Expresiones - Guía completa para principiantes</p>
+</div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    menuBtn.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.remove('hidden');
+        } else {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            }
+        });
+    });
+    
+    // Ver solución buttons
+    document.querySelectorAll('.ver-solucion-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const ejercicio = this.dataset.ejercicio;
+            const solucion = this.nextElementSibling;
+            
+            if (solucion.classList.contains('hidden')) {
+                solucion.classList.remove('hidden');
+                this.textContent = 'Ocultar solución';
+            } else {
+                solucion.classList.add('hidden');
+                this.textContent = 'Ver solución';
+            }
+        });
+    });
+    
+    // Calculadora
+    window.appendToDisplay = function(value) {
+        const display = document.getElementById('display');
+        if (display.textContent === '0' && value !== '.') {
+            display.textContent = value;
+        } else {
+            display.textContent += value;
+        }
+    };
+    
+    window.clearDisplay = function() {
+        document.getElementById('display').textContent = '0';
+    };
+    
+    window.calculate = function() {
+        const display = document.getElementById('display');
+        const console = document.getElementById('console');
+        
+        try {
+            const result = eval(display.textContent);
+            
+            // Agregar al historial
+            const operation = document.createElement('div');
+            operation.innerHTML = `<span class="text-gray-400">${display.textContent} = </span><span class="text-accent">${result}</span>`;
+            console.appendChild(operation);
+            
+            // Actualizar display
+            display.textContent = result;
+            
+            // Scroll al final del console
+            console.scrollTop = console.scrollHeight;
+        } catch (error) {
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'error';
+            errorMsg.textContent = `Error: ${error.message}`;
+            console.appendChild(errorMsg);
+            
+            // Scroll al final del console
+            console.scrollTop = console.scrollHeight;
+        }
+    };
+    
+    window.testOperation = function(expression) {
+        const console = document.getElementById('console');
+        
+        try {
+            const result = eval(expression);
+            
+            const operation = document.createElement('div');
+            operation.innerHTML = `<span class="text-gray-400">${expression} = </span><span class="text-accent">${result}</span>`;
+            console.appendChild(operation);
+            
+            // Scroll al final del console
+            console.scrollTop = console.scrollHeight;
+        } catch (error) {
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'error';
+            errorMsg.textContent = `Error: ${error.message}`;
+            console.appendChild(errorMsg);
+            
+            // Scroll al final del console
+            console.scrollTop = console.scrollHeight;
+        }
+    };
+    
+    window.testLogical = function(expression) {
+        const console = document.getElementById('console');
+        
+        try {
+            // Evaluar expresiones lógicas
+            let result;
+            if (expression === 'true && false') {
+                result = true && false;
+            } else if (expression === 'true || false') {
+                result = true || false;
+            } else if (expression === '!true') {
+                result = !true;
+            } else {
+                result = eval(expression);
+            }
+            
+            const operation = document.createElement('div');
+            operation.innerHTML = `<span class="text-gray-400">${expression} = </span><span class="text-accent">${result}</span>`;
+            console.appendChild(operation);
+            
+            // Scroll al final del console
+            console.scrollTop = console.scrollHeight;
+        } catch (error) {
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'error';
+            errorMsg.textContent = `Error: ${error.message}`;
+            console.appendChild(errorMsg);
+            
+            // Scroll al final del console
+            console.scrollTop = console.scrollHeight;
+        }
+    };
+    
+    window.testComparison = function(expression) {
+        const console = document.getElementById('console');
+        
+        try {
+            // Evaluar expresiones de comparación
+            let result;
+            if (expression === "5 === 5") {
+                result = 5 === 5;
+            } else if (expression === "5 == '5'") {
+                result = 5 == '5';
+            } else {
+                result = eval(expression);
+            }
+            
+            const operation = document.createElement('div');
+            operation.innerHTML = `<span class="text-gray-400">${expression} = </span><span class="text-accent">${result}</span>`;
+            console.appendChild(operation);
+            
+            // Scroll al final del console
+            console.scrollTop = console.scrollHeight;
+        } catch (error) {
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'error';
+            errorMsg.textContent = `Error: ${error.message}`;
+            console.appendChild(errorMsg);
+            
+            // Scroll al final del console
+            console.scrollTop = console.scrollHeight;
+        }
+    };
+    
+    // Quiz functionality
+    const quizContainer = document.getElementById('quiz-container');
+    const quizResults = document.getElementById('quiz-results');
+    const quizQuestion = document.getElementById('quiz-question');
+    const quizOptions = document.getElementById('quiz-options');
+    const quizFeedback = document.getElementById('quiz-feedback');
+    const quizPrev = document.getElementById('quiz-prev');
+    const quizNext = document.getElementById('quiz-next');
+    const quizProgressBar = document.getElementById('quiz-progress-bar');
+    const quizProgressText = document.getElementById('quiz-progress-text');
+    const quizScore = document.getElementById('quiz-score');
+    const quizMessage = document.getElementById('quiz-message');
+    const quizRestart = document.getElementById('quiz-restart');
+    
+    // Quiz questions
+    const questions = [
+        {
+            question: "¿Qué valor devuelve la expresión 5 + 3 * 2?",
+            options: ["16", "11", "13", "10"],
+            correctIndex: 1
+        },
+        {
+            question: "¿Cuál es el resultado de 10 % 3?",
+            options: ["3.33", "1", "0", "3"],
+            correctIndex: 1
+        },
+        {
+            question: "¿Qué devuelve la expresión '5' === 5?",
+            options: ["true", "false", "undefined", "NaN"],
+            correctIndex: 1
+        },
+        {
+            question: "¿Cuál es el resultado de !true && false?",
+            options: ["true", "false", "undefined", "null"],
+            correctIndex: 1
+        },
+        {
+            question: "Si x = 5, ¿qué valor tendrá después de x += 3?",
+            options: ["5", "3", "8", "15"],
+            correctIndex: 2
+        }
+    ];
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+    
+    // Initialize quiz
+    function initQuiz() {
+        if (!quizContainer || !quizOptions) return;
+        
+        showQuestion(currentQuestion);
+        
+        // Add event listeners to options
+        quizOptions.addEventListener('click', function(e) {
+            if (answered) return;
+            
+            const option = e.target.closest('.quiz-option');
+            if (!option) return;
+            
+            const options = quizOptions.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            // Check answer
+            const isCorrect = option.dataset.correct === 'true';
+            
+            if (isCorrect) {
+                option.classList.add('correct');
+                quizFeedback.querySelector('p').textContent = '¡Correcto!';
+                quizFeedback.querySelector('p').classList.add('text-green-500');
+                score++;
+            } else {
+                option.classList.add('incorrect');
+                
+                // Show correct answer
+                options.forEach(opt => {
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+                
+                quizFeedback.querySelector('p').textContent = 'Incorrecto. La respuesta correcta está marcada en verde.';
+                quizFeedback.querySelector('p').classList.add('text-red-500');
+            }
+            
+            quizFeedback.classList.remove('hidden');
+            answered = true;
+            
+            // Enable next button
+            quizNext.disabled = false;
+        });
+        
+        // Next button
+        if (quizNext) {
+            quizNext.addEventListener('click', function() {
+                if (!answered && currentQuestion < questions.length - 1) {
+                    // Skip question
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                } else if (answered && currentQuestion < questions.length - 1) {
+                    // Next question
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    answered = false;
+                } else if (currentQuestion === questions.length - 1) {
+                    // Show results
+                    showResults();
+                }
+            });
+        }
+        
+        // Previous button
+        if (quizPrev) {
+            quizPrev.addEventListener('click', function() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    answered = false;
+                }
+            });
+        }
+        
+        // Restart button
+        if (quizRestart) {
+            quizRestart.addEventListener('click', function() {
+                currentQuestion = 0;
+                score = 0;
+                answered = false;
+                quizContainer.classList.remove('hidden');
+                quizResults.classList.add('hidden');
+                showQuestion(currentQuestion);
+            });
+        }
+    }
+    
+    // Show question
+    function showQuestion(index) {
+        if (!quizQuestion || !quizOptions || !quizFeedback) return;
+        
+        const question = questions[index];
+        
+        // Update question
+        quizQuestion.innerHTML = `
+            <h4 class="font-bold mb-2">Pregunta ${index + 1}:</h4>
+            <p class="text-lg">${question.question}</p>
+        `;
+        
+        // Update options
+        quizOptions.innerHTML = '';
+        question.options.forEach((option, i) => {
+            const isCorrect = i === question.correctIndex;
+            quizOptions.innerHTML += `
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="${isCorrect}">
+                    <p>${option}</p>
+                </div>
+            `;
+        });
+        
+        // Reset feedback
+        quizFeedback.classList.add('hidden');
+        quizFeedback.querySelector('p').textContent = '';
+        quizFeedback.querySelector('p').classList.remove('text-green-500', 'text-red-500');
+        
+        // Update buttons
+        if (quizPrev) quizPrev.disabled = index === 0;
+        if (quizNext) {
+            quizNext.disabled = answered ? false : index === questions.length - 1;
+            quizNext.textContent = index === questions.length - 1 ? 'Ver resultados' : 'Siguiente';
+        }
+        
+        // Update progress
+        if (quizProgressBar) quizProgressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+        if (quizProgressText) quizProgressText.textContent = `${index + 1}/${questions.length}`;
+    }
+    
+    // Show results
+    function showResults() {
+        if (!quizContainer || !quizResults || !quizScore || !quizMessage) return;
+        
+        quizContainer.classList.add('hidden');
+        quizResults.classList.remove('hidden');
+        
+        quizScore.textContent = score;
+        
+        // Show message based on score
+        let message = '';
+        let messageClass = '';
+        
+        if (score === questions.length) {
+            message = '¡Perfecto! Dominas los operadores y expresiones en JavaScript.';
+            messageClass = 'bg-green-800/30 border border-green-700 text-green-400';
+        } else if (score >= questions.length * 0.7) {
+            message = '¡Muy bien! Tienes un buen conocimiento de los operadores en JavaScript.';
+            messageClass = 'bg-green-800/30 border border-green-700 text-green-400';
+        } else if (score >= questions.length * 0.5) {
+            message = 'No está mal, pero podrías mejorar tu conocimiento de los operadores.';
+            messageClass = 'bg-yellow-800/30 border border-yellow-700 text-yellow-400';
+        } else {
+            message = 'Necesitas estudiar más los operadores y expresiones en JavaScript.';
+            messageClass = 'bg-red-800/30 border border-red-700 text-red-400';
+        }
+        
+        quizMessage.className = `p-4 rounded-md mb-6 ${messageClass}`;
+        quizMessage.textContent = message;
+    }
+    
+    // Initialize the quiz
+    initQuiz();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript DOM - Manipulación del Documento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'js-yellow': {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+              950: '#451a03',
+            },
+            'dark-blue': {
+              900: '#0a1020',
+              950: '#050a14',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .timeline-circle {
+        @apply w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center text-white font-bold text-lg z-10;
+      }
+      .timeline-line {
+        @apply absolute left-6 top-0 bottom-0 w-0.5 bg-js-yellow-800/50 transform translate-x-0;
+      }
+      .feature-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 hover:border-js-yellow-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-js-yellow-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-blue-950 text-gray-200">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-blue-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="s-js.html" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-js-yellow-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-blue-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-js-yellow-500">🌳</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">DOM JS</span>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#caracteristicas" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Características</a>
+          <a href="#metodos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Métodos</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#caracteristicas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Características</a>
+        <a href="#metodos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Métodos</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-js-yellow-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          Document
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-js-yellow-400">Object Model</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-3xl mx-auto animate-slide-up">
+          El DOM es una interfaz de programación que representa la estructura de un documento HTML como un árbol de objetos, permitiendo a JavaScript manipular dinámicamente el contenido, estructura y estilo de las páginas web.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="caracteristicas" class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué es el <span class="text-js-yellow-400 font-bold">DOM?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Estructura de Árbol</h3>
+        <p class="text-gray-300 leading-relaxed">
+          El DOM representa el documento HTML como una estructura jerárquica de nodos en forma de árbol. Cada elemento HTML se convierte en un nodo, con el elemento <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">&lt;html&gt;</code> como raíz.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Esta estructura permite navegar fácilmente entre elementos padres, hijos y hermanos, facilitando la manipulación del contenido.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Interfaz de Programación</h3>
+        <p class="text-gray-300 leading-relaxed">
+          El DOM proporciona una API (Interfaz de Programación de Aplicaciones) que JavaScript puede usar para acceder y modificar el contenido, estructura y estilos de una página web.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Métodos como <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">getElementById()</code>, <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">querySelector()</code> y <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">createElement()</code> son parte de esta interfaz.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Manipulación Dinámica</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Con el DOM, puedes cambiar el contenido de la página después de que se haya cargado: agregar o eliminar elementos, modificar atributos, cambiar estilos CSS y responder a eventos del usuario.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Esto permite crear aplicaciones web interactivas y dinámicas sin necesidad de recargar la página completa.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Eventos Interactivos</h3>
+        <p class="text-gray-300 leading-relaxed">
+          El DOM permite capturar y responder a eventos del usuario como clics, movimientos del mouse, pulsaciones de teclas y más usando <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">addEventListener()</code>.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Esto es fundamental para crear experiencias de usuario interactivas y responsivas en aplicaciones web modernas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Methods Section -->
+  <section id="metodos" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Métodos <span class="text-js-yellow-400 font-bold">Principales</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Conoce los métodos más importantes para manipular el DOM
+      </p>
+
+      <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Selection Methods -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Métodos de Selección</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">getElementById()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">element</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'miId'</span>);
+console.<span class="text-green-400">log</span>(element); <span class="text-gray-500">// <div id="miId">...</div></span></pre>
+              <p class="text-gray-400 text-sm">Selecciona un elemento por su atributo ID. Es el más rápido.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">querySelector()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">element</span> = document.<span class="text-green-400">querySelector</span>(<span class="text-orange-400">'.mi-clase'</span>);
+<span class="text-purple-400">const</span> <span class="text-blue-400">button</span> = document.<span class="text-green-400">querySelector</span>(<span class="text-orange-400">'button[type="submit"]'</span>);</pre>
+              <p class="text-gray-400 text-sm">Selecciona el primer elemento que coincida con un selector CSS.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">querySelectorAll()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">elements</span> = document.<span class="text-green-400">querySelectorAll</span>(<span class="text-orange-400">'.item'</span>);
+elements.<span class="text-green-400">forEach</span>(<span class="text-blue-400">el</span> => console.<span class="text-green-400">log</span>(el));</pre>
+              <p class="text-gray-400 text-sm">Selecciona todos los elementos que coincidan con un selector CSS.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">getElementsByClassName()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">elements</span> = document.<span class="text-green-400">getElementsByClassName</span>(<span class="text-orange-400">'mi-clase'</span>);
+<span class="text-gray-500">// Devuelve una HTMLCollection (colección viva)</span></pre>
+              <p class="text-gray-400 text-sm">Selecciona todos los elementos con una clase específica.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">getElementsByTagName()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">divs</span> = document.<span class="text-green-400">getElementsByTagName</span>(<span class="text-orange-400">'div'</span>);
+console.<span class="text-green-400">log</span>(divs.length); <span class="text-gray-500">// Cantidad de divs</span></pre>
+              <p class="text-gray-400 text-sm">Selecciona todos los elementos de un tipo específico.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manipulation Methods -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Métodos de Manipulación</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">createElement()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">div</span> = document.<span class="text-green-400">createElement</span>(<span class="text-orange-400">'div'</span>);
+div.textContent = <span class="text-orange-400">'Hola Mundo'</span>;</pre>
+              <p class="text-gray-400 text-sm">Crea un nuevo elemento HTML.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">appendChild()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">parent</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'contenedor'</span>);
+parent.<span class="text-green-400">appendChild</span>(div); <span class="text-gray-500">// Agrega al final</span></pre>
+              <p class="text-gray-400 text-sm">Agrega un elemento hijo al final de un elemento padre.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">removeChild()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">parent</span> = element.parentNode;
+parent.<span class="text-green-400">removeChild</span>(element); <span class="text-gray-500">// Elimina el elemento</span></pre>
+              <p class="text-gray-400 text-sm">Elimina un elemento hijo de su padre.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">setAttribute() / getAttribute()</h4>
+              <pre class="code-block text-xs mb-2">
+element.<span class="text-green-400">setAttribute</span>(<span class="text-orange-400">'class'</span>, <span class="text-orange-400">'nueva-clase'</span>);
+<span class="text-purple-400">const</span> <span class="text-blue-400">valor</span> = element.<span class="text-green-400">getAttribute</span>(<span class="text-orange-400">'data-id'</span>);</pre>
+              <p class="text-gray-400 text-sm">Establecer u obtener atributos de elementos.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">classList</h4>
+              <pre class="code-block text-xs mb-2">
+element.classList.<span class="text-green-400">add</span>(<span class="text-orange-400">'activo'</span>);
+element.classList.<span class="text-green-400">remove</span>(<span class="text-orange-400">'inactivo'</span>);
+element.classList.<span class="text-green-400">toggle</span>(<span class="text-orange-400">'visible'</span>);</pre>
+              <p class="text-gray-400 text-sm">Manipular clases CSS de un elemento fácilmente.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Properties and Events -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 lg:col-span-2">
+          <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Propiedades y Eventos</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">innerHTML / textContent</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-gray-500">// innerHTML - interpreta HTML</span>
+element.innerHTML = <span class="text-orange-400">'&lt;strong&gt;Texto&lt;/strong&gt;'</span>;
+
+<span class="text-gray-500">// textContent - solo texto</span>
+element.textContent = <span class="text-orange-400">'Solo texto'</span>;</pre>
+              <p class="text-gray-400 text-sm">Obtener o establecer el contenido de un elemento.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">style</h4>
+              <pre class="code-block text-xs mb-2">
+element.style.color = <span class="text-orange-400">'red'</span>;
+element.style.backgroundColor = <span class="text-orange-400">'blue'</span>;
+element.style.fontSize = <span class="text-orange-400">'20px'</span>;</pre>
+              <p class="text-gray-400 text-sm">Modificar estilos CSS directamente desde JavaScript.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">addEventListener()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">btn</span> = document.<span class="text-green-400">querySelector</span>(<span class="text-orange-400">'button'</span>);
+btn.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'click'</span>, () => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'¡Clic!'</span>);
+});</pre>
+              <p class="text-gray-400 text-sm">Escuchar eventos del usuario o del navegador.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">Navegación en el DOM</h4>
+              <pre class="code-block text-xs mb-2">
+element.parentNode      <span class="text-gray-500">// Padre</span>
+element.children        <span class="text-gray-500">// Hijos</span>
+element.nextSibling     <span class="text-gray-500">// Siguiente hermano</span>
+element.previousSibling <span class="text-gray-500">// Hermano anterior</span></pre>
+              <p class="text-gray-400 text-sm">Navegar entre elementos relacionados.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">insertBefore() / insertAdjacentHTML()</h4>
+              <pre class="code-block text-xs mb-2">
+parent.<span class="text-green-400">insertBefore</span>(newEl, refEl);
+
+element.<span class="text-green-400">insertAdjacentHTML</span>(<span class="text-orange-400">'beforeend'</span>, <span class="text-orange-400">'&lt;p&gt;Nuevo&lt;/p&gt;'</span>);</pre>
+              <p class="text-gray-400 text-sm">Insertar elementos en posiciones específicas.</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-2">cloneNode()</h4>
+              <pre class="code-block text-xs mb-2">
+<span class="text-purple-400">const</span> <span class="text-blue-400">clone</span> = element.<span class="text-green-400">cloneNode</span>(<span class="text-purple-400">true</span>);
+<span class="text-gray-500">// true = clonar con hijos</span>
+document.body.<span class="text-green-400">appendChild</span>(clone);</pre>
+              <p class="text-gray-400 text-sm">Crear una copia de un elemento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section id="ejemplos" class="container mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      Ejemplos <span class="text-js-yellow-400 font-bold">Prácticos</span>
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+      <!-- Example 1 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Seleccionar y Modificar</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Seleccionar elemento</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">titulo</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'titulo'</span>);
+
+<span class="text-gray-500">// Cambiar contenido</span>
+titulo.textContent = <span class="text-orange-400">'Nuevo Título'</span>;
+
+<span class="text-gray-500">// Cambiar estilo</span>
+titulo.style.color = <span class="text-orange-400">'blue'</span>;
+titulo.style.fontSize = <span class="text-orange-400">'32px'</span>;
+
+<span class="text-gray-500">// Agregar clase</span>
+titulo.classList.<span class="text-green-400">add</span>(<span class="text-orange-400">'destacado'</span>);</pre>
+        <p class="text-gray-400 text-sm">
+          Seleccionar elementos y modificar su contenido, estilos y clases.
+        </p>
+      </div>
+
+      <!-- Example 2 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Crear y Agregar Elementos</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Crear nuevo elemento</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">parrafo</span> = document.<span class="text-green-400">createElement</span>(<span class="text-orange-400">'p'</span>);
+parrafo.textContent = <span class="text-orange-400">'Este es un párrafo nuevo'</span>;
+parrafo.classList.<span class="text-green-400">add</span>(<span class="text-orange-400">'texto'</span>);
+
+<span class="text-gray-500">// Agregar al documento</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">contenedor</span> = document.<span class="text-green-400">querySelector</span>(<span class="text-orange-400">'.contenedor'</span>);
+contenedor.<span class="text-green-400">appendChild</span>(parrafo);
+
+<span class="text-gray-500">// Crear con HTML</span>
+contenedor.innerHTML += <span class="text-orange-400">'&lt;div&gt;Nuevo div&lt;/div&gt;'</span>;</pre>
+        <p class="text-gray-400 text-sm">
+          Crear nuevos elementos dinámicamente y agregarlos al documento.
+        </p>
+      </div>
+
+      <!-- Example 3 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Manejo de Eventos</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Evento de clic</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">boton</span> = document.<span class="text-green-400">querySelector</span>(<span class="text-orange-400">'#miBoton'</span>);
+boton.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'click'</span>, () => {
+  alert(<span class="text-orange-400">'¡Botón clickeado!'</span>);
+});
+
+<span class="text-gray-500">// Evento de input</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">input</span> = document.<span class="text-green-400">querySelector</span>(<span class="text-orange-400">'input'</span>);
+input.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'input'</span>, (<span class="text-blue-400">e</span>) => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Valor:'</span>, e.target.value);
+});</pre>
+        <p class="text-gray-400 text-sm">
+          Responder a interacciones del usuario con eventos.
+        </p>
+      </div>
+
+      <!-- Example 4 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Eliminar Elementos</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Método moderno</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">elemento</span> = document.<span class="text-green-400">querySelector</span>(<span class="text-orange-400">'.eliminar'</span>);
+elemento.<span class="text-green-400">remove</span>();
+
+<span class="text-gray-500">// Método clásico</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">parent</span> = elemento.parentNode;
+parent.<span class="text-green-400">removeChild</span>(elemento);
+
+<span class="text-gray-500">// Eliminar todos los hijos</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">contenedor</span> = document.<span class="text-green-400">querySelector</span>(<span class="text-orange-400">'.contenedor'</span>);
+contenedor.innerHTML = <span class="text-orange-400">''</span>;</pre>
+        <p class="text-gray-400 text-sm">
+          Diferentes formas de eliminar elementos del DOM.
+        </p>
+      </div>
+
+      <!-- Example 5 -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 lg:col-span-2">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Lista Dinámica Interactiva</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// HTML: &lt;ul id="lista">&lt;/ul> &lt;input id="input"> &lt;button id="agregar">Agregar&lt;/button></span>
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">lista</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'lista'</span>);
+<span class="text-purple-400">const</span> <span class="text-blue-400">input</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'input'</span>);
+<span class="text-purple-400">const</span> <span class="text-blue-400">boton</span> = document.<span class="text-green-400">getElementById</span>(<span class="text-orange-400">'agregar'</span>);
+
+boton.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'click'</span>, () => {
+  <span class="text-purple-400">const</span> <span class="text-blue-400">texto</span> = input.value;
+  
+  <span class="text-purple-400">if</span> (texto) {
+    <span class="text-gray-500">// Crear elemento de lista</span>
+    <span class="text-purple-400">const</span> <span class="text-blue-400">li</span> = document.<span class="text-green-400">createElement</span>(<span class="text-orange-400">'li'</span>);
+    li.textContent = texto;
+    
+    <span class="text-gray-500">// Botón eliminar</span>
+    <span class="text-purple-400">const</span> <span class="text-blue-400">btnEliminar</span> = document.<span class="text-green-400">createElement</span>(<span class="text-orange-400">'button'</span>);
+    btnEliminar.textContent = <span class="text-orange-400">'❌'</span>;
+    btnEliminar.<span class="text-green-400">addEventListener</span>(<span class="text-orange-400">'click'</span>, () => li.<span class="text-green-400">remove</span>());
+    
+    li.<span class="text-green-400">appendChild</span>(btnEliminar);
+    lista.<span class="text-green-400">appendChild</span>(li);
+    input.value = <span class="text-orange-400">''</span>;
+  }
+});</pre>
+        <p class="text-gray-400 text-sm">
+          Ejemplo completo de una lista interactiva donde puedes agregar y eliminar elementos dinámicamente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activity Section -->
+  <section id="actividad" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-js-yellow-400 font-bold">Práctica</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Pon a prueba tus conocimientos sobre manipulación del DOM!
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Instructions Column -->
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Instrucciones</h3>
+              
+              <div class="space-y-4">
+                <p class="text-gray-300 text-sm">
+                  Lee cada escenario y selecciona el método DOM correcto para resolver el problema planteado.
+                </p>
+
+                <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+                  <h4 class="text-sm font-semibold mb-2 text-js-yellow-400">Consejos</h4>
+                  <ul class="space-y-2 text-gray-300 text-sm list-disc list-inside">
+                    <li>Piensa en qué necesitas hacer: seleccionar, crear, modificar o eliminar</li>
+                    <li>Considera si necesitas un elemento o varios</li>
+                    <li>Recuerda las diferencias entre innerHTML y textContent</li>
+                    <li>Ten en cuenta la compatibilidad y mejores prácticas</li>
+                  </ul>
+                </div>
+
+                <div class="pt-4">
+                  <div class="bg-dark-blue-900 p-4 rounded-lg border border-gray-700">
+                    <h4 class="text-white font-semibold mb-2">Puntuación</h4>
+                    <div class="flex items-center justify-between">
+                      <span class="text-gray-400">Correctas:</span>
+                      <span id="scoreCorrect" class="text-green-400 font-bold text-2xl">0</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                      <span class="text-gray-400">Incorrectas:</span>
+                      <span id="scoreIncorrect" class="text-red-400 font-bold text-2xl">0</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-700">
+                      <span class="text-white font-bold">Total:</span>
+                      <span id="scoreTotal" class="text-js-yellow-400 font-bold text-2xl">0/10</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button id="resetQuiz" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                  Reiniciar Quiz
+                </button>
+              </div>
+            </div>
+
+            <!-- Quiz Column -->
+            <div class="lg:col-span-2">
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Pregunta <span id="questionNumber">1</span> de 10</h3>
+              
+              <!-- Question Container -->
+              <div id="questionContainer" class="mb-6">
+                <!-- Question will be inserted here -->
+              </div>
+
+              <!-- Answer Options -->
+              <div id="answersContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- Answer buttons will be inserted here -->
+              </div>
+
+              <!-- Feedback -->
+              <div id="feedback" class="hidden p-4 rounded-lg mb-6">
+                <p id="feedbackText" class="font-semibold mb-2"></p>
+                <p id="feedbackExplanation" class="text-sm"></p>
+              </div>
+
+              <!-- Next Button -->
+              <button id="btnNext" class="w-full bg-js-yellow-500 hover:bg-js-yellow-600 text-white font-bold py-3 px-6 rounded-lg transition-colors hidden">
+                Siguiente Pregunta →
+              </button>
+
+              <!-- Completion Message -->
+              <div id="completionMessage" class="hidden text-center">
+                <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-8 rounded-lg">
+                  <h3 class="text-3xl font-bold mb-4 text-js-yellow-400">¡Quiz Completado!</h3>
+                  <p class="text-xl mb-4">Tu puntuación final:</p>
+                  <p id="finalScore" class="text-5xl font-bold text-white mb-6">0/10</p>
+                  <p id="scoreMessage" class="text-lg text-gray-300 mb-6"></p>
+                  <button id="btnRestart" class="bg-js-yellow-500 hover:bg-js-yellow-600 text-white font-bold py-3 px-8 rounded-lg transition-colors">
+                    Reintentar Quiz
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="container mx-auto px-4 py-16 text-center">
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark-blue-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende JavaScript DOM - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Quiz Activity
+    const questions = [
+      {
+        question: "Necesito seleccionar un elemento que tiene id='titulo'. ¿Qué método es el MÁS eficiente?",
+        code: "<!-- HTML -->\n<h1 id=\"titulo\">Mi Título</h1>",
+        options: ["querySelector('#titulo')", "getElementById('titulo')", "querySelectorAll('#titulo')", "getElementsByTagName('h1')"],
+        correct: 1,
+        explanation: "getElementById() es el método más rápido para seleccionar por ID, ya que está optimizado específicamente para esta tarea."
+      },
+      {
+        question: "Quiero seleccionar TODOS los elementos con clase 'item'. ¿Qué método debo usar?",
+        code: "<!-- HTML -->\n<div class=\"item\">1</div>\n<div class=\"item\">2</div>\n<div class=\"item\">3</div>",
+        options: ["getElementById('item')", "querySelector('.item')", "querySelectorAll('.item')", "getElementByClassName('item')"],
+        correct: 2,
+        explanation: "querySelectorAll() devuelve una NodeList con todos los elementos que coinciden con el selector CSS '.item'."
+      },
+      {
+        question: "Necesito crear un nuevo elemento <div> en JavaScript. ¿Qué método uso?",
+        code: "// Quiero crear: <div>Nuevo contenido</div>",
+        options: ["document.createDiv()", "document.createElement('div')", "document.newElement('div')", "new Element('div')"],
+        correct: 1,
+        explanation: "createElement('tagName') es el método estándar para crear nuevos elementos HTML en JavaScript."
+      },
+      {
+        question: "Tengo un elemento y quiero agregar una clase CSS llamada 'activo'. ¿Cuál es la MEJOR forma?",
+        code: "const elemento = document.querySelector('.boton');",
+        options: ["elemento.className = 'activo'", "elemento.addClass('activo')", "elemento.classList.add('activo')", "elemento.class.add('activo')"],
+        correct: 2,
+        explanation: "classList.add() es el método moderno y recomendado porque agrega la clase sin sobrescribir las existentes."
+      },
+      {
+        question: "Quiero cambiar el TEXTO de un elemento sin interpretar HTML. ¿Qué propiedad uso?",
+        code: "const parrafo = document.querySelector('p');",
+        options: ["parrafo.innerHTML", "parrafo.textContent", "parrafo.innerText", "parrafo.text"],
+        correct: 1,
+        explanation: "textContent establece o devuelve el contenido de texto sin interpretar HTML, siendo más seguro y eficiente que innerHTML."
+      },
+      {
+        question: "Necesito agregar un nuevo elemento al FINAL de un contenedor. ¿Qué método uso?",
+        code: "const contenedor = document.querySelector('.container');\nconst nuevo = document.createElement('div');",
+        options: ["contenedor.append(nuevo)", "contenedor.appendChild(nuevo)", "contenedor.insertBefore(nuevo)", "contenedor.addChild(nuevo)"],
+        correct: 1,
+        explanation: "appendChild() agrega un nodo hijo al final de la lista de hijos de un nodo padre especificado."
+      },
+      {
+        question: "Quiero ELIMINAR un elemento del DOM. ¿Cuál es el método MODERNO más directo?",
+        code: "const elemento = document.querySelector('.eliminar');",
+        options: ["elemento.delete()", "elemento.remove()", "elemento.removeChild()", "documento.removeElement(elemento)"],
+        correct: 1,
+        explanation: "remove() es el método moderno que elimina directamente el elemento del DOM sin necesidad de acceder al padre."
+      },
+      {
+        question: "Necesito escuchar cuando el usuario hace CLIC en un botón. ¿Qué método uso?",
+        code: "const boton = document.querySelector('button');",
+        options: ["boton.onClick()", "boton.click()", "boton.addEventListener('click', function)", "boton.onClickEvent()"],
+        correct: 2,
+        explanation: "addEventListener() es el método recomendado porque permite múltiples listeners y más control sobre los eventos."
+      },
+      {
+        question: "Quiero cambiar el color de fondo de un elemento a rojo. ¿Cómo lo hago?",
+        code: "const div = document.querySelector('.caja');",
+        options: ["div.backgroundColor = 'red'", "div.style.background = 'red'", "div.css.backgroundColor = 'red'", "div.setStyle('background', 'red')"],
+        correct: 1,
+        explanation: "La propiedad style permite acceder y modificar los estilos CSS inline del elemento usando camelCase."
+      },
+      {
+        question: "Necesito obtener el VALOR de un atributo 'data-id'. ¿Qué método uso?",
+        code: "<!-- HTML -->\n<div data-id=\"123\">Elemento</div>",
+        options: ["elemento.data-id", "elemento.getAttribute('data-id')", "elemento.attr('data-id')", "elemento.getAttr('data-id')"],
+        correct: 1,
+        explanation: "getAttribute() es el método estándar para obtener el valor de un atributo específico de un elemento."
+      }
+    ];
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let answered = false;
+
+    const questionContainer = document.getElementById('questionContainer');
+    const questionNumber = document.getElementById('questionNumber');
+    const answersContainer = document.getElementById('answersContainer');
+    const btnNext = document.getElementById('btnNext');
+    const feedback = document.getElementById('feedback');
+    const feedbackText = document.getElementById('feedbackText');
+    const feedbackExplanation = document.getElementById('feedbackExplanation');
+    const scoreCorrect = document.getElementById('scoreCorrect');
+    const scoreIncorrect = document.getElementById('scoreIncorrect');
+    const scoreTotal = document.getElementById('scoreTotal');
+    const completionMessage = document.getElementById('completionMessage');
+    const finalScore = document.getElementById('finalScore');
+    const scoreMessage = document.getElementById('scoreMessage');
+    const resetQuiz = document.getElementById('resetQuiz');
+    const btnRestart = document.getElementById('btnRestart');
+
+    function loadQuestion() {
+      if (currentQuestion >= questions.length) {
+        showCompletion();
+        return;
+      }
+
+      const question = questions[currentQuestion];
+      questionNumber.textContent = currentQuestion + 1;
+      
+      questionContainer.innerHTML = `
+        <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700 mb-4">
+          <h4 class="text-white font-semibold mb-3">${question.question}</h4>
+          <div class="bg-black rounded-lg overflow-hidden">
+            <div class="bg-gray-800 px-4 py-2 border-b border-gray-700">
+              <span class="text-gray-400 text-xs">JavaScript</span>
+            </div>
+            <pre class="code-block m-0 rounded-t-none"><code>${escapeHtml(question.code)}</code></pre>
+          </div>
+        </div>
+      `;
+
+      // Generate answer buttons
+      answersContainer.innerHTML = '';
+      question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-lg transition-all transform hover:scale-105 text-left';
+        button.innerHTML = `<span class="text-js-yellow-400 font-bold mr-2">${String.fromCharCode(65 + index)}.</span> ${option}`;
+        button.onclick = () => checkAnswer(index);
+        answersContainer.appendChild(button);
+      });
+
+      feedback.classList.add('hidden');
+      btnNext.classList.add('hidden');
+      answered = false;
+    }
+
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    function checkAnswer(selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      const question = questions[currentQuestion];
+      const buttons = answersContainer.querySelectorAll('button');
+      const isCorrect = selectedIndex === question.correct;
+
+      // Disable all buttons and show correct/incorrect
+      buttons.forEach((button, index) => {
+        button.disabled = true;
+        button.classList.remove('hover:bg-gray-600', 'hover:scale-105');
+        button.classList.add('cursor-not-allowed');
+        
+        if (index === question.correct) {
+          button.classList.remove('bg-gray-700');
+          button.classList.add('bg-green-600', 'border-2', 'border-green-400');
+        } else if (index === selectedIndex && !isCorrect) {
+          button.classList.remove('bg-gray-700');
+          button.classList.add('bg-red-600', 'border-2', 'border-red-400');
+        } else {
+          button.classList.add('opacity-50');
+        }
+      });
+
+      if (isCorrect) {
+        correctAnswers++;
+        feedback.className = 'p-4 rounded-lg mb-6 bg-green-900/20 border border-green-700/30';
+        feedbackText.className = 'font-semibold mb-2 text-green-400';
+        feedbackText.textContent = '¡Correcto! ✅';
+      } else {
+        incorrectAnswers++;
+        feedback.className = 'p-4 rounded-lg mb-6 bg-red-900/20 border border-red-700/30';
+        feedbackText.className = 'font-semibold mb-2 text-red-400';
+        feedbackText.textContent = 'Incorrecto ❌';
+      }
+
+      feedbackExplanation.className = 'text-sm text-gray-300';
+      feedbackExplanation.textContent = question.explanation;
+      feedback.classList.remove('hidden');
+      btnNext.classList.remove('hidden');
+
+      updateScore();
+    }
+
+    function updateScore() {
+      scoreCorrect.textContent = correctAnswers;
+      scoreIncorrect.textContent = incorrectAnswers;
+      scoreTotal.textContent = `${correctAnswers + incorrectAnswers}/${questions.length}`;
+    }
+
+    function showCompletion() {
+      questionContainer.parentElement.classList.add('hidden');
+      completionMessage.classList.remove('hidden');
+      finalScore.textContent = `${correctAnswers}/${questions.length}`;
+
+      const percentage = (correctAnswers / questions.length) * 100;
+      if (percentage >= 90) {
+        scoreMessage.textContent = '¡Excelente! Dominas la manipulación del DOM.';
+      } else if (percentage >= 70) {
+        scoreMessage.textContent = '¡Muy bien! Tienes un buen conocimiento del DOM.';
+      } else if (percentage >= 50) {
+        scoreMessage.textContent = 'Bien, pero puedes mejorar. ¡Sigue practicando!';
+      } else {
+        scoreMessage.textContent = 'Necesitas repasar los conceptos del DOM. ¡No te rindas!';
+      }
+    }
+
+    function resetQuizFunc() {
+      currentQuestion = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      answered = false;
+      updateScore();
+      questionContainer.parentElement.classList.remove('hidden');
+      completionMessage.classList.add('hidden');
+      loadQuestion();
+    }
+
+    btnNext.addEventListener('click', () => {
+      currentQuestion++;
+      loadQuestion();
+    });
+    resetQuiz.addEventListener('click', resetQuizFunc);
+    btnRestart.addEventListener('click', resetQuizFunc);
+
+    // Initialize
+    loadQuestion();
+
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

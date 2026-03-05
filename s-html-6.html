@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elementos Multimedia en HTML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0f1a',
+                        darker: '#050a14',
+                        accent: '#ff6b00'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation:hover {
+            animation: float 2s ease-in-out infinite;
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+        }
+        .scale-effect:hover {
+            transform: scale(1.03);
+        }
+        .rotate-effect:hover .icon-container {
+            transform: rotate(10deg);
+        }
+        .code-block {
+            position: relative;
+            overflow: hidden;
+        }
+        .code-block::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 70%, #050a14);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .code-block:hover::before {
+            opacity: 1;
+        }
+        .slider {
+            -webkit-appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            background: #1f2937;
+            outline: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff6b00;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff6b00;
+            cursor: pointer;
+        }
+        .option-tag {
+            transition: all 0.2s ease;
+        }
+        .option-tag:hover {
+            background-color: rgba(255, 107, 0, 0.2);
+        }
+        .option-tag.active {
+            background-color: rgba(255, 107, 0, 0.3);
+            border-color: #ff6b00;
+        }
+        .media-card {
+            transition: all 0.3s ease;
+        }
+        .media-card:hover {
+            transform: translateY(-5px);
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #ff6b00;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+    <header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="s-html.html"><h1 class="text-2xl font-bold">HTML<span class="text-accent">Multimedia</span></h1></a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                    <a href="#audio" class="hover:text-accent transition-colors duration-300">Audio</a>
+                    <a href="#video" class="hover:text-accent transition-colors duration-300">Video</a>
+                    <a href="#iframes" class="hover:text-accent transition-colors duration-300">Iframes</a>
+                    <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+                </div>
+                <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+                <a href="#audio" class="block py-2 hover:text-accent transition-colors duration-300">Audio</a>
+                <a href="#video" class="block py-2 hover:text-accent transition-colors duration-300">Video</a>
+                <a href="#iframes" class="block py-2 hover:text-accent transition-colors duration-300">Iframes</a>
+                <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="text-center py-16">
+            <h1 class="text-5xl font-bold mb-4">Elementos <span class="text-accent">Multimedia</span> en HTML</h1>
+            <p class="text-xl max-w-3xl mx-auto">Aprende a incorporar audio, video y contenido externo en tus páginas web</p>
+        </section>
+
+        <section id="introduccion" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Introducción a los Elementos Multimedia</h2>
+            <p class="mb-8 text-lg leading-relaxed">Los elementos multimedia enriquecen la experiencia del usuario en la web, permitiendo la incorporación de contenido dinámico como audio, video y contenido interactivo de fuentes externas.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation h-full">
+                    <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 010-7.072m12.728 0l-4.242 4.242m-8.486 0a9 9 0 010-12.728l4.242 4.242" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-accent">Audio</h3>
+                    <p class="text-base">Incorpora sonidos, música y podcasts en tus páginas web para crear experiencias auditivas inmersivas y accesibles.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect rotate-effect h-full">
+                    <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-accent">Video</h3>
+                    <p class="text-base">Añade contenido visual dinámico que permite mostrar tutoriales, presentaciones y cualquier tipo de contenido audiovisual.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation h-full">
+                    <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-accent">Iframes</h3>
+                    <p class="text-base">Integra contenido de otras fuentes como mapas, videos de plataformas externas o widgets interactivos en tu sitio web.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="audio" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Audio en HTML</h2>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">La Etiqueta &lt;audio&gt;</h3>
+                <div class="code-block mb-6">
+                    <pre class="text-gray-300 overflow-x-auto text-lg"><code>&lt;audio src="archivo-de-audio.mp3" controls&gt;&lt;/audio&gt;</code></pre>
+                </div>
+                <p class="text-lg mb-6">La etiqueta <code class="bg-dark px-2 py-1 rounded border border-gray-800">&lt;audio&gt;</code> permite incorporar contenido de audio en una página web. A diferencia de las imágenes, esta etiqueta tiene una etiqueta de cierre.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Características principales:</h4>
+                        <ul class="list-disc pl-6 space-y-3 text-lg">
+                            <li>Reproduce archivos de audio directamente en el navegador</li>
+                            <li>Soporta múltiples formatos de audio (MP3, WAV, OGG)</li>
+                            <li>Puede mostrar controles de reproducción nativos</li>
+                            <li>Permite reproducción automática (con restricciones)</li>
+                            <li>Ofrece opciones para repetición y precarga</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-6 rounded-lg flex flex-col items-center justify-center">
+                        <audio controls class="w-full mb-4">
+                            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" type="audio/mp3">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <p class="text-center text-sm text-gray-400">Ejemplo de un reproductor de audio con controles nativos</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos principales</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">1</span>
+                                </span>
+                                <span>src</span>
+                            </h4>
+                            <p class="mb-3">Especifica la URL del archivo de audio a reproducir.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;audio src="musica.mp3"&gt;&lt;/audio&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">2</span>
+                                </span>
+                                <span>controls</span>
+                            </h4>
+                            <p class="mb-3">Muestra los controles de reproducción (play, pausa, volumen, etc.).</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;audio src="musica.mp3" controls&gt;&lt;/audio&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">3</span>
+                                </span>
+                                <span>autoplay</span>
+                            </h4>
+                            <p class="mb-3">Inicia la reproducción automáticamente cuando la página carga.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;audio src="musica.mp3" autoplay&gt;&lt;/audio&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Nota: La mayoría de los navegadores modernos bloquean la reproducción automática a menos que el audio esté silenciado o el usuario haya interactuado con la página.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos adicionales</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">4</span>
+                                </span>
+                                <span>loop</span>
+                            </h4>
+                            <p class="mb-3">Hace que el audio se repita continuamente.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;audio src="musica.mp3" loop&gt;&lt;/audio&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">5</span>
+                                </span>
+                                <span>muted</span>
+                            </h4>
+                            <p class="mb-3">Silencia el audio por defecto.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;audio src="musica.mp3" muted&gt;&lt;/audio&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">6</span>
+                                </span>
+                                <span>preload</span>
+                            </h4>
+                            <p class="mb-3">Especifica si el audio debe precargarse. Valores: auto, metadata, none.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;audio src="musica.mp3" preload="auto"&gt;&lt;/audio&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">auto: precargar todo el audio, metadata: solo precargar metadatos, none: no precargar nada.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Múltiples Fuentes de Audio</h3>
+                
+                <p class="mb-6 text-lg">Para garantizar la compatibilidad con diferentes navegadores, puedes proporcionar múltiples formatos de audio utilizando el elemento <code class="bg-dark px-2 py-1 rounded border border-gray-800">&lt;source&gt;</code>.</p>
+                
+                <div class="code-block mb-6">
+                    <pre class="text-gray-300 overflow-x-auto"><code>&lt;audio controls&gt;
+  &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+  &lt;source src="audio.ogg" type="audio/ogg"&gt;
+  &lt;source src="audio.wav" type="audio/wav"&gt;
+  Tu navegador no soporta el elemento de audio.
+&lt;/audio&gt;</code></pre>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">MP3</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Formato más común</li>
+                            <li>Buena compresión</li>
+                            <li>Compatible con todos los navegadores modernos</li>
+                            <li>MIME type: audio/mpeg</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">OGG</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Formato libre y abierto</li>
+                            <li>Buena calidad de audio</li>
+                            <li>Compatible con Chrome, Firefox y Opera</li>
+                            <li>MIME type: audio/ogg</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">WAV</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Sin compresión</li>
+                            <li>Máxima calidad de audio</li>
+                            <li>Archivos más grandes</li>
+                            <li>MIME type: audio/wav</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Control de Audio con JavaScript</h3>
+                
+                <p class="mb-6 text-lg">JavaScript permite un control más avanzado sobre la reproducción de audio, permitiéndote crear reproductores personalizados.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="code-block">
+                            <pre class="text-gray-300 overflow-x-auto"><code>// Obtener referencia al elemento de audio
+const audioPlayer = document.getElementById('miAudio');
+
+// Reproducir
+audioPlayer.play();
+
+// Pausar
+audioPlayer.pause();
+
+// Cambiar volumen (0.0 a 1.0)
+audioPlayer.volume = 0.5;
+
+// Silenciar/Activar sonido
+audioPlayer.muted = true;
+audioPlayer.muted = false;
+
+// Saltar a un tiempo específico (en segundos)
+audioPlayer.currentTime = 30;
+
+// Eventos
+audioPlayer.addEventListener('play', function() {
+  console.log('Audio iniciado');
+});
+
+audioPlayer.addEventListener('ended', function() {
+  console.log('Audio finalizado');
+});</code></pre>
+                        </div>
+                    </div>
+                    <div class="bg-dark p-6 rounded-lg">
+                        <h4 class="text-xl font-bold mb-4">Propiedades y métodos útiles:</h4>
+                        <ul class="list-disc pl-5 space-y-3">
+                            <li><strong>play()</strong>: Inicia la reproducción</li>
+                            <li><strong>pause()</strong>: Pausa la reproducción</li>
+                            <li><strong>currentTime</strong>: Posición actual en segundos</li>
+                            <li><strong>duration</strong>: Duración total en segundos</li>
+                            <li><strong>volume</strong>: Nivel de volumen (0.0 a 1.0)</li>
+                            <li><strong>muted</strong>: Estado de silencio (boolean)</li>
+                            <li><strong>playbackRate</strong>: Velocidad de reproducción</li>
+                            <li><strong>ended</strong>: Indica si la reproducción ha terminado</li>
+                            <li><strong>paused</strong>: Indica si está pausado</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="video" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Video en HTML</h2>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">La Etiqueta &lt;video&gt;</h3>
+                <div class="code-block mb-6">
+                    <pre class="text-gray-300 overflow-x-auto text-lg"><code>&lt;video src="archivo-de-video.mp4" controls width="640" height="360"&gt;&lt;/video&gt;</code></pre>
+                </div>
+                <p class="text-lg mb-6">La etiqueta <code class="bg-dark px-2 py-1 rounded border border-gray-800">&lt;video&gt;</code> permite incorporar contenido de video en una página web, ofreciendo una experiencia multimedia completa.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Características principales:</h4>
+                        <ul class="list-disc pl-6 space-y-3 text-lg">
+                            <li>Reproduce videos directamente en el navegador</li>
+                            <li>Soporta múltiples formatos (MP4, WebM, OGG)</li>
+                            <li>Permite definir dimensiones específicas</li>
+                            <li>Ofrece controles de reproducción nativos</li>
+                            <li>Puede mostrar una imagen de vista previa</li>
+                            <li>Soporta subtítulos y pistas de texto</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-6 rounded-lg flex flex-col items-center justify-center">
+                        <video controls width="100%" class="rounded-lg mb-4">
+                            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+                            Tu navegador no soporta el elemento de video.
+                        </video>
+                        <p class="text-center text-sm text-gray-400">Ejemplo de un reproductor de video con controles nativos</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos principales</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">1</span>
+                                </span>
+                                <span>src</span>
+                            </h4>
+                            <p class="mb-3">Especifica la URL del archivo de video a reproducir.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;video src="video.mp4"&gt;&lt;/video&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">2</span>
+                                </span>
+                                <span>controls</span>
+                            </h4>
+                            <p class="mb-3">Muestra los controles de reproducción (play, pausa, volumen, etc.).</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;video src="video.mp4" controls&gt;&lt;/video&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">3</span>
+                                </span>
+                                <span>width y height</span>
+                            </h4>
+                            <p class="mb-3">Especifican el ancho y alto del reproductor de video en píxeles.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;video src="video.mp4" width="640" height="360"&gt;&lt;/video&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos adicionales</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">4</span>
+                                </span>
+                                <span>autoplay</span>
+                            </h4>
+                            <p class="mb-3">Inicia la reproducción automáticamente cuando la página carga.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;video src="video.mp4" autoplay&gt;&lt;/video&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Nota: La mayoría de los navegadores modernos bloquean la reproducción automática a menos que el video esté silenciado o el usuario haya interactuado con la página.</p>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">5</span>
+                                </span>
+                                <span>poster</span>
+                            </h4>
+                            <p class="mb-3">Especifica una imagen que se muestra antes de que comience la reproducción.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;video src="video.mp4" poster="imagen-previa.jpg"&gt;&lt;/video&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">6</span>
+                                </span>
+                                <span>loop y muted</span>
+                            </h4>
+                            <p class="mb-3">Controlan la repetición y el silencio del video.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;video src="video.mp4" loop muted&gt;&lt;/video&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Múltiples Fuentes de Video</h3>
+                
+                <p class="mb-6 text-lg">Al igual que con el audio, puedes proporcionar múltiples formatos de video para garantizar la compatibilidad con diferentes navegadores.</p>
+                
+                <div class="code-block mb-6">
+                    <pre class="text-gray-300 overflow-x-auto"><code>&lt;video controls width="640" height="360"&gt;
+  &lt;source src="video.mp4" type="video/mp4"&gt;
+  &lt;source src="video.webm" type="video/webm"&gt;
+  &lt;source src="video.ogv" type="video/ogg"&gt;
+  Tu navegador no soporta el elemento de video.
+&lt;/video&gt;</code></pre>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">MP4</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Formato más común</li>
+                            <li>Buena compresión</li>
+                            <li>Compatible con todos los navegadores modernos</li>
+                            <li>MIME type: video/mp4</li>
+                            <li>Códec recomendado: H.264</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">WebM</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Formato abierto y libre</li>
+                            <li>Excelente compresión</li>
+                            <li>Compatible con Chrome, Firefox y Opera</li>
+                            <li>MIME type: video/webm</li>
+                            <li>Códec: VP8/VP9</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">OGG</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Formato abierto</li>
+                            <li>Buena calidad</li>
+                            <li>Menos común actualmente</li>
+                            <li>MIME type: video/ogg</li>
+                            <li>Códec: Theora</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Subtítulos y Pistas de Texto</h3>
+                
+                <p class="mb-6 text-lg">El elemento <code class="bg-dark px-2 py-1 rounded border border-gray-800">&lt;track&gt;</code> permite añadir subtítulos, descripciones y otros tipos de texto sincronizado con el video.</p>
+                
+                <div class="code-block mb-6">
+                    <pre class="text-gray-300 overflow-x-auto"><code>&lt;video controls width="640" height="360"&gt;
+  &lt;source src="video.mp4" type="video/mp4"&gt;
+  &lt;track src="subtitulos_es.vtt" kind="subtitles" srclang="es" label="Español"&gt;
+  &lt;track src="subtitulos_en.vtt" kind="subtitles" srclang="en" label="English"&gt;
+  Tu navegador no soporta el elemento de video.
+&lt;/video&gt;</code></pre>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Atributos del elemento track:</h4>
+                        <ul class="list-disc pl-6 space-y-3">
+                            <li><strong>src</strong>: URL del archivo de texto (formato WebVTT)</li>
+                            <li><strong>kind</strong>: Tipo de texto (subtitles, captions, descriptions, chapters, metadata)</li>
+                            <li><strong>srclang</strong>: Código del idioma (es, en, fr, etc.)</li>
+                            <li><strong>label</strong>: Etiqueta visible para el usuario</li>
+                            <li><strong>default</strong>: Indica si esta pista debe estar activada por defecto</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3">Ejemplo de archivo WebVTT (.vtt):</h4>
+                        <div class="code-block">
+                            <pre class="text-gray-300 overflow-x-auto"><code>WEBVTT
+
+00:00:01.000 --> 00:00:04.000
+Bienvenidos a nuestro video tutorial
+
+00:00:05.000 --> 00:00:08.000
+Hoy aprenderemos sobre elementos multimedia en HTML
+
+00:00:10.000 --> 00:00:15.000
+Los subtítulos mejoran la accesibilidad del contenido</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="iframes" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Iframes en HTML</h2>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">La Etiqueta &lt;iframe&gt;</h3>
+                <div class="code-block mb-6">
+                    <pre class="text-gray-300 overflow-x-auto text-lg"><code>&lt;iframe src="https://www.ejemplo.com" width="600" height="400"&gt;&lt;/iframe&gt;</code></pre>
+                </div>
+                <p class="text-lg mb-6">La etiqueta <code class="bg-dark px-2 py-1 rounded border border-gray-800">&lt;iframe&gt;</code> (inline frame) permite incrustar otro documento HTML dentro de la página actual, creando una ventana independiente que puede mostrar contenido de otra fuente.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Usos comunes:</h4>
+                        <ul class="list-disc pl-6 space-y-3 text-lg">
+                            <li>Incrustar videos de plataformas como YouTube o Vimeo</li>
+                            <li>Mostrar mapas interactivos (Google Maps, OpenStreetMap)</li>
+                            <li>Integrar widgets de redes sociales</li>
+                            <li>Incluir formularios externos</li>
+                            <li>Mostrar contenido de otra página web</li>
+                            <li>Crear áreas de vista previa</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-6 rounded-lg flex flex-col items-center justify-center">
+                        <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik" width="100%" height="250" class="rounded-lg mb-4" loading="lazy"></iframe>
+                        <p class="text-center text-sm text-gray-400">Ejemplo de un mapa incrustado con iframe</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos principales</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">1</span>
+                                </span>
+                                <span>src</span>
+                            </h4>
+                            <p class="mb-3">Especifica la URL del documento a mostrar en el iframe.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;iframe src="https://www.ejemplo.com"&gt;&lt;/iframe&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">2</span>
+                                </span>
+                                <span>width y height</span>
+                            </h4>
+                            <p class="mb-3">Especifican el ancho y alto del iframe en píxeles o porcentaje.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;iframe src="pagina.html" width="600" height="400"&gt;&lt;/iframe&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">3</span>
+                                </span>
+                                <span>loading</span>
+                            </h4>
+                            <p class="mb-3">Especifica si el iframe debe cargarse inmediatamente o de forma diferida.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;iframe src="pagina.html" loading="lazy"&gt;&lt;/iframe&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">El valor "lazy" retrasa la carga del iframe hasta que el usuario se desplaza cerca de él.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Atributos de seguridad</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">4</span>
+                                </span>
+                                <span>sandbox</span>
+                            </h4>
+                            <p class="mb-3">Aplica restricciones adicionales al contenido del iframe por seguridad.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;iframe src="pagina.html" sandbox="allow-scripts allow-same-origin"&gt;&lt;/iframe&gt;</code></pre>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-400">Valores comunes: allow-scripts, allow-same-origin, allow-forms, allow-popups</p>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">5</span>
+                                </span>
+                                <span>allow</span>
+                            </h4>
+                            <p class="mb-3">Especifica qué características y permisos se conceden al iframe.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;iframe src="https://ejemplo.com" allow="camera; microphone; fullscreen"&gt;&lt;/iframe&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3 flex items-center">
+                                <span class="bg-accent/20 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                                    <span class="text-accent">6</span>
+                                </span>
+                                <span>referrerpolicy</span>
+                            </h4>
+                            <p class="mb-3">Especifica qué información de referencia enviar al cargar el iframe.</p>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code>&lt;iframe src="pagina.html" referrerpolicy="no-referrer"&gt;&lt;/iframe&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Ejemplos Prácticos</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">YouTube</h4>
+                        <div class="code-block mb-4">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;iframe 
+  width="560" 
+  height="315" 
+  src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+  title="Video de YouTube" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; 
+         encrypted-media; gyroscope; picture-in-picture" 
+  allowfullscreen&gt;
+&lt;/iframe&gt;</code></pre>
+                        </div>
+                        <p class="text-sm text-gray-400">La mayoría de plataformas de video proporcionan códigos de iframe listos para copiar y pegar.</p>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">Google Maps</h4>
+                        <div class="code-block mb-4">
+                            <pre class="text-gray-300 overflow-x-auto"><code>&lt;iframe 
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!
+       1m3!1d2624.9916256937595!2d2.2922926!3d48.8583736!
+       2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!
+       1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!
+       2sTorre%20Eiffel!5e0!3m2!1ses!2ses!4v1619705430000!5m2!1ses!2ses" 
+  width="400" 
+  height="300" 
+  style="border:0;" 
+  allowfullscreen="" 
+  loading="lazy"&gt;
+&lt;/iframe&gt;</code></pre>
+                        </div>
+                        <p class="text-sm text-gray-400">Google Maps permite generar el código del iframe desde la opción "Compartir" > "Incorporar un mapa".</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                <h3 class="text-2xl font-bold mb-6 text-accent">Consideraciones de Seguridad</h3>
+                
+                <p class="mb-6 text-lg">Los iframes pueden presentar riesgos de seguridad si no se utilizan correctamente. Aquí hay algunas recomendaciones importantes:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">Riesgos</h4>
+                        <ul class="list-disc pl-5 space-y-3">
+                            <li>Ataques de clickjacking (secuestro de clics)</li>
+                            <li>Inyección de contenido malicioso</li>
+                            <li>Robo de datos mediante sitios fraudulentos</li>
+                            <li>Problemas de rendimiento por carga excesiva</li>
+                            <li>Seguimiento no autorizado de usuarios</li>
+                        </ul>
+                    </div>
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-3 text-accent">Mejores prácticas</h4>
+                        <ul class="list-disc pl-5 space-y-3">
+                            <li>Usar siempre el atributo <code>sandbox</code> con los permisos mínimos necesarios</li>
+                            <li>Incluir solo contenido de fuentes confiables</li>
+                            <li>Implementar Content Security Policy (CSP)</li>
+                            <li>Utilizar HTTPS para todas las fuentes</li>
+                            <li>Aplicar <code>loading="lazy"</code> para mejorar el rendimiento</li>
+                            <li>Especificar siempre dimensiones width y height</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="actividad" class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Constructor de Reproductor Multimedia</h2>
+            
+            <p class="mb-8 text-lg leading-relaxed">Crea tu propio reproductor multimedia personalizado seleccionando el tipo de contenido y configurando sus atributos.</p>
+            
+            <div class="bg-darker p-8 rounded-lg border border-gray-800">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Selecciona el tipo de contenido</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="tab-button active px-6 py-3 rounded-lg bg-dark hover:bg-accent/50 transition-colors" data-tab="audio">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 010-7.072m12.728 0l-4.242 4.242m-8.486 0a9 9 0 010-12.728l4.242 4.242" />
+                            </svg>
+                            Audio
+                        </button>
+                        <button class="tab-button px-6 py-3 rounded-lg bg-dark hover:bg-accent/50 transition-colors" data-tab="video">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                            </svg>
+                            Video
+                        </button>
+                        <button class="tab-button px-6 py-3 rounded-lg bg-dark hover:bg-accent/50 transition-colors" data-tab="iframe">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                            </svg>
+                            Iframe
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-accent">Configuración</h3>
+                        
+                        <!-- Contenedor de configuración de Audio (visible por defecto) -->
+                        <div id="audio-config" class="tab-content">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block mb-2 font-bold">Selecciona una fuente de audio:</label>
+                                    <select id="audio-source" title="." class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent transition-colors">
+                                        <option value="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3">Rugido de T-Rex</option>
+                                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Música electrónica</option>
+                                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">Música ambiental</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-bold">Atributos:</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer active" data-option="controls">
+                                            controls
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="autoplay">
+                                            autoplay
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="loop">
+                                            loop
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="muted">
+                                            muted
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="preload">
+                                            preload="auto"
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-bold">Volumen inicial:</label>
+                                    <input type="range" title="." id="audio-volume" min="0" max="100" value="80" class="slider w-full mb-1">
+                                    <div class="flex justify-between">
+                                        <span>0%</span>
+                                        <span id="volume-value">80%</span>
+                                        <span>100%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contenedor de configuración de Video (oculto inicialmente) -->
+                        <div id="video-config" class="tab-content hidden">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block mb-2 font-bold">Selecciona una fuente de video:</label>
+                                    <select id="video-source" title="." class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent transition-colors">
+                                        <option value="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4">Flor</option>
+                                        <option value="https://media.w3.org/2010/05/sintel/trailer.mp4">Sintel (trailer)</option>
+                                        <option value="https://media.w3.org/2010/05/bunny/trailer.mp4">Big Buck Bunny (trailer)</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-bold">Dimensiones:</label>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block mb-1 text-sm">Ancho (px):</label>
+                                            <input type="range" title="." id="video-width" min="320" max="800" value="640" class="slider w-full mb-1">
+                                            <div class="flex justify-between">
+                                                <span>320px</span>
+                                                <span id="width-value">640px</span>
+                                                <span>800px</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block mb-1 text-sm">Alto (px):</label>
+                                            <input type="range" title="." id="video-height" min="180" max="450" value="360" class="slider w-full mb-1">
+                                            <div class="flex justify-between">
+                                                <span>180px</span>
+                                                <span id="height-value">360px</span>
+                                                <span>450px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-bold">Atributos:</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer active" data-option="controls">
+                                            controls
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="autoplay">
+                                            autoplay
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="loop">
+                                            loop
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="muted">
+                                            muted
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="poster">
+                                            poster
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contenedor de configuración de Iframe (oculto inicialmente) -->
+                        <div id="iframe-config" class="tab-content hidden">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block mb-2 font-bold">Selecciona un tipo de contenido:</label>
+                                    <select id="iframe-type" title="." class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent transition-colors">
+                                        <option value="youtube">Video de YouTube</option>
+                                        <option value="maps">Google Maps</option>
+                                        <option value="webpage">Página web</option>
+                                    </select>
+                                </div>
+                                
+                                <div id="iframe-youtube-options">
+                                    <label class="block mb-2 font-bold">ID del video de YouTube:</label>
+                                    <input type="text" id="youtube-id" class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent transition-colors" value="dQw4w9WgXcQ" placeholder="Ej: dQw4w9WgXcQ">
+                                    <p class="text-sm text-gray-400 mt-1">El ID es la parte final de la URL de YouTube (después de v=)</p>
+                                </div>
+                                
+                                <div id="iframe-maps-options" class="hidden">
+                                    <label class="block mb-2 font-bold">Ubicación:</label>
+                                    <select id="maps-location" title="." class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent transition-colors">
+                                        <option value="eiffel">Torre Eiffel, París</option>
+                                        <option value="colosseum">Coliseo, Roma</option>
+                                        <option value="statue">Estatua de la Libertad, Nueva York</option>
+                                    </select>
+                                </div>
+                                
+                                <div id="iframe-webpage-options" class="hidden">
+                                    <label class="block mb-2 font-bold">URL de la página web:</label>
+                                    <select id="webpage-url" title="." class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent transition-colors">
+                                        <option value="https://www.example.com">example.com</option>
+                                        <option value="https://www.wikipedia.org">Wikipedia</option>
+                                        <option value="https://www.openstreetmap.org">OpenStreetMap</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-bold">Dimensiones:</label>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block mb-1 text-sm">Ancho (px):</label>
+                                            <input type="range" title="." id="iframe-width" min="320" max="800" value="600" class="slider w-full mb-1">
+                                            <div class="flex justify-between">
+                                                <span>320px</span>
+                                                <span id="iframe-width-value">600px</span>
+                                                <span>800px</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block mb-1 text-sm">Alto (px):</label>
+                                            <input type="range" title="." id="iframe-height" min="200" max="600" value="400" class="slider w-full mb-1">
+                                            <div class="flex justify-between">
+                                                <span>200px</span>
+                                                <span id="iframe-height-value">400px</span>
+                                                <span>600px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-bold">Atributos:</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="allowfullscreen">
+                                            allowfullscreen
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer active" data-option="loading">
+                                            loading="lazy"
+                                        </div>
+                                        <div class="option-tag px-3 py-1 rounded-lg border border-gray-700 cursor-pointer" data-option="sandbox">
+                                            sandbox
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-accent">Resultado</h3>
+                        
+                        <div class="bg-dark p-5 rounded-lg mb-6">
+                            <h4 class="text-xl font-bold mb-3">Código HTML:</h4>
+                            <div class="code-block">
+                                <pre class="text-gray-300 overflow-x-auto"><code id="result-code">&lt;audio src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" controls&gt;&lt;/audio&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-3">Vista previa:</h4>
+                            <div class="flex justify-center bg-white p-4 rounded-lg">
+                                <div id="preview-container" class="w-full">
+                                    <audio src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" controls class="w-full"></audio>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button id="copy-code-btn" class="bg-accent hover:bg-accent/80 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                                Copiar código
+                            </button>
+                            <span id="copy-message" class="ml-3 text-green-500 hidden">¡Código copiado!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'html';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-html.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+    </main>
+
+    <footer class="bg-darker py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <p>Elementos Multimedia en HTML - Guía completa para principiantes</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            menuBtn.addEventListener('click', function() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        if (!mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+            
+            // Constructor de Reproductor Multimedia
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const resultCode = document.getElementById('result-code');
+            const previewContainer = document.getElementById('preview-container');
+            const copyCodeBtn = document.getElementById('copy-code-btn');
+            const copyMessage = document.getElementById('copy-message');
+            
+            // Audio elements
+            const audioSource = document.getElementById('audio-source');
+            const audioVolume = document.getElementById('audio-volume');
+            const volumeValue = document.getElementById('volume-value');
+            
+            // Video elements
+            const videoSource = document.getElementById('video-source');
+            const videoWidth = document.getElementById('video-width');
+            const videoHeight = document.getElementById('video-height');
+            const widthValue = document.getElementById('width-value');
+            const heightValue = document.getElementById('height-value');
+            
+            // Iframe elements
+            const iframeType = document.getElementById('iframe-type');
+            const youtubeId = document.getElementById('youtube-id');
+            const mapsLocation = document.getElementById('maps-location');
+            const webpageUrl = document.getElementById('webpage-url');
+            const iframeWidth = document.getElementById('iframe-width');
+            const iframeHeight = document.getElementById('iframe-height');
+            const iframeWidthValue = document.getElementById('iframe-width-value');
+            const iframeHeightValue = document.getElementById('iframe-height-value');
+            
+            // Iframe option containers
+            const iframeYoutubeOptions = document.getElementById('iframe-youtube-options');
+            const iframeMapsOptions = document.getElementById('iframe-maps-options');
+            const iframeWebpageOptions = document.getElementById('iframe-webpage-options');
+            
+            // Tab switching
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    
+                    // Show selected tab content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-config`).classList.remove('hidden');
+                    
+                    // Update preview based on selected tab
+                    updatePreview();
+                });
+            });
+            
+            // Option tags toggle
+            const optionTags = document.querySelectorAll('.option-tag');
+            optionTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    updatePreview();
+                });
+            });
+            
+            // Audio source change
+            audioSource.addEventListener('change', updatePreview);
+            
+            // Audio volume change
+            audioVolume.addEventListener('input', function() {
+                volumeValue.textContent = `${this.value}%`;
+                updatePreview();
+            });
+            
+            // Video source change
+            videoSource.addEventListener('change', updatePreview);
+            
+            // Video dimensions change
+            videoWidth.addEventListener('input', function() {
+                widthValue.textContent = `${this.value}px`;
+                updatePreview();
+            });
+            
+            videoHeight.addEventListener('input', function() {
+                heightValue.textContent = `${this.value}px`;
+                updatePreview();
+            });
+            
+            // Iframe type change
+            iframeType.addEventListener('change', function() {
+                // Hide all iframe option containers
+                iframeYoutubeOptions.classList.add('hidden');
+                iframeMapsOptions.classList.add('hidden');
+                iframeWebpageOptions.classList.add('hidden');
+                
+                // Show selected iframe option container
+                const type = this.value;
+                if (type === 'youtube') {
+                    iframeYoutubeOptions.classList.remove('hidden');
+                } else if (type === 'maps') {
+                    iframeMapsOptions.classList.remove('hidden');
+                } else if (type === 'webpage') {
+                    iframeWebpageOptions.classList.remove('hidden');
+                }
+                
+                updatePreview();
+            });
+            
+            // Iframe source changes
+            youtubeId.addEventListener('input', updatePreview);
+            mapsLocation.addEventListener('change', updatePreview);
+            webpageUrl.addEventListener('change', updatePreview);
+            
+            // Iframe dimensions change
+            iframeWidth.addEventListener('input', function() {
+                iframeWidthValue.textContent = `${this.value}px`;
+                updatePreview();
+            });
+            
+            iframeHeight.addEventListener('input', function() {
+                iframeHeightValue.textContent = `${this.value}px`;
+                updatePreview();
+            });
+            
+            // Update preview function
+            function updatePreview() {
+                const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
+                
+                if (activeTab === 'audio') {
+                    updateAudioPreview();
+                } else if (activeTab === 'video') {
+                    updateVideoPreview();
+                } else if (activeTab === 'iframe') {
+                    updateIframePreview();
+                }
+            }
+            
+            // Update audio preview
+            function updateAudioPreview() {
+                const src = audioSource.value;
+                const volume = audioVolume.value / 100;
+                
+                // Get active options
+                let options = '';
+                document.querySelectorAll('#audio-config .option-tag.active').forEach(tag => {
+                    const option = tag.getAttribute('data-option');
+                    if (option === 'preload') {
+                        options += ' preload="auto"';
+                    } else {
+                        options += ` ${option}`;
+                    }
+                });
+                
+                // Update code
+                const code = `<audio src="${src}"${options}></audio>`;
+                resultCode.textContent = code;
+                
+                // Update preview
+                previewContainer.innerHTML = `<audio src="${src}"${options} class="w-full"></audio>`;
+                
+                // Set volume
+                const audioElement = previewContainer.querySelector('audio');
+                if (audioElement) {
+                    audioElement.volume = volume;
+                }
+            }
+            
+            // Update video preview
+            function updateVideoPreview() {
+                const src = videoSource.value;
+                const width = videoWidth.value;
+                const height = videoHeight.value;
+                
+                // Get active options
+                let options = '';
+                document.querySelectorAll('#video-config .option-tag.active').forEach(tag => {
+                    const option = tag.getAttribute('data-option');
+                    if (option === 'poster') {
+                        options += ' poster="https://via.placeholder.com/640x360/000000/FFFFFF?text=Video+Preview"';
+                    } else {
+                        options += ` ${option}`;
+                    }
+                });
+                
+                // Update code
+                const code = `<video src="${src}" width="${width}" height="${height}"${options}></video>`;
+                resultCode.textContent = code;
+                
+                // Update preview
+                previewContainer.innerHTML = `<video src="${src}" width="${width}" height="${height}"${options} class="rounded-lg"></video>`;
+            }
+            
+            // Update iframe preview
+            function updateIframePreview() {
+                const width = iframeWidth.value;
+                const height = iframeHeight.value;
+                const type = iframeType.value;
+                
+                let src = '';
+                
+                if (type === 'youtube') {
+                    const id = youtubeId.value;
+                    src = `https://www.youtube.com/embed/${id}`;
+                } else if (type === 'maps') {
+                    const location = mapsLocation.value;
+                    if (location === 'eiffel') {
+                        src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937595!2d2.2922926!3d48.8583736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTorre%20Eiffel!5e0!3m2!1ses!2ses!4v1619705430000!5m2!1ses!2ses';
+                    } else if (location === 'colosseum') {
+                        src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.123073808986!2d12.4922309!3d41.8902102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f61b6532013ad%3A0x28f1c82e908503c4!2sColiseo!5e0!3m2!1ses!2ses!4v1619705430000!5m2!1ses!2ses';
+                    } else if (location === 'statue') {
+                        src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.2219901290355!2d-74.0467076!3d40.6892494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25090129c363d%3A0x40c6a5770d25022b!2sEstatua%20de%20la%20Libertad!5e0!3m2!1ses!2ses!4v1619705430000!5m2!1ses!2ses';
+                    }
+                } else if (type === 'webpage') {
+                    src = webpageUrl.value;
+                }
+                
+                // Get active options
+                let options = '';
+                document.querySelectorAll('#iframe-config .option-tag.active').forEach(tag => {
+                    const option = tag.getAttribute('data-option');
+                    if (option === 'loading') {
+                        options += ' loading="lazy"';
+                    } else if (option === 'sandbox') {
+                        options += ' sandbox="allow-scripts allow-same-origin"';
+                    } else {
+                        options += ` ${option}`;
+                    }
+                });
+                
+                // Update code
+                const code = `<iframe src="${src}" width="${width}" height="${height}"${options}></iframe>`;
+                resultCode.textContent = code;
+                
+                // Update preview
+                previewContainer.innerHTML = `<iframe src="${src}" width="${width}" height="${height}"${options} class="rounded-lg border-0"></iframe>`;
+            }
+            
+            // Copy code button
+            copyCodeBtn.addEventListener('click', function() {
+                // Create a temporary textarea element
+                const textarea = document.createElement('textarea');
+                textarea.value = resultCode.textContent;
+                document.body.appendChild(textarea);
+                
+                // Select and copy the text
+                textarea.select();
+                document.execCommand('copy');
+                
+                // Remove the textarea
+                document.body.removeChild(textarea);
+                
+                // Show success message
+                copyMessage.classList.remove('hidden');
+                
+                // Hide message after 2 seconds
+                setTimeout(() => {
+                    copyMessage.classList.add('hidden');
+                }, 2000);
+            });
+            
+            // Initialize
+            updatePreview();
+        });
+    </script>
+</body>
+</html>

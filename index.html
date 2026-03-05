@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aprende Web - Tutorial de HTML, CSS y JavaScript</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-20px) translateX(10px); }
+    }
+    
+    .star {
+      animation: twinkle 3s infinite;
+      position: absolute;
+    }
+    
+    .floating-star {
+      animation: float 6s infinite ease-in-out;
+    }
+    
+    .stars-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .content-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #d1d5db 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .language-card {
+      transition: all 0.3s ease;
+    }
+    
+    .language-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .benefit-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .benefit-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translateY(-4px);
+    }
+    
+    .brave-banner {
+      background: linear-gradient(135deg, #fb542b 0%, #fd8c42 100%);
+    }
+  </style>
+</head>
+<body class="bg-black text-white overflow-x-hidden">
+  <!-- Animated Stars Background -->
+  <div class="stars-container" id="starsContainer"></div>
+
+  <!-- Navigation -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-black/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-2">
+          <div class="w-10 h-10 bg-gradient-to-br from-gray-500 to-gray-600 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-lg">&lt;/&gt;</span>
+          </div>
+          <span class="text-2xl font-bold gradient-text">HTSS</span>
+        </div>
+
+        <nav class="hidden md:flex space-x-8">
+          <a href="#inicio" class="text-gray-400 hover:text-white transition-colors">Inicio</a>
+          <a href="#lenguajes" class="text-gray-400 hover:text-white transition-colors">Lenguajes</a>
+          <a href="#ventajas" class="text-gray-400 hover:text-white transition-colors">Ventajas</a>
+          <a href="#mecanografia" class="text-gray-400 hover:text-white transition-colors">Mecanografía</a>
+        </nav>
+
+        <button id="mobile-menu-button" class="md:hidden p-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden pb-4 space-y-2">
+        <a href="#inicio" class="block px-3 py-2 text-gray-400 hover:text-white">Inicio</a>
+        <a href="#lenguajes" class="block px-3 py-2 text-gray-400 hover:text-white">Lenguajes</a>
+        <a href="#ventajas" class="block px-3 py-2 text-gray-400 hover:text-white">Ventajas</a>
+        <a href="#mecanografia" class="block px-3 py-2 text-gray-400 hover:text-white">Mecanografía</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="content-wrapper">
+    <!-- Hero Section -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center py-20">
+      <div class="container mx-auto px-4 text-center max-w-5xl">
+        <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight">
+          Domina el Desarrollo
+          <span class="gradient-text block mt-2">Web desde Cero</span>
+        </h1>
+
+        <p class="text-xl md:text-2xl text-gray-400 mb-12 leading-relaxed">
+          Aprende HTML, CSS y JavaScript con tutoriales interactivos, ejercicios prácticos y recursos completos diseñados para principiantes y desarrolladores en crecimiento.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          <a href="index.php" id="btnComenzar" class="px-8 py-4 bg-gray-600 hover:bg-gray-700 rounded-lg font-bold text-lg transition-colors">
+              Comenzar Ahora
+          </a>
+
+          <script>
+              // Revisamos si en la memoria del navegador existe la variable 'tiene_cuenta'
+              if (localStorage.getItem('tiene_cuenta') === 'true') {
+                  // Si ya tiene cuenta, cambiamos el enlace al ID #lenguajes
+                  document.getElementById('btnComenzar').href = "#lenguajes";
+              }
+          </script>
+          <a href="#lenguajes" class="px-8 py-4 border-2 border-gray-600 hover:border-gray-400 rounded-lg font-bold text-lg transition-colors">
+            Explorar Temas
+          </a>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto">
+          <div class="bg-gray-900/50 backdrop-blur p-4 rounded-lg border border-gray-800">
+            <div class="text-3xl font-bold text-blue-500">3</div>
+            <div class="text-gray-400 text-sm mt-2">Lenguajes</div>
+          </div>
+          <div class="bg-gray-900/50 backdrop-blur p-4 rounded-lg border border-gray-800">
+            <div class="text-3xl font-bold text-purple-500">30</div>
+            <div class="text-gray-400 text-sm mt-2">Temas</div>
+          </div>
+          <div class="bg-gray-900/50 backdrop-blur p-4 rounded-lg border border-gray-800">
+            <div class="text-3xl font-bold text-cyan-500">∞</div>
+            <div class="text-gray-400 text-sm mt-2">Aprendizaje</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Language Selection Section -->
+    <section id="lenguajes" class="py-20 bg-gradient-to-b from-black to-gray-900">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <h2 class="text-5xl font-bold text-center mb-4">
+          Elige tu Lenguaje
+        </h2>
+        <p class="text-gray-400 text-center mb-16 text-lg">
+          Selecciona el lenguaje por el que deseas comenzar tu viaje en el desarrollo web
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- HTML Card -->
+          <div class="language-card bg-gray-900 border border-gray-800 rounded-xl p-8">
+            <div class="w-16 h-16 bg-orange-500/20 rounded-lg flex items-center justify-center mb-6">
+              <span class="text-4xl">📄</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-3">HTML</h3>
+            <p class="text-gray-400 mb-6">
+              La base de toda página web. Aprende a estructurar contenido con etiquetas semánticas y buenas prácticas.
+            </p>
+            <ul class="space-y-2 text-sm text-gray-300 mb-8">
+              <li class="flex items-center"><span class="text-orange-500 mr-2">✓</span> Estructura semántica</li>
+              <li class="flex items-center"><span class="text-orange-500 mr-2">✓</span> Metadatos y SEO</li>
+              <li class="flex items-center"><span class="text-orange-500 mr-2">✓</span> Formularios</li>
+              <li class="flex items-center"><span class="text-orange-500 mr-2">✓</span> Accesibilidad</li>
+            </ul>
+            <a href="s-html.html" class="inline-block w-full text-center bg-orange-600 hover:bg-orange-700 px-6 py-3 rounded-lg font-bold transition-colors">
+              Comenzar con HTML
+            </a>
+          </div>
+
+          <!-- CSS Card -->
+          <div class="language-card bg-gray-900 border border-gray-800 rounded-xl p-8">
+            <div class="w-16 h-16 bg-blue-500/20 rounded-lg flex items-center justify-center mb-6">
+              <span class="text-4xl">🎨</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-3">CSS</h3>
+            <p class="text-gray-400 mb-6">
+              Estilos y diseño. Domina layouts, animaciones y responsive design para crear interfaces hermosas.
+            </p>
+            <ul class="space-y-2 text-sm text-gray-300 mb-8">
+              <li class="flex items-center"><span class="text-blue-500 mr-2">✓</span> Flexbox y Grid</li>
+              <li class="flex items-center"><span class="text-blue-500 mr-2">✓</span> Animaciones</li>
+              <li class="flex items-center"><span class="text-blue-500 mr-2">✓</span> Responsive Design</li>
+              <li class="flex items-center"><span class="text-blue-500 mr-2">✓</span> Variables CSS</li>
+            </ul>
+            <a href="s-css.html" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-bold transition-colors">
+              Comenzar con CSS
+            </a>
+          </div>
+
+          <!-- JavaScript Card -->
+          <div class="language-card bg-gray-900 border border-gray-800 rounded-xl p-8">
+            <div class="w-16 h-16 bg-yellow-500/20 rounded-lg flex items-center justify-center mb-6">
+              <span class="text-4xl">⚙️</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-3">JavaScript</h3>
+            <p class="text-gray-400 mb-6">
+              Interactividad y lógica. Crea aplicaciones dinámicas con JavaScript moderno y mejores prácticas.
+            </p>
+            <ul class="space-y-2 text-sm text-gray-300 mb-8">
+              <li class="flex items-center"><span class="text-yellow-500 mr-2">✓</span> Variables y tipos</li>
+              <li class="flex items-center"><span class="text-yellow-500 mr-2">✓</span> Funciones</li>
+              <li class="flex items-center"><span class="text-yellow-500 mr-2">✓</span> DOM manipulation</li>
+              <li class="flex items-center"><span class="text-yellow-500 mr-2">✓</span> Async/Await</li>
+            </ul>
+            <a href="s-js.html" class="inline-block w-full text-center bg-yellow-600 hover:bg-yellow-700 px-6 py-3 rounded-lg font-bold transition-colors">
+              Comenzar con JavaScript
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="ventajas" class="py-20">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <h2 class="text-5xl font-bold text-center mb-4">
+          ¿Por Qué Aprende Web?
+        </h2>
+        <p class="text-gray-400 text-center mb-16 text-lg">
+          Descubre todas las ventajas que te espera en nuestra plataforma
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Benefit 1 -->
+          <div class="benefit-card p-6 rounded-xl">
+            <div class="text-4xl mb-4">🎓</div>
+            <h3 class="text-xl font-bold mb-2">Tutoriales Completos</h3>
+            <p class="text-gray-400 text-sm">Guías detalladas y progresivas desde lo básico hasta conceptos avanzados</p>
+          </div>
+
+          <!-- Benefit 2 -->
+          <div class="benefit-card p-6 rounded-xl">
+            <div class="text-4xl mb-4">⚡</div>
+            <h3 class="text-xl font-bold mb-2">Interactivo</h3>
+            <p class="text-gray-400 text-sm">Aprende haciendo con actividades y ejercicios prácticos integrados</p>
+          </div>
+
+          <!-- Benefit 3 -->
+          <div class="benefit-card p-6 rounded-xl">
+            <div class="text-4xl mb-4">📊</div>
+            <h3 class="text-xl font-bold mb-2">Ejemplos Reales</h3>
+            <p class="text-gray-400 text-sm">Casos de uso reales y ejemplos que puedes implementar en tus proyectos</p>
+          </div>
+
+          <!-- Benefit 4 -->
+          <div class="benefit-card p-6 rounded-xl">
+            <div class="text-4xl mb-4">🔍</div>
+            <h3 class="text-xl font-bold mb-2">Referencia Completa</h3>
+            <p class="text-gray-400 text-sm">Acceso a referencia de etiquetas, funciones y propiedades documentadas</p>
+          </div>
+
+          <!-- Benefit 5 -->
+          <div class="benefit-card p-6 rounded-xl">
+            <div class="text-4xl mb-4">🎯</div>
+            <h3 class="text-xl font-bold mb-2">Ejercicios con Soluciones</h3>
+            <p class="text-gray-400 text-sm">Practica con ejercicios guiados que incluyen soluciones explicadas</p>
+          </div>
+
+          <!-- Benefit 6 -->
+          <div class="benefit-card p-6 rounded-xl">
+            <div class="text-4xl mb-4">📱</div>
+            <h3 class="text-xl font-bold mb-2">Diseño Responsivo</h3>
+            <p class="text-gray-400 text-sm">Accede desde cualquier dispositivo - desktop, tablet o móvil</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mecanografía Section -->
+    <section id="mecanografia" class="py-20">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <h2 class="text-5xl font-bold text-center mb-4">
+          Mecanografía
+        </h2>
+        <p class="text-gray-400 text-center mb-16 text-lg">
+          Mejora tu velocidad y precisión al escribir código con nuestras herramientas de mecanografía
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Typing Practice Card -->
+          <div class="benefit-card p-8 rounded-xl">
+            <div class="text-5xl mb-4">⌨️</div>
+            <h3 class="text-2xl font-bold mb-3">Práctica de Tipeo</h3>
+            <p class="text-gray-400 mb-6">
+              Mejora tu velocidad escribiendo código real. Practica con fragmentos de HTML, CSS y JavaScript auténticos con retroalimentación instantánea.
+            </p>
+            <ul class="space-y-2 text-sm text-gray-300 mb-8">
+              <li class="flex items-center"><span class="text-cyan-500 mr-2">✓</span> Ejercicios progresivos</li>
+              <li class="flex items-center"><span class="text-cyan-500 mr-2">✓</span> Medición de WPM (palabras por minuto)</li>
+              <li class="flex items-center"><span class="text-cyan-500 mr-2">✓</span> Análisis de precisión</li>
+              <li class="flex items-center"><span class="text-cyan-500 mr-2">✓</span> Código auténtico</li>
+            </ul>
+            <button class="w-full bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-lg font-bold transition-colors opacity-50 cursor-not-allowed">
+              Próximamente
+            </button>
+          </div>
+
+          <!-- Statistics & Features -->
+          <div class="space-y-6">
+            <div class="benefit-card p-6 rounded-xl">
+              <h4 class="text-lg font-bold mb-2">🎯 Beneficios</h4>
+              <ul class="space-y-2 text-sm text-gray-300">
+                <li>Aumenta tu velocidad de codificación</li>
+                <li>Desarrolla memoria muscular</li>
+                <li>Reduce errores de sintaxis</li>
+                <li>Aprende mejores prácticas escribiendo</li>
+              </ul>
+            </div>
+
+            <div class="benefit-card p-6 rounded-xl">
+              <h4 class="text-lg font-bold mb-2">📈 Seguimiento de Progreso</h4>
+              <ul class="space-y-2 text-sm text-gray-300">
+                <li>Historial de sesiones anteriores</li>
+                <li>Gráficos de mejora personal</li>
+                <li>Insignias y logros</li>
+                <li>Competencia amigable con otros</li>
+              </ul>
+            </div>
+
+            <div class="benefit-card p-6 rounded-xl">
+              <h4 class="text-lg font-bold mb-2">💡 Características Especiales</h4>
+              <ul class="space-y-2 text-sm text-gray-300">
+                <li>Modo oscuro y claro</li>
+                <li>Múltiples niveles de dificultad</li>
+                <li>Desafíos semanales</li>
+                <li>Comunidad de usuarios activa</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div class="bg-gray-900/50 backdrop-blur p-6 rounded-lg border border-gray-800 text-center">
+            <div class="text-4xl font-bold text-cyan-500 mb-2">---</div>
+            <p class="text-gray-400">Ejercicios de tipeo</p>
+          </div>
+          <div class="bg-gray-900/50 backdrop-blur p-6 rounded-lg border border-gray-800 text-center">
+            <div class="text-4xl font-bold text-cyan-500 mb-2">---</div>
+            <p class="text-gray-400">Usuarios practicando</p>
+          </div>
+          <div class="bg-gray-900/50 backdrop-blur p-6 rounded-lg border border-gray-800 text-center">
+            <div class="text-4xl font-bold text-cyan-500 mb-2">---</div>
+            <p class="text-gray-400">Satisfacción de usuarios</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brave Browser Banner -->
+    <section class="py-12 px-4">
+      <div class="container mx-auto max-w-4xl">
+        <div class="brave-banner rounded-xl p-8 md:p-12">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="text-4xl">🦁</span>
+            <h3 class="text-2xl md:text-3xl font-bold">Para mejor experiencia</h3>
+          </div>
+          <p class="text-lg text-white/90 mb-4">
+            Recomendamos usar <strong>Brave Browser</strong> para una experiencia óptima. Brave ofrece mejor rendimiento, privacidad mejorada y bloqueador de anuncios integrado.
+          </p>
+          <a href="https://brave.com" target="_blank" rel="noopener noreferrer" class="inline-block bg-white text-orange-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 transition-colors">
+            Descargar Brave →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 border-t border-gray-800">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <h4 class="font-bold mb-4">Aprende Web</h4>
+            <p class="text-gray-400 text-sm">Plataforma de aprendizaje para desarrollo web moderno</p>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4">Lenguajes</h4>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li><a href="index.html" class="hover:text-white">HTML</a></li>
+              <li><a href="#" class="hover:text-white opacity-50">CSS</a></li>
+              <li><a href="#" class="hover:text-white opacity-50">JavaScript</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4">Recursos</h4>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li><a href="etiquetas.html" class="hover:text-white">Referencia de Etiquetas</a></li>
+              <li><a href="#" class="hover:text-white">Documentación</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4">Información</h4>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li><a href="#" class="hover:text-white">Acerca de</a></li>
+              <li><a href="#" class="hover:text-white">Contacto</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+          <p>© 2025 Aprende Web - Todos los derechos reservados</p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Script for Stars Animation -->
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Create animated stars
+    function createStars() {
+      const container = document.getElementById('starsContainer');
+      const starCount = 100;
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star floating-star';
+        
+        const size = Math.random() * 2 + 0.5;
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 3 + 2;
+
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = x + '%';
+        star.style.top = y + '%';
+        star.style.backgroundColor = '#ffffff';
+        star.style.borderRadius = '50%';
+        star.style.boxShadow = '0 0 ' + (size * 2) + 'px rgba(255,255,255,0.5)';
+        star.style.animationDelay = delay + 's';
+        star.style.animationDuration = duration + 's';
+
+        container.appendChild(star);
+      }
+    }
+
+    // Initialize stars on page load
+    createStars();
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

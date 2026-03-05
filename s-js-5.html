@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript: Funciones</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                dark: '#0a0f1a',
+                darker: '#050a14',
+                accent: '#FFD700', // Amarillo dorado
+                accentLight: '#FFEB99', // Amarillo claro
+                accentDark: '#B8860B' // Amarillo oscuro (dark goldenrod)
+            }
+        }
+    }
+}
+</script>
+<style>
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+.float-animation:hover {
+    animation: float 2s ease-in-out infinite;
+}
+.glow-effect:hover {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+.scale-effect:hover {
+    transform: scale(1.03);
+}
+.rotate-effect:hover .icon-container {
+    transform: rotate(10deg);
+}
+.code-block {
+    position: relative;
+    overflow: hidden;
+}
+.js-slider {
+    -webkit-appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: #1f2937;
+    outline: none;
+}
+.js-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #FFD700;
+    cursor: pointer;
+}
+.js-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #FFD700;
+    cursor: pointer;
+}
+.js-container {
+    border: 2px dashed rgba(255, 215, 0, 0.3);
+    background-color: rgba(255, 215, 0, 0.05);
+    transition: all 0.3s ease;
+}
+.js-item {
+    background-color: rgba(255, 215, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    transition: all 0.3s ease;
+}
+.js-property-button {
+    transition: all 0.3s ease;
+}
+.js-property-button.active {
+    background-color: #FFD700;
+    color: #0a0f1a;
+}
+.code-editor {
+    font-family: monospace;
+    background-color: #1a1a1a;
+    color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #333;
+    resize: none;
+    width: 100%;
+    height: 150px;
+    tab-size: 2;
+}
+.console-output {
+    font-family: monospace;
+    background-color: #0a0a0a;
+    color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #333;
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.console-output .error {
+    color: #ff6b6b;
+}
+.console-output .success {
+    color: #51cf66;
+}
+.console-output .info {
+    color: #FFD700;
+}
+.quiz-option {
+    transition: all 0.3s ease;
+}
+.quiz-option:hover {
+    background-color: rgba(255, 215, 0, 0.1);
+}
+.quiz-option.selected {
+    background-color: rgba(255, 215, 0, 0.3);
+    border-color: #FFD700;
+}
+.quiz-option.correct {
+    background-color: rgba(80, 200, 120, 0.3);
+    border-color: #50c878;
+}
+.quiz-option.incorrect {
+    background-color: rgba(255, 107, 107, 0.3);
+    border-color: #ff6b6b;
+}
+.function-visualizer {
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid #333;
+}
+.function-input {
+    background-color: #0a0a0a;
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+}
+.function-process {
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+    min-height: 100px;
+}
+.function-output {
+    background-color: #0a0a0a;
+    padding: 1rem;
+}
+.function-arrow {
+    color: #FFD700;
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+.function-step {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.function-step.active {
+    opacity: 1;
+}
+.playground-editor {
+    font-family: monospace;
+    background-color: #1a1a1a;
+    color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    border: 1px solid #333;
+    resize: none;
+    width: 100%;
+    height: 200px;
+    tab-size: 2;
+}
+.playground-output {
+    font-family: monospace;
+    background-color: #0a0a0a;
+    color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+    border: 1px solid #333;
+    border-top: none;
+    min-height: 100px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+</style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+<header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+<nav class="container mx-auto px-4 py-4">
+    <div class="flex justify-between items-center">
+        <a href="s-js.html"><h1 class="text-2xl font-bold">JS<span class="text-accent">Funciones</span></h1></a>
+        <div class="hidden md:flex space-x-6">
+            <a href="#declaracion" class="hover:text-accent transition-colors duration-300">Declaración</a>
+            <a href="#parametros" class="hover:text-accent transition-colors duration-300">Parámetros</a>
+            <a href="#anonimas" class="hover:text-accent transition-colors duration-300">Anónimas y Flecha</a>
+            <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+        </div>
+        <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+        <a href="#declaracion" class="block py-2 hover:text-accent transition-colors duration-300">Declaración</a>
+        <a href="#parametros" class="block py-2 hover:text-accent transition-colors duration-300">Parámetros</a>
+        <a href="#anonimas" class="block py-2 hover:text-accent transition-colors duration-300">Anónimas y Flecha</a>
+        <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+    </div>
+</nav>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+<section class="text-center py-16">
+    <h1 class="text-5xl font-bold mb-4">Funciones en <span class="text-accent">JavaScript</span></h1>
+    <p class="text-xl max-w-3xl mx-auto">Aprende a crear y utilizar funciones para organizar y reutilizar tu código</p>
+</section>
+
+<section id="declaracion" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Declaración y Ejecución de Funciones</h2>
+    <p class="mb-8 text-lg leading-relaxed">Las funciones son bloques de código reutilizables que realizan una tarea específica. Son como pequeñas "máquinas" que pueden recibir datos, procesarlos y devolver un resultado. Las funciones te permiten dividir tu código en partes más pequeñas y manejables.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Declaración de Funciones</h3>
+            <p class="text-base mb-4">La forma más básica de crear una función es usando la palabra clave <code>function</code>, seguida del nombre de la función, paréntesis para los parámetros y llaves para el cuerpo de la función.</p>
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Sintaxis básica
+function nombreDeLaFuncion() {
+  // Código a ejecutar
+}
+
+// Ejemplo: función que muestra un saludo
+function saludar() {
+  console.log("¡Hola, mundo!");
+}
+
+// Ejemplo: función que calcula el área de un rectángulo
+function calcularAreaRectangulo(ancho, alto) {
+  return ancho * alto;
+}</code></pre>
+            </div>
+            <p class="text-sm">Las funciones pueden contener cualquier código JavaScript válido, incluyendo condicionales, bucles y hasta otras funciones.</p>
+        </div>
+        
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Ejecución de Funciones</h3>
+            <p class="text-base mb-4">Para ejecutar (o "llamar") a una función, escribes su nombre seguido de paréntesis. Si la función espera parámetros, los colocas dentro de los paréntesis.</p>
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Llamar a una función sin parámetros
+saludar();  // Muestra: ¡Hola, mundo!
+
+// Llamar a una función con parámetros
+let area = calcularAreaRectangulo(5, 3);
+console.log(area);  // Muestra: 15
+
+// Puedes llamar a una función múltiples veces
+saludar();  // Muestra: ¡Hola, mundo!
+saludar();  // Muestra: ¡Hola, mundo!
+
+// Puedes usar el resultado en otras operaciones
+let areaDoble = calcularAreaRectangulo(5, 3) * 2;
+console.log(areaDoble);  // Muestra: 30</code></pre>
+            </div>
+            <p class="text-sm">Cada vez que llamas a una función, JavaScript ejecuta el código dentro de ella. Esto te permite reutilizar el mismo código sin tener que escribirlo varias veces.</p>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800 mb-8">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Visualización de una Función</h3>
+        
+        <p class="mb-6">Piensa en una función como una máquina que toma entradas (parámetros), realiza un proceso y produce una salida (valor de retorno):</p>
+        
+        <div class="function-visualizer">
+            <div class="function-input">
+                <p class="font-bold mb-2">Entrada (Parámetros):</p>
+                <div class="flex space-x-4">
+                    <div class="js-item p-2 rounded-md">ancho: 5</div>
+                    <div class="js-item p-2 rounded-md">alto: 3</div>
+                </div>
+            </div>
+            
+            <div class="function-process">
+                <p class="font-bold mb-2">Proceso (Cuerpo de la función):</p>
+                <div class="code-block">
+                    <pre class="text-gray-300"><code>function calcularAreaRectangulo(ancho, alto) {
+  return ancho * alto;
+}</code></pre>
+                </div>
+                <div class="function-step" id="step1">
+                    <p class="text-sm mt-2">1. Recibe los parámetros <span class="text-accent">ancho = 5</span> y <span class="text-accent">alto = 3</span></p>
+                </div>
+                <div class="function-step" id="step2">
+                    <p class="text-sm mt-2">2. Multiplica <span class="text-accent">ancho * alto</span> (5 * 3 = 15)</p>
+                </div>
+                <div class="function-step" id="step3">
+                    <p class="text-sm mt-2">3. Devuelve el resultado con <span class="text-accent">return</span></p>
+                </div>
+            </div>
+            
+            <div class="function-output">
+                <p class="font-bold mb-2">Salida (Valor de retorno):</p>
+                <div class="js-item p-2 rounded-md" id="output">15</div>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <button id="visualizeBtn" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                Visualizar Ejecución
+            </button>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Hoisting de Funciones</h3>
+            
+            <p class="mb-4">En JavaScript, las declaraciones de funciones se "elevan" (hoisting) al principio del ámbito, lo que significa que puedes llamar a una función antes de declararla en el código.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Esto funciona gracias al hoisting
+saludar();  // Muestra: ¡Hola!
+
+// La declaración de la función se eleva
+function saludar() {
+  console.log("¡Hola!");
+}
+
+// Pero esto NO funciona con expresiones de función
+// saludarExpresion();  // Error: saludarExpresion is not a function
+
+let saludarExpresion = function() {
+  console.log("¡Hola desde expresión!");
+};</code></pre>
+            </div>
+            
+            <p class="text-sm">El hoisting solo funciona con declaraciones de funciones, no con expresiones de función o funciones flecha.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Buenas Prácticas</h3>
+            
+            <p class="mb-4">Algunas recomendaciones para escribir funciones efectivas:</p>
+            
+            <ul class="list-disc list-inside space-y-2 pl-4">
+                <li>Usa nombres descriptivos que indiquen lo que hace la función (ej. <code>calcularTotal</code> en lugar de <code>ct</code>)</li>
+                <li>Cada función debería hacer una sola cosa (principio de responsabilidad única)</li>
+                <li>Mantén tus funciones pequeñas y enfocadas</li>
+                <li>Documenta tus funciones con comentarios, especialmente si son complejas</li>
+                <li>Usa valores de retorno en lugar de variables globales</li>
+                <li>Maneja los errores adecuadamente dentro de tus funciones</li>
+            </ul>
+            
+            <div class="mt-4 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-amber-400"><strong>Consejo:</strong> Piensa en las funciones como bloques de construcción. Cada función debería ser como una pieza de LEGO que puedes reutilizar en diferentes partes de tu aplicación.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="parametros" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Parámetros y Valores de Retorno</h2>
+    
+    <p class="mb-8 text-lg">Los parámetros son los datos que una función necesita para realizar su tarea, mientras que el valor de retorno es el resultado que la función produce. Entender cómo trabajar con ellos es fundamental para crear funciones útiles y flexibles.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Parámetros Básicos</h3>
+            
+            <p class="mb-4">Los parámetros son variables que reciben valores cuando se llama a la función. Actúan como "entradas" para la función.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Función con dos parámetros
+function sumar(a, b) {
+  return a + b;
+}
+
+// Llamadas a la función con diferentes argumentos
+let resultado1 = sumar(5, 3);  // resultado1 = 8
+let resultado2 = sumar(10, 20);  // resultado2 = 30
+
+// Los parámetros pueden ser de cualquier tipo
+function saludarPersona(nombre, edad) {
+  console.log(`Hola ${nombre}, tienes ${edad} años.`);
+}
+
+saludarPersona("Ana", 25);  // Muestra: Hola Ana, tienes 25 años.
+saludarPersona("Carlos", 30);  // Muestra: Hola Carlos, tienes 30 años.</code></pre>
+            </div>
+            
+            <p class="text-sm">Los valores que pasas a una función cuando la llamas se denominan "argumentos". Estos argumentos se asignan a los parámetros definidos en la función.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Valores de Retorno</h3>
+            
+            <p class="mb-4">El valor de retorno es el resultado que una función produce y devuelve al código que la llamó. Se especifica con la palabra clave <code>return</code>.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Función que devuelve un valor
+function multiplicar(a, b) {
+  return a * b;  // Devuelve el producto de a y b
+}
+
+let producto = multiplicar(4, 5);  // producto = 20
+
+// Puedes usar el valor devuelto directamente
+console.log(multiplicar(3, 7));  // Muestra: 21
+
+// Una función puede devolver diferentes valores
+function esPositivo(numero) {
+  if (numero > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// También puedes devolver objetos o arrays
+function crearPersona(nombre, edad) {
+  return {
+    nombre: nombre,
+    edad: edad,
+    esMayorDeEdad: edad >= 18
+  };
+}
+
+let persona = crearPersona("Laura", 22);
+console.log(persona.esMayorDeEdad);  // Muestra: true</code></pre>
+            </div>
+            
+            <p class="text-sm">Cuando JavaScript encuentra una instrucción <code>return</code>, la función termina inmediatamente y devuelve el valor especificado. Si no hay un <code>return</code> explícito, la función devuelve <code>undefined</code>.</p>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Parámetros por Defecto</h3>
+            
+            <p class="mb-4">Puedes asignar valores por defecto a los parámetros, que se usarán si no se proporciona un argumento o si es <code>undefined</code>.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Parámetros con valores por defecto
+function saludar(nombre = "Invitado", saludo = "Hola") {
+  console.log(`${saludo}, ${nombre}!`);
+}
+
+saludar();  // Muestra: Hola, Invitado!
+saludar("María");  // Muestra: Hola, María!
+saludar("Juan", "Bienvenido");  // Muestra: Bienvenido, Juan!
+
+// Útil para configuraciones opcionales
+function crearElemento(tipo = "div", texto = "", clases = []) {
+  console.log(`Creando ${tipo} con texto "${texto}" y clases ${clases}`);
+}
+
+crearElemento();  // Usa todos los valores por defecto
+crearElemento("p", "Hola mundo");  // Usa el valor por defecto para clases</code></pre>
+            </div>
+            
+            <p class="text-sm">Los parámetros por defecto son una característica de ES6 (ECMAScript 2015) que hace que tu código sea más robusto y fácil de usar.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Parámetros Rest</h3>
+            
+            <p class="mb-4">Los parámetros rest te permiten representar un número indefinido de argumentos como un array, usando la sintaxis <code>...nombreParametro</code>.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Función con parámetro rest
+function sumarTodos(...numeros) {
+  let total = 0;
+  for (let numero of numeros) {
+    total += numero;
+  }
+  return total;
+}
+
+console.log(sumarTodos(1, 2));  // Muestra: 3
+console.log(sumarTodos(1, 2, 3, 4, 5));  // Muestra: 15
+
+// Combinando parámetros normales y rest
+function mostrarEquipo(lider, ...miembros) {
+  console.log(`Líder: ${lider}`);
+  console.log(`Miembros: ${miembros.join(", ")}`);
+}
+
+mostrarEquipo("Ana", "Carlos", "Elena", "María");
+// Muestra:
+// Líder: Ana
+// Miembros: Carlos, Luis, María</code></pre>
+            </div>
+            
+            <p class="text-sm">El parámetro rest debe ser el último parámetro en la definición de la función, ya que recoge "el resto" de los argumentos.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Desestructuración de Parámetros</h3>
+            
+            <p class="mb-4">Puedes usar la desestructuración para extraer valores de objetos o arrays pasados como parámetros.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Desestructuración de objetos en parámetros
+function mostrarUsuario({ nombre, edad, ciudad = "Desconocida" }) {
+  console.log(`${nombre}, ${edad} años, ${ciudad}`);
+}
+
+const usuario = {
+  nombre: "Pedro",
+  edad: 28,
+  profesion: "Desarrollador"
+};
+
+mostrarUsuario(usuario);  // Muestra: Pedro, 28 años, Desconocida
+
+// Desestructuración con arrays
+function procesarCoordenadas([x, y, z = 0]) {
+  console.log(`X: ${x}, Y: ${y}, Z: ${z}`);
+  return Math.sqrt(x*x + y*y + z*z);
+}
+
+const punto2D = [5, 12];
+const punto3D = [3, 4, 5];
+
+console.log("Distancia 2D:", procesarCoordenadas(punto2D));
+console.log("Distancia 3D:", procesarCoordenadas(punto3D));</code></pre>
+            </div>
+            
+            <p class="text-sm">La desestructuración hace que tu código sea más limpio y expresivo, especialmente cuando trabajas con objetos complejos.</p>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Ejemplos Prácticos</h3>
+        
+        <p class="mb-6">Veamos algunos ejemplos prácticos de funciones con diferentes tipos de parámetros y valores de retorno:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Calculadora de Descuentos</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Función que calcula el precio final con descuento
+function calcularPrecioConDescuento(precio, descuento = 0, impuesto = 0.16) {
+  // Validación básica
+  if (precio <= 0) {
+    return "El precio debe ser mayor que cero";
+  }
+  
+  if (descuento < 0 || descuento > 100) {
+    return "El descuento debe estar entre 0 y 100";
+  }
+  
+  // Cálculos
+  const precioConDescuento = precio * (1 - descuento / 100);
+  const precioFinal = precioConDescuento * (1 + impuesto);
+  
+  return {
+    precioOriginal: precio,
+    descuento: descuento,
+    precioConDescuento: precioConDescuento,
+    impuesto: impuesto,
+    precioFinal: precioFinal
+  };
+}
+
+// Ejemplos de uso
+console.log(calcularPrecioConDescuento(100, 20));
+// Precio original: 100, con 20% de descuento y 16% de impuesto
+
+console.log(calcularPrecioConDescuento(50));
+// Precio original: 50, sin descuento y 16% de impuesto
+
+console.log(calcularPrecioConDescuento(200, 10, 0.21));
+// Precio original: 200, con 10% de descuento y 21% de impuesto</code></pre>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Filtrado de Datos</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Función que filtra un array de objetos
+function filtrarProductos(productos, { 
+  precioMinimo = 0, 
+  precioMaximo = Infinity,
+  categoria = null,
+  ordenarPor = "precio",
+  ascendente = true
+} = {}) {
+  // Primero filtramos
+  let resultado = productos.filter(producto => {
+    let cumplePrecio = producto.precio >= precioMinimo && 
+                       producto.precio <= precioMaximo;
+    
+    let cumpleCategoria = categoria === null || 
+                         producto.categoria === categoria;
+    
+    return cumplePrecio && cumpleCategoria;
+  });
+  
+  // Luego ordenamos
+  resultado.sort((a, b) => {
+    let valorA = a[ordenarPor];
+    let valorB = b[ordenarPor];
+    
+    if (ascendente) {
+      return valorA - valorB;
+    } else {
+      return valorB - valorA;
+    }
+  });
+  
+  return resultado;
+}
+
+// Ejemplo de uso
+const productos = [
+  { nombre: "Laptop", precio: 1200, categoria: "Electrónica" },
+  { nombre: "Teléfono", precio: 800, categoria: "Electrónica" },
+  { nombre: "Mesa", precio: 350, categoria: "Muebles" },
+  { nombre: "Silla", precio: 150, categoria: "Muebles" }
+];
+
+// Filtrar productos de Electrónica entre 500 y 1000
+const resultado = filtrarProductos(productos, {
+  precioMinimo: 500,
+  precioMaximo: 1000,
+  categoria: "Electrónica"
+});
+
+console.log(resultado);
+// [{ nombre: "Teléfono", precio: 800, categoria: "Electrónica" }]</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+            <p class="text-amber-400"><strong>Consejo:</strong> Diseña tus funciones para que sean flexibles pero con valores por defecto sensatos. Esto permite que sean fáciles de usar en casos simples, pero también potentes para casos más complejos.</p>
+        </div>
+    </div>
+</section>
+
+<section id="anonimas" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Funciones Anónimas y Funciones Flecha</h2>
+    
+    <p class="mb-8 text-lg">Además de la declaración tradicional de funciones, JavaScript ofrece formas más concisas de crear funciones: las funciones anónimas y las funciones flecha. Estas son especialmente útiles para funciones cortas o que se pasan como argumentos a otras funciones.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Funciones Anónimas</h3>
+            
+            <p class="mb-4">Las funciones anónimas son funciones sin nombre que a menudo se asignan a variables o se pasan como argumentos a otras funciones.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Función anónima asignada a una variable
+let saludar = function(nombre) {
+  return `¡Hola, ${nombre}!`;
+};
+
+console.log(saludar("Elena"));  // Muestra: ¡Hola, Elena!
+
+// Función anónima como argumento
+setTimeout(function() {
+  console.log("Han pasado 2 segundos");
+}, 2000);
+
+// Función anónima como callback
+[1, 2, 3].map(function(numero) {
+  return numero * 2;
+});  // Devuelve [2, 4, 6]
+
+// Función anónima autoinvocada (IIFE)
+(function() {
+  let mensaje = "Esta variable está encapsulada";
+  console.log(mensaje);
+})();  // Se ejecuta inmediatamente</code></pre>
+            </div>
+            
+            <p class="text-sm">Las funciones anónimas son útiles cuando necesitas una función temporal o cuando quieres encapsular variables dentro de un ámbito local.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Funciones Flecha</h3>
+            
+            <p class="mb-4">Las funciones flecha (arrow functions) son una sintaxis más corta para escribir funciones, introducida en ES6. Usan el operador <code>=></code> (flecha).</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Sintaxis básica de función flecha
+const saludar = (nombre) => {
+  return `¡Hola, ${nombre}!`;
+};
+
+// Versión más corta para funciones de una sola línea
+const saludarCorto = nombre => `¡Hola, ${nombre}!`;
+
+console.log(saludarCorto("Carlos"));  // Muestra: ¡Hola, Carlos!
+
+// Sin parámetros
+const decirHola = () => "¡Hola, mundo!";
+
+// Con múltiples parámetros
+const sumar = (a, b) => a + b;
+
+// Función flecha como callback
+[1, 2, 3].map(numero => numero * 2);  // Devuelve [2, 4, 6]
+
+// Función flecha con cuerpo de bloque
+const calcularArea = (radio) => {
+  const PI = 3.14159;
+  return PI * radio * radio;
+};</code></pre>
+            </div>
+            
+            <p class="text-sm">Las funciones flecha no solo son más cortas, también tienen un comportamiento diferente con respecto a <code>this</code> y no tienen su propio objeto <code>arguments</code>.</p>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Ventajas de las Funciones Flecha</h3>
+            
+            <p class="mb-4">Las funciones flecha ofrecen varias ventajas sobre las funciones tradicionales:</p>
+            
+            <ul class="list-disc list-inside space-y-2 pl-4">
+                <li>Sintaxis más concisa, especialmente para funciones simples</li>
+                <li>No tienen su propio <code>this</code>, usan el <code>this</code> del contexto circundante</li>
+                <li>Ideal para callbacks y funciones que no necesitan su propio <code>this</code></li>
+                <li>Más legibles en cadenas de métodos o callbacks anidados</li>
+            </ul>
+            
+            <div class="code-block mt-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Problema con 'this' en funciones tradicionales
+const persona = {
+  nombre: "Ana",
+  amigos: ["Carlos", "Elena", "Luis"],
+  saludarAmigos: function() {
+    // 'this' aquí se refiere a 'persona'
+    this.amigos.forEach(function(amigo) {
+      // 'this' aquí NO se refiere a 'persona'
+      console.log(`${this.nombre} saluda a ${amigo}`);  // Error
+    });
+  }
+};
+
+// Solución con función flecha
+const personaCorrecta = {
+  nombre: "Ana",
+  amigos: ["Carlos", "Elena", "Luis"],
+  saludarAmigos: function() {
+    // 'this' aquí se refiere a 'personaCorrecta'
+    this.amigos.forEach(amigo => {
+      // 'this' aquí TAMBIÉN se refiere a 'personaCorrecta'
+      console.log(`${this.nombre} saluda a ${amigo}`);  // Funciona
+    });
+  }
+};</code></pre>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">Limitaciones de las Funciones Flecha</h3>
+            
+            <p class="mb-4">A pesar de sus ventajas, las funciones flecha no son adecuadas para todos los casos:</p>
+            
+            <ul class="list-disc list-inside space-y-2 pl-4">
+                <li>No pueden usarse como constructores (con <code>new</code>)</li>
+                <li>No tienen su propio objeto <code>arguments</code></li>
+                <li>No pueden usarse como métodos de objetos si necesitas acceder a <code>this</code> del objeto</li>
+                <li>No tienen la propiedad <code>prototype</code></li>
+                <li>No pueden usarse como generadores (con <code>function*</code>)</li>
+            </ul>
+            
+            <div class="code-block mt-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// No se puede usar como constructor
+const Persona = (nombre) => {
+  this.nombre = nombre;  // No funciona como esperarías
+};
+
+// Esto causará un error
+// const ana = new Persona("Ana");  // TypeError
+
+// No tiene su propio 'arguments'
+const sumarTodos = () => {
+  // Esto causará un error
+  // return Array.from(arguments).reduce((a, b) => a + b, 0);
+};
+
+// Solución: usar parámetros rest
+const sumarTodosCorrecta = (...args) => {
+  return args.reduce((a, b) => a + b, 0);
+};</code></pre>
+            </div>
+            
+            <div class="mt-4 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-amber-400"><strong>Consejo:</strong> Usa funciones flecha para callbacks y funciones cortas. Para métodos de objetos y funciones que necesitan su propio <code>this</code>, usa la sintaxis de función tradicional.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Ejemplos Prácticos</h3>
+        
+        <p class="mb-6">Veamos algunos ejemplos prácticos de funciones anónimas y funciones flecha en situaciones reales:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Manipulación de Arrays</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Datos de ejemplo
+const estudiantes = [
+  { nombre: "Ana", edad: 22, calificaciones: [85, 90, 78] },
+  { nombre: "Carlos", edad: 19, calificaciones: [92, 88, 95] },
+  { nombre: "Elena", edad: 20, calificaciones: [75, 80, 85] },
+  { nombre: "David", edad: 21, calificaciones: [88, 84, 90] }
+];
+
+// Filtrar estudiantes mayores de 20 años
+const mayoresDe20 = estudiantes.filter(est => est.edad > 20);
+
+// Obtener solo los nombres
+const nombres = estudiantes.map(est => est.nombre);
+
+// Calcular promedio de calificaciones para cada estudiante
+const promedios = estudiantes.map(est => {
+  const suma = est.calificaciones.reduce((a, b) => a + b, 0);
+  const promedio = suma / est.calificaciones.length;
+  return {
+    nombre: est.nombre,
+    promedio: promedio.toFixed(1)
+  };
+});
+
+// Encontrar al estudiante con el promedio más alto
+const mejorEstudiante = promedios.reduce((mejor, actual) => {
+  return parseFloat(actual.promedio) > parseFloat(mejor.promedio) 
+    ? actual 
+    : mejor;
+}, promedios[0]);
+
+console.log(mejorEstudiante);  // { nombre: "Carlos", promedio: "91.7" }</code></pre>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Manejo de Eventos</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo de manejo de eventos con funciones flecha
+document.addEventListener('DOMContentLoaded', () => {
+  // Seleccionar elementos
+  const boton = document.getElementById('miBoton');
+  const input = document.getElementById('miInput');
+  const lista = document.getElementById('miLista');
+  
+  // Agregar evento al botón
+  boton.addEventListener('click', () => {
+    const texto = input.value.trim();
+    
+    if (texto) {
+      // Crear nuevo elemento de lista
+      const nuevoItem = document.createElement('li');
+      nuevoItem.textContent = texto;
+      
+      // Agregar botón para eliminar
+      const btnEliminar = document.createElement('button');
+      btnEliminar.textContent = 'Eliminar';
+      btnEliminar.addEventListener('click', () => {
+        nuevoItem.remove();
+      });
+      
+      nuevoItem.appendChild(btnEliminar);
+      lista.appendChild(nuevoItem);
+      
+      // Limpiar input
+      input.value = '';
+      input.focus();
+    }
+  });
+  
+  // Permitir agregar con Enter
+  input.addEventListener('keypress', evento => {
+    if (evento.key === 'Enter') {
+      boton.click();
+    }
+  });
+});</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+            <p class="text-amber-400"><strong>Consejo:</strong> Las funciones flecha brillan especialmente en operaciones de arrays como <code>map</code>, <code>filter</code>, <code>reduce</code> y en callbacks para eventos, donde su sintaxis concisa hace que el código sea más legible.</p>
+        </div>
+    </div>
+</section>
+
+<section id="actividad" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Playground de Funciones</h2>
+    
+    <p class="mb-8 text-lg leading-relaxed">Pon en práctica lo que has aprendido sobre funciones con este playground interactivo. Prueba diferentes tipos de funciones y observa cómo se comportan.</p>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800 mb-8">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Editor de Código</h3>
+        
+        <textarea id="codeEditor" class="playground-editor" title="." spellcheck="false">// Escribe tu código aquí
+function saludar(nombre) {
+  return `¡Hola, ${nombre}!`;
+}
+
+// Prueba tu función
+console.log(saludar("Mundo"));</textarea>
+        
+        <div class="flex justify-end mt-2 mb-4">
+            <button id="runCodeBtn" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                Ejecutar Código
+            </button>
+        </div>
+        
+        <div class="playground-output" id="codeOutput">
+            <div class="text-gray-500 italic">Los resultados se mostrarán aquí</div>
+        </div>
+        
+        <div class="mt-6">
+            <h4 class="text-xl font-bold mb-4 text-accent">Ejemplos para probar</h4>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button class="p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors text-left" onclick="cargarEjemplo(1)">
+                    Función tradicional
+                </button>
+                <button class="p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors text-left" onclick="cargarEjemplo(2)">
+                    Función flecha
+                </button>
+                <button class="p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors text-left" onclick="cargarEjemplo(3)">
+                    Parámetros por defecto
+                </button>
+                <button class="p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors text-left" onclick="cargarEjemplo(4)">
+                    Parámetros rest
+                </button>
+                <button class="p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors text-left" onclick="cargarEjemplo(5)">
+                    Manipulación de arrays
+                </button>
+                <button class="p-3 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors text-left" onclick="cargarEjemplo(6)">
+                    Desestructuración
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Quiz: Funciones en JavaScript</h3>
+        
+        <div id="quiz-container">
+            <div id="quiz-question" class="mb-6">
+                <h4 class="font-bold mb-2">Pregunta 1:</h4>
+                <p class="text-lg">¿Cuál es la diferencia principal entre una función declarada y una función flecha?</p>
+            </div>
+            
+            <div id="quiz-options" class="space-y-3 mb-6">
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                    <p>Las funciones flecha no pueden tener parámetros</p>
+                </div>
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="true">
+                    <p>Las funciones flecha no tienen su propio valor de 'this'</p>
+                </div>
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                    <p>Las funciones declaradas no pueden devolver valores</p>
+                </div>
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                    <p>Las funciones flecha solo pueden tener una línea de código</p>
+                </div>
+            </div>
+            
+            <div id="quiz-feedback" class="mb-6 hidden">
+                <p class="font-bold"></p>
+            </div>
+            
+            <div class="flex justify-between">
+                <button id="quiz-prev" class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Anterior
+                </button>
+                <button id="quiz-next" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                    Siguiente
+                </button>
+            </div>
+            
+            <div id="quiz-progress" class="mt-4">
+                <div class="flex justify-between text-sm mb-1">
+                    <span>Progreso</span>
+                    <span id="quiz-progress-text">1/5</span>
+                </div>
+                <div class="bg-gray-700 h-2 rounded-full">
+                    <div id="quiz-progress-bar" class="bg-accent h-2 rounded-full" style="width: 20%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="quiz-results" class="hidden">
+            <h4 class="font-bold text-xl mb-4 text-accent">Resultados del Quiz</h4>
+            <p class="text-lg mb-4">Has acertado <span id="quiz-score">0</span> de 5 preguntas.</p>
+            <div id="quiz-message" class="p-4 rounded-md mb-6"></div>
+            <button id="quiz-restart" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                Reiniciar Quiz
+            </button>
+        </div>
+    </div>
+    
+    <div class="mt-8 bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Ejercicios para practicar</h3>
+        
+        <p class="mb-6">Aquí tienes algunos ejercicios sencillos para practicar lo que has aprendido:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-dark p-5 rounded-lg">
+                <h4 class="text-xl font-bold mb-4">Ejercicio 1: Conversor de Temperatura</h4>
+                <p class="mb-4">Escribe una función que convierta grados Celsius a Fahrenheit y otra que convierta Fahrenheit a Celsius. Luego crea una función principal que use ambas según un parámetro de tipo.</p>
+                <div class="mt-4">
+                    <button class="ver-solucion-btn bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors" data-ejercicio="1">
+                        Ver solución
+                    </button>
+                    <div class="solucion hidden mt-4 p-4 bg-gray-800 rounded-lg">
+                        <h5 class="font-bold mb-2">Solución:</h5>
+                        <pre class="text-gray-300 overflow-x-auto"><code>// Conversor de temperatura
+// Celsius a Fahrenheit: (C × 9/5) + 32
+const celsiusAFahrenheit = celsius => (celsius * 9/5) + 32;
+
+// Fahrenheit a Celsius: (F - 32) × 5/9
+const fahrenheitACelsius = fahrenheit => (fahrenheit - 32) * 5/9;
+
+// Función principal
+function convertirTemperatura(valor, tipo) {
+  if (tipo === 'C') {
+    return {
+      original: `${valor}°C`,
+      convertido: `${celsiusAFahrenheit(valor).toFixed(1)}°F`
+    };
+  } else if (tipo === 'F') {
+    return {
+      original: `${valor}°F`,
+      convertido: `${fahrenheitACelsius(valor).toFixed(1)}°C`
+    };
+  } else {
+    return "Tipo de temperatura no válido. Use 'C' o 'F'.";
+  }
+}
+
+// Ejemplos de uso
+console.log(convertirTemperatura(25, 'C'));  // 25°C a 77.0°F
+console.log(convertirTemperatura(68, 'F'));  // 68°F a 20.0°C</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-dark p-5 rounded-lg">
+                <h4 class="text-xl font-bold mb-4">Ejercicio 2: Analizador de Texto</h4>
+                <p class="mb-4">Crea una función que analice un texto y devuelva estadísticas como el número de palabras, caracteres, y la palabra más frecuente. Usa funciones flecha para las operaciones internas.</p>
+                <div class="mt-4">
+                    <button class="ver-solucion-btn bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors" data-ejercicio="2">
+                        Ver solución
+                    </button>
+                    <div class="solucion hidden mt-4 p-4 bg-gray-800 rounded-lg">
+                        <h5 class="font-bold mb-2">Solución:</h5>
+                        <pre class="text-gray-300 overflow-x-auto"><code>// Analizador de texto
+function analizarTexto(texto) {
+  // Si no hay texto, devolver objeto vacío
+  if (!texto || texto.trim() === '') {
+    return {
+      caracteres: 0,
+      palabras: 0,
+      frases: 0,
+      palabraMasComun: 'N/A',
+      frecuenciaPalabraMasComun: 0
+    };
+  }
+  
+  // Contar caracteres (sin espacios)
+  const caracteres = texto.replace(/\s/g, '').length;
+  
+  // Contar palabras
+  const palabras = texto.trim().split(/\s+/).length;
+  
+  // Contar frases (terminadas en punto, exclamación o interrogación)
+  const frases = texto.split(/[.!?]+/).filter(frase => frase.trim() !== '').length;
+  
+  // Encontrar palabra más común
+  const contadorPalabras = {};
+  const palabrasArray = texto.toLowerCase().match(/\b\w+\b/g) || [];
+  
+  palabrasArray.forEach(palabra => {
+    contadorPalabras[palabra] = (contadorPalabras[palabra] || 0) + 1;
+  });
+  
+  let palabraMasComun = '';
+  let frecuenciaPalabraMasComun = 0;
+  
+  Object.entries(contadorPalabras).forEach(([palabra, frecuencia]) => {
+    if (frecuencia > frecuenciaPalabraMasComun) {
+      palabraMasComun = palabra;
+      frecuenciaPalabraMasComun = frecuencia;
+    }
+  });
+  
+  return {
+    caracteres,
+    palabras,
+    frases,
+    palabraMasComun,
+    frecuenciaPalabraMasComun
+  };
+}
+
+// Ejemplo de uso
+const texto = "JavaScript es un lenguaje de programación muy versátil. JavaScript se utiliza tanto en el frontend como en el backend. Las funciones en JavaScript son muy poderosas.";
+console.log(analizarTexto(texto));</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+</main>
+
+<footer class="bg-darker py-8 border-t border-gray-800">
+<div class="container mx-auto px-4 text-center">
+    <p>JavaScript: Funciones - Guía completa para principiantes</p>
+</div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    menuBtn.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.remove('hidden');
+        } else {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            }
+        });
+    });
+    
+    // Ver solución buttons
+    document.querySelectorAll('.ver-solucion-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const ejercicio = this.dataset.ejercicio;
+            const solucion = this.nextElementSibling;
+            
+            if (solucion.classList.contains('hidden')) {
+                solucion.classList.remove('hidden');
+                this.textContent = 'Ocultar solución';
+            } else {
+                solucion.classList.add('hidden');
+                this.textContent = 'Ver solución';
+            }
+        });
+    });
+    
+    // Function visualizer
+    const visualizeBtn = document.getElementById('visualizeBtn');
+    if (visualizeBtn) {
+        visualizeBtn.addEventListener('click', function() {
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            const output = document.getElementById('output');
+            
+            // Reset
+            step1.classList.remove('active');
+            step2.classList.remove('active');
+            step3.classList.remove('active');
+            output.textContent = '';
+            
+            // Animate steps
+            setTimeout(() => {
+                step1.classList.add('active');
+            }, 500);
+            
+            setTimeout(() => {
+                step2.classList.add('active');
+            }, 1500);
+            
+            setTimeout(() => {
+                step3.classList.add('active');
+            }, 2500);
+            
+            setTimeout(() => {
+                output.textContent = '15';
+            }, 3000);
+        });
+    }
+    
+    // Code playground
+    const runCodeBtn = document.getElementById('runCodeBtn');
+    const codeEditor = document.getElementById('codeEditor');
+    const codeOutput = document.getElementById('codeOutput');
+    
+    if (runCodeBtn && codeEditor && codeOutput) {
+        runCodeBtn.addEventListener('click', function() {
+            const code = codeEditor.value;
+            codeOutput.innerHTML = '';
+            
+            // Crear una función console.log personalizada
+            const originalConsoleLog = console.log;
+            const logs = [];
+            
+            console.log = function(...args) {
+                logs.push(args.map(arg => {
+                    if (typeof arg === 'object') {
+                        return JSON.stringify(arg);
+                    }
+                    return String(arg);
+                }).join(' '));
+                originalConsoleLog.apply(console, args);
+            };
+            
+            try {
+                // Ejecutar el código
+                eval(code);
+                
+                // Mostrar los logs
+                logs.forEach(log => {
+                    const logElement = document.createElement('div');
+                    logElement.textContent = log;
+                    codeOutput.appendChild(logElement);
+                });
+                
+                if (logs.length === 0) {
+                    const logElement = document.createElement('div');
+                    logElement.textContent = '(No hay salida)';
+                    logElement.className = 'text-gray-500 italic';
+                    codeOutput.appendChild(logElement);
+                }
+            } catch (error) {
+                const errorElement = document.createElement('div');
+                errorElement.textContent = `Error: ${error.message}`;
+                errorElement.className = 'error';
+                codeOutput.appendChild(errorElement);
+            }
+            
+            // Restaurar console.log original
+            console.log = originalConsoleLog;
+        });
+    }
+    
+    // Ejemplos para el playground
+    window.cargarEjemplo = function(numero) {
+        let codigo = '';
+        
+        switch (numero) {
+            case 1:
+                codigo = `// Función tradicional
+function calcularArea(base, altura) {
+  return (base * altura) / 2;
+}
+
+// Probar la función
+console.log("Área de un triángulo de base 5 y altura 3:");
+console.log(calcularArea(5, 3));`;
+                break;
+            case 2:
+                codigo = `// Función flecha
+const calcularArea = (base, altura) => (base * altura) / 2;
+
+// Probar la función
+console.log("Área de un triángulo de base 5 y altura 3:");
+console.log(calcularArea(5, 3));
+
+// Función flecha sin paréntesis (un solo parámetro)
+const cuadrado = x => x * x;
+console.log("Cuadrado de 4:", cuadrado(4));
+
+// Función flecha con cuerpo de bloque
+const esPar = numero => {
+  if (numero % 2 === 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+console.log("¿Es 7 un número par?", esPar(7));`;
+                break;
+            case 3:
+                codigo = `// Función con parámetros por defecto
+function crearUsuario(nombre, edad = 25, pais = "España") {
+  return {
+    nombre,
+    edad,
+    pais
+  };
+}
+
+// Probar con diferentes combinaciones
+console.log(crearUsuario("Ana"));
+console.log(crearUsuario("Carlos", 30));
+console.log(crearUsuario("Elena", 22, "México"));
+
+// Parámetros por defecto en funciones flecha
+const saludar = (nombre = "Invitado", mensaje = "Bienvenido") => 
+  \`¡\${mensaje}, \${nombre}!\`;
+
+console.log(saludar());
+console.log(saludar("María"));
+console.log(saludar("Juan", "Hola"));`;
+                break;
+            case 4:
+                codigo = `// Función con parámetro rest
+function sumar(...numeros) {
+  return numeros.reduce((total, numero) => total + numero, 0);
+}
+
+// Probar con diferentes cantidades de argumentos
+console.log("Suma de 1 + 2:", sumar(1, 2));
+console.log("Suma de 1 + 2 + 3 + 4:", sumar(1, 2, 3, 4));
+console.log("Suma de 10 + 20 + 30:", sumar(10, 20, 30));
+
+// Combinando parámetros normales y rest
+function mostrarEquipo(capitan, ...miembros) {
+  console.log(\`Equipo liderado por \${capitan}:\`);
+  miembros.forEach((miembro, indice) => {
+    console.log(\`  \${indice + 1}. \${miembro}\`);
+  });
+}
+
+mostrarEquipo("Ana", "Carlos", "Elena", "David");`;
+                break;
+            case 5:
+                codigo = `// Manipulación de arrays con funciones flecha
+const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Filtrar números pares
+const pares = numeros.filter(num => num % 2 === 0);
+console.log("Números pares:", pares);
+
+// Duplicar cada número
+const duplicados = numeros.map(num => num * 2);
+console.log("Números duplicados:", duplicados);
+
+// Sumar todos los números
+const suma = numeros.reduce((total, num) => total + num, 0);
+console.log("Suma total:", suma);
+
+// Encadenamiento de métodos
+const sumaPares = numeros
+  .filter(num => num % 2 === 0)
+  .map(num => num * 2)
+  .reduce((total, num) => total + num, 0);
+  
+console.log("Suma de pares duplicados:", sumaPares);`;
+                break;
+            case 6:
+                codigo = `// Desestructuración en parámetros
+function mostrarInfo({ nombre, edad, ciudad = "Desconocida" }) {
+  console.log(\`\${nombre}, \${edad} años, \${ciudad}\`);
+}
+
+// Objeto para probar
+const persona = {
+  nombre: "Carlos",
+  edad: 28,
+  profesion: "Desarrollador"
+};
+
+mostrarInfo(persona);
+
+// Desestructuración con arrays
+function procesarCoordenadas([x, y, z = 0]) {
+  console.log(\`Coordenadas: (\${x}, \${y}, \${z})\`);
+  return Math.sqrt(x*x + y*y + z*z);
+}
+
+const punto2D = [5, 12];
+const punto3D = [3, 4, 5];
+
+console.log("Distancia 2D:", procesarCoordenadas(punto2D));
+console.log("Distancia 3D:", procesarCoordenadas(punto3D));`;
+                break;
+        }
+        
+        if (codeEditor) {
+            codeEditor.value = codigo;
+        }
+    };
+    
+    // Quiz functionality
+    const quizContainer = document.getElementById('quiz-container');
+    const quizResults = document.getElementById('quiz-results');
+    const quizQuestion = document.getElementById('quiz-question');
+    const quizOptions = document.getElementById('quiz-options');
+    const quizFeedback = document.getElementById('quiz-feedback');
+    const quizPrev = document.getElementById('quiz-prev');
+    const quizNext = document.getElementById('quiz-next');
+    const quizProgressBar = document.getElementById('quiz-progress-bar');
+    const quizProgressText = document.getElementById('quiz-progress-text');
+    const quizScore = document.getElementById('quiz-score');
+    const quizMessage = document.getElementById('quiz-message');
+    const quizRestart = document.getElementById('quiz-restart');
+    
+    // Quiz questions
+    const questions = [
+        {
+            question: "¿Cuál es la diferencia principal entre una función declarada y una función flecha?",
+            options: [
+                "Las funciones flecha no pueden tener parámetros",
+                "Las funciones flecha no tienen su propio valor de 'this'",
+                "Las funciones declaradas no pueden devolver valores",
+                "Las funciones flecha solo pueden tener una línea de código"
+            ],
+            correctIndex: 1
+        },
+        {
+            question: "¿Qué hace el parámetro rest en una función?",
+            options: [
+                "Limita el número de argumentos que puede recibir una función",
+                "Hace que la función se ejecute más rápido",
+                "Permite representar un número indefinido de argumentos como un array",
+                "Establece valores por defecto para los parámetros"
+            ],
+            correctIndex: 2
+        },
+        {
+            question: "¿Qué sucede si una función no tiene una instrucción return?",
+            options: [
+                "La función devuelve null",
+                "La función devuelve undefined",
+                "La función devuelve false",
+                "La función genera un error"
+            ],
+            correctIndex: 1
+        },
+        {
+            question: "¿Cuál de las siguientes NO es una característica de las funciones flecha?",
+            options: [
+                "Sintaxis más concisa",
+                "No tienen su propio this",
+                "Pueden usarse como constructores con new",
+                "No tienen su propio objeto arguments"
+            ],
+            correctIndex: 2
+        },
+        {
+            question: "¿Qué es el 'hoisting' en relación a las funciones?",
+            options: [
+                "La capacidad de las funciones para acceder a variables fuera de su ámbito",
+                "La elevación de las declaraciones de funciones al principio del ámbito",
+                "La capacidad de las funciones para devolver múltiples valores",
+                "Un error que ocurre cuando una función se llama antes de ser definida"
+            ],
+            correctIndex: 1
+        }
+    ];
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+    
+    // Initialize quiz
+    function initQuiz() {
+        if (!quizContainer || !quizOptions) return;
+        
+        showQuestion(currentQuestion);
+        
+        // Add event listeners to options
+        quizOptions.addEventListener('click', function(e) {
+            if (answered) return;
+            
+            const option = e.target.closest('.quiz-option');
+            if (!option) return;
+            
+            const options = quizOptions.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            // Check answer
+            const isCorrect = option.dataset.correct === 'true';
+            
+            if (isCorrect) {
+                option.classList.add('correct');
+                quizFeedback.querySelector('p').textContent = '¡Correcto!';
+                quizFeedback.querySelector('p').classList.add('text-green-500');
+                score++;
+            } else {
+                option.classList.add('incorrect');
+                
+                // Show correct answer
+                options.forEach(opt => {
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+                
+                quizFeedback.querySelector('p').textContent = 'Incorrecto. La respuesta correcta está marcada en verde.';
+                quizFeedback.querySelector('p').classList.add('text-red-500');
+            }
+            
+            quizFeedback.classList.remove('hidden');
+            answered = true;
+            
+            // Enable next button
+            quizNext.disabled = false;
+        });
+        
+        // Next button
+        if (quizNext) {
+            quizNext.addEventListener('click', function() {
+                if (!answered && currentQuestion < questions.length - 1) {
+                    // Skip question
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                } else if (answered && currentQuestion < questions.length - 1) {
+                    // Next question
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    answered = false;
+                } else if (currentQuestion === questions.length - 1) {
+                    // Show results
+                    showResults();
+                }
+            });
+        }
+        
+        // Previous button
+        if (quizPrev) {
+            quizPrev.addEventListener('click', function() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    answered = false;
+                }
+            });
+        }
+        
+        // Restart button
+        if (quizRestart) {
+            quizRestart.addEventListener('click', function() {
+                currentQuestion = 0;
+                score = 0;
+                answered = false;
+                quizContainer.classList.remove('hidden');
+                quizResults.classList.add('hidden');
+                showQuestion(currentQuestion);
+            });
+        }
+    }
+    
+    // Show question
+    function showQuestion(index) {
+        if (!quizQuestion || !quizOptions || !quizFeedback) return;
+        
+        const question = questions[index];
+        
+        // Update question
+        quizQuestion.innerHTML = `
+            <h4 class="font-bold mb-2">Pregunta ${index + 1}:</h4>
+            <p class="text-lg">${question.question}</p>
+        `;
+        
+        // Update options
+        quizOptions.innerHTML = '';
+        question.options.forEach((option, i) => {
+            const isCorrect = i === question.correctIndex;
+            quizOptions.innerHTML += `
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="${isCorrect}">
+                    <p>${option}</p>
+                </div>
+            `;
+        });
+        
+        // Reset feedback
+        quizFeedback.classList.add('hidden');
+        quizFeedback.querySelector('p').textContent = '';
+        quizFeedback.querySelector('p').classList.remove('text-green-500', 'text-red-500');
+        
+        // Update buttons
+        if (quizPrev) quizPrev.disabled = index === 0;
+        if (quizNext) {
+            quizNext.disabled = answered ? false : index === questions.length - 1;
+            quizNext.textContent = index === questions.length - 1 ? 'Ver resultados' : 'Siguiente';
+        }
+        
+        // Update progress
+        if (quizProgressBar) quizProgressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+        if (quizProgressText) quizProgressText.textContent = `${index + 1}/${questions.length}`;
+    }
+    
+    // Show results
+    function showResults() {
+        if (!quizContainer || !quizResults || !quizScore || !quizMessage) return;
+        
+        quizContainer.classList.add('hidden');
+        quizResults.classList.remove('hidden');
+        
+        quizScore.textContent = score;
+        
+        // Show message based on score
+        let message = '';
+        let messageClass = '';
+        
+        if (score === questions.length) {
+            message = '¡Perfecto! Dominas las funciones en JavaScript.';
+            messageClass = 'bg-green-800/30 border border-green-700 text-green-400';
+        } else if (score >= questions.length * 0.7) {
+            message = '¡Muy bien! Tienes un buen conocimiento de las funciones en JavaScript.';
+            messageClass = 'bg-green-800/30 border border-green-700 text-green-400';
+        } else if (score >= questions.length * 0.5) {
+            message = 'No está mal, pero podrías mejorar tu conocimiento de las funciones.';
+            messageClass = 'bg-yellow-800/30 border border-yellow-700 text-yellow-400';
+        } else {
+            message = 'Necesitas estudiar más las funciones en JavaScript.';
+            messageClass = 'bg-red-800/30 border border-red-700 text-red-400';
+        }
+        
+        quizMessage.className = `p-4 rounded-md mb-6 ${messageClass}`;
+        quizMessage.textContent = message;
+    }
+    
+    // Initialize the quiz
+    initQuiz();
+});
+</script>
+</body>
+</html>

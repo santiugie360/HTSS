@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Arrays - Estructuras de Datos Fundamentales</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'js-yellow': {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+              950: '#451a03',
+            },
+            'dark-blue': {
+              900: '#0a1020',
+              950: '#050a14',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .feature-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 hover:border-js-yellow-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-js-yellow-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+      .method-card {
+        @apply bg-dark-blue-900/80 p-6 rounded-lg border border-gray-800 hover:border-js-yellow-700/50 transition-all duration-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-blue-950 text-gray-200">
+    
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-blue-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+          
+        <div class="flex-shrink-0 flex items-center">
+          <a href="s-js.html" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-js-yellow-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-blue-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-js-yellow-500">[ ]</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">Arrays JS</span>
+          </a>
+        </div>
+
+          
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#caracteristicas" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Características</a>
+          <a href="#metodos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Métodos</a>
+          <a href="#arrow-functions" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Arrow Functions</a>
+          <a href="#metodos-avanzados" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Métodos Avanzados</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+          
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#caracteristicas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Características</a>
+        <a href="#metodos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Métodos</a>
+        <a href="#arrow-functions" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Arrow Functions</a>
+        <a href="#metodos-avanzados" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Métodos Avanzados</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-js-yellow-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-5xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          JavaScript
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-js-yellow-400">Arrays</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-4xl mx-auto animate-slide-up">
+          Los arrays son estructuras de datos fundamentales que permiten almacenar múltiples valores en una única variable. Son ordenados, dinámicos y ofrecen una amplia variedad de métodos para manipular datos de manera eficiente y elegante.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <div class="bg-js-yellow-600/20 border border-js-yellow-600/50 rounded-lg px-6 py-3">
+            <span class="text-js-yellow-400 font-bold">Ordenados</span>
+          </div>
+          <div class="bg-js-yellow-600/20 border border-js-yellow-600/50 rounded-lg px-6 py-3">
+            <span class="text-js-yellow-400 font-bold">Dinámicos</span>
+          </div>
+          <div class="bg-js-yellow-600/20 border border-js-yellow-600/50 rounded-lg px-6 py-3">
+            <span class="text-js-yellow-400 font-bold">Versátiles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="caracteristicas" class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué son los <span class="text-js-yellow-400 font-bold">Arrays?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Colección Ordenada</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Un array es una lista ordenada de elementos donde cada elemento tiene una posición numérica llamada índice. El primer elemento está en el índice 0, el segundo en el 1, y así sucesivamente.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Ejemplo: <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">['manzana', 'banana', 'naranja']</code> tiene 3 elementos en las posiciones 0, 1 y 2.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Tipos Mixtos</h3>
+        <p class="text-gray-300 leading-relaxed">
+          A diferencia de otros lenguajes, los arrays de JavaScript pueden contener diferentes tipos de datos en la misma estructura: números, strings, objetos, otros arrays, etc.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Ejemplo: <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">[42, 'texto', true, {nombre: 'Ana'}]</code> es perfectamente válido.
+        </p>
+      </div>
+ 
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Tamaño Dinámico</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los arrays en JavaScript crecen y se reducen automáticamente. No necesitas declarar su tamaño inicial y puedes agregar o eliminar elementos en cualquier momento.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Puedes agregar elementos con <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">push()</code> o eliminarlos con <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">pop()</code>, y el tamaño se ajusta automáticamente.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Métodos Poderosos</h3>
+        <p class="text-gray-300 leading-relaxed">
+          JavaScript proporciona más de 30 métodos integrados para manipular arrays: filtrar, mapear, reducir, ordenar, buscar, y mucho más. Estos métodos hacen que trabajar con arrays sea muy eficiente.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Métodos modernos como <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">map()</code>, <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">filter()</code> y <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">reduce()</code> permiten transformar datos de manera elegante.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Estructura de un <span class="text-js-yellow-400 font-bold">Array</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Visualiza cómo se organizan los elementos dentro de un array
+      </p>
+
+      <div class="max-w-5xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-6 text-js-yellow-400 text-center">Array Visual</h3>
+            <div class="flex justify-center items-center gap-2 flex-wrap">
+              <div class="text-js-yellow-400 text-2xl font-bold">[</div>
+              <div class="bg-gray-800 border-2 border-js-yellow-500 rounded-lg p-4 text-center min-w-[100px]">
+                <div class="text-xs text-gray-400 mb-2">índice: 0</div>
+                <div class="text-orange-400 font-mono">'manzana'</div>
+              </div>
+              <div class="text-gray-500 text-xl">,</div>
+              <div class="bg-gray-800 border-2 border-blue-500 rounded-lg p-4 text-center min-w-[100px]">
+                <div class="text-xs text-gray-400 mb-2">índice: 1</div>
+                <div class="text-orange-400 font-mono">'banana'</div>
+              </div>
+              <div class="text-gray-500 text-xl">,</div>
+              <div class="bg-gray-800 border-2 border-green-500 rounded-lg p-4 text-center min-w-[100px]">
+                <div class="text-xs text-gray-400 mb-2">índice: 2</div>
+                <div class="text-orange-400 font-mono">'naranja'</div>
+              </div>
+              <div class="text-js-yellow-400 text-2xl font-bold">]</div>
+            </div>
+            <div class="text-center mt-4 text-gray-400">
+              <code class="text-js-yellow-400">frutas.length</code> = 3
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-4">Crear un Array:</h4>
+              <pre class="code-block text-xs">
+<span class="text-gray-500">// Forma literal (recomendada)</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">frutas</span> = [<span class="text-orange-400">'manzana'</span>, <span class="text-orange-400">'banana'</span>, <span class="text-orange-400">'naranja'</span>];
+
+<span class="text-gray-500">// Con constructor</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">numeros</span> = <span class="text-purple-400">new</span> <span class="text-green-400">Array</span>(<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>);
+
+<span class="text-gray-500">// Array vacío</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">vacio</span> = [];
+
+<span class="text-gray-500">// Array mixto</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">mixto</span> = [<span class="text-green-400">42</span>, <span class="text-orange-400">'texto'</span>, <span class="text-purple-400">true</span>, {<span class="text-blue-400">a</span>: <span class="text-green-400">1</span>}];</pre>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-4">Acceder a Elementos:</h4>
+              <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">frutas</span> = [<span class="text-orange-400">'manzana'</span>, <span class="text-orange-400">'banana'</span>, <span class="text-orange-400">'naranja'</span>];
+
+<span class="text-gray-500">// Acceso por índice</span>
+console.<span class="text-green-400">log</span>(frutas[<span class="text-green-400">0</span>]); <span class="text-gray-500">// 'manzana'</span>
+console.<span class="text-green-400">log</span>(frutas[<span class="text-green-400">1</span>]); <span class="text-gray-500">// 'banana'</span>
+
+<span class="text-gray-500">// Último elemento</span>
+console.<span class="text-green-400">log</span>(frutas[frutas.length - <span class="text-green-400">1</span>]); <span class="text-gray-500">// 'naranja'</span>
+
+<span class="text-gray-500">// Modificar elemento</span>
+frutas[<span class="text-green-400">1</span>] = <span class="text-orange-400">'fresa'</span>;
+console.<span class="text-green-400">log</span>(frutas); <span class="text-gray-500">// ['manzana', 'fresa', 'naranja']</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="metodos" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Métodos <span class="text-js-yellow-400 font-bold">Básicos</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Métodos fundamentales para manipular arrays
+    </p>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> 
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">push()</h3>
+        <p class="text-sm text-gray-400 mb-3">Agrega elementos al final del array</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>];
+arr.<span class="text-green-400">push</span>(<span class="text-green-400">3</span>);
+console.<span class="text-green-400">log</span>(arr); 
+<span class="text-gray-500">// [1, 2, 3]</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">pop()</h3>
+        <p class="text-sm text-gray-400 mb-3">Elimina el último elemento</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">ultimo</span> = arr.<span class="text-green-400">pop</span>();
+console.<span class="text-green-400">log</span>(ultimo); <span class="text-gray-500">// 3</span>
+console.<span class="text-green-400">log</span>(arr); <span class="text-gray-500">// [1, 2]</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">unshift()</h3>
+        <p class="text-sm text-gray-400 mb-3">Agrega elementos al inicio</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">2</span>, <span class="text-green-400">3</span>];
+arr.<span class="text-green-400">unshift</span>(<span class="text-green-400">1</span>);
+console.<span class="text-green-400">log</span>(arr); 
+<span class="text-gray-500">// [1, 2, 3]</span></pre>
+      </div>
+ 
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">shift()</h3>
+        <p class="text-sm text-gray-400 mb-3">Elimina el primer elemento</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">primero</span> = arr.<span class="text-green-400">shift</span>();
+console.<span class="text-green-400">log</span>(primero); <span class="text-gray-500">// 1</span>
+console.<span class="text-green-400">log</span>(arr); <span class="text-gray-500">// [2, 3]</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">slice()</h3>
+        <p class="text-sm text-gray-400 mb-3">Copia una porción del array</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>, <span class="text-green-400">4</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">porcion</span> = arr.<span class="text-green-400">slice</span>(<span class="text-green-400">1</span>, <span class="text-green-400">3</span>);
+console.<span class="text-green-400">log</span>(porcion); 
+<span class="text-gray-500">// [2, 3]</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">splice()</h3>
+        <p class="text-sm text-gray-400 mb-3">Agrega/elimina elementos</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>];
+arr.<span class="text-green-400">splice</span>(<span class="text-green-400">1</span>, <span class="text-green-400">1</span>, <span class="text-green-400">99</span>);
+console.<span class="text-green-400">log</span>(arr); 
+<span class="text-gray-500">// [1, 99, 3]</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">concat()</h3>
+        <p class="text-sm text-gray-400 mb-3">Une dos o más arrays</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr1</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr2</span> = [<span class="text-green-400">3</span>, <span class="text-green-400">4</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">union</span> = arr1.<span class="text-green-400">concat</span>(arr2);
+console.<span class="text-green-400">log</span>(union); 
+<span class="text-gray-500">// [1, 2, 3, 4]</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">join()</h3>
+        <p class="text-sm text-gray-400 mb-3">Une elementos en un string</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-orange-400">'Hola'</span>, <span class="text-orange-400">'Mundo'</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">str</span> = arr.<span class="text-green-400">join</span>(<span class="text-orange-400">' '</span>);
+console.<span class="text-green-400">log</span>(str); 
+<span class="text-gray-500">// 'Hola Mundo'</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">indexOf()</h3>
+        <p class="text-sm text-gray-400 mb-3">Busca el índice de un elemento</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">idx</span> = arr.<span class="text-green-400">indexOf</span>(<span class="text-green-400">2</span>);
+console.<span class="text-green-400">log</span>(idx); 
+<span class="text-gray-500">// 1</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">includes()</h3>
+        <p class="text-sm text-gray-400 mb-3">Verifica si existe un elemento</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>];
+console.<span class="text-green-400">log</span>(arr.<span class="text-green-400">includes</span>(<span class="text-green-400">2</span>)); 
+<span class="text-gray-500">// true</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">reverse()</h3>
+        <p class="text-sm text-gray-400 mb-3">Invierte el orden del array</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>];
+arr.<span class="text-green-400">reverse</span>();
+console.<span class="text-green-400">log</span>(arr); 
+<span class="text-gray-500">// [3, 2, 1]</span></pre>
+      </div>
+
+      <div class="method-card">
+        <h3 class="text-lg font-bold mb-3 text-js-yellow-400">sort()</h3>
+        <p class="text-sm text-gray-400 mb-3">Ordena los elementos</p>
+        <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">arr</span> = [<span class="text-green-400">3</span>, <span class="text-green-400">1</span>, <span class="text-green-400">2</span>];
+arr.<span class="text-green-400">sort</span>();
+console.<span class="text-green-400">log</span>(arr); 
+<span class="text-gray-500">// [1, 2, 3]</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="arrow-functions" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Arrow Functions <span class="text-js-yellow-400 font-bold">(=&gt;)</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Funciones flecha: sintaxis moderna y concisa para escribir funciones
+      </p>
+
+      <div class="max-w-6xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+          <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">¿Qué son las Arrow Functions?</h3>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <p class="text-gray-300 mb-4">
+                Las arrow functions son una sintaxis más corta para escribir funciones introducida en ES6. Son especialmente útiles cuando se trabaja con métodos de arrays como <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">map()</code>, <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">filter()</code>, y <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">reduce()</code>.
+              </p>
+              <h4 class="text-lg font-semibold text-white mb-3">Ventajas:</h4>
+              <ul class="space-y-2 text-gray-300">
+                <li class="flex items-start">
+                  <span class="text-js-yellow-400 mr-2">•</span>
+                  <div>Sintaxis más corta y legible</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-js-yellow-400 mr-2">•</span>
+                  <div>Return implícito en una línea</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-js-yellow-400 mr-2">•</span>
+                  <div>No tienen su propio <code class="text-js-yellow-400 bg-gray-800 px-1 rounded text-xs">this</code></div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-js-yellow-400 mr-2">•</span>
+                  <div>Perfectas para callbacks</div>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-3">Comparación de Sintaxis:</h4>
+              <pre class="code-block text-xs">
+<span class="text-gray-500">// Función tradicional</span>
+<span class="text-purple-400">function</span> <span class="text-green-400">sumar</span>(<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>) {
+  <span class="text-purple-400">return</span> a + b;
+}
+
+<span class="text-gray-500">// Arrow function equivalente</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">sumar</span> = (<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>) =&gt; a + b;
+
+<span class="text-gray-500">// Con un solo parámetro (sin paréntesis)</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">doble</span> = <span class="text-blue-400">n</span> =&gt; n * <span class="text-green-400">2</span>;
+
+<span class="text-gray-500">// Sin parámetros</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">saludar</span> = () =&gt; <span class="text-orange-400">'Hola'</span>;
+
+<span class="text-gray-500">// Con cuerpo de función (necesita return)</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">calcular</span> = (<span class="text-blue-400">x</span>, <span class="text-blue-400">y</span>) =&gt; {
+  <span class="text-purple-400">const</span> <span class="text-blue-400">suma</span> = x + y;
+  <span class="text-purple-400">return</span> suma * <span class="text-green-400">2</span>;
+};</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-dark-blue-900/80 p-6 rounded-lg border border-gray-800">
+            <h4 class="text-lg font-bold mb-4 text-js-yellow-400">Un Solo Parámetro</h4>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Sin paréntesis</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">cuadrado</span> = <span class="text-blue-400">n</span> =&gt; n * n;
+
+<span class="text-gray-500">// Con paréntesis (opcional pero válido)</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">cubo</span> = (<span class="text-blue-400">n</span>) =&gt; n * n * n;
+
+console.<span class="text-green-400">log</span>(<span class="text-green-400">cuadrado</span>(<span class="text-green-400">5</span>)); <span class="text-gray-500">// 25</span>
+console.<span class="text-green-400">log</span>(<span class="text-green-400">cubo</span>(<span class="text-green-400">3</span>)); <span class="text-gray-500">// 27</span></pre>
+          </div>
+
+          <div class="bg-dark-blue-900/80 p-6 rounded-lg border border-gray-800">
+            <h4 class="text-lg font-bold mb-4 text-js-yellow-400">Múltiples Parámetros</h4>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Paréntesis obligatorios</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">multiplicar</span> = (<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>) =&gt; a * b;
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">concatenar</span> = (<span class="text-blue-400">str1</span>, <span class="text-blue-400">str2</span>, <span class="text-blue-400">separador</span>) =&gt; 
+  str1 + separador + str2;
+
+console.<span class="text-green-400">log</span>(<span class="text-green-400">multiplicar</span>(<span class="text-green-400">4</span>, <span class="text-green-400">5</span>)); <span class="text-gray-500">// 20</span>
+console.<span class="text-green-400">log</span>(<span class="text-green-400">concatenar</span>(<span class="text-orange-400">'Hola'</span>, <span class="text-orange-400">'Mundo'</span>, <span class="text-orange-400">' '</span>)); 
+<span class="text-gray-500">// 'Hola Mundo'</span></pre>
+          </div>
+
+          <div class="bg-dark-blue-900/80 p-6 rounded-lg border border-gray-800">
+            <h4 class="text-lg font-bold mb-4 text-js-yellow-400">Return Implícito</h4>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Return implícito (una línea)</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">obtenerNombre</span> = <span class="text-blue-400">persona</span> =&gt; persona.nombre;
+
+<span class="text-gray-500">// Return de objeto (requiere paréntesis)</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">crearPersona</span> = (<span class="text-blue-400">nombre</span>, <span class="text-blue-400">edad</span>) =&gt; ({
+  nombre: nombre,
+  edad: edad
+});
+
+console.<span class="text-green-400">log</span>(<span class="text-green-400">crearPersona</span>(<span class="text-orange-400">'Ana'</span>, <span class="text-green-400">25</span>));
+<span class="text-gray-500">// { nombre: 'Ana', edad: 25 }</span></pre>
+          </div>
+
+          <div class="bg-dark-blue-900/80 p-6 rounded-lg border border-gray-800">
+            <h4 class="text-lg font-bold mb-4 text-js-yellow-400">Return Explícito</h4>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Múltiples líneas necesitan llaves y return</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">calcularDescuento</span> = (<span class="text-blue-400">precio</span>, <span class="text-blue-400">porcentaje</span>) =&gt; {
+  <span class="text-purple-400">const</span> <span class="text-blue-400">descuento</span> = precio * (porcentaje / <span class="text-green-400">100</span>);
+  <span class="text-purple-400">const</span> <span class="text-blue-400">precioFinal</span> = precio - descuento;
+  <span class="text-purple-400">return</span> precioFinal;
+};
+
+console.<span class="text-green-400">log</span>(<span class="text-green-400">calcularDescuento</span>(<span class="text-green-400">100</span>, <span class="text-green-400">20</span>)); 
+<span class="text-gray-500">// 80</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="metodos-avanzados" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Métodos <span class="text-js-yellow-400 font-bold">Avanzados</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Métodos poderosos que transforman y procesan arrays con arrow functions
+    </p>
+
+    <div class="max-w-7xl mx-auto space-y-8">
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+            <span class="text-2xl">🗺️</span>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-js-yellow-400">map()</h3>
+            <p class="text-gray-400 text-sm">Transforma cada elemento del array y devuelve un nuevo array</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Descripción:</h4>
+            <p class="text-gray-300 text-sm mb-4">
+              <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">map()</code> crea un nuevo array aplicando una función a cada elemento del array original. No modifica el array original.
+            </p>
+            <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+              <p class="text-xs text-gray-300">
+                <strong class="text-js-yellow-400">Cuándo usar:</strong> Cuando necesites transformar todos los elementos de un array de la misma manera (duplicar números, extraer propiedades, formatear datos).
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Duplicar cada número</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">numeros</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>, <span class="text-green-400">4</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">dobles</span> = numeros.<span class="text-green-400">map</span>(<span class="text-blue-400">n</span> =&gt; n * <span class="text-green-400">2</span>);
+console.<span class="text-green-400">log</span>(dobles); <span class="text-gray-500">// [2, 4, 6, 8]</span>
+
+<span class="text-gray-500">// Extraer nombres de objetos</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">personas</span> = [
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Ana'</span>, <span class="text-blue-400">edad</span>: <span class="text-green-400">25</span> },
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Juan'</span>, <span class="text-blue-400">edad</span>: <span class="text-green-400">30</span> }
+];
+<span class="text-purple-400">const</span> <span class="text-blue-400">nombres</span> = personas.<span class="text-green-400">map</span>(<span class="text-blue-400">p</span> =&gt; p.nombre);
+console.<span class="text-green-400">log</span>(nombres); <span class="text-gray-500">// ['Ana', 'Juan']</span>
+
+<span class="text-gray-500">// Formatear precios</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">precios</span> = [<span class="text-green-400">10</span>, <span class="text-green-400">25.5</span>, <span class="text-green-400">99.99</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">formateados</span> = precios.<span class="text-green-400">map</span>(<span class="text-blue-400">p</span> =&gt; <span class="text-orange-400">'$'</span> + p.<span class="text-green-400">toFixed</span>(<span class="text-green-400">2</span>));
+console.<span class="text-green-400">log</span>(formateados); 
+<span class="text-gray-500">// ['$10.00', '$25.50', '$99.99']</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+            <span class="text-2xl">🔍</span>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-js-yellow-400">filter()</h3>
+            <p class="text-gray-400 text-sm">Filtra elementos que cumplan una condición</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Descripción:</h4>
+            <p class="text-gray-300 text-sm mb-4">
+              <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">filter()</code> crea un nuevo array con todos los elementos que pasen una prueba (función que devuelve true/false).
+            </p>
+            <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+              <p class="text-xs text-gray-300">
+                <strong class="text-js-yellow-400">Cuándo usar:</strong> Cuando necesites seleccionar solo algunos elementos que cumplan ciertas condiciones (filtrar por edad, buscar elementos específicos, eliminar valores nulos).
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Números pares</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">numeros</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>, <span class="text-green-400">4</span>, <span class="text-green-400">5</span>, <span class="text-green-400">6</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">pares</span> = numeros.<span class="text-green-400">filter</span>(<span class="text-blue-400">n</span> =&gt; n % <span class="text-green-400">2</span> === <span class="text-green-400">0</span>);
+console.<span class="text-green-400">log</span>(pares); <span class="text-gray-500">// [2, 4, 6]</span>
+
+<span class="text-gray-500">// Personas mayores de edad</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">personas</span> = [
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Ana'</span>, <span class="text-blue-400">edad</span>: <span class="text-green-400">17</span> },
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Juan'</span>, <span class="text-blue-400">edad</span>: <span class="text-green-400">25</span> },
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'María'</span>, <span class="text-blue-400">edad</span>: <span class="text-green-400">16</span> }
+];
+<span class="text-purple-400">const</span> <span class="text-blue-400">mayores</span> = personas.<span class="text-green-400">filter</span>(<span class="text-blue-400">p</span> =&gt; p.edad &gt;= <span class="text-green-400">18</span>);
+console.<span class="text-green-400">log</span>(mayores); 
+<span class="text-gray-500">// [{ nombre: 'Juan', edad: 25 }]</span>
+
+<span class="text-gray-500">// Filtrar strings largos</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">palabras</span> = [<span class="text-orange-400">'hola'</span>, <span class="text-orange-400">'mundo'</span>, <span class="text-orange-400">'JavaScript'</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">largas</span> = palabras.<span class="text-green-400">filter</span>(<span class="text-blue-400">p</span> =&gt; p.length &gt; <span class="text-green-400">5</span>);
+console.<span class="text-green-400">log</span>(largas); <span class="text-gray-500">// ['JavaScript']</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+            <span class="text-2xl">📊</span>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-js-yellow-400">reduce()</h3>
+            <p class="text-gray-400 text-sm">Reduce el array a un único valor</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Descripción:</h4>
+            <p class="text-gray-300 text-sm mb-4">
+              <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">reduce()</code> ejecuta una función reductora sobre cada elemento, devolviendo un único valor resultante. Es el método más versátil.
+            </p>
+            <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+              <p class="text-xs text-gray-300">
+                <strong class="text-js-yellow-400">Cuándo usar:</strong> Cuando necesites combinar todos los elementos en un solo valor (sumar, contar, agrupar, construir objetos).
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Sumar todos los números</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">numeros</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>, <span class="text-green-400">4</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">suma</span> = numeros.<span class="text-green-400">reduce</span>((<span class="text-blue-400">acc</span>, <span class="text-blue-400">n</span>) =&gt; acc + n, <span class="text-green-400">0</span>);
+console.<span class="text-green-400">log</span>(suma); <span class="text-gray-500">// 10</span>
+
+<span class="text-gray-500">// Encontrar el máximo</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">max</span> = numeros.<span class="text-green-400">reduce</span>((<span class="text-blue-400">acc</span>, <span class="text-blue-400">n</span>) =&gt; 
+  n &gt; acc ? n : acc
+);
+console.<span class="text-green-400">log</span>(max); <span class="text-gray-500">// 4</span>
+
+<span class="text-gray-500">// Contar ocurrencias</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">frutas</span> = [<span class="text-orange-400">'🍎'</span>, <span class="text-orange-400">'🍌'</span>, <span class="text-orange-400">'🍎'</span>, <span class="text-orange-400">'🍊'</span>, <span class="text-orange-400">'🍌'</span>, <span class="text-orange-400">'🍎'</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">conteo</span> = frutas.<span class="text-green-400">reduce</span>((<span class="text-blue-400">acc</span>, <span class="text-blue-400">fruta</span>) =&gt; {
+  acc[fruta] = (acc[fruta] || <span class="text-green-400">0</span>) + <span class="text-green-400">1</span>;
+  <span class="text-purple-400">return  + <span class="text-green-400">1</span>;
+  <span class="text-purple-400">return</span> acc;
+}, {});
+console.<span class="text-green-400">log</span>(conteo); 
+<span class="text-gray-500">// { 🍎: 3, 🍌: 2, 🍊: 1 }</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+            <span class="text-2xl">🎯</span>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-js-yellow-400">find() / findIndex()</h3>
+            <p class="text-gray-400 text-sm">Encuentra el primer elemento que cumple una condición</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Descripción:</h4>
+            <p class="text-gray-300 text-sm mb-4">
+              <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">find()</code> devuelve el primer elemento que cumple la condición. <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">findIndex()</code> devuelve su índice.
+            </p>
+            <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+              <p class="text-xs text-gray-300">
+                <strong class="text-js-yellow-400">Cuándo usar:</strong> Cuando necesites encontrar un elemento específico en un array (buscar un usuario por ID, encontrar el primer elemento que cumpla una condición).
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Encontrar primer número mayor a 10</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">numeros</span> = [<span class="text-green-400">5</span>, <span class="text-green-400">8</span>, <span class="text-green-400">12</span>, <span class="text-green-400">15</span>, <span class="text-green-400">20</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">encontrado</span> = numeros.<span class="text-green-400">find</span>(<span class="text-blue-400">n</span> =&gt; n &gt; <span class="text-green-400">10</span>);
+console.<span class="text-green-400">log</span>(encontrado); <span class="text-gray-500">// 12</span>
+
+<span class="text-gray-500">// Encontrar índice</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">indice</span> = numeros.<span class="text-green-400">findIndex</span>(<span class="text-blue-400">n</span> =&gt; n &gt; <span class="text-green-400">10</span>);
+console.<span class="text-green-400">log</span>(indice); <span class="text-gray-500">// 2</span>
+
+<span class="text-gray-500">// Buscar objeto por propiedad</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">usuarios</span> = [
+  { <span class="text-blue-400">id</span>: <span class="text-green-400">1</span>, <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Ana'</span> },
+  { <span class="text-blue-400">id</span>: <span class="text-green-400">2</span>, <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Juan'</span> }
+];
+<span class="text-purple-400">const</span> <span class="text-blue-400">usuario</span> = usuarios.<span class="text-green-400">find</span>(<span class="text-blue-400">u</span> =&gt; u.id === <span class="text-green-400">2</span>);
+console.<span class="text-green-400">log</span>(usuario.nombre); <span class="text-gray-500">// 'Juan'</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+            <span class="text-2xl">✅</span>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-js-yellow-400">some() / every()</h3>
+            <p class="text-gray-400 text-sm">Verifica si alguno o todos los elementos cumplen una condición</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Descripción:</h4>
+            <p class="text-gray-300 text-sm mb-4">
+              <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">some()</code> devuelve true si AL MENOS UN elemento cumple la condición. <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">every()</code> devuelve true si TODOS los elementos la cumplen.
+            </p>
+            <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+              <p class="text-xs text-gray-300">
+                <strong class="text-js-yellow-400">Cuándo usar:</strong> Para validaciones (verificar si hay elementos que cumplan una condición, validar que todos los elementos sean válidos).
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">edades</span> = [<span class="text-green-400">15</span>, <span class="text-green-400">18</span>, <span class="text-green-400">22</span>, <span class="text-green-400">30</span>];
+
+<span class="text-gray-500">// ¿Hay algún mayor de edad?</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">hayMayores</span> = edades.<span class="text-green-400">some</span>(<span class="text-blue-400">edad</span> =&gt; edad &gt;= <span class="text-green-400">18</span>);
+console.<span class="text-green-400">log</span>(hayMayores); <span class="text-gray-500">// true</span>
+
+<span class="text-gray-500">// ¿Todos son mayores de edad?</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">todosMayores</span> = edades.<span class="text-green-400">every</span>(<span class="text-blue-400">edad</span> =&gt; edad &gt;= <span class="text-green-400">18</span>);
+console.<span class="text-green-400">log</span>(todosMayores); <span class="text-gray-500">// false</span>
+
+<span class="text-gray-500">// Validar array de números positivos</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">numeros</span> = [<span class="text-green-400">5</span>, <span class="text-green-400">10</span>, <span class="text-green-400">15</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">todosPositivos</span> = numeros.<span class="text-green-400">every</span>(<span class="text-blue-400">n</span> =&gt; n &gt; <span class="text-green-400">0</span>);
+console.<span class="text-green-400">log</span>(todosPositivos); <span class="text-gray-500">// true</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+            <span class="text-2xl">🔄</span>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-js-yellow-400">forEach()</h3>
+            <p class="text-gray-400 text-sm">Ejecuta una función para cada elemento</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Descripción:</h4>
+            <p class="text-gray-300 text-sm mb-4">
+              <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">forEach()</code> ejecuta una función para cada elemento del array. No devuelve nada (undefined).
+            </p>
+            <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+              <p class="text-xs text-gray-300">
+                <strong class="text-js-yellow-400">Cuándo usar:</strong> Para efectos secundarios (mostrar datos, hacer peticiones, modificar el DOM). Si necesitas un nuevo array, usa map().
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Imprimir cada elemento</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">frutas</span> = [<span class="text-orange-400">'🍎'</span>, <span class="text-orange-400">'🍌'</span>, <span class="text-orange-400">'🍊'</span>];
+frutas.<span class="text-green-400">forEach</span>(<span class="text-blue-400">fruta</span> =&gt; {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Me gusta '</span> + fruta);
+});
+
+<span class="text-gray-500">// Con índice</span>
+frutas.<span class="text-green-400">forEach</span>((<span class="text-blue-400">fruta</span>, <span class="text-blue-400">indice</span>) =&gt; {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">`</span>${indice + <span class="text-green-400">1</span>}<span class="text-orange-400">. </span>${fruta}<span class="text-orange-400">`</span>);
+});
+
+<span class="text-gray-500">// Modificar DOM (ejemplo)</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">numeros</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>];
+numeros.<span class="text-green-400">forEach</span>(<span class="text-blue-400">num</span> =&gt; {
+  <span class="text-gray-500">// document.body.innerHTML += `&lt;p&gt;${num}&lt;/p&gt;`;</span>
+});</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ejemplos" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+        Ejemplos <span class="text-js-yellow-400 font-bold">Prácticos</span>
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Cadena de Métodos (Method Chaining)</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Filtrar, transformar y sumar</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">productos</span> = [
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Laptop'</span>, <span class="text-blue-400">precio</span>: <span class="text-green-400">1000</span>, <span class="text-blue-400">stock</span>: <span class="text-green-400">5</span> },
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Mouse'</span>, <span class="text-blue-400">precio</span>: <span class="text-green-400">25</span>, <span class="text-blue-400">stock</span>: <span class="text-green-400">0</span> },
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Teclado'</span>, <span class="text-blue-400">precio</span>: <span class="text-green-400">75</span>, <span class="text-blue-400">stock</span>: <span class="text-green-400">10</span> }
+];
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">total</span> = productos
+  .<span class="text-green-400">filter</span>(<span class="text-blue-400">p</span> =&gt; p.stock &gt; <span class="text-green-400">0</span>) <span class="text-gray-500">// Solo disponibles</span>
+  .<span class="text-green-400">map</span>(<span class="text-blue-400">p</span> =&gt; p.precio) <span class="text-gray-500">// Solo precios</span>
+  .<span class="text-green-400">reduce</span>((<span class="text-blue-400">sum</span>, <span class="text-blue-400">precio</span>) =&gt; sum + precio, <span class="text-green-400">0</span>); <span class="text-gray-500">// Sumar</span>
+
+console.<span class="text-green-400">log</span>(total); <span class="text-gray-500">// 1075</span></pre>
+          <p class="text-gray-400 text-sm">
+            Combinar múltiples métodos para procesar datos de manera eficiente.
+          </p>
+        </div>
+
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Agrupar Datos</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Agrupar personas por edad</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">personas</span> = [
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Ana'</span>, <span class="text-blue-400">edad</span>: <span class="text-green-400">25</span> },
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Juan'</span>, <span class="text-blue-400">edad</span>: <span class="text-green-400">25</span> },
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'María'</span>, <span class="text-blue-400">edad</span>: <span class="text-green-400">30</span> }
+];
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">porEdad</span> = personas.<span class="text-green-400">reduce</span>((<span class="text-blue-400">grupos</span>, <span class="text-blue-400">persona</span>) =&gt; {
+  <span class="text-purple-400">const</span> <span class="text-blue-400">edad</span> = persona.edad;
+  <span class="text-purple-400">if</span> (!grupos[edad]) {
+    grupos[edad] = [];
+  }
+  grupos[edad].<span class="text-green-400">push</span>(persona);
+  <span class="text-purple-400">return</span> grupos;
+}, {});
+
+console.<span class="text-green-400">log</span>(porEdad);
+<span class="text-gray-500">// { 25: [{Ana}, {Juan}], 30: [{María}] }</span></pre>
+          <p class="text-gray-400 text-sm">
+            Usar reduce para agrupar elementos por una propiedad.
+          </p>
+        </div>
+
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Eliminar Duplicados</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Método 1: Con Set</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">numeros</span> = [<span class="text-green-400">1</span>, <span class="text-green-400">2</span>, <span class="text-green-400">2</span>, <span class="text-green-400">3</span>, <span class="text-green-400">3</span>, <span class="text-green-400">4</span>];
+<span class="text-purple-400">const</span> <span class="text-blue-400">unicos</span> = [...<span class="text-purple-400">new</span> <span class="text-green-400">Set</span>(numeros)];
+console.<span class="text-green-400">log</span>(unicos); <span class="text-gray-500">// [1, 2, 3, 4]</span>
+
+<span class="text-gray-500">// Método 2: Con filter</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">unicos2</span> = numeros.<span class="text-green-400">filter</span>((<span class="text-blue-400">num</span>, <span class="text-blue-400">index</span>) =&gt; 
+  numeros.<span class="text-green-400">indexOf</span>(num) === index
+);
+
+<span class="text-gray-500">// Eliminar duplicados de objetos</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">personas</span> = [
+  { <span class="text-blue-400">id</span>: <span class="text-green-400">1</span>, <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Ana'</span> },
+  { <span class="text-blue-400">id</span>: <span class="text-green-400">2</span>, <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Juan'</span> },
+  { <span class="text-blue-400">id</span>: <span class="text-green-400">1</span>, <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Ana'</span> }
+];
+<span class="text-purple-400">const</span> <span class="text-blue-400">unicasPersonas</span> = personas.<span class="text-green-400">filter</span>((<span class="text-blue-400">p</span>, <span class="text-blue-400">i</span>, <span class="text-blue-400">arr</span>) =&gt;
+  arr.<span class="text-green-400">findIndex</span>(<span class="text-blue-400">t</span> =&gt; t.id === p.id) === i
+);</pre>
+          <p class="text-gray-400 text-sm">
+            Diferentes técnicas para eliminar elementos duplicados.
+          </p>
+        </div>
+
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Ordenamiento Avanzado</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Ordenar números (sort por defecto es alfabético)</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">numeros</span> = [<span class="text-green-400">10</span>, <span class="text-green-400">5</span>, <span class="text-green-400">40</span>, <span class="text-green-400">25</span>];
+numeros.<span class="text-green-400">sort</span>((<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>) =&gt; a - b); <span class="text-gray-500">// Ascendente</span>
+console.<span class="text-green-400">log</span>(numeros); <span class="text-gray-500">// [5, 10, 25, 40]</span>
+
+<span class="text-gray-500">// Descendente</span>
+numeros.<span class="text-green-400">sort</span>((<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>) =&gt; b - a);
+
+<span class="text-gray-500">// Ordenar objetos por propiedad</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">productos</span> = [
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Laptop'</span>, <span class="text-blue-400">precio</span>: <span class="text-green-400">1000</span> },
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Mouse'</span>, <span class="text-blue-400">precio</span>: <span class="text-green-400">25</span> },
+  { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">'Teclado'</span>, <span class="text-blue-400">precio</span>: <span class="text-green-400">75</span> }
+];
+
+<span class="text-gray-500">// Por precio</span>
+productos.<span class="text-green-400">sort</span>((<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>) =&gt; a.precio - b.precio);
+
+<span class="text-gray-500">// Por nombre (alfabético)</span>
+productos.<span class="text-green-400">sort</span>((<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>) =&gt; 
+  a.nombre.<span class="text-green-400">localeCompare</span>(b.nombre)
+);</pre>
+          <p class="text-gray-400 text-sm">
+            Ordenar arrays de números y objetos correctamente.
+          </p>
+        </div>
+
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 lg:col-span-2">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Transformación Completa de Datos</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Datos de entrada</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">pedidos</span> = [
+  { <span class="text-blue-400">id</span>: <span class="text-green-400">1</span>, <span class="text-blue-400">cliente</span>: <span class="text-orange-400">'Ana'</span>, <span class="text-blue-400">items</span>: [<span class="text-green-400">100</span>, <span class="text-green-400">200</span>], <span class="text-blue-400">estado</span>: <span class="text-orange-400">'completado'</span> },
+  { <span class="text-blue-400">id</span>: <span class="text-green-400">2</span>, <span class="text-blue-400">cliente</span>: <span class="text-orange-400">'Juan'</span>, <span class="text-blue-400">items</span>: [<span class="text-green-400">50</span>], <span class="text-blue-400">estado</span>: <span class="text-orange-400">'pendiente'</span> },
+  { <span class="text-blue-400">id</span>: <span class="text-green-400">3</span>, <span class="text-blue-400">cliente</span>: <span class="text-orange-400">'María'</span>, <span class="text-blue-400">items</span>: [<span class="text-green-400">300</span>, <span class="text-green-400">150</span>, <span class="text-green-400">75</span>], <span class="text-blue-400">estado</span>: <span class="text-orange-400">'completado'</span> }
+];
+
+<span class="text-gray-500">// Calcular total de ventas completadas</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">totalVentas</span> = pedidos
+  .<span class="text-green-400">filter</span>(<span class="text-blue-400">p</span> =&gt; p.estado === <span class="text-orange-400">'completado'</span>)
+  .<span class="text-green-400">map</span>(<span class="text-blue-400">p</span> =&gt; p.items.<span class="text-green-400">reduce</span>((<span class="text-blue-400">sum</span>, <span class="text-blue-400">item</span>) =&gt; sum + item, <span class="text-green-400">0</span>))
+  .<span class="text-green-400">reduce</span>((<span class="text-blue-400">total</span>, <span class="text-blue-400">pedidoTotal</span>) =&gt; total + pedidoTotal, <span class="text-green-400">0</span>);
+
+console.<span class="text-green-400">log</span>(totalVentas); <span class="text-gray-500">// 825</span>
+
+<span class="text-gray-500">// Crear reporte por cliente</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">reporte</span> = pedidos.<span class="text-green-400">map</span>(<span class="text-blue-400">pedido</span> =&gt; ({
+  cliente: pedido.cliente,
+  total: pedido.items.<span class="text-green-400">reduce</span>((<span class="text-blue-400">sum</span>, <span class="text-blue-400">item</span>) =&gt; sum + item, <span class="text-green-400">0</span>),
+  cantidadItems: pedido.items.length,
+  estado: pedido.estado
+}));
+
+console.<span class="text-green-400">log</span>(reporte);
+<span class="text-gray-500">// [
+//   { cliente: 'Ana', total: 300, cantidadItems: 2, estado: 'completado' },
+//   { cliente: 'Juan', total: 50, cantidadItems: 1, estado: 'pendiente' },
+//   { cliente: 'María', total: 525, cantidadItems: 3, estado: 'completado' }
+// ]</span></pre>
+          <p class="text-gray-400 text-sm">
+            Ejemplo complejo que combina múltiples técnicas para procesar y transformar datos reales.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="actividad" class="container mx-auto px-4 py-20">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-js-yellow-400 font-bold">Interactiva</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Practica con arrays y arrow functions en tiempo real!
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-6">
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Manipulador de Arrays</h3>
+
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Tu Array</h4>
+                <textarea 
+                  id="arrayInput" 
+                  placeholder="Escribe números separados por coma: 1, 2, 3, 4, 5"
+                  class="w-full bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none text-sm font-mono h-24 resize-none"
+                ></textarea>
+                <button 
+                  id="parseArray"
+                  class="w-full mt-3 bg-js-yellow-500 hover:bg-js-yellow-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                >
+                  📋 Cargar Array
+                </button>
+              </div>
+
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Arrays de Ejemplo</h4>
+                <div class="grid grid-cols-2 gap-3">
+                  <button 
+                    id="loadNumbers"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🔢 Números
+                  </button>
+                  <button 
+                    id="loadNames"
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    👥 Nombres
+                  </button>
+                  <button 
+                    id="loadFruits"
+                    class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🍎 Frutas
+                  </button>
+                  <button 
+                    id="loadRandom"
+                    class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🎲 Aleatorio
+                  </button>
+                </div>
+              </div>
+
+                
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Operaciones</h4>
+                <div class="grid grid-cols-2 gap-2">
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="map">
+                    map() x2
+                  </button>
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="filter">
+                    filter() &gt;5
+                  </button>
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="reduce">
+                    reduce() suma
+                  </button>
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="sort">
+                    sort() asc
+                  </button>
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="reverse">
+                    reverse()
+                  </button>
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="slice">
+                    slice(0,3)
+                  </button>
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="push">
+                    push(99)
+                  </button>
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="pop">
+                    pop()
+                  </button>
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="unique">
+                    únicos
+                  </button>
+                  <button class="operation-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded text-xs transition-colors" data-op="length">
+                    length
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Acciones</h4>
+                <div class="grid grid-cols-2 gap-3">
+                  <button 
+                    id="clearArray"
+                    class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🗑️ Limpiar
+                  </button>
+                  <button 
+                    id="undoOp"
+                    class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    ↩️ Deshacer
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+                <h4 class="text-sm font-semibold mb-2 text-js-yellow-400">Estadísticas</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                  <div class="text-gray-300">Elementos: <span id="elemCount" class="text-js-yellow-400 font-bold">0</span></div>
+                  <div class="text-gray-300">Operaciones: <span id="opCount" class="text-js-yellow-400 font-bold">0</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Visualización</h3>
+              
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                  <h4 class="text-white font-semibold">Array Actual</h4>
+                  <button id="copyArrayBtn" class="text-js-yellow-400 hover:text-js-yellow-300 text-sm font-semibold">
+                    📋 Copiar
+                  </button>
+                </div>
+                
+                <div id="arrayDisplay" class="bg-black/50 rounded-lg p-4 min-h-[150px] font-mono text-sm">
+                  <div class="text-gray-500 italic text-center py-8">
+                    Carga un array para comenzar...
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700 mb-6">
+                <h4 class="text-white font-semibold mb-4">Código Ejecutado</h4>
+                <div id="codeDisplayArray" class="bg-black/50 rounded-lg p-4 h-[200px] overflow-y-auto font-mono text-xs">
+                  <div class="text-gray-500">
+                    <span class="text-green-400">></span> Las operaciones aparecerán aquí...
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                  <h4 class="text-white font-semibold">Consola</h4>
+                  <button id="clearConsoleArray" class="text-red-400 hover:text-red-300 text-sm font-semibold">
+                    Limpiar
+                  </button>
+                </div>
+                <div id="consoleArray" class="bg-black/50 rounded-lg p-4 h-[150px] overflow-y-auto font-mono text-xs space-y-1">
+                  <div class="text-gray-500">
+                    <span class="text-green-400">></span> Consola lista...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+
+  <footer class="bg-dark-blue-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende JavaScript Arrays - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Array Activity
+    let currentArray = [];
+    let arrayHistory = [];
+    let operationCount = 0;
+
+    const arrayInput = document.getElementById('arrayInput');
+    const arrayDisplay = document.getElementById('arrayDisplay');
+    const codeDisplayArray = document.getElementById('codeDisplayArray');
+    const consoleArray = document.getElementById('consoleArray');
+    const elemCount = document.getElementById('elemCount');
+    const opCount = document.getElementById('opCount');
+
+    function logCode(code) {
+      const codeElement = document.createElement('div');
+      codeElement.className = 'text-green-400 mb-2';
+      codeElement.textContent = code;
+      codeDisplayArray.appendChild(codeElement);
+      codeDisplayArray.scrollTop = codeDisplayArray.scrollHeight;
+    }
+
+    function logConsole(message, type = 'info') {
+      const colors = {
+        info: 'text-blue-400',
+        success: 'text-green-400',
+        warning: 'text-yellow-400',
+        error: 'text-red-400'
+      };
+      
+      const log = document.createElement('div');
+      log.className = colors[type];
+      log.textContent = message;
+      
+      consoleArray.appendChild(log);
+      consoleArray.scrollTop = consoleArray.scrollHeight;
+    }
+
+    function updateDisplay() {
+      if (currentArray.length === 0) {
+        arrayDisplay.innerHTML = '<div class="text-gray-500 italic text-center py-8">Array vacío</div>';
+      } else {
+        arrayDisplay.innerHTML = '<div class="text-js-yellow-400">[</div>' +
+          currentArray.map((item, index) => {
+            const value = typeof item === 'string' ? '"' + item + '"' : item;
+            return '<div class="ml-4 text-gray-300">' +
+              '<span class="text-gray-500">' + index + ':</span> ' +
+              '<span class="text-orange-400">' + value + '</span>' +
+              (index < currentArray.length - 1 ? ',' : '') +
+              '</div>';
+          }).join('') +
+          '<div class="text-js-yellow-400">]</div>';
+      }
+
+      elemCount.textContent = currentArray.length;
+      opCount.textContent = operationCount;
+    }
+
+    function saveHistory() {
+      arrayHistory.push([...currentArray]);
+      if (arrayHistory.length > 10) {
+        arrayHistory.shift();
+      }
+    }
+
+    // Parse array
+    document.getElementById('parseArray').addEventListener('click', () => {
+      const input = arrayInput.value.trim();
+      if (!input) {
+        logConsole('Por favor ingresa datos', 'error');
+        return;
+      }
+
+      try {
+        saveHistory();
+        currentArray = input.split(',').map(item => {
+          item = item.trim();
+          const num = Number(item);
+          if (!isNaN(num) && item !== '') return num;
+          return item.replace(/^["']|["']$/g, '');
+        });
+        
+        logCode('const array = [' + currentArray.map(i => typeof i === 'string' ? '"' + i + '"' : i).join(', ') + '];');
+        logConsole('Array cargado: ' + currentArray.length + ' elementos', 'success');
+        updateDisplay();
+      } catch (error) {
+        logConsole('Error al parsear el array', 'error');
+      }
+    });
+
+    // Quick arrays
+    document.getElementById('loadNumbers').addEventListener('click', () => {
+      saveHistory();
+      currentArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      arrayInput.value = currentArray.join(', ');
+      logCode('const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];');
+      logConsole('Array de números cargado', 'success');
+      updateDisplay();
+    });
+
+    document.getElementById('loadNames').addEventListener('click', () => {
+      saveHistory();
+      currentArray = ['Ana', 'Juan', 'María', 'Pedro', 'Laura'];
+      arrayInput.value = currentArray.join(', ');
+      logCode('const array = ["Ana", "Juan", "María", "Pedro", "Laura"];');
+      logConsole('Array de nombres cargado', 'success');
+      updateDisplay();
+    });
+
+    document.getElementById('loadFruits').addEventListener('click', () => {
+      saveHistory();
+      currentArray = ['🍎', '🍌', '🍊', '🍇', '🍓'];
+      arrayInput.value = currentArray.join(', ');
+      logCode('const array = ["🍎", "🍌", "🍊", "🍇", "🍓"];');
+      logConsole('Array de frutas cargado', 'success');
+      updateDisplay();
+    });
+
+    document.getElementById('loadRandom').addEventListener('click', () => {
+      saveHistory();
+      currentArray = Array.from({length: 10}, () => Math.floor(Math.random() * 100));
+      arrayInput.value = currentArray.join(', ');
+      logCode('const array = [' + currentArray.join(', ') + '];');
+      logConsole('Array aleatorio generado', 'success');
+      updateDisplay();
+    });
+
+    // Operations
+    document.querySelectorAll('.operation-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (currentArray.length === 0) {
+          logConsole('Carga un array primero', 'error');
+          return;
+        }
+
+        const op = btn.dataset.op;
+        saveHistory();
+        operationCount++;
+
+        try {
+          switch(op) {
+            case 'map':
+              currentArray = currentArray.map(n => typeof n === 'number' ? n * 2 : n);
+              logCode('array = array.map(n => n * 2);');
+              logConsole('map() aplicado: duplicar números', 'success');
+              break;
+
+            case 'filter':
+              const original = [...currentArray];
+              currentArray = currentArray.filter(n => typeof n === 'number' && n > 5);
+              logCode('array = array.filter(n => n > 5);');
+              logConsole('filter() aplicado: ' + original.length + ' → ' + currentArray.length + ' elementos', 'success');
+              break;
+
+            case 'reduce':
+              const numArray = currentArray.filter(n => typeof n === 'number');
+              if (numArray.length === 0) {
+                logConsole('No hay números para sumar', 'warning');
+                break;
+              }
+              const sum = numArray.reduce((acc, n) => acc + n, 0);
+              logCode('const sum = array.reduce((acc, n) => acc + n, 0);');
+              logConsole('reduce() aplicado: suma = ' + sum, 'success');
+              currentArray = [sum];
+              break;
+
+            case 'sort':
+              currentArray = currentArray.sort((a, b) => {
+                if (typeof a === 'number' && typeof b === 'number') return a - b;
+                return String(a).localeCompare(String(b));
+              });
+              logCode('array = array.sort((a, b) => a - b);');
+              logConsole('sort() aplicado: ordenado ascendente', 'success');
+              break;
+
+            case 'reverse':
+              currentArray = currentArray.reverse();
+              logCode('array = array.reverse();');
+              logConsole('reverse() aplicado: array invertido', 'success');
+              break;
+
+            case 'slice':
+              currentArray = currentArray.slice(0, 3);
+              logCode('array = array.slice(0, 3);');
+              logConsole('slice() aplicado: primeros 3 elementos', 'success');
+              break;
+
+            case 'push':
+              currentArray.push(99);
+              logCode('array.push(99);');
+              logConsole('push() aplicado: elemento agregado al final', 'success');
+              break;
+
+            case 'pop':
+              const removed = currentArray.pop();
+              logCode('const removed = array.pop();');
+              logConsole('pop() aplicado: eliminado ' + removed, 'success');
+              break;
+
+            case 'unique':
+              const beforeLength = currentArray.length;
+              currentArray = [...new Set(currentArray)];
+              logCode('array = [...new Set(array)];');
+              logConsole('Duplicados eliminados: ' + beforeLength + ' → ' + currentArray.length, 'success');
+              break;
+
+            case 'length':
+              logCode('console.log(array.length);');
+              logConsole('Length: ' + currentArray.length + ' elementos', 'info');
+              arrayHistory.pop(); // No cambió el array
+              operationCount--;
+              break;
+          }
+
+          updateDisplay();
+        } catch (error) {
+          logConsole('Error: ' + error.message, 'error');
+          arrayHistory.pop();
+          operationCount--;
+        }
+      });
+    });
+
+    // Clear
+    document.getElementById('clearArray').addEventListener('click', () => {
+      saveHistory();
+      currentArray = [];
+      arrayInput.value = '';
+      logCode('// Array limpiado');
+      logConsole('Array limpiado', 'warning');
+      updateDisplay();
+    });
+
+    // Undo
+    document.getElementById('undoOp').addEventListener('click', () => {
+      if (arrayHistory.length === 0) {
+        logConsole('No hay operaciones para deshacer', 'warning');
+        return;
+      }
+
+      currentArray = arrayHistory.pop();
+      if (operationCount > 0) operationCount--;
+      logCode('// Operación deshecha');
+      logConsole('Última operación deshecha', 'info');
+      updateDisplay();
+    });
+
+    // Copy array
+    document.getElementById('copyArrayBtn').addEventListener('click', () => {
+      const arrayString = '[' + currentArray.map(i => typeof i === 'string' ? '"' + i + '"' : i).join(', ') + ']';
+      navigator.clipboard.writeText(arrayString).then(() => {
+        logConsole('Array copiado al portapapeles', 'success');
+      }).catch(() => {
+        logConsole('Error al copiar', 'error');
+      });
+    });
+
+    // Clear console
+    document.getElementById('clearConsoleArray').addEventListener('click', () => {
+      consoleArray.innerHTML = '<div class="text-gray-500"><span class="text-green-400">></span> Consola limpiada...</div>';
+    });
+
+    // Initialize
+    updateDisplay();
+
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .method-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

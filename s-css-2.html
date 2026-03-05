@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS: Selectores y Especificidad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  colors: {
+                      dark: '#0a0f1a',
+                      darker: '#050a14',
+                      accent: '#663399', // rebeccapurple
+                      accentLight: '#9370DB', // mediumPurple
+                      accentDark: '#4B0082' // indigo
+                  }
+              }
+          }
+      }
+  </script>
+  <style>
+      @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0px); }
+      }
+      .float-animation:hover {
+          animation: float 2s ease-in-out infinite;
+      }
+      .glow-effect:hover {
+          box-shadow: 0 0 15px rgba(102, 51, 153, 0.5);
+      }
+      .scale-effect:hover {
+          transform: scale(1.03);
+      }
+      .rotate-effect:hover .icon-container {
+          transform: rotate(10deg);
+      }
+      .code-block {
+          position: relative;
+          overflow: hidden;
+      }
+      .code-block::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent 70%, #050a14);
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.3s;
+      }
+      .code-block:hover::before {
+          opacity: 1;
+      }
+      .slider {
+          -webkit-appearance: none;
+          height: 10px;
+          border-radius: 5px;
+          background: #1f2937;
+          outline: none;
+      }
+      .slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: #663399;
+          cursor: pointer;
+      }
+      .slider::-moz-range-thumb {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: #663399;
+          cursor: pointer;
+      }
+      .option-tag {
+          transition: all 0.2s ease;
+      }
+      .option-tag:hover {
+          background-color: rgba(102, 51, 153, 0.2);
+      }
+      .option-tag.active {
+          background-color: rgba(102, 51, 153, 0.3);
+          border-color: #663399;
+      }
+      .selector-card {
+          transition: all 0.3s ease;
+      }
+      .selector-card:hover {
+          transform: translateY(-5px);
+      }
+      .tab-button {
+          transition: all 0.3s ease;
+      }
+      .tab-button.active {
+          background-color: #663399;
+          color: white;
+      }
+      .specificity-bar {
+          height: 24px;
+          background-color: #1f2937;
+          border-radius: 12px;
+          overflow: hidden;
+          position: relative;
+      }
+      .specificity-value {
+          height: 100%;
+          background: linear-gradient(90deg, #663399, #9370DB);
+          border-radius: 12px;
+          transition: width 0.5s ease;
+      }
+      .selector-builder-element {
+          cursor: pointer;
+          transition: all 0.3s ease;
+      }
+      .selector-builder-element:hover {
+          background-color: rgba(102, 51, 153, 0.1);
+      }
+      .selector-builder-element.selected {
+          background-color: rgba(102, 51, 153, 0.2);
+          border-color: #663399;
+      }
+      .selector-preview {
+          transition: all 0.3s ease;
+      }
+      .selector-preview-element {
+          transition: all 0.3s ease;
+          border: 2px dashed transparent;
+      }
+      .selector-preview-element:hover {
+          border-color: #663399;
+      }
+      .css-rule-example {
+          position: relative;
+          padding-left: 15px;
+      }
+      .css-rule-example::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 3px;
+          background-color: #663399;
+      }
+      .specificity-calculator .result {
+          transition: all 0.3s ease;
+      }
+      .specificity-calculator .result.highlight {
+          transform: scale(1.05);
+          box-shadow: 0 0 15px rgba(102, 51, 153, 0.5);
+      }
+      .specificity-quiz .answer {
+          transition: all 0.3s ease;
+      }
+      .specificity-quiz .answer.correct {
+          background-color: rgba(72, 187, 120, 0.2);
+          border-color: #48bb78;
+      }
+      .specificity-quiz .answer.incorrect {
+          background-color: rgba(245, 101, 101, 0.2);
+          border-color: #f56565;
+      }
+  </style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+  <header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+      <nav class="container mx-auto px-4 py-4">
+          <div class="flex justify-between items-center">
+              <a href="s-css.html"><h1 class="text-2xl font-bold">CSS<span class="text-accent">Selectores</span></h1></a>
+              <div class="hidden md:flex space-x-6">
+                  <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                  <a href="#selectores-basicos" class="hover:text-accent transition-colors duration-300">Selectores Básicos</a>
+                  <a href="#selectores-avanzados" class="hover:text-accent transition-colors duration-300">Selectores Avanzados</a>
+                  <a href="#especificidad" class="hover:text-accent transition-colors duration-300">Especificidad</a>
+                  <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+              </div>
+              <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+              </button>
+          </div>
+          <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+              <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+              <a href="#selectores-basicos" class="block py-2 hover:text-accent transition-colors duration-300">Selectores Básicos</a>
+              <a href="#selectores-avanzados" class="block py-2 hover:text-accent transition-colors duration-300">Selectores Avanzados</a>
+              <a href="#especificidad" class="block py-2 hover:text-accent transition-colors duration-300">Especificidad</a>
+              <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+          </div>
+      </nav>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+      <section class="text-center py-16">
+          <h1 class="text-5xl font-bold mb-4">Selectores y <span class="text-accent">Especificidad</span> en CSS</h1>
+          <p class="text-xl max-w-3xl mx-auto">Aprende a seleccionar elementos HTML con precisión y entender cómo se aplican las reglas CSS</p>
+      </section>
+
+      <section id="introduccion" class="mb-20">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Introducción a los Selectores CSS</h2>
+          <p class="mb-8 text-lg leading-relaxed">Los selectores son patrones que se utilizan para seleccionar y aplicar estilos a elementos HTML específicos. Son la base fundamental de CSS, ya que nos permiten dirigir nuestros estilos exactamente donde queremos aplicarlos.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation h-full">
+                  <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                      </svg>
+                  </div>
+                  <h3 class="text-xl font-bold mb-4 text-accent">Precisión</h3>
+                  <p class="text-base">Los selectores permiten apuntar a elementos específicos en la página, desde elementos individuales hasta grupos con características comunes.</p>
+              </div>
+              <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect rotate-effect h-full">
+                  <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                      </svg>
+                  </div>
+                  <h3 class="text-xl font-bold mb-4 text-accent">Jerarquía</h3>
+                  <p class="text-base">La especificidad determina qué reglas CSS tienen prioridad cuando varias reglas apuntan al mismo elemento.</p>
+              </div>
+              <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect float-animation h-full">
+                  <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                  </div>
+                  <h3 class="text-xl font-bold mb-4 text-accent">Reutilización</h3>
+                  <p class="text-base">Los selectores permiten aplicar los mismos estilos a múltiples elementos, facilitando la consistencia y el mantenimiento del código.</p>
+              </div>
+          </div>
+      </section>
+
+      <section id="selectores-basicos" class="mb-20">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Selectores Básicos</h2>
+          
+          <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+              <h3 class="text-2xl font-bold mb-6 text-accent">Selector Universal</h3>
+              <div class="code-block mb-6">
+                  <pre class="text-gray-300 overflow-x-auto text-lg"><code>* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}</code></pre>
+              </div>
+              <p class="text-lg mb-6">El selector universal <code class="bg-dark px-2 py-1 rounded border border-gray-800">*</code> selecciona todos los elementos HTML en la página. Es útil para restablecer estilos predeterminados o aplicar propiedades globales.</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Características:</h4>
+                      <ul class="list-disc pl-6 space-y-3 text-lg">
+                          <li>Selecciona <strong>todos</strong> los elementos HTML</li>
+                          <li>Tiene la especificidad más baja (0,0,0)</li>
+                          <li>Puede afectar al rendimiento si se usa con muchas propiedades</li>
+                          <li>Comúnmente usado en "reset CSS"</li>
+                      </ul>
+                  </div>
+                  <div class="bg-dark p-6 rounded-lg">
+                      <h4 class="text-xl font-bold mb-4">Ejemplo visual:</h4>
+                      <div class="bg-white p-4 rounded-lg text-gray-800">
+                          <div class="border-2 border-accent p-3 mb-3 rounded">
+                              <p>Este párrafo está seleccionado</p>
+                          </div>
+                          <div class="border-2 border-accent p-3 mb-3 rounded">
+                              <h5 class="font-bold">Este encabezado está seleccionado</h5>
+                          </div>
+                          <div class="border-2 border-accent p-3 rounded">
+                              <button class="bg-accent text-white px-3 py-1 rounded">Este botón está seleccionado</button>
+                          </div>
+                      </div>
+                      <p class="text-center text-sm text-gray-400 mt-4">Todos los elementos están seleccionados con *</p>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Selector de Tipo</h3>
+                  
+                  <div class="code-block mb-6">
+                      <pre class="text-gray-300 overflow-x-auto"><code>p {
+  color: #663399;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}</code></pre>
+                  </div>
+                  
+                  <p class="mb-6">El selector de tipo selecciona todos los elementos HTML que coinciden con el nombre del elemento especificado.</p>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Características:</h4>
+                      <ul class="list-disc pl-5 space-y-2">
+                          <li>Selecciona por nombre de etiqueta HTML</li>
+                          <li>Afecta a todos los elementos de ese tipo</li>
+                          <li>Especificidad baja (0,0,1)</li>
+                          <li>Ejemplos: <code>p</code>, <code>div</code>, <code>h1</code>, <code>span</code></li>
+                      </ul>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Selector de Clase</h3>
+                  
+                  <div class="code-block mb-6">
+                      <pre class="text-gray-300 overflow-x-auto"><code>.destacado {
+  background-color: #663399;
+  color: white;
+  padding: 10px;
+}
+
+.grande {
+  font-size: 1.5rem;
+}</code></pre>
+                  </div>
+                  
+                  <p class="mb-6">El selector de clase selecciona todos los elementos que tienen el atributo class con el valor especificado.</p>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Características:</h4>
+                      <ul class="list-disc pl-5 space-y-2">
+                          <li>Se identifica con un punto <code>.</code> seguido del nombre de la clase</li>
+                          <li>Un elemento puede tener múltiples clases</li>
+                          <li>Especificidad media (0,1,0)</li>
+                          <li>Muy versátil y ampliamente utilizado</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Selector de ID</h3>
+                  
+                  <div class="code-block mb-6">
+                      <pre class="text-gray-300 overflow-x-auto"><code>#principal {
+  border: 2px solid #663399;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#boton-enviar {
+  background-color: #663399;
+  color: white;
+}</code></pre>
+                  </div>
+                  
+                  <p class="mb-6">El selector de ID selecciona un elemento basado en el valor de su atributo id. Los IDs deben ser únicos en la página.</p>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Características:</h4>
+                      <ul class="list-disc pl-5 space-y-2">
+                          <li>Se identifica con un hash <code>#</code> seguido del nombre del ID</li>
+                          <li>Cada ID debe ser único en la página</li>
+                          <li>Especificidad alta (1,0,0)</li>
+                          <li>Útil para elementos únicos como encabezados o secciones principales</li>
+                      </ul>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Selector de Atributo</h3>
+                  
+                  <div class="code-block mb-6">
+                      <pre class="text-gray-300 overflow-x-auto"><code>[type="text"] {
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+[href^="https"] {
+  color: #663399;
+}</code></pre>
+                  </div>
+                  
+                  <p class="mb-6">El selector de atributo selecciona elementos basados en la presencia o valor de un atributo.</p>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Variantes:</h4>
+                      <ul class="list-disc pl-5 space-y-2">
+                          <li><code>[attr]</code> - Elementos con el atributo attr</li>
+                          <li><code>[attr="valor"]</code> - Elementos donde attr es exactamente "valor"</li>
+                          <li><code>[attr^="valor"]</code> - Elementos donde attr comienza con "valor"</li>
+                          <li><code>[attr$="valor"]</code> - Elementos donde attr termina con "valor"</li>
+                          <li><code>[attr*="valor"]</code> - Elementos donde attr contiene "valor"</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+              <h3 class="text-2xl font-bold mb-6 text-accent">Agrupación de Selectores</h3>
+              
+              <div class="code-block mb-6">
+                  <pre class="text-gray-300 overflow-x-auto"><code>h1, h2, h3 {
+  font-family: 'Arial', sans-serif;
+  color: #663399;
+}
+
+.alerta, .error, .exito {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}</code></pre>
+              </div>
+              
+              <p class="mb-6 text-lg">La agrupación de selectores permite aplicar el mismo conjunto de reglas a múltiples selectores, separándolos con comas.</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Ventajas:</h4>
+                      <ul class="list-disc pl-6 space-y-3">
+                          <li>Reduce la repetición de código</li>
+                          <li>Facilita el mantenimiento</li>
+                          <li>Mejora la legibilidad</li>
+                          <li>Reduce el tamaño del archivo CSS</li>
+                      </ul>
+                  </div>
+                  <div class="bg-dark p-6 rounded-lg">
+                      <h4 class="text-xl font-bold mb-4">Ejemplo:</h4>
+                      <div class="bg-white p-4 rounded-lg text-gray-800">
+                          <h5 class="text-accent font-bold mb-2">Encabezado h5</h5>
+                          <h6 class="text-accent font-bold mb-4">Encabezado h6</h6>
+                          
+                          <div class="bg-red-100 border border-red-400 text-red-700 p-2 rounded mb-2">
+                              Mensaje de error
+                          </div>
+                          <div class="bg-green-100 border border-green-400 text-green-700 p-2 rounded">
+                              Mensaje de éxito
+                          </div>
+                      </div>
+                      <p class="text-center text-sm text-gray-400 mt-4">Los encabezados comparten estilos, al igual que los mensajes</p>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <section id="selectores-avanzados" class="mb-20">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Selectores Avanzados</h2>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Selector Descendiente</h3>
+                  
+                  <div class="code-block mb-6">
+                      <pre class="text-gray-300 overflow-x-auto"><code>article p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.menu li {
+  list-style: none;
+  padding: 5px 0;
+}</code></pre>
+                  </div>
+                  
+                  <p class="mb-6">El selector descendiente selecciona elementos que son descendientes (hijos, nietos, etc.) de otro elemento.</p>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Características:</h4>
+                      <ul class="list-disc pl-5 space-y-2">
+                          <li>Se escribe con un espacio entre selectores</li>
+                          <li>Selecciona elementos anidados a cualquier nivel</li>
+                          <li>Útil para estilos contextuales</li>
+                          <li>Ejemplo: <code>div p</code> selecciona todos los párrafos dentro de divs</li>
+                      </ul>
+                  </div>
+                  
+                  <div class="mt-6 bg-white p-4 rounded-lg text-gray-800">
+                      <div class="border border-gray-300 p-3 rounded">
+                          <p class="mb-2">Párrafo fuera del artículo</p>
+                          <article class="border border-accent p-3 rounded">
+                              <h4 class="font-bold mb-2">Artículo</h4>
+                              <p class="text-accent">Este párrafo está dentro del artículo</p>
+                          </article>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Selector de Hijo Directo</h3>
+                  
+                  <div class="code-block mb-6">
+                      <pre class="text-gray-300 overflow-x-auto"><code>ul > li {
+  border-bottom: 1px solid #ddd;
+}
+
+.contenedor > p {
+  font-weight: bold;
+}</code></pre>
+                  </div>
+                  
+                  <p class="mb-6">El selector de hijo directo selecciona elementos que son hijos directos de otro elemento, sin incluir otros descendientes.</p>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Características:</h4>
+                      <ul class="list-disc pl-5 space-y-2">
+                          <li>Se escribe con el símbolo <code>></code> entre selectores</li>
+                          <li>Solo selecciona hijos directos (primer nivel)</li>
+                          <li>Más específico que el selector descendiente</li>
+                          <li>Ejemplo: <code>ul > li</code> selecciona solo los li que son hijos directos de ul</li>
+                      </ul>
+                  </div>
+                  
+                  <div class="mt-6 bg-white p-4 rounded-lg text-gray-800">
+                      <ul class="border border-gray-300 p-3 rounded">
+                          <li class="text-accent mb-2">Elemento de lista - hijo directo</li>
+                          <li class="text-accent mb-2">Otro elemento de lista - hijo directo</li>
+                          <ul>
+                              <li class="mb-2">Elemento de lista anidado (no es hijo directo)</li>
+                          </ul>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Selector de Hermano Adyacente</h3>
+                  
+                  <div class="code-block mb-6">
+                      <pre class="text-gray-300 overflow-x-auto"><code>h2 + p {
+  font-size: 18px;
+  font-style: italic;
+}
+
+label + input {
+  margin-left: 10px;
+}</code></pre>
+                  </div>
+                  
+                  <p class="mb-6">El selector de hermano adyacente selecciona un elemento que está inmediatamente después de otro elemento, cuando ambos comparten el mismo padre.</p>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Características:</h4>
+                      <ul class="list-disc pl-5 space-y-2">
+                          <li>Se escribe con el símbolo <code>+</code> entre selectores</li>
+                          <li>Solo selecciona el elemento inmediatamente siguiente</li>
+                          <li>Ambos elementos deben compartir el mismo padre</li>
+                          <li>Ejemplo: <code>h2 + p</code> selecciona párrafos que vienen justo después de un h2</li>
+                      </ul>
+                  </div>
+                  
+                  <div class="mt-6 bg-white p-4 rounded-lg text-gray-800">
+                      <div class="border border-gray-300 p-3 rounded">
+                          <h4 class="font-bold mb-2">Encabezado</h4>
+                          <p class="text-accent mb-2">Este párrafo está justo después del encabezado</p>
+                          <p class="mb-0">Este párrafo no está seleccionado</p>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Selector de Hermanos Generales</h3>
+                  
+                  <div class="code-block mb-6">
+                      <pre class="text-gray-300 overflow-x-auto"><code>h2 ~ p {
+  color: #663399;
+}
+
+.activo ~ li {
+  opacity: 0.7;
+}</code></pre>
+                  </div>
+                  
+                  <p class="mb-6">El selector de hermanos generales selecciona todos los elementos que son hermanos posteriores de otro elemento, cuando comparten el mismo padre.</p>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Características:</h4>
+                      <ul class="list-disc pl-5 space-y-2">
+                          <li>Se escribe con el símbolo <code>~</code> entre selectores</li>
+                          <li>Selecciona todos los elementos hermanos que siguen</li>
+                          <li>No tienen que ser inmediatamente adyacentes</li>
+                          <li>Ejemplo: <code>h2 ~ p</code> selecciona todos los párrafos que vienen después de un h2</li>
+                      </ul>
+                  </div>
+                  
+                  <div class="mt-6 bg-white p-4 rounded-lg text-gray-800">
+                      <div class="border border-gray-300 p-3 rounded">
+                          <h4 class="font-bold mb-2">Encabezado</h4>
+                          <div class="mb-2">Un div intermedio</div>
+                          <p class="text-accent mb-2">Este párrafo está seleccionado</p>
+                          <p class="text-accent mb-0">Este párrafo también está seleccionado</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+              <h3 class="text-2xl font-bold mb-6 text-accent">Pseudo-clases</h3>
+              
+              <p class="mb-6 text-lg">Las pseudo-clases son selectores que permiten seleccionar elementos basados en estados o posiciones que no pueden ser expresados en el marcado HTML.</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Pseudo-clases comunes:</h4>
+                      <div class="space-y-4">
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">Estados de interacción</h5>
+                              <ul class="list-disc pl-5 space-y-1">
+                                  <li><code>:hover</code> - Cuando el cursor está sobre el elemento</li>
+                                  <li><code>:active</code> - Cuando el elemento está siendo activado</li>
+                                  <li><code>:focus</code> - Cuando el elemento tiene el foco</li>
+                                  <li><code>:visited</code> - Enlaces que ya han sido visitados</li>
+                              </ul>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">Estados de formulario</h5>
+                              <ul class="list-disc pl-5 space-y-1">
+                                  <li><code>:checked</code> - Elementos de formulario marcados</li>
+                                  <li><code>:disabled</code> - Elementos de formulario deshabilitados</li>
+                                  <li><code>:valid</code> - Elementos con valor válido</li>
+                                  <li><code>:invalid</code> - Elementos con valor inválido</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Pseudo-clases estructurales:</h4>
+                      <div class="space-y-4">
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">Posición</h5>
+                              <ul class="list-disc pl-5 space-y-1">
+                                  <li><code>:first-child</code> - Primer hijo de su padre</li>
+                                  <li><code>:last-child</code> - Último hijo de su padre</li>
+                                  <li><code>:nth-child(n)</code> - Enésimo hijo de su padre</li>
+                                  <li><code>:nth-of-type(n)</code> - Enésimo elemento de su tipo</li>
+                              </ul>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">Ejemplos de código</h5>
+                              <div class="code-block">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>li:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+p:first-child {
+  font-weight: bold;
+}
+
+input:focus {
+  border-color: #663399;
+  outline: none;
+}</code></pre>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="mt-8 bg-white p-4 rounded-lg text-gray-800">
+                  <h4 class="font-bold mb-3">Ejemplo interactivo:</h4>
+                  <div class="flex flex-wrap gap-3">
+                      <button class="px-4 py-2 bg-gray-200 hover:bg-accent hover:text-white transition-colors duration-300 rounded">Hover me</button>
+                      <input type="text" placeholder="Focus me" class="px-3 py-2 border border-gray-300 focus:border-accent focus:outline-none rounded">
+                      <div class="flex items-center">
+                          <input type="checkbox" id="demo-checkbox" class="mr-2">
+                          <label for="demo-checkbox">Check me</label>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+              <h3 class="text-2xl font-bold mb-6 text-accent">Pseudo-elementos</h3>
+              
+              <p class="mb-6 text-lg">Los pseudo-elementos permiten seleccionar y estilizar partes de un elemento que no existen explícitamente en el HTML.</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Pseudo-elementos comunes:</h4>
+                      <div class="space-y-4">
+                          <div class="bg-dark p-4 rounded-lg">
+                              <ul class="list-disc pl-5 space-y-2">
+                                  <li><code>::before</code> - Inserta contenido antes del contenido del elemento</li>
+                                  <li><code>::after</code> - Inserta contenido después del contenido del elemento</li>
+                                  <li><code>::first-letter</code> - Selecciona la primera letra del texto</li>
+                                  <li><code>::first-line</code> - Selecciona la primera línea del texto</li>
+                                  <li><code>::selection</code> - Selecciona la porción de texto seleccionada por el usuario</li>
+                                  <li><code>::placeholder</code> - Selecciona el texto de marcador de posición en inputs</li>
+                              </ul>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">Ejemplos de código</h5>
+                              <div class="code-block">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>.cita::before {
+  content: """;
+  font-size: 2em;
+  color: #663399;
+}
+
+.cita::after {
+  content: """;
+  font-size: 2em;
+  color: #663399;
+}
+
+p::first-letter {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #663399;
+}</code></pre>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Ejemplos visuales:</h4>
+                      <div class="bg-white p-4 rounded-lg text-gray-800">
+                          <p class="mb-4 first-letter:text-2xl first-letter:font-bold first-letter:text-accent">Este párrafo tiene la primera letra estilizada con ::first-letter. Puedes ver cómo destaca del resto del texto.</p>
+                          
+                          <div class="relative pl-6 mb-4 css-rule-example">
+                              <p>Este párrafo tiene una línea vertical a la izquierda creada con ::before</p>
+                          </div>
+                          
+                          <div class="relative mb-4">
+                              <p class="italic">Esta es una cita que utiliza ::before y ::after para añadir comillas decorativas.</p>
+                              <div class="absolute -top-4 -left-2 text-4xl text-accent">"</div>
+                              <div class="absolute -bottom-8 -right-2 text-4xl text-accent">"</div>
+                          </div>
+                          
+                          <input type="text" placeholder="Input con placeholder estilizado" class="w-full px-3 py-2 border border-gray-300 rounded placeholder:italic placeholder:text-accent/70">
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <section id="especificidad" class="mb-20">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Especificidad y Cascada</h2>
+          
+          <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+              <h3 class="text-2xl font-bold mb-6 text-accent">¿Qué es la Especificidad?</h3>
+              
+              <p class="text-lg mb-6">La especificidad es el mecanismo que utiliza el navegador para determinar qué reglas CSS tienen prioridad cuando varias reglas apuntan al mismo elemento y propiedad. Es un cálculo que determina qué estilos se aplican finalmente.</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Importancia de la especificidad:</h4>
+                      <ul class="list-disc pl-6 space-y-3 text-lg">
+                          <li>Determina qué estilos prevalecen en caso de conflicto</li>
+                          <li>Ayuda a organizar y estructurar el CSS</li>
+                          <li>Evita el uso excesivo de <code>!important</code></li>
+                          <li>Facilita el mantenimiento y la depuración</li>
+                      </ul>
+                  </div>
+                  <div class="bg-dark p-6 rounded-lg">
+                      <h4 class="text-xl font-bold mb-4">Ejemplo de conflicto:</h4>
+                      <div class="code-block mb-4">
+                          <pre class="text-gray-300 overflow-x-auto"><code>/* Especificidad: 0,0,1 */
+p {
+  color: blue;
+}
+
+/* Especificidad: 0,1,0 */
+.texto {
+  color: red;
+}
+
+/* ¿Qué color se aplicará? */</code></pre>
+                      </div>
+                      <div class="bg-white p-3 rounded-lg text-gray-800">
+                          <p class="text-red-500">Este texto será rojo porque la clase tiene mayor especificidad que el selector de tipo.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 mb-12">
+              <h3 class="text-2xl font-bold mb-6 text-accent">Cálculo de Especificidad</h3>
+              
+              <p class="text-lg mb-6">La especificidad se calcula como un valor de cuatro partes, generalmente representado como cuatro números separados por comas: (a,b,c,d)</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Componentes de la especificidad:</h4>
+                      <div class="space-y-4">
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">a - Estilos en línea</h5>
+                              <p>Valor: 1,0,0,0</p>
+                              <div class="code-block mt-2">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>&lt;p style="color: red;"&gt;Texto&lt;/p&gt;</code></pre>
+                              </div>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">b - IDs</h5>
+                              <p>Valor: 0,1,0,0 por cada ID</p>
+                              <div class="code-block mt-2">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>#header { color: blue; }</code></pre>
+                              </div>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">c - Clases, atributos y pseudo-clases</h5>
+                              <p>Valor: 0,0,1,0 por cada uno</p>
+                              <div class="code-block mt-2">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>.active { color: green; }
+[type="text"] { color: gray; }
+:hover { color: purple; }</code></pre>
+                              </div>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">d - Elementos y pseudo-elementos</h5>
+                              <p>Valor: 0,0,0,1 por cada uno</p>
+                              <div class="code-block mt-2">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>p { color: black; }
+::before { content: "→"; }</code></pre>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Ejemplos de cálculo:</h4>
+                      <div class="space-y-6">
+                          <div class="bg-dark p-4 rounded-lg">
+                              <div class="code-block mb-3">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>p { color: black; }
+/* Especificidad: 0,0,0,1 */</code></pre>
+                              </div>
+                              <div class="flex items-center">
+                                  <div class="w-1/4 text-center p-2">0</div>
+                                  <div class="w-1/4 text-center p-2">0</div>
+                                  <div class="w-1/4 text-center p-2">0</div>
+                                  <div class="w-1/4 text-center p-2 bg-accent/20 text-accent font-bold">1</div>
+                              </div>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <div class="code-block mb-3">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>.nav a:hover { color: blue; }
+/* Especificidad: 0,0,2,1 */</code></pre>
+                              </div>
+                              <div class="flex items-center">
+                                  <div class="w-1/4 text-center p-2">0</div>
+                                  <div class="w-1/4 text-center p-2">0</div>
+                                  <div class="w-1/4 text-center p-2 bg-accent/20 text-accent font-bold">2</div>
+                                  <div class="w-1/4 text-center p-2 bg-accent/10 text-accent">1</div>
+                              </div>
+                              <p class="mt-2 text-sm">1 clase (.nav) + 1 pseudo-clase (:hover) + 1 elemento (a)</p>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <div class="code-block mb-3">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>#sidebar .widget h3 { font-size: 18px; }
+/* Especificidad: 0,1,1,1 */</code></pre>
+                              </div>
+                              <div class="flex items-center">
+                                  <div class="w-1/4 text-center p-2">0</div>
+                                  <div class="w-1/4 text-center p-2 bg-accent/30 text-accent font-bold">1</div>
+                                  <div class="w-1/4 text-center p-2 bg-accent/20 text-accent">1</div>
+                                  <div class="w-1/4 text-center p-2 bg-accent/10 text-accent">1</div>
+                              </div>
+                              <p class="mt-2 text-sm">1 ID (#sidebar) + 1 clase (.widget) + 1 elemento (h3)</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Reglas de Cascada</h3>
+                  
+                  <p class="mb-6">La cascada es el algoritmo que determina qué estilos se aplican cuando hay múltiples reglas para un elemento. Sigue un orden específico de prioridad.</p>
+                  
+                  <div class="bg-dark p-5 rounded-lg mb-6">
+                      <h4 class="text-xl font-bold mb-3">Orden de prioridad (de mayor a menor):</h4>
+                      <ol class="list-decimal pl-6 space-y-3">
+                          <li class="font-bold text-accent">Importancia
+                              <ul class="list-disc pl-6 mt-2 font-normal text-gray-300">
+                                  <li>Declaraciones con <code>!important</code></li>
+                                  <li>Estilos normales</li>
+                              </ul>
+                          </li>
+                          <li class="font-bold text-accent">Origen
+                              <ul class="list-disc pl-6 mt-2 font-normal text-gray-300">
+                                  <li>Estilos del autor (tu CSS)</li>
+                                  <li>Estilos del usuario</li>
+                                  <li>Estilos del navegador (user agent)</li>
+                              </ul>
+                          </li>
+                          <li class="font-bold text-accent">Especificidad
+                              <ul class="list-disc pl-6 mt-2 font-normal text-gray-300">
+                                  <li>Calculada según las reglas anteriores</li>
+                              </ul>
+                          </li>
+                          <li class="font-bold text-accent">Orden de aparición
+                              <ul class="list-disc pl-6 mt-2 font-normal text-gray-300">
+                                  <li>La última regla declarada gana</li>
+                              </ul>
+                          </li>
+                      </ol>
+                  </div>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Ejemplo de cascada:</h4>
+                      <div class="code-block">
+                          <pre class="text-gray-300 overflow-x-auto"><code>/* Regla 1 */
+p {
+  color: blue;
+}
+
+/* Regla 2 */
+p {
+  color: red;
+}
+
+/* La regla 2 gana por orden de aparición */</code></pre>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                  <h3 class="text-2xl font-bold mb-6 text-accent">!important y Buenas Prácticas</h3>
+                  
+                  <div class="bg-dark p-5 rounded-lg mb-6">
+                      <h4 class="text-xl font-bold mb-3">La declaración !important</h4>
+                      <div class="code-block mb-4">
+                          <pre class="text-gray-300 overflow-x-auto"><code>p {
+  color: red !important; /* Esto anulará otras reglas */
+}
+
+#contenido p {
+  color: blue; /* Esta regla será ignorada */
+}</code></pre>
+                      </div>
+                      <p>La declaración <code>!important</code> anula todas las demás reglas, independientemente de su especificidad, excepto otras reglas con <code>!important</code>.</p>
+                  </div>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-3">Buenas prácticas:</h4>
+                      <ul class="list-disc pl-5 space-y-3">
+                          <li>Evita usar <code>!important</code> siempre que sea posible</li>
+                          <li>Utiliza selectores más específicos en lugar de <code>!important</code></li>
+                          <li>Organiza tu CSS para minimizar conflictos</li>
+                          <li>Usa metodologías como BEM para evitar problemas de especificidad</li>
+                          <li>Comprende la especificidad para escribir CSS más predecible</li>
+                          <li>Utiliza herramientas de análisis para detectar problemas de especificidad</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-8 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+              <h3 class="text-2xl font-bold mb-6 text-accent">Herencia en CSS</h3>
+              
+              <p class="text-lg mb-6">La herencia es el mecanismo por el cual algunas propiedades CSS se transmiten de elementos padres a elementos hijos. No todas las propiedades se heredan.</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Propiedades que se heredan:</h4>
+                      <div class="bg-dark p-5 rounded-lg">
+                          <ul class="list-disc pl-6 space-y-2">
+                              <li>color</li>
+                              <li>font-family</li>
+                              <li>font-size</li>
+                              <li>font-weight</li>
+                              <li>line-height</li>
+                              <li>text-align</li>
+                              <li>letter-spacing</li>
+                              <li>visibility</li>
+                          </ul>
+                      </div>
+                      
+                      <h4 class="text-xl font-bold mt-6 mb-4">Propiedades que NO se heredan:</h4>
+                      <div class="bg-dark p-5 rounded-lg">
+                          <ul class="list-disc pl-6 space-y-2">
+                              <li>margin</li>
+                              <li>padding</li>
+                              <li>border</li>
+                              <li>background</li>
+                              <li>height, width</li>
+                              <li>position</li>
+                              <li>display</li>
+                              <li>z-index</li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div>
+                      <h4 class="text-xl font-bold mb-4">Valores especiales para herencia:</h4>
+                      <div class="space-y-4">
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">inherit</h5>
+                              <p class="mb-2">Fuerza la herencia de una propiedad que normalmente no se hereda.</p>
+                              <div class="code-block">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>button {
+  border: inherit; /* Hereda el borde del padre */
+}</code></pre>
+                              </div>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">initial</h5>
+                              <p class="mb-2">Establece el valor inicial definido por la especificación CSS.</p>
+                              <div class="code-block">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>p {
+  color: initial; /* Vuelve al color por defecto */
+}</code></pre>
+                              </div>
+                          </div>
+                          
+                          <div class="bg-dark p-4 rounded-lg">
+                              <h5 class="font-bold text-accent mb-2">unset</h5>
+                              <p class="mb-2">Actúa como inherit para propiedades heredadas y como initial para las no heredadas.</p>
+                              <div class="code-block">
+                                  <pre class="text-gray-300 overflow-x-auto"><code>div {
+  all: unset; /* Resetea todas las propiedades */
+}</code></pre>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="mt-8 bg-white p-4 rounded-lg text-gray-800">
+                  <h4 class="font-bold mb-3">Ejemplo de herencia:</h4>
+                  <div class="border border-gray-300 p-4 rounded" style="color: #663399; font-family: Arial, sans-serif;">
+                      <p class="mb-3">Este texto hereda el color y la fuente del div padre.</p>
+                      <div class="border border-gray-400 p-3 rounded bg-gray-100">
+                          <p>Este texto también hereda el color y la fuente, aunque está en un div anidado.</p>
+                          <p><span style="color: initial;">Este texto usa color: initial para volver al color por defecto.</span></p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <section id="actividad" class="mb-16">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Calculadora de Especificidad</h2>
+          
+          <p class="mb-8 text-lg leading-relaxed">Prueba tus conocimientos sobre especificidad CSS construyendo selectores y viendo su valor de especificidad en tiempo real.</p>
+          
+          <div class="bg-darker p-8 rounded-lg border border-gray-800">
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div class="lg:col-span-1">
+                      <h3 class="text-2xl font-bold mb-6 text-accent">Componentes de Selector</h3>
+                      
+                      <div class="space-y-4">
+                          <div class="selector-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="element" data-value="div">
+                              <div class="flex items-center">
+                                  <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                      </svg>
+                                  </div>
+                                  <div>
+                                      <p class="font-bold">Elemento (div)</p>
+                                      <p class="text-sm text-gray-400">Especificidad: 0,0,0,1</p>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="selector-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="class" data-value=".container">
+                              <div class="flex items-center">
+                                  <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                                      </svg>
+                                  </div>
+                                  <div>
+                                      <p class="font-bold">Clase (.container)</p>
+                                      <p class="text-sm text-gray-400">Especificidad: 0,0,1,0</p>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="selector-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="id" data-value="#header">
+                              <div class="flex items-center">
+                                  <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                      </svg>
+                                  </div>
+                                  <div>
+                                      <p class="font-bold">ID (#header)</p>
+                                      <p class="text-sm text-gray-400">Especificidad: 0,1,0,0</p>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="selector-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="pseudo-class" data-value=":hover">
+                              <div class="flex items-center">
+                                  <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                      </svg>
+                                  </div>
+                                  <div>
+                                      <p class="font-bold">Pseudo-clase (:hover)</p>
+                                      <p class="text-sm text-gray-400">Especificidad: 0,0,1,0</p>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="selector-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="pseudo-element" data-value="::before">
+                              <div class="flex items-center">
+                                  <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                      </svg>
+                                  </div>
+                                  <div>
+                                      <p class="font-bold">Pseudo-elemento (::before)</p>
+                                      <p class="text-sm text-gray-400">Especificidad: 0,0,0,1</p>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="selector-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="attribute" data-value="[type='text']">
+                              <div class="flex items-center">
+                                  <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                      </svg>
+                                  </div>
+                                  <div>
+                                      <p class="font-bold">Atributo ([type='text'])</p>
+                                      <p class="text-sm text-gray-400">Especificidad: 0,0,1,0</p>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="selector-builder-element bg-dark p-4 rounded-lg border border-gray-700 hover:border-accent" data-type="combinator" data-value=" > ">
+                              <div class="flex items-center">
+                                  <div class="bg-accent/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                      </svg>
+                                  </div>
+                                  <div>
+                                      <p class="font-bold">Combinador hijo directo ( > )</p>
+                                      <p class="text-sm text-gray-400">No afecta la especificidad</p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="mt-6">
+                          <button id="clear-selector" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
+                              Limpiar Selector
+                          </button>
+                      </div>
+                  </div>
+                  
+                  <div class="lg:col-span-2">
+                      <h3 class="text-2xl font-bold mb-6 text-accent">Tu Selector</h3>
+                      
+                      <div class="bg-dark p-6 rounded-lg mb-6">
+                          <h4 class="text-xl font-bold mb-3">Selector construido:</h4>
+                          <div class="bg-darker p-4 rounded-lg">
+                              <code id="selector-preview" class="text-lg text-accent">div</code>
+                          </div>
+                      </div>
+                      
+                      <div class="bg-dark p-6 rounded-lg mb-6">
+                          <h4 class="text-xl font-bold mb-3">Especificidad:</h4>
+                          <div class="grid grid-cols-4 gap-2 mb-4">
+                              <div class="bg-darker p-3 rounded-lg text-center">
+                                  <p class="text-sm text-gray-400">Inline</p>
+                                  <p id="inline-value" class="text-2xl font-bold">0</p>
+                              </div>
+                              <div class="bg-darker p-3 rounded-lg text-center">
+                                  <p class="text-sm text-gray-400">ID</p>
+                                  <p id="id-value" class="text-2xl font-bold">0</p>
+                              </div>
+                              <div class="bg-darker p-3 rounded-lg text-center">
+                                  <p class="text-sm text-gray-400">Clase/Atrib/Pseudo</p>
+                                  <p id="class-value" class="text-2xl font-bold">0</p>
+                              </div>
+                              <div class="bg-darker p-3 rounded-lg text-center">
+                                  <p class="text-sm text-gray-400">Elemento</p>
+                                  <p id="element-value" class="text-2xl font-bold">1</p>
+                              </div>
+                          </div>
+                          
+                          <div class="mb-2">
+                              <div class="flex justify-between mb-1">
+                                  <span>Valor total:</span>
+                                  <span id="specificity-total" class="font-bold text-accent">0,0,0,1</span>
+                              </div>
+                              <div class="specificity-bar">
+                                  <div id="specificity-bar-value" class="specificity-value" style="width: 1%"></div>
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="bg-dark p-6 rounded-lg">
+                          <h4 class="text-xl font-bold mb-3">Explicación:</h4>
+                          <p id="specificity-explanation" class="text-lg">
+                              Este selector tiene una especificidad de <span class="font-bold text-accent">0,0,0,1</span> porque selecciona un elemento HTML (div).
+                          </p>
+                          
+                          <div class="mt-6">
+                              <h5 class="font-bold mb-2">¿Qué significa esto?</h5>
+                              <p>La especificidad determina qué reglas CSS tienen prioridad. Un selector con mayor especificidad anulará a uno con menor especificidad, independientemente del orden en que aparezcan en el CSS.</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="mt-12 bg-darker p-8 rounded-lg border border-gray-800">
+              <h3 class="text-2xl font-bold mb-6 text-accent">Quiz: Especificidad CSS</h3>
+              
+              <div class="space-y-8">
+                  <div class="bg-dark p-6 rounded-lg">
+                      <h4 class="text-xl font-bold mb-4">Pregunta 1: ¿Qué selector tiene mayor especificidad?</h4>
+                      <div class="space-y-3">
+                          <div class="quiz-option bg-darker p-3 rounded-lg cursor-pointer hover:bg-accent/10" data-correct="false">
+                              <code>p.destacado</code>
+                              <span class="ml-2 text-sm text-gray-400">(0,0,1,1)</span>
+                          </div>
+                          <div class="quiz-option bg-darker p-3 rounded-lg cursor-pointer hover:bg-accent/10" data-correct="true">
+                              <code>#contenido p</code>
+                              <span class="ml-2 text-sm text-gray-400">(0,1,0,1)</span>
+                          </div>
+                          <div class="quiz-option bg-darker p-3 rounded-lg cursor-pointer hover:bg-accent/10" data-correct="false">
+                              <code>body .articulo p:first-child</code>
+                              <span class="ml-2 text-sm text-gray-400">(0,0,2,2)</span>
+                          </div>
+                      </div>
+                      <div class="mt-4 hidden" id="answer-1">
+                          <div class="p-3 rounded-lg bg-green-800/20 border border-green-500">
+                              <p><strong>Correcto!</strong> El selector <code>#contenido p</code> tiene mayor especificidad (0,1,0,1) porque incluye un ID, que tiene más peso que las clases y pseudo-clases.</p>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="bg-dark p-6 rounded-lg">
+                      <h4 class="text-xl font-bold mb-4">Pregunta 2: Ordena estos selectores de menor a mayor especificidad</h4>
+                      <div class="space-y-3" id="sortable-selectors">
+                          <div class="quiz-sortable bg-darker p-3 rounded-lg cursor-move flex justify-between items-center" data-order="1">
+                              <code>*</code>
+                              <span class="text-sm text-gray-400">(0,0,0,0)</span>
+                          </div>
+                          <div class="quiz-sortable bg-darker p-3 rounded-lg cursor-move flex justify-between items-center" data-order="2">
+                              <code>li</code>
+                              <span class="text-sm text-gray-400">(0,0,0,1)</span>
+                          </div>
+                          <div class="quiz-sortable bg-darker p-3 rounded-lg cursor-move flex justify-between items-center" data-order="3">
+                              <code>ul li</code>
+                              <span class="text-sm text-gray-400">(0,0,0,2)</span>
+                          </div>
+                          <div class="quiz-sortable bg-darker p-3 rounded-lg cursor-move flex justify-between items-center" data-order="4">
+                              <code>li.active</code>
+                              <span class="text-sm text-gray-400">(0,0,1,1)</span>
+                          </div>
+                          <div class="quiz-sortable bg-darker p-3 rounded-lg cursor-move flex justify-between items-center" data-order="5">
+                              <code>#nav li.active</code>
+                              <span class="text-sm text-gray-400">(0,1,1,1)</span>
+                          </div>
+                      </div>
+                      <div class="mt-4 text-center">
+                          <button id="check-order" class="px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/80 transition-colors">
+                              Verificar Orden
+                          </button>
+                      </div>
+                      <div class="mt-4 hidden" id="answer-2">
+                          <div class="p-3 rounded-lg bg-green-800/20 border border-green-500">
+                              <p><strong>¡Correcto!</strong> El orden correcto de menor a mayor especificidad es:</p>
+                              <ol class="list-decimal pl-6 mt-2">
+                                  <li><code>*</code> (0,0,0,0)</li>
+                                  <li><code>li</code> (0,0,0,1)</li>
+                                  <li><code>ul li</code> (0,0,0,2)</li>
+                                  <li><code>li.active</code> (0,0,1,1)</li>
+                                  <li><code>#nav li.active</code> (0,1,1,1)</li>
+                              </ol>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+      </section>
+      <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </main>
+
+  <footer class="bg-darker py-8 border-t border-gray-800">
+      <div class="container mx-auto px-4 text-center">
+          <p>CSS: Selectores y Especificidad - Guía completa para principiantes</p>
+      </div>
+  </footer>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Mobile menu toggle
+          const menuBtn = document.getElementById('menuBtn');
+          const mobileMenu = document.getElementById('mobileMenu');
+          
+          menuBtn.addEventListener('click', function() {
+              if (mobileMenu.classList.contains('hidden')) {
+                  mobileMenu.classList.remove('hidden');
+              } else {
+                  mobileMenu.classList.add('hidden');
+              }
+          });
+          
+          // Smooth scrolling for anchor links
+          document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+              anchor.addEventListener('click', function (e) {
+                  e.preventDefault();
+                  
+                  const targetId = this.getAttribute('href');
+                  const targetElement = document.querySelector(targetId);
+                  
+                  if (targetElement) {
+                      window.scrollTo({
+                          top: targetElement.offsetTop - 80,
+                          behavior: 'smooth'
+                      });
+                      
+                      if (!mobileMenu.classList.contains('hidden')) {
+                          mobileMenu.classList.add('hidden');
+                      }
+                  }
+              });
+          });
+          
+          // Especificidad Calculator
+          const selectorBuilderElements = document.querySelectorAll('.selector-builder-element');
+          const selectorPreview = document.getElementById('selector-preview');
+          const inlineValue = document.getElementById('inline-value');
+          const idValue = document.getElementById('id-value');
+          const classValue = document.getElementById('class-value');
+          const elementValue = document.getElementById('element-value');
+          const specificityTotal = document.getElementById('specificity-total');
+          const specificityBarValue = document.getElementById('specificity-bar-value');
+          const specificityExplanation = document.getElementById('specificity-explanation');
+          const clearSelectorBtn = document.getElementById('clear-selector');
+          
+          let currentSelector = 'div';
+          let currentSpecificity = {
+              inline: 0,
+              id: 0,
+              class: 0,
+              element: 1
+          };
+          
+          // Add selector elements
+          selectorBuilderElements.forEach(element => {
+              element.addEventListener('click', function() {
+                  const type = this.getAttribute('data-type');
+                  const value = this.getAttribute('data-value');
+                  
+                  if (currentSelector === 'div' && type !== 'combinator') {
+                      currentSelector = value;
+                      resetSpecificity();
+                  } else {
+                      currentSelector += value;
+                  }
+                  
+                  // Update specificity
+                  switch(type) {
+                      case 'element':
+                          currentSpecificity.element += 1;
+                          break;
+                      case 'class':
+                      case 'pseudo-class':
+                      case 'attribute':
+                          currentSpecificity.class += 1;
+                          break;
+                      case 'id':
+                          currentSpecificity.id += 1;
+                          break;
+                      case 'pseudo-element':
+                          currentSpecificity.element += 1;
+                          break;
+                  }
+                  
+                  updateSpecificityDisplay();
+              });
+          });
+          
+          // Clear selector
+          clearSelectorBtn.addEventListener('click', function() {
+              currentSelector = 'div';
+              resetSpecificity();
+              updateSpecificityDisplay();
+          });
+          
+          // Reset specificity
+          function resetSpecificity() {
+              currentSpecificity = {
+                  inline: 0,
+                  id: 0,
+                  class: 0,
+                  element: 0
+              };
+              
+              if (currentSelector === 'div') {
+                  currentSpecificity.element = 1;
+              }
+          }
+          
+          // Update specificity display
+          function updateSpecificityDisplay() {
+              selectorPreview.textContent = currentSelector;
+              
+              inlineValue.textContent = currentSpecificity.inline;
+              idValue.textContent = currentSpecificity.id;
+              classValue.textContent = currentSpecificity.class;
+              elementValue.textContent = currentSpecificity.element;
+              
+              const specificityString = `${currentSpecificity.inline},${currentSpecificity.id},${currentSpecificity.class},${currentSpecificity.element}`;
+              specificityTotal.textContent = specificityString;
+              
+              // Calculate percentage for bar (max value considered is 100)
+              const totalValue = currentSpecificity.inline * 1000 + currentSpecificity.id * 100 + currentSpecificity.class * 10 + currentSpecificity.element;
+              const percentage = Math.min(totalValue, 100);
+              specificityBarValue.style.width = `${percentage}%`;
+              
+              // Update explanation
+              updateExplanation();
+          }
+          
+          // Update explanation
+          function updateExplanation() {
+              let explanation = `Este selector tiene una especificidad de <span class="font-bold text-accent">${currentSpecificity.inline},${currentSpecificity.id},${currentSpecificity.class},${currentSpecificity.element}</span> porque `;
+              
+              const parts = [];
+              
+              if (currentSpecificity.inline > 0) {
+                  parts.push(`utiliza ${currentSpecificity.inline} estilo(s) en línea`);
+              }
+              
+              if (currentSpecificity.id > 0) {
+                  parts.push(`contiene ${currentSpecificity.id} ID(s)`);
+              }
+              
+              if (currentSpecificity.class > 0) {
+                  parts.push(`incluye ${currentSpecificity.class} clase(s), atributo(s) o pseudo-clase(s)`);
+              }
+              
+              if (currentSpecificity.element > 0) {
+                  parts.push(`selecciona ${currentSpecificity.element} elemento(s) o pseudo-elemento(s)`);
+              }
+              
+              if (parts.length === 0) {
+                  explanation += "no contiene ningún selector que afecte a la especificidad.";
+              } else if (parts.length === 1) {
+                  explanation += parts[0] + ".";
+              } else {
+                  const lastPart = parts.pop();
+                  explanation += parts.join(", ") + " y " + lastPart + ".";
+              }
+              
+              specificityExplanation.innerHTML = explanation;
+          }
+          
+          // Quiz functionality
+          const quizOptions = document.querySelectorAll('.quiz-option');
+          const answer1 = document.getElementById('answer-1');
+          
+          quizOptions.forEach(option => {
+              option.addEventListener('click', function() {
+                  const isCorrect = this.getAttribute('data-correct') === 'true';
+                  
+                  quizOptions.forEach(opt => {
+                      opt.classList.remove('bg-green-800/20', 'border', 'border-green-500', 'bg-red-800/20', 'border-red-500');
+                  });
+                  
+                  if (isCorrect) {
+                      this.classList.add('bg-green-800/20', 'border', 'border-green-500');
+                      answer1.classList.remove('hidden');
+                  } else {
+                      this.classList.add('bg-red-800/20', 'border', 'border-red-500');
+                  }
+              });
+          });
+          
+          // Initialize with default values
+          updateSpecificityDisplay();
+      });
+  </script>
+</body>
+</html>

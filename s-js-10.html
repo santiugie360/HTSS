@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Objects - Estructuras de Datos Complejas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'js-yellow': {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+              950: '#451a03',
+            },
+            'dark-blue': {
+              900: '#0a1020',
+              950: '#050a14',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .timeline-circle {
+        @apply w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center text-white font-bold text-lg z-10;
+      }
+      .timeline-line {
+        @apply absolute left-6 top-0 bottom-0 w-0.5 bg-js-yellow-800/50 transform translate-x-0;
+      }
+      .feature-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 hover:border-js-yellow-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-js-yellow-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-blue-950 text-gray-200">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-blue-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="s-js.html" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-js-yellow-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-blue-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-js-yellow-500">{ }</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">Objects JS</span>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#caracteristicas" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Características</a>
+          <a href="#metodos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Métodos</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#caracteristicas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Características</a>
+        <a href="#metodos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Métodos</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-js-yellow-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          JavaScript
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-js-yellow-400">Objects</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-3xl mx-auto animate-slide-up">
+          Los objetos son colecciones de pares clave-valor que permiten almacenar datos relacionados y funcionalidad en una única estructura. Son la base de la programación orientada a objetos en JavaScript y fundamentales para organizar código complejo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="caracteristicas" class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué son los <span class="text-js-yellow-400 font-bold">Objetos?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Colección de Propiedades</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Un objeto es una colección de propiedades, donde cada propiedad es un par clave-valor. Las claves son siempre strings (o Symbols), y los valores pueden ser de cualquier tipo: números, strings, arrays, funciones u otros objetos.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Por ejemplo: <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">{ nombre: "Juan", edad: 25 }</code> tiene dos propiedades con sus respectivos valores.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Referencia, no Copia</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los objetos se pasan por referencia, no por valor. Esto significa que cuando asignas un objeto a una variable, estás creando una referencia al objeto original, no una copia.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Si modificas el objeto a través de cualquier referencia, todos los lugares que apunten a ese objeto verán los cambios. Para copiar un objeto necesitas métodos específicos.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 001-1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Métodos y Comportamiento</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los objetos pueden contener funciones como valores, llamadas métodos. Estos métodos permiten que los objetos tengan comportamiento además de datos, siendo la base de la programación orientada a objetos.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Un método puede acceder a otras propiedades del mismo objeto usando la palabra clave <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">this</code>, creando objetos autónomos y funcionales.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Dinámicos y Flexibles</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los objetos en JavaScript son dinámicos: puedes agregar, modificar o eliminar propiedades en cualquier momento después de su creación, proporcionando gran flexibilidad.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Puedes acceder a las propiedades usando notación de punto (<code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">obj.propiedad</code>) o notación de corchetes (<code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">obj['propiedad']</code>).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visual Representation Section -->
+  <section class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Estructura de un <span class="text-js-yellow-400 font-bold">Objeto</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Visualiza cómo se organizan los datos dentro de un objeto
+      </p>
+
+      <div class="max-w-5xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+             <!-- Visual representation -->
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Representación Visual</h3>
+              <div class="bg-black/50 rounded-lg p-6 border border-gray-700">
+                <div class="space-y-4">
+                   <!-- Object box -->
+                  <div class="border-2 border-js-yellow-500 rounded-lg p-4">
+                    <div class="text-js-yellow-400 font-bold mb-3 text-center">Objeto: usuario</div>
+                    
+                     <!-- Properties -->
+                    <div class="space-y-3">
+                      <div class="flex items-center justify-between bg-gray-800 rounded p-3">
+                        <span class="text-blue-400 font-mono text-sm">nombre:</span>
+                        <span class="text-orange-400 font-mono text-sm">"Ana García"</span>
+                      </div>
+                      <div class="flex items-center justify-between bg-gray-800 rounded p-3">
+                        <span class="text-blue-400 font-mono text-sm">edad:</span>
+                        <span class="text-green-400 font-mono text-sm">28</span>
+                      </div>
+                      <div class="flex items-center justify-between bg-gray-800 rounded p-3">
+                        <span class="text-blue-400 font-mono text-sm">profesion:</span>
+                        <span class="text-orange-400 font-mono text-sm">"Desarrolladora"</span>
+                      </div>
+                      <div class="flex items-center justify-between bg-gray-800 rounded p-3">
+                        <span class="text-blue-400 font-mono text-sm">activo:</span>
+                        <span class="text-purple-400 font-mono text-sm">true</span>
+                      </div>
+                      <div class="bg-gray-800 rounded p-3">
+                        <div class="text-blue-400 font-mono text-sm mb-2">saludar:</div>
+                        <div class="text-gray-400 font-mono text-xs pl-4">function() { ... }</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+             <!-- Code representation -->
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Código JavaScript</h3>
+              <pre class="code-block text-xs">
+<span class="text-purple-400">const</span> <span class="text-blue-400">usuario</span> = {
+  <span class="text-blue-400">nombre</span>: <span class="text-orange-400">"Ana García"</span>,
+  <span class="text-blue-400">edad</span>: <span class="text-green-400">28</span>,
+  <span class="text-blue-400">profesion</span>: <span class="text-orange-400">"Desarrolladora"</span>,
+  <span class="text-blue-400">activo</span>: <span class="text-purple-400">true</span>,
+  <span class="text-blue-400">saludar</span>: <span class="text-purple-400">function</span>() {
+    <span class="text-purple-400">return</span> <span class="text-orange-400">`Hola, soy </span>${<span class="text-purple-400">this</span>.nombre}<span class="text-orange-400">`</span>;
+  }
+};
+
+<span class="text-gray-500">// Acceder a propiedades</span>
+console.<span class="text-green-400">log</span>(usuario.nombre);      <span class="text-gray-500">// "Ana García"</span>
+console.<span class="text-green-400">log</span>(usuario[<span class="text-orange-400">"edad"</span>]);    <span class="text-gray-500">// 28</span>
+
+<span class="text-gray-500">// Llamar a un método</span>
+console.<span class="text-green-400">log</span>(usuario.<span class="text-green-400">saludar</span>()); <span class="text-gray-500">// "Hola, soy Ana García"</span>
+
+<span class="text-gray-500">// Agregar nueva propiedad</span>
+usuario.email = <span class="text-orange-400">"ana@email.com"</span>;
+
+<span class="text-gray-500">// Modificar propiedad</span>
+usuario.edad = <span class="text-green-400">29</span>;
+
+<span class="text-gray-500">// Eliminar propiedad</span>
+<span class="text-purple-400">delete</span> usuario.activo;</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Methods Section -->
+  <section id="metodos" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Métodos de <span class="text-js-yellow-400 font-bold">Object</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Funciones integradas para trabajar con objetos
+    </p>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+       <!-- Object.keys() -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Object.keys()</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">const</span> <span class="text-blue-400">persona</span> = {
+  <span class="text-blue-400">nombre</span>: <span class="text-orange-400">"Carlos"</span>,
+  <span class="text-blue-400">edad</span>: <span class="text-green-400">30</span>,
+  <span class="text-blue-400">ciudad</span>: <span class="text-orange-400">"Madrid"</span>
+};
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">claves</span> = Object.<span class="text-green-400">keys</span>(persona);
+console.<span class="text-green-400">log</span>(claves);
+<span class="text-gray-500">// ["nombre", "edad", "ciudad"]</span></pre>
+        <p class="text-gray-400 text-sm">Devuelve un array con las claves (nombres de propiedades) del objeto.</p>
+      </div>
+
+       <!-- Object.values() -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Object.values()</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">const</span> <span class="text-blue-400">persona</span> = {
+  <span class="text-blue-400">nombre</span>: <span class="text-orange-400">"Carlos"</span>,
+  <span class="text-blue-400">edad</span>: <span class="text-green-400">30</span>,
+  <span class="text-blue-400">ciudad</span>: <span class="text-orange-400">"Madrid"</span>
+};
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">valores</span> = Object.<span class="text-green-400">values</span>(persona);
+console.<span class="text-green-400">log</span>(valores);
+<span class="text-gray-500">// ["Carlos", 30, "Madrid"]</span></pre>
+        <p class="text-gray-400 text-sm">Devuelve un array con los valores de las propiedades del objeto.</p>
+      </div>
+
+       <!-- Object.entries() -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Object.entries()</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">const</span> <span class="text-blue-400">persona</span> = {
+  <span class="text-blue-400">nombre</span>: <span class="text-orange-400">"Carlos"</span>,
+  <span class="text-blue-400">edad</span>: <span class="text-green-400">30</span>
+};
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">entradas</span> = Object.<span class="text-green-400">entries</span>(persona);
+console.<span class="text-green-400">log</span>(entradas);
+<span class="text-gray-500">// [["nombre", "Carlos"], ["edad", 30]]</span>
+
+<span class="text-gray-500">// Útil para iterar</span>
+entradas.<span class="text-green-400">forEach</span>(([<span class="text-blue-400">clave</span>, <span class="text-blue-400">valor</span>]) => {
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">`</span>${clave}<span class="text-orange-400">: </span>${valor}<span class="text-orange-400">`</span>);
+});</pre>
+        <p class="text-gray-400 text-sm">Devuelve un array de arrays [clave, valor] con todas las propiedades.</p>
+      </div>
+
+       <!-- Object.assign() -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Object.assign()</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">const</span> <span class="text-blue-400">obj1</span> = { <span class="text-blue-400">a</span>: <span class="text-green-400">1</span>, <span class="text-blue-400">b</span>: <span class="text-green-400">2</span> };
+<span class="text-purple-400">const</span> <span class="text-blue-400">obj2</span> = { <span class="text-blue-400">c</span>: <span class="text-green-400">3</span>, <span class="text-blue-400">d</span>: <span class="text-green-400">4</span> };
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">combinado</span> = Object.<span class="text-green-400">assign</span>({}, obj1, obj2);
+console.<span class="text-green-400">log</span>(combinado);
+<span class="text-gray-500">// { a: 1, b: 2, c: 3, d: 4 }</span>
+
+<span class="text-gray-500">// También funciona con spread operator</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">combinado2</span> = { ...obj1, ...obj2 };</pre>
+        <p class="text-gray-400 text-sm">Copia propiedades de uno o más objetos a un objeto destino.</p>
+      </div>
+
+       <!-- Object.freeze() / seal() -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Object.freeze() / seal()</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">const</span> <span class="text-blue-400">obj</span> = { <span class="text-blue-400">a</span>: <span class="text-green-400">1</span> };
+
+<span class="text-gray-500">// freeze - no permite modificar</span>
+Object.<span class="text-green-400">freeze</span>(obj);
+obj.a = <span class="text-green-400">2</span>;          <span class="text-gray-500">// No tiene efecto</span>
+obj.b = <span class="text-green-400">3</span>;          <span class="text-gray-500">// No se puede agregar</span>
+
+<span class="text-gray-500">// seal - permite modificar, no agregar/eliminar</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">obj2</span> = { <span class="text-blue-400">x</span>: <span class="text-green-400">1</span> };
+Object.<span class="text-green-400">seal</span>(obj2);
+obj2.x = <span class="text-green-400">2</span>;         <span class="text-gray-500">// ✓ Funciona</span>
+obj2.y = <span class="text-green-400">3</span>;         <span class="text-gray-500">// ✗ No se puede agregar</span></pre>
+        <p class="text-gray-400 text-sm">Controlar la mutabilidad de los objetos (freeze: inmutable, seal: semi-mutable).</p>
+      </div>
+
+       <!-- Object.hasOwnProperty() -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">hasOwnProperty()</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">const</span> <span class="text-blue-400">persona</span> = {
+  <span class="text-blue-400">nombre</span>: <span class="text-orange-400">"Ana"</span>,
+  <span class="text-blue-400">edad</span>: <span class="text-green-400">25</span>
+};
+
+console.<span class="text-green-400">log</span>(persona.<span class="text-green-400">hasOwnProperty</span>(<span class="text-orange-400">'nombre'</span>));
+<span class="text-gray-500">// true</span>
+
+console.<span class="text-green-400">log</span>(persona.<span class="text-green-400">hasOwnProperty</span>(<span class="text-orange-400">'ciudad'</span>));
+<span class="text-gray-500">// false</span>
+
+<span class="text-gray-500">// Útil para verificar antes de acceder</span>
+<span class="text-purple-400">if</span> (persona.<span class="text-green-400">hasOwnProperty</span>(<span class="text-orange-400">'email'</span>)) {
+  console.<span class="text-green-400">log</span>(persona.email);
+}</pre>
+        <p class="text-gray-400 text-sm">Verifica si el objeto tiene una propiedad específica (no heredada).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section id="ejemplos" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+        Ejemplos <span class="text-js-yellow-400 font-bold">Prácticos</span>
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+         <!-- Example 1 -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Crear y Manipular Objetos</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Literal de objeto</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">libro</span> = {
+  <span class="text-blue-400">titulo</span>: <span class="text-orange-400">"JavaScript Avanzado"</span>,
+  <span class="text-blue-400">autor</span>: <span class="text-orange-400">"María López"</span>,
+  <span class="text-blue-400">año</span>: <span class="text-green-400">2024</span>,
+  <span class="text-blue-400">paginas</span>: <span class="text-green-400">450</span>
+};
+
+<span class="text-gray-500">// Acceder</span>
+console.<span class="text-green-400">log</span>(libro.titulo);
+
+<span class="text-gray-500">// Modificar</span>
+libro.año = <span class="text-green-400">2025</span>;
+
+<span class="text-gray-500">// Agregar</span>
+libro.editorial = <span class="text-orange-400">"Tech Books"</span>;
+
+<span class="text-gray-500">// Eliminar</span>
+<span class="text-purple-400">delete</span> libro.paginas;</pre>
+          <p class="text-gray-400 text-sm">Operaciones básicas con objetos: crear, acceder, modificar y eliminar propiedades.</p>
+        </div>
+
+         <!-- Example 2 -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Objetos con Métodos</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">const</span> <span class="text-blue-400">calculadora</span> = {
+  <span class="text-blue-400">valor</span>: <span class="text-green-400">0</span>,
+  
+  <span class="text-blue-400">sumar</span>(<span class="text-blue-400">n</span>) {
+    <span class="text-purple-400">this</span>.valor += n;
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>; <span class="text-gray-500">// Para encadenar</span>
+  },
+  
+  <span class="text-blue-400">restar</span>(<span class="text-blue-400">n</span>) {
+    <span class="text-purple-400">this</span>.valor -= n;
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>;
+  },
+  
+  <span class="text-blue-400">resultado</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>.valor;
+  }
+};
+
+<span class="text-gray-500">// Encadenar métodos</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">total</span> = calculadora
+  .<span class="text-green-400">sumar</span>(<span class="text-green-400">10</span>)
+  .<span class="text-green-400">sumar</span>(<span class="text-green-400">5</span>)
+  .<span class="text-green-400">restar</span>(<span class="text-green-400">3</span>)
+  .<span class="text-green-400">resultado</span>();
+  
+console.<span class="text-green-400">log</span>(total); <span class="text-gray-500">// 12</span></pre>
+          <p class="text-gray-400 text-sm">Objetos que contienen métodos y demostración de encadenamiento.</p>
+        </div>
+
+         <!-- Example 3 -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Desestructuración</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">const</span> <span class="text-blue-400">usuario</span> = {
+  <span class="text-blue-400">nombre</span>: <span class="text-orange-400">"Laura"</span>,
+  <span class="text-blue-400">edad</span>: <span class="text-green-400">28</span>,
+  <span class="text-blue-400">email</span>: <span class="text-orange-400">"laura@email.com"</span>,
+  <span class="text-blue-400">ciudad</span>: <span class="text-orange-400">"Barcelona"</span>
+};
+
+<span class="text-gray-500">// Desestructuración básica</span>
+<span class="text-purple-400">const</span> { <span class="text-blue-400">nombre</span>, <span class="text-blue-400">edad</span> } = usuario;
+console.<span class="text-green-400">log</span>(nombre); <span class="text-gray-500">// "Laura"</span>
+
+<span class="text-gray-500">// Con renombre</span>
+<span class="text-purple-400">const</span> { <span class="text-blue-400">email</span>: <span class="text-blue-400">correo</span> } = usuario;
+console.<span class="text-green-400">log</span>(correo); <span class="text-gray-500">// "laura@email.com"</span>
+
+<span class="text-gray-500">// Con valor por defecto</span>
+<span class="text-purple-400">const</span> { <span class="text-blue-400">pais</span> = <span class="text-orange-400">"España"</span> } = usuario;
+console.<span class="text-green-400">log</span>(pais); <span class="text-gray-500">// "España"</span></pre>
+          <p class="text-gray-400 text-sm">Extraer propiedades de objetos de forma limpia y eficiente.</p>
+        </div>
+
+         <!-- Example 4 -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Objetos Anidados</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">const</span> <span class="text-blue-400">empresa</span> = {
+  <span class="text-blue-400">nombre</span>: <span class="text-orange-400">"Tech Corp"</span>,
+  <span class="text-blue-400">fundacion</span>: <span class="text-green-400">2010</span>,
+  <span class="text-blue-400">direccion</span>: {
+    <span class="text-blue-400">calle</span>: <span class="text-orange-400">"Gran Vía 123"</span>,
+    <span class="text-blue-400">ciudad</span>: <span class="text-orange-400">"Madrid"</span>,
+    <span class="text-blue-400">pais</span>: <span class="text-orange-400">"España"</span>
+  },
+  <span class="text-blue-400">empleados</span>: [
+    { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">"Juan"</span>, <span class="text-blue-400">puesto</span>: <span class="text-orange-400">"CEO"</span> },
+    { <span class="text-blue-400">nombre</span>: <span class="text-orange-400">"María"</span>, <span class="text-blue-400">puesto</span>: <span class="text-orange-400">"CTO"</span> }
+  ]
+};
+
+<span class="text-gray-500">// Acceder a propiedades anidadas</span>
+console.<span class="text-green-400">log</span>(empresa.direccion.ciudad);
+<span class="text-gray-500">// "Madrid"</span>
+
+console.<span class="text-green-400">log</span>(empresa.empleados[<span class="text-green-400">0</span>].nombre);
+<span class="text-gray-500">// "Juan"</span></pre>
+          <p class="text-gray-400 text-sm">Trabajar con estructuras de datos complejas usando objetos anidados.</p>
+        </div>
+
+         <!-- Example 5 -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 lg:col-span-2">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Factory Functions (Funciones Fábrica)</h3>
+          <pre class="code-block text-xs mb-4">
+<span class="text-gray-500">// Función que crea objetos</span>
+<span class="text-purple-400">function</span> <span class="text-green-400">crearPersona</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">edad</span>, <span class="text-blue-400">profesion</span>) {
+  <span class="text-purple-400">return</span> {
+    <span class="text-blue-400">nombre</span>,
+    <span class="text-blue-400">edad</span>,
+    <span class="text-blue-400">profesion</span>,
+    <span class="text-blue-400">presentarse</span>() {
+      <span class="text-purple-400">return</span> <span class="text-orange-400">`Hola, soy </span>${<span class="text-purple-400">this</span>.nombre}<span class="text-orange-400">, tengo </span>${<span class="text-purple-400">this</span>.edad}<span class="text-orange-400"> años y soy </span>${<span class="text-purple-400">this</span>.profesion}<span class="text-orange-400">`</span>;
+    },
+    <span class="text-blue-400">cumplirAños</span>() {
+      <span class="text-purple-400">this</span>.edad++;
+      console.<span class="text-green-400">log</span>(<span class="text-orange-400">`¡Feliz cumpleaños! Ahora tienes </span>${<span class="text-purple-400">this</span>.edad}<span class="text-orange-400"> años`</span>);
+    }
+  };
+}
+
+<span class="text-gray-500">// Crear múltiples objetos con la misma estructura</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">persona1</span> = <span class="text-green-400">crearPersona</span>(<span class="text-orange-400">"Carlos"</span>, <span class="text-green-400">30</span>, <span class="text-orange-400">"Ingeniero"</span>);
+<span class="text-purple-400">const</span> <span class="text-blue-400">persona2</span> = <span class="text-green-400">crearPersona</span>(<span class="text-orange-400">"Ana"</span>, <span class="text-green-400">25</span>, <span class="text-orange-400">"Diseñadora"</span>);
+
+console.<span class="text-green-400">log</span>(persona1.<span class="text-green-400">presentarse</span>());
+persona2.<span class="text-green-400">cumplirAños</span>();</pre>
+          <p class="text-gray-400 text-sm">Las funciones fábrica son un patrón para crear múltiples objetos con la misma estructura y comportamiento, útiles cuando necesitas crear muchas instancias similares.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activity Section -->
+  <section id="actividad" class="container mx-auto px-4 py-20">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-js-yellow-400 font-bold">Interactiva</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Crea y manipula objetos en tiempo real!
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+             <!-- Left Column - Object Builder -->
+            <div class="space-y-6">
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Constructor de Objetos</h3>
+
+               <!-- Form to add properties -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Agregar Propiedad</h4>
+                <div class="space-y-3">
+                  <input 
+                    type="text" 
+                    id="propKey" 
+                    placeholder="Nombre de la propiedad (ej: nombre)"
+                    class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none text-sm"
+                  />
+                  <input 
+                    type="text" 
+                    id="propValue" 
+                    placeholder="Valor (ej: Juan)"
+                    class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none text-sm"
+                  />
+                  <select 
+                    id="propType"
+                    class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none text-sm"
+                    title="."
+                  >
+                    <option value="string">String</option>
+                    <option value="number">Number</option>
+                    <option value="boolean">Boolean</option>
+                  </select>
+                  <button 
+                    id="addProp"
+                    class="w-full bg-js-yellow-500 hover:bg-js-yellow-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                  >
+                    ➕ Agregar Propiedad
+                  </button>
+                </div>
+              </div>
+
+               <!-- Quick Actions -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Acciones Rápidas</h4>
+                <div class="grid grid-cols-2 gap-3">
+                  <button 
+                    id="createPerson"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    👤 Crear Persona
+                  </button>
+                  <button 
+                    id="createProduct"
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🛍️ Crear Producto
+                  </button>
+                  <button 
+                    id="clearObject"
+                    class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🗑️ Limpiar Todo
+                  </button>
+                  <button 
+                    id="copyObject"
+                    class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    📋 Copiar Código
+                  </button>
+                </div>
+              </div>
+
+               <!-- Object Methods -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Métodos de Object</h4>
+                <div class="space-y-2">
+                  <button 
+                    id="showKeys"
+                    class="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm text-left"
+                  >
+                    🔑 Object.keys()
+                  </button>
+                  <button 
+                    id="showValues"
+                    class="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm text-left"
+                  >
+                    💎 Object.values()
+                  </button>
+                  <button 
+                    id="showEntries"
+                    class="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm text-left"
+                  >
+                    📊 Object.entries()
+                  </button>
+                </div>
+              </div>
+
+               <!-- Stats -->
+              <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+                <h4 class="text-sm font-semibold mb-2 text-js-yellow-400">Estadísticas</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                  <div class="text-gray-300">Propiedades: <span id="propCount" class="text-js-yellow-400 font-bold">0</span></div>
+                  <div class="text-gray-300">Última acción: <span id="lastAction" class="text-js-yellow-400 font-bold">Ninguna</span></div>
+                </div>
+              </div>
+            </div>
+
+             <!-- Right Column - Object Visualization -->
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Visualización del Objeto</h3>
+              
+               <!-- Object Display -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                  <h4 class="text-white font-semibold">Tu Objeto:</h4>
+                  <span id="objectName" class="text-js-yellow-400 font-mono text-sm">miObjeto</span>
+                </div>
+                
+                <div id="objectDisplay" class="bg-black/50 rounded-lg p-4 min-h-[300px] max-h-[400px] overflow-y-auto font-mono text-sm">
+                  <div class="text-gray-500 italic text-center py-8">
+                    El objeto aparecerá aquí...
+                  </div>
+                </div>
+              </div>
+
+               <!-- Properties List -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700 mb-6">
+                <h4 class="text-white font-semibold mb-4">Propiedades Actuales</h4>
+                <div id="propertiesList" class="space-y-2 max-h-[200px] overflow-y-auto">
+                  <div class="text-gray-500 italic text-sm text-center py-4">
+                    No hay propiedades aún
+                  </div>
+                </div>
+              </div>
+
+               <!-- Console Output -->
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                  <h4 class="text-white font-semibold">Consola</h4>
+                  <button id="clearConsole" class="text-red-400 hover:text-red-300 text-sm font-semibold">
+                    Limpiar
+                  </button>
+                </div>
+                <div id="consoleOutput" class="bg-black/50 rounded-lg p-4 h-[150px] overflow-y-auto font-mono text-xs space-y-1">
+                  <div class="text-gray-500">
+                    <span class="text-green-400">></span> Consola lista...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="container mx-auto px-4 py-16 text-center">
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark-blue-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende JavaScript Objects - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Interactive Activity - Object Builder
+    let currentObject = {};
+    
+    const propKeyInput = document.getElementById('propKey');
+    const propValueInput = document.getElementById('propValue');
+    const propTypeSelect = document.getElementById('propType');
+    const addPropBtn = document.getElementById('addProp');
+    const objectDisplay = document.getElementById('objectDisplay');
+    const propertiesList = document.getElementById('propertiesList');
+    const consoleOutput = document.getElementById('consoleOutput');
+    const propCount = document.getElementById('propCount');
+    const lastAction = document.getElementById('lastAction');
+
+    function updateDisplay() {
+      // Update object display
+      if (Object.keys(currentObject).length === 0) {
+        objectDisplay.innerHTML = '<div class="text-gray-500 italic text-center py-8">El objeto aparecerá aquí...</div>';
+      } else {
+        const objectString = JSON.stringify(currentObject, null, 2);
+        objectDisplay.innerHTML = `<pre class="text-green-400">${syntaxHighlight(objectString)}</pre>`;
+      }
+
+      // Update properties list
+      if (Object.keys(currentObject).length === 0) {
+        propertiesList.innerHTML = '<div class="text-gray-500 italic text-sm text-center py-4">No hay propiedades aún</div>';
+      } else {
+        propertiesList.innerHTML = Object.entries(currentObject).map(([key, value]) => `
+          <div class="flex items-center justify-between bg-gray-800 rounded p-3">
+            <div class="flex-1">
+              <span class="text-blue-400 font-mono text-sm">${key}:</span>
+              <span class="text-orange-400 font-mono text-sm ml-2">${typeof value === 'string' ? `"${value}"` : value}</span>
+            </div>
+            <button class="delete-prop text-red-400 hover:text-red-300 ml-2" data-key="${key}">
+              ✕
+            </button>
+          </div>
+        `).join('');
+
+        // Add delete listeners
+        document.querySelectorAll('.delete-prop').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const key = e.target.dataset.key;
+            delete currentObject[key];
+            updateDisplay();
+            logToConsole(`Propiedad "${key}" eliminada`, 'warning');
+            lastAction.textContent = 'Eliminación';
+          });
+        });
+      }
+
+      // Update stats
+      propCount.textContent = Object.keys(currentObject).length;
+    }
+
+    function syntaxHighlight(json) {
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) { 
+        let cls = 'text-orange-400';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'text-blue-400';
+          } else {
+            cls = 'text-orange-400';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'text-purple-400';
+        } else if (/null/.test(match)) {
+          cls = 'text-gray-400';
+        } else {
+          cls = 'text-green-400';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      });
+    }
+
+    function logToConsole(message, type = 'info') {
+      const timestamp = new Date().toLocaleTimeString();
+      const colors = {
+        info: 'text-blue-400',
+        success: 'text-green-400',
+        warning: 'text-yellow-400',
+        error: 'text-red-400'
+      };
+      
+      const log = document.createElement('div');
+      log.className = colors[type];
+      log.innerHTML = `<span class="text-gray-500">[${timestamp}]</span> ${message}`;
+      
+      consoleOutput.appendChild(log);
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    }
+
+    // Add property
+    addPropBtn.addEventListener('click', () => {
+      const key = propKeyInput.value.trim();
+      const value = propValueInput.value.trim();
+      const type = propTypeSelect.value;
+
+      if (!key || !value) {
+        logToConsole('Por favor completa ambos campos', 'error');
+        return;
+      }
+
+      let processedValue = value;
+      if (type === 'number') {
+        processedValue = Number(value);
+        if (isNaN(processedValue)) {
+          logToConsole('El valor debe ser un número válido', 'error');
+          return;
+        }
+      } else if (type === 'boolean') {
+        processedValue = value.toLowerCase() === 'true';
+      }
+
+      currentObject[key] = processedValue;
+      updateDisplay();
+      logToConsole(`Propiedad "${key}" agregada con valor: ${processedValue}`, 'success');
+      lastAction.textContent = 'Agregar propiedad';
+
+      // Clear inputs
+      propKeyInput.value = '';
+      propValueInput.value = '';
+    });
+
+    // Quick actions
+    document.getElementById('createPerson').addEventListener('click', () => {
+      currentObject = {
+        nombre: "Juan Pérez",
+        edad: 30,
+        profesion: "Desarrollador",
+        email: "juan@email.com",
+        activo: true
+      };
+      updateDisplay();
+      logToConsole('Objeto "Persona" creado', 'success');
+      lastAction.textContent = 'Crear Persona';
+    });
+
+    document.getElementById('createProduct').addEventListener('click', () => {
+      currentObject = {
+        id: 1,
+        nombre: "Laptop",
+        precio: 999.99,
+        stock: 15,
+        disponible: true,
+        categoria: "Electrónica"
+      };
+      updateDisplay();
+      logToConsole('Objeto "Producto" creado', 'success');
+      lastAction.textContent = 'Crear Producto';
+    });
+
+    document.getElementById('clearObject').addEventListener('click', () => {
+      currentObject = {};
+      updateDisplay();
+      logToConsole('Objeto limpiado', 'warning');
+      lastAction.textContent = 'Limpiar';
+    });
+
+    document.getElementById('copyObject').addEventListener('click', () => {
+      const code = `const miObjeto = ${JSON.stringify(currentObject, null, 2)};`;
+      navigator.clipboard.writeText(code).then(() => {
+        logToConsole('Código copiado al portapapeles', 'success');
+        lastAction.textContent = 'Copiar código';
+      }).catch(() => {
+        logToConsole('Error al copiar código', 'error');
+      });
+    });
+
+    // Object methods
+    document.getElementById('showKeys').addEventListener('click', () => {
+      const keys = Object.keys(currentObject);
+      logToConsole(`Object.keys(): [${keys.map(k => `"${k}"`).join(', ')}]`, 'info');
+      lastAction.textContent = 'Object.keys()';
+    });
+
+    document.getElementById('showValues').addEventListener('click', () => {
+      const values = Object.values(currentObject);
+      logToConsole(`Object.values(): [${values.map(v => typeof v === 'string' ? `"${v}"` : v).join(', ')}]`, 'info');
+      lastAction.textContent = 'Object.values()';
+    });
+
+    document.getElementById('showEntries').addEventListener('click', () => {
+      const entries = Object.entries(currentObject);
+      logToConsole(`Object.entries(): ${JSON.stringify(entries)}`, 'info');
+      lastAction.textContent = 'Object.entries()';
+    });
+
+    document.getElementById('clearConsole').addEventListener('click', () => {
+      consoleOutput.innerHTML = '<div class="text-gray-500"><span class="text-green-400">></span> Consola limpiada...</div>';
+    });
+
+    // Initialize
+    updateDisplay();
+
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

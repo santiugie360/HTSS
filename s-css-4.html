@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS: Modelo de Caja - Box Model</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'css-purple': {
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7e22ce',
+              800: '#6b21a8',
+              900: '#581c87',
+              950: '#3b0764',
+            },
+            'dark-purple': {
+              900: '#1a0a2e',
+              950: '#0f0520',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .feature-card {
+        @apply bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800 hover:border-css-purple-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-css-purple-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+      .property-card {
+        @apply bg-dark-purple-900/80 p-6 rounded-lg border border-gray-800 hover:border-css-purple-700/50 transition-all duration-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-purple-950 text-gray-200">
+    
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-purple-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+          
+        <div class="flex-shrink-0 flex items-center">
+          <a href="#" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-css-purple-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-purple-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-css-purple-500">📦</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">Box Model</span>
+          </a>
+        </div>
+
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#componentes" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Componentes</a>
+          <a href="#propiedades" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Propiedades</a>
+          <a href="#box-sizing" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Box Sizing</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#componentes" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Componentes</a>
+        <a href="#propiedades" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Propiedades</a>
+        <a href="#box-sizing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Box Sizing</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-css-purple-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-5xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          CSS
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-css-purple-400">Modelo de Caja</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-4xl mx-auto animate-slide-up">
+          El Modelo de Caja (Box Model) es uno de los conceptos fundamentales de CSS. Define cómo se calculan las dimensiones de los elementos HTML y cómo se espacian entre sí. Cada elemento es una "caja" rectangular compuesta por contenido, padding, border y margin.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <div class="bg-css-purple-600/20 border border-css-purple-600/50 rounded-lg px-6 py-3">
+            <span class="text-css-purple-400 font-bold">Contenido</span>
+          </div>
+          <div class="bg-css-purple-600/20 border border-css-purple-600/50 rounded-lg px-6 py-3">
+            <span class="text-css-purple-400 font-bold">Padding</span>
+          </div>
+          <div class="bg-css-purple-600/20 border border-css-purple-600/50 rounded-lg px-6 py-3">
+            <span class="text-css-purple-400 font-bold">Border</span>
+          </div>
+          <div class="bg-css-purple-600/20 border border-css-purple-600/50 rounded-lg px-6 py-3">
+            <span class="text-css-purple-400 font-bold">Margin</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué es el <span class="text-css-purple-400 font-bold">Modelo de Caja?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Estructura Rectangular</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Cada elemento HTML se representa como una caja rectangular. Esta caja tiene cuatro áreas distintas: el contenido, el padding (relleno), el border (borde) y el margin (margen exterior).
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Esta estructura permite controlar precisamente el espacio que ocupa cada elemento en la página.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Cálculo de Dimensiones</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Por defecto, cuando defines <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">width</code> y <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">height</code>, solo estás definiendo el área del contenido. El tamaño total del elemento incluye padding, border y margin.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Fórmula: <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">Total = width + padding + border + margin</code>
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Espaciado y Diseño</h3>
+        <p class="text-gray-300 leading-relaxed">
+          El modelo de caja es esencial para crear layouts y controlar el espaciado. El padding crea espacio interno, el border define límites visuales, y el margin crea espacio entre elementos.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Entender este modelo es clave para crear diseños precisos y responsive.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Box Sizing</h3>
+        <p class="text-gray-300 leading-relaxed">
+          La propiedad <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">box-sizing</code> controla cómo se calculan las dimensiones. Con <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">border-box</code>, width y height incluyen padding y border.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Esto hace que el dimensionamiento sea mucho más intuitivo y predecible.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="componentes" class="py-20 bg-gradient-to-b from-dark-purple-950 to-dark-purple-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Componentes del <span class="text-css-purple-400 font-bold">Modelo de Caja</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Visualiza las cuatro capas que componen cada elemento HTML
+      </p>
+
+      <div class="max-w-5xl mx-auto">
+        <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+          <h3 class="text-xl font-bold mb-6 text-css-purple-400 text-center">Representación Visual</h3>
+          
+          <div class="flex justify-center mb-8">
+            <div class="inline-block">
+              <div class="border-4 border-dashed border-orange-500 p-6 bg-orange-500/10">
+                <div class="text-orange-400 text-sm font-bold mb-2">Margin (Margen)</div>
+                
+                <div class="border-4 border-solid border-green-500 p-6 bg-green-500/10">
+                  <div class="text-green-400 text-sm font-bold mb-2">Border (Borde)</div>
+                  
+                  <div class="border-4 border-dashed border-blue-500 p-6 bg-blue-500/10">
+                    <div class="text-blue-400 text-sm font-bold mb-2">Padding (Relleno)</div>
+                    
+                      
+                    <div class="bg-css-purple-600 p-8 rounded">
+                      <div class="text-white text-center font-bold">
+                        CONTENIDO
+                        <div class="text-sm mt-2 font-normal">width × height</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+            <div class="bg-black/30 p-6 rounded-lg border border-css-purple-700/30">
+              <div class="flex items-center mb-3">
+                <div class="w-4 h-4 bg-css-purple-600 rounded mr-3"></div>
+                <h4 class="text-lg font-bold text-css-purple-400">Contenido (Content)</h4>
+              </div>
+              <p class="text-gray-300 text-sm mb-3">
+                El área donde se muestra el contenido real del elemento (texto, imágenes, etc.). Se controla con <code class="text-css-purple-400 bg-gray-800 px-1 rounded text-xs">width</code> y <code class="text-css-purple-400 bg-gray-800 px-1 rounded text-xs">height</code>.
+              </p>
+              <pre class="code-block text-xs">
+<span class="text-purple-400">.elemento</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">200px</span>;
+  <span class="text-blue-400">height</span>: <span class="text-green-400">100px</span>;
+}</pre>
+            </div>
+
+              
+            <div class="bg-black/30 p-6 rounded-lg border border-blue-700/30">
+              <div class="flex items-center mb-3">
+                <div class="w-4 h-4 bg-blue-500 rounded mr-3"></div>
+                <h4 class="text-lg font-bold text-blue-400">Padding (Relleno)</h4>
+              </div>
+              <p class="text-gray-300 text-sm mb-3">
+                Espacio transparente entre el contenido y el borde. Aumenta el tamaño total del elemento. Se puede definir individual o globalmente.
+              </p>
+              <pre class="code-block text-xs">
+<span class="text-purple-400">.elemento</span> {
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">20px</span>;
+  <span class="text-gray-500">/* padding-top, right, bottom, left */</span>
+}</pre>
+            </div>
+
+            <div class="bg-black/30 p-6 rounded-lg border border-green-700/30">
+              <div class="flex items-center mb-3">
+                <div class="w-4 h-4 bg-green-500 rounded mr-3"></div>
+                <h4 class="text-lg font-bold text-green-400">Border (Borde)</h4>
+              </div>
+              <p class="text-gray-300 text-sm mb-3">
+                Línea que rodea el padding y el contenido. Puede tener color, grosor y estilo. Aumenta las dimensiones totales del elemento.
+              </p>
+              <pre class="code-block text-xs">
+<span class="text-purple-400">.elemento</span> {
+  <span class="text-blue-400">border</span>: <span class="text-green-400">2px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">#9333ea</span>;
+  <span class="text-blue-400">border-radius</span>: <span class="text-green-400">8px</span>;
+}</pre>
+            </div>
+
+            <div class="bg-black/30 p-6 rounded-lg border border-orange-700/30">
+              <div class="flex items-center mb-3">
+                <div class="w-4 h-4 bg-orange-500 rounded mr-3"></div>
+                <h4 class="text-lg font-bold text-orange-400">Margin (Margen)</h4>
+              </div>
+              <p class="text-gray-300 text-sm mb-3">
+                Espacio transparente fuera del borde. Separa el elemento de otros elementos. No tiene color de fondo y puede ser negativo.
+              </p>
+              <pre class="code-block text-xs">
+<span class="text-purple-400">.elemento</span> {
+  <span class="text-blue-400">margin</span>: <span class="text-green-400">30px</span>;
+  <span class="text-gray-500">/* margin-top, right, bottom, left */</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-6 text-css-purple-400 text-center">Cálculo del Tamaño Total</h3>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-4">Ejemplo Práctico:</h4>
+              <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">.caja</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">200px</span>;
+  <span class="text-blue-400">height</span>: <span class="text-green-400">100px</span>;
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">20px</span>;
+  <span class="text-blue-400">border</span>: <span class="text-green-400">5px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">#9333ea</span>;
+  <span class="text-blue-400">margin</span>: <span class="text-green-400">15px</span>;
+}</pre>
+
+              <div class="bg-css-purple-900/20 border border-css-purple-700/30 p-4 rounded-lg">
+                <p class="text-sm text-gray-300 mb-2">
+                  <strong class="text-css-purple-400">Ancho Total:</strong>
+                </p>
+                <p class="text-xs text-gray-400 font-mono">
+                  200px (content) + 20px (padding-left) + 20px (padding-right) + 5px (border-left) + 5px (border-right) + 15px (margin-left) + 15px (margin-right)
+                </p>
+                <p class="text-lg text-css-purple-400 font-bold mt-2">= 280px</p>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-semibold text-white mb-4">Fórmulas:</h4>
+              <div class="space-y-3">
+                <div class="bg-black/30 p-3 rounded">
+                  <p class="text-sm text-gray-400 mb-1">Ancho Total:</p>
+                  <code class="text-xs text-css-purple-400">width + padding-left + padding-right + border-left + border-right + margin-left + margin-right</code>
+                </div>
+                
+                <div class="bg-black/30 p-3 rounded">
+                  <p class="text-sm text-gray-400 mb-1">Alto Total:</p>
+                  <code class="text-xs text-css-purple-400">height + padding-top + padding-bottom + border-top + border-bottom + margin-top + margin-bottom</code>
+                </div>
+
+                <div class="bg-black/30 p-3 rounded">
+                  <p class="text-sm text-gray-400 mb-1">Área Visible (sin margin):</p>
+                  <code class="text-xs text-css-purple-400">width + padding + border</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <section id="propiedades" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Propiedades <span class="text-css-purple-400 font-bold">CSS</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Propiedades individuales para controlar cada componente del box model
+    </p>
+
+    <div class="max-w-7xl mx-auto">
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+        <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Width & Height (Ancho y Alto)</h3>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Propiedades Básicas:</h4>
+            <ul class="space-y-2 text-gray-300 text-sm">
+              <li><code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">width</code> - Ancho del contenido</li>
+              <li><code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">height</code> - Alto del contenido</li>
+              <li><code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">max-width</code> - Ancho máximo</li>
+              <li><code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">min-width</code> - Ancho mínimo</li>
+              <li><code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">max-height</code> - Alto máximo</li>
+              <li><code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">min-height</code> - Alto mínimo</li>
+            </ul>
+          </div>
+
+          <div class="lg:col-span-2">
+            <pre class="code-block text-xs">
+<span class="text-gray-500">/* Dimensiones fijas */</span>
+<span class="text-purple-400">.caja-fija</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">300px</span>;
+  <span class="text-blue-400">height</span>: <span class="text-green-400">200px</span>;
+}
+
+<span class="text-gray-500">/* Dimensiones responsive */</span>
+<span class="text-purple-400">.caja-responsive</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">100%</span>;
+  <span class="text-blue-400">max-width</span>: <span class="text-green-400">600px</span>;
+  <span class="text-blue-400">min-height</span>: <span class="text-green-400">200px</span>;
+}
+
+<span class="text-gray-500">/* Dimensiones relativas */</span>
+<span class="text-purple-400">.caja-viewport</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">50vw</span>; <span class="text-gray-500">/* 50% del viewport width */</span>
+  <span class="text-blue-400">height</span>: <span class="text-green-400">30vh</span>; <span class="text-gray-500">/* 30% del viewport height */</span>
+}</pre>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+        <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Padding (Relleno)</h3>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Formas de Definir:</h4>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">/* Un valor (todos los lados) */</span>
+<span class="text-blue-400">padding</span>: <span class="text-green-400">20px</span>;
+
+<span class="text-gray-500">/* Dos valores (vertical | horizontal) */</span>
+<span class="text-blue-400">padding</span>: <span class="text-green-400">10px 20px</span>;
+
+<span class="text-gray-500">/* Tres valores (top | horizontal | bottom) */</span>
+<span class="text-blue-400">padding</span>: <span class="text-green-400">10px 20px 15px</span>;
+
+<span class="text-gray-500">/* Cuatro valores (top | right | bottom | left) */</span>
+<span class="text-blue-400">padding</span>: <span class="text-green-400">10px 20px 15px 25px</span>;</pre>
+          </div>
+
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Propiedades Individuales:</h4>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">/* Padding individual por lado */</span>
+<span class="text-purple-400">.elemento</span> {
+  <span class="text-blue-400">padding-top</span>: <span class="text-green-400">10px</span>;
+  <span class="text-blue-400">padding-right</span>: <span class="text-green-400">20px</span>;
+  <span class="text-blue-400">padding-bottom</span>: <span class="text-green-400">15px</span>;
+  <span class="text-blue-400">padding-left</span>: <span class="text-green-400">25px</span>;
+}
+
+<span class="text-gray-500">/* Combinación */</span>
+<span class="text-purple-400">.otro</span> {
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">20px</span>;
+  <span class="text-blue-400">padding-left</span>: <span class="text-green-400">40px</span>; <span class="text-gray-500">/* Sobrescribe */</span>
+}</pre>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+        <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Border (Borde)</h3>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Propiedades de Border:</h4>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">/* Shorthand (grosor | estilo | color) */</span>
+<span class="text-blue-400">border</span>: <span class="text-green-400">2px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">#9333ea</span>;
+
+<span class="text-gray-500">/* Propiedades separadas */</span>
+<span class="text-blue-400">border-width</span>: <span class="text-green-400">2px</span>;
+<span class="text-blue-400">border-style</span>: <span class="text-orange-400">solid</span>;
+<span class="text-blue-400">border-color</span>: <span class="text-green-400">#9333ea</span>;
+
+<span class="text-gray-500">/* Bordes individuales */</span>
+<span class="text-blue-400">border-top</span>: <span class="text-green-400">3px</span> <span class="text-orange-400">dashed</span> <span class="text-green-400">#c084fc</span>;
+<span class="text-blue-400">border-right</span>: <span class="text-green-400">1px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">#a855f7</span>;
+<span class="text-blue-400">border-bottom</span>: <span class="text-green-400">2px</span> <span class="text-orange-400">dotted</span> <span class="text-green-400">#7e22ce</span>;
+<span class="text-blue-400">border-left</span>: <span class="text-green-400">5px</span> <span class="text-orange-400">double</span> <span class="text-green-400">#6b21a8</span>;</pre>
+          </div>
+
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Estilos de Border:</h4>
+            <div class="space-y-2 text-sm">
+              <div class="bg-black/30 p-3 rounded border-l-4 border-css-purple-500">
+                <code class="text-css-purple-400">solid</code> - Línea sólida
+              </div>
+              <div class="bg-black/30 p-3 rounded border-l-4 border-dashed border-css-purple-500">
+                <code class="text-css-purple-400">dashed</code> - Línea discontinua
+              </div>
+              <div class="bg-black/30 p-3 rounded border-l-4 border-dotted border-css-purple-500">
+                <code class="text-css-purple-400">dotted</code> - Línea de puntos
+              </div>
+              <div class="bg-black/30 p-3 rounded border-l-4 border-double border-css-purple-500">
+                <code class="text-css-purple-400">double</code> - Línea doble
+              </div>
+            </div>
+
+            <pre class="code-block text-xs mt-4">
+<span class="text-gray-500">/* Border radius (esquinas redondeadas) */</span>
+<span class="text-blue-400">border-radius</span>: <span class="text-green-400">8px</span>;
+<span class="text-blue-400">border-radius</span>: <span class="text-green-400">50%</span>; <span class="text-gray-500">/* Círculo */</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Margin (Margen)</h3>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Sintaxis Similar a Padding:</h4>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">/* Un valor (todos los lados) */</span>
+<span class="text-blue-400">margin</span>: <span class="text-green-400">20px</span>;
+
+<span class="text-gray-500">/* Dos valores (vertical | horizontal) */</span>
+<span class="text-blue-400">margin</span>: <span class="text-green-400">10px 20px</span>;
+
+<span class="text-gray-500">/* Cuatro valores (top | right | bottom | left) */</span>
+<span class="text-blue-400">margin</span>: <span class="text-green-400">10px 20px 15px 25px</span>;
+
+<span class="text-gray-500">/* Centrar horizontalmente */</span>
+<span class="text-blue-400">margin</span>: <span class="text-green-400">0</span> <span class="text-orange-400">auto</span>;
+
+<span class="text-gray-500">/* Márgenes negativos */</span>
+<span class="text-blue-400">margin-top</span>: <span class="text-green-400">-10px</span>; <span class="text-gray-500">/* Superpone elementos */</span></pre>
+          </div>
+
+          <div>
+            <h4 class="text-md font-semibold text-white mb-3">Margin Collapse:</h4>
+            <div class="bg-css-purple-900/20 border border-css-purple-700/30 p-4 rounded-lg mb-4">
+              <p class="text-sm text-gray-300 mb-2">
+                <strong class="text-css-purple-400">Importante:</strong> Los márgenes verticales adyacentes se "colapsan" y toman el valor del margen mayor, no la suma.
+              </p>
+            </div>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">/* Elemento 1 */</span>
+<span class="text-purple-400">.elemento1</span> {
+  <span class="text-blue-400">margin-bottom</span>: <span class="text-green-400">30px</span>;
+}
+
+<span class="text-gray-500">/* Elemento 2 */</span>
+<span class="text-purple-400">.elemento2</span> {
+  <span class="text-blue-400">margin-top</span>: <span class="text-green-400">20px</span>;
+}
+
+<span class="text-gray-500">/* Espacio entre ellos: 30px (no 50px) */</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="box-sizing" class="py-20 bg-gradient-to-b from-dark-purple-950 to-dark-purple-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Box Sizing <span class="text-css-purple-400 font-bold">Property</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Controla cómo se calculan las dimensiones de los elementos
+      </p>
+
+      <div class="max-w-6xl mx-auto"> 
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center mr-4">
+                <span class="text-2xl">⚠️</span>
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold text-red-400">content-box</h3>
+                <p class="text-gray-400 text-sm">(Valor por defecto)</p>
+              </div>
+            </div>
+
+            <p class="text-gray-300 mb-4 text-sm">
+              Width y height solo aplican al contenido. Padding y border se AGREGAN al tamaño especificado.
+            </p>
+
+            <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">.caja</span> {
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">content-box</span>; <span class="text-gray-500">/* default */</span>
+  <span class="text-blue-400">width</span>: <span class="text-green-400">200px</span>;
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">20px</span>;
+  <span class="text-blue-400">border</span>: <span class="text-green-400">5px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">red</span>;
+}
+
+<span class="text-gray-500">/* Ancho total renderizado: */</span>
+<span class="text-gray-500">/* 200px + 20px + 20px + 5px + 5px = 250px */</span></pre>
+
+            <div class="bg-red-900/20 border border-red-700/30 p-4 rounded-lg">
+              <p class="text-xs text-gray-300">
+                <strong class="text-red-400">Problema:</strong> Si especificas width: 200px, el elemento será más ancho debido al padding y border. Esto puede romper layouts.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center mr-4">
+                <span class="text-2xl">✅</span>
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold text-green-400">border-box</h3>
+                <p class="text-gray-400 text-sm">(Recomendado)</p>
+              </div>
+            </div>
+
+            <p class="text-gray-300 mb-4 text-sm">
+              Width y height INCLUYEN padding y border. El contenido se ajusta automáticamente.
+            </p>
+
+            <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">.caja</span> {
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">border-box</span>; <span class="text-gray-500">/* ✅ mejor */</span>
+  <span class="text-blue-400">width</span>: <span class="text-green-400">200px</span>;
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">20px</span>;
+  <span class="text-blue-400">border</span>: <span class="text-green-400">5px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">green</span>;
+}
+
+<span class="text-gray-500">/* Ancho total renderizado: */</span>
+<span class="text-gray-500">/* 200px (incluye todo) */</span></pre>
+
+            <div class="bg-green-900/20 border border-green-700/30 p-4 rounded-lg">
+              <p class="text-xs text-gray-300">
+                <strong class="text-green-400">Ventaja:</strong> El elemento siempre tendrá exactamente 200px de ancho, sin importar el padding o border. ¡Mucho más predecible!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Mejor Práctica (Reset Universal)</h3>
+          
+          <p class="text-gray-300 mb-6">
+            La mayoría de los desarrolladores aplican <code class="text-css-purple-400 bg-gray-800 px-2 py-1 rounded">border-box</code> a TODOS los elementos al inicio de su CSS. Esto hace que el dimensionamiento sea mucho más intuitivo.
+          </p>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h4 class="text-md font-semibold text-white mb-3">Reset Completo:</h4>
+              <pre class="code-block text-xs">
+<span class="text-gray-500">/* Aplicar a TODOS los elementos */</span>
+<span class="text-purple-400">*</span>,
+<span class="text-purple-400">*::before</span>,
+<span class="text-purple-400">*::after</span> {
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">border-box</span>;
+}
+
+<span class="text-gray-500">/* Alternativa más específica */</span>
+<span class="text-purple-400">html</span> {
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">border-box</span>;
+}
+
+<span class="text-purple-400">*</span>,
+<span class="text-purple-400">*::before</span>,
+<span class="text-purple-400">*::after</span> {
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">inherit</span>;
+}</pre>
+            </div>
+
+            <div>
+              <h4 class="text-md font-semibold text-white mb-3">Beneficios:</h4>
+              <ul class="space-y-2 text-gray-300 text-sm">
+                <li class="flex items-start">
+                  <span class="text-css-purple-400 mr-2">✓</span>
+                  <div>Dimensionamiento más predecible</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-css-purple-400 mr-2">✓</span>
+                  <div>Layouts más fáciles de controlar</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-css-purple-400 mr-2">✓</span>
+                  <div>No necesitas calcular manualmente</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-css-purple-400 mr-2">✓</span>
+                  <div>Diseños responsive más sencillos</div>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-css-purple-400 mr-2">✓</span>
+                  <div>Es el estándar moderno en CSS</div>
+                </li>
+              </ul>
+
+              <div class="bg-css-purple-900/20 border border-css-purple-700/30 p-4 rounded-lg mt-4">
+                <p class="text-xs text-gray-300">
+                  <strong class="text-css-purple-400">Recomendación:</strong> Siempre usa este reset al inicio de tu CSS. Es considerado una mejor práctica en desarrollo web moderno.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ejemplos" class="container mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      Ejemplos <span class="text-css-purple-400 font-bold">Prácticos</span>
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Card de Producto</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">.product-card</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">300px</span>;
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">20px</span>;
+  <span class="text-blue-400">border</span>: <span class="text-green-400">2px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">#9333ea</span>;
+  <span class="text-blue-400">border-radius</span>: <span class="text-green-400">12px</span>;
+  <span class="text-blue-400">margin</span>: <span class="text-green-400">20px</span>;
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">border-box</span>;
+}</pre>
+        <p class="text-gray-400 text-sm">
+          Card con dimensiones fijas, padding uniforme y borde redondeado.
+        </p>
+      </div>
+
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Botón con Espaciado</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">.button</span> {
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">12px 24px</span>; <span class="text-gray-500">/* vertical | horizontal */</span>
+  <span class="text-blue-400">border</span>: <span class="text-green-400">2px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">#a855f7</span>;
+  <span class="text-blue-400">border-radius</span>: <span class="text-green-400">8px</span>;
+  <span class="text-blue-400">margin</span>: <span class="text-green-400">10px 5px</span>;
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">border-box</span>;
+}</pre>
+        <p class="text-gray-400 text-sm">
+          Botón con padding asimétrico para mejor proporción visual.
+        </p>
+      </div>
+
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Contenedor Centrado</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">.container</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">90%</span>;
+  <span class="text-blue-400">max-width</span>: <span class="text-green-400">1200px</span>;
+  <span class="text-blue-400">margin</span>: <span class="text-green-400">0</span> <span class="text-orange-400">auto</span>; <span class="text-gray-500">/* Centrar horizontalmente */</span>
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">0 20px</span>;
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">border-box</span>;
+}</pre>
+        <p class="text-gray-400 text-sm">
+          Contenedor responsive que se centra y tiene ancho máximo.
+        </p>
+      </div>
+
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Grid de Elementos</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">.grid-item</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">calc(33.333% - 20px)</span>; <span class="text-gray-500">/* 3 columnas */</span>
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">15px</span>;
+  <span class="text-blue-400">margin</span>: <span class="text-green-400">10px</span>;
+  <span class="text-blue-400">border</span>: <span class="text-green-400">1px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">#7e22ce</span>;
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">border-box</span>;
+}</pre>
+        <p class="text-gray-400 text-sm">
+          Elemento de grid con cálculo de ancho considerando márgenes.
+        </p>
+      </div>
+
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Input con Ícono</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">.input-wrapper</span> {
+  <span class="text-blue-400">position</span>: <span class="text-orange-400">relative</span>;
+}
+
+<span class="text-purple-400">.input</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">100%</span>;
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">12px 40px 12px 15px</span>; <span class="text-gray-500">/* Espacio para ícono */</span>
+  <span class="text-blue-400">border</span>: <span class="text-green-400">2px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">#9333ea</span>;
+  <span class="text-blue-400">border-radius</span>: <span class="text-green-400">8px</span>;
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">border-box</span>;
+}</pre>
+        <p class="text-gray-400 text-sm">
+          Input con padding asimétrico para acomodar un ícono interno.
+        </p>
+      </div>
+
+      <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Sidebar con Espaciado</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">.sidebar</span> {
+  <span class="text-blue-400">width</span>: <span class="text-green-400">250px</span>;
+  <span class="text-blue-400">height</span>: <span class="text-green-400">100vh</span>;
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">20px</span>;
+  <span class="text-blue-400">border-right</span>: <span class="text-green-400">1px</span> <span class="text-orange-400">solid</span> <span class="text-green-400">#6b21a8</span>;
+  <span class="text-blue-400">box-sizing</span>: <span class="text-orange-400">border-box</span>;
+}
+
+<span class="text-purple-400">.sidebar-item</span> {
+  <span class="text-blue-400">padding</span>: <span class="text-green-400">12px 16px</span>;
+  <span class="text-blue-400">margin-bottom</span>: <span class="text-green-400">8px</span>;
+  <span class="text-blue-400">border-radius</span>: <span class="text-green-400">6px</span>;
+}</pre>
+        <p class="text-gray-400 text-sm">
+          Sidebar con altura completa y elementos con espaciado uniforme.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="actividad" class="py-20 bg-gradient-to-b from-dark-purple-950 to-dark-purple-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-css-purple-400 font-bold">Interactiva</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Experimenta con el modelo de caja en tiempo real!
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+        <div class="bg-dark-purple-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-6">
+              <h3 class="text-xl font-bold mb-6 text-css-purple-400">Controles del Box Model</h3>
+
+              <div class="bg-dark-purple-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Dimensiones</h4>
+                <div class="space-y-3">
+                  <div>
+                    <label class="text-gray-300 text-sm mb-1 block">Width: <span id="widthValue">200</span>px</label>
+                    <input type="range" title="." id="widthSlider" min="100" max="400" value="200" class="w-full">
+                  </div>
+                  <div>
+                    <label class="text-gray-300 text-sm mb-1 block">Height: <span id="heightValue">150</span>px</label>
+                    <input type="range" title="." id="heightSlider" min="50" max="300" value="150" class="w-full">
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-dark-purple-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Padding</h4>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-gray-300 text-xs mb-1 block">Top: <span id="paddingTopValue">20</span>px</label>
+                    <input type="range" title="." id="paddingTopSlider" min="0" max="50" value="20" class="w-full">
+                  </div>
+                  <div>
+                    <label class="text-gray-300 text-xs mb-1 block">Right: <span id="paddingRightValue">20</span>px</label>
+                    <input type="range" title="." id="paddingRightSlider" min="0" max="50" value="20" class="w-full">
+                  </div>
+                  <div>
+                    <label class="text-gray-300 text-xs mb-1 block">Bottom: <span id="paddingBottomValue">20</span>px</label>
+                    <input type="range" title="." id="paddingBottomSlider" min="0" max="50" value="20" class="w-full">
+                  </div>
+                  <div>
+                    <label class="text-gray-300 text-xs mb-1 block">Left: <span id="paddingLeftValue">20</span>px</label>
+                    <input type="range" title="." id="paddingLeftSlider" min="0" max="50" value="20" class="w-full">
+                  </div>
+                </div>
+              </div>
+ 
+              <div class="bg-dark-purple-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Border</h4>
+                <div class="space-y-3">
+                  <div>
+                    <label class="text-gray-300 text-sm mb-1 block">Width: <span id="borderWidthValue">5</span>px</label>
+                    <input type="range" title="." id="borderWidthSlider" min="0" max="20" value="5" class="w-full">
+                  </div>
+                  <div>
+                    <label class="text-gray-300 text-sm mb-1 block">Style:</label>
+                    <select id="borderStyleSelect" title="." class="w-full bg-gray-800 text-white px-3 py-2 rounded border border-gray-700">
+                      <option value="solid">Solid</option>
+                      <option value="dashed">Dashed</option>
+                      <option value="dotted">Dotted</option>
+                      <option value="double">Double</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="text-gray-300 text-sm mb-1 block">Color:</label>
+                    <input type="color" title="." id="borderColorPicker" value="#9333ea" class="w-full h-10 rounded cursor-pointer">
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-dark-purple-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Margin</h4>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-gray-300 text-xs mb-1 block">Top: <span id="marginTopValue">15</span>px</label>
+                    <input type="range" title="." id="marginTopSlider" min="0" max="50" value="15" class="w-full">
+                  </div>
+                  <div>
+                    <label class="text-gray-300 text-xs mb-1 block">Right: <span id="marginRightValue">15</span>px</label>
+                    <input type="range" title="." id="marginRightSlider" min="0" max="50" value="15" class="w-full">
+                  </div>
+                  <div>
+                    <label class="text-gray-300 text-xs mb-1 block">Bottom: <span id="marginBottomValue">15</span>px</label>
+                    <input type="range" title="." id="marginBottomSlider" min="0" max="50" value="15" class="w-full">
+                  </div>
+                  <div>
+                    <label class="text-gray-300 text-xs mb-1 block">Left: <span id="marginLeftValue">15</span>px</label>
+                    <input type="range" title="." id="marginLeftSlider" min="0" max="50" value="15" class="w-full">
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-dark-purple-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Box Sizing</h4>
+                <select id="boxSizingSelect" title="." class="w-full bg-gray-800 text-white px-3 py-2 rounded border border-gray-700">
+                  <option value="content-box">content-box (default)</option>
+                  <option value="border-box" selected>border-box (recomendado)</option>
+                </select>
+              </div>
+
+              <div class="bg-dark-purple-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Acciones</h4>
+                <div class="grid grid-cols-2 gap-3">
+                  <button id="resetBtn" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                    🔄 Reset
+                  </button>
+                  <button id="copyCodeBtn" class="bg-css-purple-600 hover:bg-css-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                    📋 Copiar CSS
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-css-purple-400">Visualización</h3>
+              
+              <div class="bg-dark-purple-900/50 p-8 rounded-lg border border-gray-700 mb-6 min-h-[400px] flex items-center justify-center">
+                <div id="boxPreview" style="
+                  width: 200px;
+                  height: 150px;
+                  padding: 20px;
+                  border: 5px solid #9333ea;
+                  margin: 15px;
+                  box-sizing: border-box;
+                  background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-weight: bold;
+                  border-radius: 8px;
+                ">
+                  CONTENIDO
+                </div>
+              </div>
+
+              <div class="bg-dark-purple-900/50 p-6 rounded-lg border border-gray-700 mb-6">
+                <h4 class="text-white font-semibold mb-4">Medidas Calculadas</h4>
+                <div class="space-y-2 text-sm font-mono">
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">Área de contenido:</span>
+                    <span id="contentArea" class="text-css-purple-400">200 × 150 px</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">+ Padding:</span>
+                    <span id="withPadding" class="text-blue-400">240 × 190 px</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">+ Border:</span>
+                    <span id="withBorder" class="text-green-400">250 × 200 px</span>
+                  </div>
+                  <div class="flex justify-between border-t border-gray-700 pt-2 mt-2">
+                    <span class="text-white font-bold">Espacio total:</span>
+                    <span id="totalSpace" class="text-orange-400 font-bold">280 × 230 px</span>
+                  </div>
+                </div>
+              </div>
+ 
+              <div class="bg-dark-purple-900/50 p-6 rounded-lg border border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                  <h4 class="text-white font-semibold">CSS Generado</h4>
+                </div>
+                <pre id="generatedCSS" class="code-block text-xs max-h-[300px] overflow-y-auto"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16 text-center">
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <footer class="bg-dark-purple-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende CSS: Modelo de Caja - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Box Model Interactive Activity
+    const boxPreview = document.getElementById('boxPreview');
+    const generatedCSS = document.getElementById('generatedCSS');
+    
+    // Value displays
+    const widthValue = document.getElementById('widthValue');
+    const heightValue = document.getElementById('heightValue');
+    const paddingTopValue = document.getElementById('paddingTopValue');
+    const paddingRightValue = document.getElementById('paddingRightValue');
+    const paddingBottomValue = document.getElementById('paddingBottomValue');
+    const paddingLeftValue = document.getElementById('paddingLeftValue');
+    const borderWidthValue = document.getElementById('borderWidthValue');
+    const marginTopValue = document.getElementById('marginTopValue');
+    const marginRightValue = document.getElementById('marginRightValue');
+    const marginBottomValue = document.getElementById('marginBottomValue');
+    const marginLeftValue = document.getElementById('marginLeftValue');
+
+    // Sliders
+    const widthSlider = document.getElementById('widthSlider');
+    const heightSlider = document.getElementById('heightSlider');
+    const paddingTopSlider = document.getElementById('paddingTopSlider');
+    const paddingRightSlider = document.getElementById('paddingRightSlider');
+    const paddingBottomSlider = document.getElementById('paddingBottomSlider');
+    const paddingLeftSlider = document.getElementById('paddingLeftSlider');
+    const borderWidthSlider = document.getElementById('borderWidthSlider');
+    const marginTopSlider = document.getElementById('marginTopSlider');
+    const marginRightSlider = document.getElementById('marginRightSlider');
+    const marginBottomSlider = document.getElementById('marginBottomSlider');
+    const marginLeftSlider = document.getElementById('marginLeftSlider');
+
+    // Selects
+    const borderStyleSelect = document.getElementById('borderStyleSelect');
+    const borderColorPicker = document.getElementById('borderColorPicker');
+    const boxSizingSelect = document.getElementById('boxSizingSelect');
+
+    // Measurements
+    const contentArea = document.getElementById('contentArea');
+    const withPadding = document.getElementById('withPadding');
+    const withBorder = document.getElementById('withBorder');
+    const totalSpace = document.getElementById('totalSpace');
+
+    function updateBox() {
+      const width = parseInt(widthSlider.value);
+      const height = parseInt(heightSlider.value);
+      const paddingTop = parseInt(paddingTopSlider.value);
+      const paddingRight = parseInt(paddingRightSlider.value);
+      const paddingBottom = parseInt(paddingBottomSlider.value);
+      const paddingLeft = parseInt(paddingLeftSlider.value);
+      const borderWidth = parseInt(borderWidthSlider.value);
+      const borderStyle = borderStyleSelect.value;
+      const borderColor = borderColorPicker.value;
+      const marginTop = parseInt(marginTopSlider.value);
+      const marginRight = parseInt(marginRightSlider.value);
+      const marginBottom = parseInt(marginBottomSlider.value);
+      const marginLeft = parseInt(marginLeftSlider.value);
+      const boxSizing = boxSizingSelect.value;
+
+      // Update value displays
+      widthValue.textContent = width;
+      heightValue.textContent = height;
+      paddingTopValue.textContent = paddingTop;
+      paddingRightValue.textContent = paddingRight;
+      paddingBottomValue.textContent = paddingBottom;
+      paddingLeftValue.textContent = paddingLeft;
+      borderWidthValue.textContent = borderWidth;
+      marginTopValue.textContent = marginTop;
+      marginRightValue.textContent = marginRight;
+      marginBottomValue.textContent = marginBottom;
+      marginLeftValue.textContent = marginLeft;
+
+      // Apply styles
+      boxPreview.style.width = width + 'px';
+      boxPreview.style.height = height + 'px';
+      boxPreview.style.paddingTop = paddingTop + 'px';
+      boxPreview.style.paddingRight = paddingRight + 'px';
+      boxPreview.style.paddingBottom = paddingBottom + 'px';
+      boxPreview.style.paddingLeft = paddingLeft + 'px';
+      boxPreview.style.borderWidth = borderWidth + 'px';
+      boxPreview.style.borderStyle = borderStyle;
+      boxPreview.style.borderColor = borderColor;
+      boxPreview.style.marginTop = marginTop + 'px';
+      boxPreview.style.marginRight = marginRight + 'px';
+      boxPreview.style.marginBottom = marginBottom + 'px';
+      boxPreview.style.marginLeft = marginLeft + 'px';
+      boxPreview.style.boxSizing = boxSizing;
+
+      // Calculate measurements
+      let contentW = width;
+      let contentH = height;
+      
+      if (boxSizing === 'border-box') {
+        contentW = width - paddingLeft - paddingRight - (borderWidth * 2);
+        contentH = height - paddingTop - paddingBottom - (borderWidth * 2);
+      }
+
+      const withPaddingW = contentW + paddingLeft + paddingRight;
+      const withPaddingH = contentH + paddingTop + paddingBottom;
+      
+      const withBorderW = withPaddingW + (borderWidth * 2);
+      const withBorderH = withPaddingH + (borderWidth * 2);
+      
+      const totalW = withBorderW + marginLeft + marginRight;
+      const totalH = withBorderH + marginTop + marginBottom;
+
+      // Update measurements
+      if (boxSizing === 'border-box') {
+        contentArea.textContent = `${contentW} × ${contentH} px`;
+      } else {
+        contentArea.textContent = `${width} × ${height} px`;
+      }
+      withPadding.textContent = `${withPaddingW} × ${withPaddingH} px`;
+      withBorder.textContent = `${withBorderW} × ${withBorderH} px`;
+      totalSpace.textContent = `${totalW} × ${totalH} px`;
+
+      // Generate CSS
+      const css = `.elemento {\n` +
+        `  width: ${width}px;\n` +
+        `  height: ${height}px;\n` +
+        `  padding: ${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px;\n` +
+        `  border: ${borderWidth}px ${borderStyle} ${borderColor};\n` +
+        `  margin: ${marginTop}px ${marginRight}px ${marginBottom}px ${marginLeft}px;\n` +
+        `  box-sizing: ${boxSizing};\n` +
+        `}`;
+
+      generatedCSS.textContent = css;
+    }
+
+    // Event listeners
+    widthSlider.addEventListener('input', updateBox);
+    heightSlider.addEventListener('input', updateBox);
+    paddingTopSlider.addEventListener('input', updateBox);
+    paddingRightSlider.addEventListener('input', updateBox);
+    paddingBottomSlider.addEventListener('input', updateBox);
+    paddingLeftSlider.addEventListener('input', updateBox);
+    borderWidthSlider.addEventListener('input', updateBox);
+    marginTopSlider.addEventListener('input', updateBox);
+    marginRightSlider.addEventListener('input', updateBox);
+    marginBottomSlider.addEventListener('input', updateBox);
+    marginLeftSlider.addEventListener('input', updateBox);
+    borderStyleSelect.addEventListener('change', updateBox);
+    borderColorPicker.addEventListener('input', updateBox);
+    boxSizingSelect.addEventListener('change', updateBox);
+
+    // Reset button
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      widthSlider.value = 200;
+      heightSlider.value = 150;
+      paddingTopSlider.value = 20;
+      paddingRightSlider.value = 20;
+      paddingBottomSlider.value = 20;
+      paddingLeftSlider.value = 20;
+      borderWidthSlider.value = 5;
+      marginTopSlider.value = 15;
+      marginRightSlider.value = 15;
+      marginBottomSlider.value = 15;
+      marginLeftSlider.value = 15;
+      borderStyleSelect.value = 'solid';
+      borderColorPicker.value = '#9333ea';
+      boxSizingSelect.value = 'border-box';
+      updateBox();
+    });
+
+    // Copy CSS button
+    document.getElementById('copyCodeBtn').addEventListener('click', () => {
+      const css = generatedCSS.textContent;
+      navigator.clipboard.writeText(css).then(() => {
+        const btn = document.getElementById('copyCodeBtn');
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Copiado!';
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 2000);
+      });
+    });
+
+    // Initialize
+    updateBox();
+
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .property-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

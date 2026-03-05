@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introducción a CSS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'css-purple': {
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+              950: '#2e1065',
+            },
+            'dark-blue': {
+              900: '#0a1020',
+              950: '#050a14',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .timeline-circle {
+        @apply w-12 h-12 rounded-full bg-css-purple-500 flex items-center justify-center text-white font-bold text-lg z-10;
+      }
+      .timeline-line {
+        @apply absolute left-6 top-0 bottom-0 w-0.5 bg-css-purple-800/50 transform translate-x-0;
+      }
+      .feature-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 hover:border-css-purple-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-css-purple-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-blue-950 text-gray-200 mx-auto md:mx-20">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-blue-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="s-css.html" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-css-purple-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-blue-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-css-purple-500">C</span>
+              </div>
+            </div>
+            <a href="s-css.html"><span class="text-2xl font-extrabold text-white">CSS</span></a>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#caracteristicas" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Características</a>
+          <a href="#historia" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Historia</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#caracteristicas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Características</a>
+        <a href="#historia" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Historia</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-css-purple-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          Introducción a
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-css-purple-400">CSS</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-3xl mx-auto animate-slide-up">
+          Cascading Style Sheets (CSS) es el lenguaje que da estilo y diseño a tus páginas web, transformando el contenido HTML en experiencias visuales atractivas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="caracteristicas" class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      Características de <span class="text-css-purple-400 font-bold">CSS</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Lenguaje de Estilos</h3>
+        <p class="text-gray-300 leading-relaxed">
+          CSS no es un lenguaje de programación; es un lenguaje de hojas de estilo que define la apariencia de tu contenido HTML. CSS consiste en una serie de reglas que determinan cómo se mostrarán los elementos en la pantalla.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Con CSS puedes controlar colores, fuentes, márgenes, posicionamiento, animaciones y mucho más, permitiéndote crear diseños atractivos y responsivos.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Separación de Contenido y Diseño</h3>
+        <p class="text-gray-300 leading-relaxed">
+          CSS permite separar el contenido (HTML) de su presentación visual. Esta separación hace que el mantenimiento de sitios web sea más sencillo, ya que puedes modificar el diseño sin alterar el contenido.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Un solo archivo CSS puede controlar el estilo de múltiples páginas HTML, lo que garantiza consistencia visual y reduce la duplicación de código.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Selectores y Especificidad</h3>
+        <p class="text-gray-300 leading-relaxed">
+          CSS utiliza selectores para apuntar a elementos HTML específicos. Puedes seleccionar elementos por tipo, clase, ID, atributo o relación con otros elementos.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          La especificidad determina qué reglas CSS se aplican cuando múltiples reglas apuntan al mismo elemento, creando un sistema de cascada que da nombre al lenguaje.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Diseño Responsivo</h3>
+        <p class="text-gray-300 leading-relaxed">
+          CSS moderno permite crear diseños que se adaptan a diferentes tamaños de pantalla y dispositivos mediante técnicas como media queries, flexbox y grid.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Estas herramientas permiten que un sitio web se vea bien y funcione correctamente en dispositivos que van desde teléfonos móviles hasta pantallas de escritorio de gran tamaño.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- History Section -->
+  <section id="historia" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Historia y <span class="text-css-purple-400 font-bold">Evolución</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Desde su creación hasta la actualidad, CSS ha evolucionado significativamente
+      </p>
+
+      <div class="max-w-4xl mx-auto">
+        <div class="relative">
+          <!-- Timeline line -->
+          <div class="timeline-line md:left-1/2 md:translate-x-[-50%]"></div>
+          
+          <!-- Timeline items -->
+          <div class="space-y-24">
+            <!-- CSS1 -->
+            <div class="relative flex flex-col md:flex-row items-center md:justify-between">
+              <div class="flex-1 md:text-right md:pr-8 order-2 md:order-1 mt-4 md:mt-0">
+                <h3 class="text-xl font-bold text-css-purple-400">1996: CSS Nivel 1</h3>
+                <p class="text-gray-300 mt-2">
+                  Primera especificación oficial de CSS. Introdujo propiedades básicas para fuentes, colores, texto, márgenes, bordes y posicionamiento.
+                </p>
+              </div>
+              <div class="timeline-circle order-1 md:order-2">
+                <span>1</span>
+              </div>
+            </div>
+            
+            <!-- CSS2 -->
+            <div class="relative flex flex-col md:flex-row items-center md:justify-between">
+              <div class="timeline-circle order-1">
+                <span>2</span>
+              </div>
+              <div class="flex-1 md:pl-8 order-2 mt-4 md:mt-0">
+                <h3 class="text-xl font-bold text-css-purple-400">1998: CSS Nivel 2</h3>
+                <p class="text-gray-300 mt-2">
+                  Añadió soporte para medios específicos (impresión, pantalla), posicionamiento absoluto, relativo y fijo, y el concepto de z-index.
+                </p>
+              </div>
+            </div>
+            
+            <!-- CSS2.1 -->
+            <div class="relative flex flex-col md:flex-row items-center md:justify-between">
+              <div class="flex-1 md:text-right md:pr-8 order-2 md:order-1 mt-4 md:mt-0">
+                <h3 class="text-xl font-bold text-css-purple-400">2011: CSS 2.1</h3>
+                <p class="text-gray-300 mt-2">
+                  Corrección y actualización de CSS2. Se convirtió en la especificación estable y ampliamente implementada por los navegadores.
+                </p>
+              </div>
+              <div class="timeline-circle order-1 md:order-2">
+                <span>3</span>
+              </div>
+            </div>
+            
+            <!-- CSS3 -->
+            <div class="relative flex flex-col md:flex-row items-center md:justify-between">
+              <div class="timeline-circle order-1">
+                <span>4</span>
+              </div>
+              <div class="flex-1 md:pl-8 order-2 mt-4 md:mt-0">
+                <h3 class="text-xl font-bold text-css-purple-400">2012-presente: CSS3 y Módulos</h3>
+                <p class="text-gray-300 mt-2">
+                  CSS3 se dividió en módulos independientes. Introdujo animaciones, transiciones, flexbox, grid, variables, media queries y muchas más características avanzadas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Examples Section -->
+  <section id="ejemplos" class="container mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      Ejemplos de <span class="text-css-purple-400 font-bold">Código CSS</span>
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Basic CSS Example -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-css-purple-400">CSS Básico</h3>
+        <pre class="code-block">
+<span class="text-css-purple-400">/* Selector de elemento */</span>
+<span class="text-css-purple-500">body</span> {
+  <span class="text-purple-400">font-family</span>: <span class="text-green-400">'Arial', sans-serif</span>;
+  <span class="text-purple-400">background-color</span>: <span class="text-green-400">#f0f0f0</span>;
+  <span class="text-purple-400">margin</span>: <span class="text-green-400">0</span>;
+  <span class="text-purple-400">padding</span>: <span class="text-green-400">0</span>;
+}
+
+<span class="text-css-purple-400">/* Selector de clase */</span>
+<span class="text-css-purple-500">.container</span> {
+  <span class="text-purple-400">max-width</span>: <span class="text-green-400">1200px</span>;
+  <span class="text-purple-400">margin</span>: <span class="text-green-400">0 auto</span>;
+  <span class="text-purple-400">padding</span>: <span class="text-green-400">20px</span>;
+}
+
+<span class="text-css-purple-400">/* Selector de ID */</span>
+<span class="text-css-purple-500">#header</span> {
+  <span class="text-purple-400">background-color</span>: <span class="text-green-400">#8b5cf6</span>;
+  <span class="text-purple-400">color</span>: <span class="text-green-400">white</span>;
+  <span class="text-purple-400">padding</span>: <span class="text-green-400">1rem</span>;
+}</pre>
+      </div>
+
+      <!-- Advanced CSS Example -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-css-purple-400">CSS Avanzado</h3>
+        <pre class="code-block">
+<span class="text-css-purple-400">/* Flexbox */</span>
+<span class="text-css-purple-500">.flex-container</span> {
+  <span class="text-purple-400">display</span>: <span class="text-green-400">flex</span>;
+  <span class="text-purple-400">justify-content</span>: <span class="text-green-400">space-between</span>;
+  <span class="text-purple-400">align-items</span>: <span class="text-green-400">center</span>;
+  <span class="text-purple-400">flex-wrap</span>: <span class="text-green-400">wrap</span>;
+}
+
+<span class="text-css-purple-400">/* Media Query */</span>
+<span class="text-css-purple-500">@media (max-width: 768px)</span> {
+  <span class="text-css-purple-500">.flex-container</span> {
+    <span class="text-purple-400">flex-direction</span>: <span class="text-green-400">column</span>;
+  }
+}
+
+<span class="text-css-purple-400">/* Animación */</span>
+<span class="text-css-purple-500">@keyframes fadeIn</span> {
+  <span class="text-css-purple-500">0%</span> { <span class="text-purple-400">opacity</span>: <span class="text-green-400">0</span>; }
+  <span class="text-css-purple-500">100%</span> { <span class="text-purple-400">opacity</span>: <span class="text-green-400">1</span>; }
+}
+
+<span class="text-css-purple-500">.animated</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">fadeIn 1s ease-in-out</span>;
+}</pre>
+      </div>
+    </div>
+
+    <!-- Interactive Demo -->
+    <div class="mt-16 max-w-4xl mx-auto">
+      <h3 class="text-2xl font-bold mb-6 text-css-purple-400 text-center">Demo Interactiva</h3>
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="text-lg font-semibold mb-4 text-white">Ajusta los estilos:</h4>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-gray-400 mb-2">Color de fondo</label>
+                <input type="color" id="bgColor" value="#8b5cf6" class="w-full h-10 rounded cursor-pointer" title=".">
+              </div>
+              <div>
+                <label class="block text-gray-400 mb-2">Radio de borde</label>
+                <input type="range" id="borderRadius" min="0" max="50" value="8" class="w-full" title=".">
+              </div>
+              <div>
+                <label class="block text-gray-400 mb-2">Padding</label>
+                <input type="range" id="padding" min="0" max="50" value="20" class="w-full" title=".">
+              </div>
+              <div>
+                <label class="block text-gray-400 mb-2">Sombra</label>
+                <input type="range" id="shadow" min="0" max="50" value="10" class="w-full" title=".">
+              </div>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold mb-4 text-white">Resultado:</h4>
+            <div id="demoBox" class="w-full h-40 bg-css-purple-500 rounded-lg flex items-center justify-center text-white font-bold transition-all duration-300">
+              Elemento CSS
+            </div>
+            <pre id="cssCode" class="code-block mt-4 text-xs">
+<span class="text-css-purple-500">.box</span> {
+  <span class="text-purple-400">background-color</span>: <span class="text-green-400">#8b5cf6</span>;
+  <span class="text-purple-400">border-radius</span>: <span class="text-green-400">8px</span>;
+  <span class="text-purple-400">padding</span>: <span class="text-green-400">20px</span>;
+  <span class="text-purple-400">box-shadow</span>: <span class="text-green-400">0 10px 25px rgba(0, 0, 0, 0.2)</span>;
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({
+            behavior: 'smooth'
+          });
+          
+          // Close mobile menu if open
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Interactive demo
+    const demoBox = document.getElementById('demoBox');
+    const cssCode = document.getElementById('cssCode');
+    const bgColor = document.getElementById('bgColor');
+    const borderRadius = document.getElementById('borderRadius');
+    const padding = document.getElementById('padding');
+    const shadow = document.getElementById('shadow');
+
+    function updateDemo() {
+      const bgColorValue = bgColor.value;
+      const borderRadiusValue = borderRadius.value;
+      const paddingValue = padding.value;
+      const shadowValue = shadow.value;
+      
+      demoBox.style.backgroundColor = bgColorValue;
+      demoBox.style.borderRadius = `${borderRadiusValue}px`;
+      demoBox.style.padding = `${paddingValue}px`;
+      demoBox.style.boxShadow = `0 ${shadowValue}px 25px rgba(0, 0, 0, 0.2)`;
+
+      cssCode.innerHTML = `<span class="text-css-purple-500">.box</span> {
+  <span class="text-purple-400">background-color</span>: <span class="text-green-400">${bgColorValue}</span>;
+  <span class="text-purple-400">border-radius</span>: <span class="text-green-400">${borderRadiusValue}px</span>;
+  <span class="text-purple-400">padding</span>: <span class="text-green-400">${paddingValue}px</span>;
+  <span class="text-purple-400">box-shadow</span>: <span class="text-green-400">0 ${shadowValue}px 25px rgba(0, 0, 0, 0.2)</span>;
+}`;
+    }
+
+    bgColor.addEventListener('input', updateDemo);
+    borderRadius.addEventListener('input', updateDemo);
+    padding.addEventListener('input', updateDemo);
+    shadow.addEventListener('input', updateDemo);
+
+    // Initialize demo
+    updateDemo();
+
+    // Add animation to timeline items
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .timeline-circle, .flex.flex-col').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

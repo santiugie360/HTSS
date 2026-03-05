@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS: Unidades de Medida y Colores</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  colors: {
+                      dark: '#0a0f1a',
+                      darker: '#050a14',
+                      accent: '#663399', // rebeccapurple
+                      accentLight: '#9370DB', // mediumPurple
+                      accentDark: '#4B0082' // indigo
+                  }
+              }
+          }
+      }
+  </script>
+  <style>
+      @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0px); }
+      }
+      .float-animation:hover {
+          animation: float 2s ease-in-out infinite;
+      }
+      .glow-effect:hover {
+          box-shadow: 0 0 15px rgba(102, 51, 153, 0.5);
+      }
+      .scale-effect:hover {
+          transform: scale(1.03);
+      }
+      .rotate-effect:hover .icon-container {
+          transform: rotate(10deg);
+      }
+      .code-block {
+          position: relative;
+          overflow: hidden;
+      }
+      .color-preview {
+          transition: all 0.3s ease;
+      }
+      .color-slider {
+          -webkit-appearance: none;
+          height: 8px;
+          border-radius: 4px;
+          background: #1f2937;
+          outline: none;
+      }
+      .color-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: #663399;
+          cursor: pointer;
+      }
+      .color-slider::-moz-range-thumb {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: #663399;
+          cursor: pointer;
+      }
+      .unit-box {
+          transition: all 0.3s ease;
+      }
+      .unit-box:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+  </style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+  <header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+      <nav class="container mx-auto px-4 py-4">
+          <div class="flex justify-between items-center">
+              <a href="s-css.html"><h1 class="text-2xl font-bold">CSS<span class="text-accent">Unidades</span></h1></a>
+              <div class="hidden md:flex space-x-6">
+                  <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                  <a href="#unidades-absolutas" class="hover:text-accent transition-colors duration-300">Unidades Absolutas</a>
+                  <a href="#unidades-relativas" class="hover:text-accent transition-colors duration-300">Unidades Relativas</a>
+                  <a href="#colores" class="hover:text-accent transition-colors duration-300">Colores</a>
+                  <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+              </div>
+              <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+              </button>
+          </div>
+          <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+              <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+              <a href="#unidades-absolutas" class="block py-2 hover:text-accent transition-colors duration-300">Unidades Absolutas</a>
+              <a href="#unidades-relativas" class="block py-2 hover:text-accent transition-colors duration-300">Unidades Relativas</a>
+              <a href="#colores" class="block py-2 hover:text-accent transition-colors duration-300">Colores</a>
+              <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+          </div>
+      </nav>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+      <section class="text-center py-16">
+          <h1 class="text-5xl font-bold mb-4">Unidades de Medida y <span class="text-accent">Colores</span> en CSS</h1>
+          <p class="text-xl max-w-3xl mx-auto">Aprende a utilizar las diferentes unidades de medida y a representar colores en tus estilos CSS</p>
+      </section>
+
+      <section id="introduccion" class="mb-16">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Introducción</h2>
+          <p class="mb-8 text-lg leading-relaxed">Las unidades de medida y los colores son fundamentales en CSS para definir tamaños, espaciados y apariencia visual de los elementos. Elegir las unidades adecuadas es crucial para crear diseños responsivos y accesibles.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+                  <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                  </div>
+                  <h3 class="text-xl font-bold mb-4 text-accent">Unidades de Medida</h3>
+                  <p class="text-base">Las unidades de medida en CSS se dividen en dos categorías principales: absolutas y relativas. Cada una tiene sus propios casos de uso y ventajas.</p>
+                  <ul class="list-disc pl-5 mt-4 space-y-1">
+                      <li>Unidades absolutas: px, pt, cm, mm, in</li>
+                      <li>Unidades relativas: %, em, rem, vh, vw</li>
+                  </ul>
+              </div>
+              <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+                  <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                      </svg>
+                  </div>
+                  <h3 class="text-xl font-bold mb-4 text-accent">Colores</h3>
+                  <p class="text-base">CSS ofrece múltiples formas de representar colores, desde nombres predefinidos hasta valores numéricos en diferentes formatos.</p>
+                  <ul class="list-disc pl-5 mt-4 space-y-1">
+                      <li>Nombres de colores: red, blue, rebeccapurple</li>
+                      <li>Hexadecimal: #FF0000, #0000FF</li>
+                      <li>RGB/RGBA: rgb(255, 0, 0), rgba(0, 0, 255, 0.5)</li>
+                      <li>HSL/HSLA: hsl(0, 100%, 50%), hsla(240, 100%, 50%, 0.5)</li>
+                  </ul>
+              </div>
+          </div>
+      </section>
+
+      <section id="unidades-absolutas" class="mb-16">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Unidades Absolutas</h2>
+          
+          <p class="mb-8 text-lg">Las unidades absolutas tienen un valor fijo y no cambian según el contexto. Son útiles cuando se necesita precisión exacta, como en impresión o cuando el tamaño debe ser independiente de otros factores.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Píxeles (px)</h3>
+                  <p class="mb-4">La unidad más común en diseño web. Un píxel es un punto en la pantalla.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>font-size: 16px;
+margin: 10px;
+width: 200px;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800">
+                      <div style="width: 100px; height: 20px; background-color: #663399;"></div>
+                      <p class="text-xs text-center mt-1">100px de ancho</p>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Puntos (pt)</h3>
+                  <p class="mb-4">Utilizada principalmente para impresión. 1pt = 1/72 de pulgada.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>font-size: 12pt;
+margin: 6pt;
+padding: 3pt;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800">
+                      <p style="font-size: 12pt;">Texto de 12pt</p>
+                      <p style="font-size: 16pt;">Texto de 16pt</p>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Centímetros (cm)</h3>
+                  <p class="mb-4">Medida del mundo real. Útil para diseños que requieren precisión física.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>width: 5cm;
+height: 2cm;
+margin: 0.5cm;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800 flex items-center justify-center">
+                      <div class="relative">
+                          <div style="width: 2.54cm; height: 0.5cm; background-color: #663399;"></div>
+                          <p class="text-xs text-center mt-1">≈ 2.54cm (1 pulgada)</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Milímetros (mm)</h3>
+                  <p class="mb-4">Similar a centímetros pero más preciso. 10mm = 1cm.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>border-width: 2mm;
+padding: 5mm;
+margin: 10mm;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800 flex items-center justify-center">
+                      <div class="relative">
+                          <div style="width: 10mm; height: 10mm; background-color: #663399;"></div>
+                          <p class="text-xs text-center mt-1">10mm × 10mm</p>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Pulgadas (in)</h3>
+                  <p class="mb-4">Unidad de medida imperial. 1in = 96px = 2.54cm.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>width: 1in;
+height: 0.5in;
+margin: 0.25in;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800 flex items-center justify-center">
+                      <div class="relative">
+                          <div style="width: 1in; height: 0.25in; background-color: #663399;"></div>
+                          <p class="text-xs text-center mt-1">1in × 0.25in</p>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Picas (pc)</h3>
+                  <p class="mb-4">Utilizada en tipografía. 1pc = 12pt = 1/6 de pulgada.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>text-indent: 1pc;
+margin-left: 2pc;
+padding: 0.5pc;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800">
+                      <p style="text-indent: 1pc;">Este párrafo tiene una sangría de 1 pica, que equivale a 12 puntos o 1/6 de pulgada.</p>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 mt-8">
+              <h3 class="text-xl font-bold mb-4 text-accent">Consideraciones sobre Unidades Absolutas</h3>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                      <h4 class="font-bold mb-2">Ventajas:</h4>
+                      <ul class="list-disc pl-6 space-y-1">
+                          <li>Precisión exacta</li>
+                          <li>Consistencia en diferentes contextos</li>
+                          <li>Ideales para impresión</li>
+                          <li>Fáciles de entender y visualizar</li>
+                      </ul>
+                  </div>
+                  
+                  <div>
+                      <h4 class="font-bold mb-2">Desventajas:</h4>
+                      <ul class="list-disc pl-6 space-y-1">
+                          <li>No se adaptan a diferentes tamaños de pantalla</li>
+                          <li>Pueden causar problemas de accesibilidad</li>
+                          <li>No responden a las preferencias del usuario</li>
+                          <li>Menos flexibles para diseños responsivos</li>
+                      </ul>
+                  </div>
+              </div>
+              
+              <div class="mt-4 p-4 bg-dark rounded-lg border border-gray-700">
+                  <p class="text-amber-400"><strong>Consejo:</strong> En diseño web moderno, se recomienda usar unidades absolutas solo para elementos que realmente necesiten un tamaño fijo, como bordes o pequeños detalles visuales.</p>
+              </div>
+          </div>
+      </section>
+
+      <section id="unidades-relativas" class="mb-16">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Unidades Relativas</h2>
+          
+          <p class="mb-8 text-lg">Las unidades relativas cambian su valor según el contexto, como el tamaño de la fuente del elemento padre, el tamaño de la ventana del navegador o el tamaño de la fuente raíz. Son fundamentales para crear diseños responsivos.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Porcentaje (%)</h3>
+                  <p class="mb-4">Relativo al tamaño del elemento padre.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>width: 50%;
+margin: 10%;
+font-size: 120%;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800">
+                      <div class="w-full h-8 bg-gray-200 mb-2">
+                          <div class="w-1/2 h-full bg-accent"></div>
+                      </div>
+                      <p class="text-xs text-center">50% del ancho del contenedor</p>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">em</h3>
+                  <p class="mb-4">Relativo al tamaño de fuente del elemento padre.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>font-size: 1.2em;
+margin: 1em;
+padding: 0.5em;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800">
+                      <div style="font-size: 16px;">
+                          Texto base (16px)
+                          <div style="font-size: 1.5em;">
+                              Texto 1.5em (24px)
+                              <div style="font-size: 1.5em;">
+                                  Texto 1.5em (36px)
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">rem</h3>
+                  <p class="mb-4">Relativo al tamaño de fuente del elemento raíz (html).</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>font-size: 1.2rem;
+margin: 2rem;
+width: 10rem;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800">
+                      <div>
+                          Texto base
+                          <div style="font-size: 1.5rem;">
+                              Texto 1.5rem
+                              <div style="font-size: 1.5rem;">
+                                  También 1.5rem (no se acumula)
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Viewport Width (vw)</h3>
+                  <p class="mb-4">1vw = 1% del ancho de la ventana del navegador.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>width: 50vw;
+font-size: 5vw;
+margin-left: 10vw;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800">
+                      <div class="w-full bg-gray-200 h-8 mb-2">
+                          <div class="h-full bg-accent" style="width: 30vw;"></div>
+                      </div>
+                      <p class="text-xs text-center">30vw de ancho</p>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Viewport Height (vh)</h3>
+                  <p class="mb-4">1vh = 1% de la altura de la ventana del navegador.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>height: 50vh;
+min-height: 30vh;
+margin-top: 5vh;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800">
+                      <div class="w-full bg-gray-200 mb-2" style="height: 10vh;">
+                          <div class="w-full bg-accent h-full flex items-center justify-center text-white">
+                              10vh de alto
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 unit-box">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Otras Unidades Viewport</h3>
+                  <p class="mb-4">vmin, vmax y otras unidades relativas al viewport.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>/* 1% de la dimensión más pequeña */
+width: 50vmin;
+
+/* 1% de la dimensión más grande */
+height: 30vmax;</code></pre>
+                  </div>
+                  <div class="bg-white p-3 rounded text-gray-800">
+                      <div class="flex space-x-2">
+                          <div>
+                              <div class="bg-accent" style="width: 10vmin; height: 10vmin;"></div>
+                              <p class="text-xs text-center mt-1">10vmin</p>
+                          </div>
+                          <div>
+                              <div class="bg-accent" style="width: 10vmax; height: 10vmin;"></div>
+                              <p class="text-xs text-center mt-1">10vmax × 10vmin</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 mt-8">
+              <h3 class="text-xl font-bold mb-4 text-accent">Cuándo usar cada unidad relativa</h3>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="bg-dark p-4 rounded-lg">
+                      <h4 class="font-bold text-accent mb-2">Para tipografía:</h4>
+                      <ul class="list-disc pl-6 space-y-1">
+                          <li><strong>rem:</strong> Para tamaños de fuente consistentes</li>
+                          <li><strong>em:</strong> Para espaciado relacionado con el tamaño de fuente</li>
+                          <li><strong>%:</strong> Para ajustes relativos al tamaño base</li>
+                      </ul>
+                  </div>
+                  
+                  <div class="bg-dark p-4 rounded-lg">
+                      <h4 class="font-bold text-accent mb-2">Para layout:</h4>
+                      <ul class="list-disc pl-6 space-y-1">
+                          <li><strong>%:</strong> Para anchos relativos al contenedor</li>
+                          <li><strong>vw/vh:</strong> Para elementos relativos a la ventana</li>
+                          <li><strong>vmin/vmax:</strong> Para mantener proporciones</li>
+                      </ul>
+                  </div>
+              </div>
+              
+              <div class="mt-4 p-4 bg-dark rounded-lg border border-gray-700">
+                  <p class="text-green-400"><strong>Buena práctica:</strong> Combina unidades relativas para crear diseños que se adapten a diferentes dispositivos y preferencias de usuario. Por ejemplo, usa rem para tipografía, % para layouts y vw/vh para elementos que deben escalarse con la ventana.</p>
+              </div>
+          </div>
+      </section>
+
+      <section id="colores" class="mb-16">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Representación de Colores</h2>
+          
+          <p class="mb-8 text-lg">CSS ofrece múltiples formas de representar colores, cada una con sus propias ventajas y casos de uso. Entender estos formatos te permite tener un control preciso sobre la apariencia visual de tu sitio.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Nombres de Colores</h3>
+                  <p class="mb-4">CSS incluye 140+ nombres de colores predefinidos que puedes usar directamente.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>color: red;
+background-color: rebeccapurple;
+border-color: gold;</code></pre>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                      <div class="p-4 rounded" style="background-color: red;"></div>
+                      <div class="p-4 rounded" style="background-color: rebeccapurple;"></div>
+                      <div class="p-4 rounded" style="background-color: gold;"></div>
+                  </div>
+                  <div class="mt-2 text-xs text-center">
+                      <span class="mr-2">red</span>
+                      <span class="mr-2">rebeccapurple</span>
+                      <span>gold</span>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                  <h3 class="text-xl font-bold mb-3 text-accent">Hexadecimal</h3>
+                  <p class="mb-4">Formato de 6 dígitos que representa valores RGB en base 16. También existe la versión abreviada de 3 dígitos.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>color: #FF0000;        /* Rojo */
+background: #00FF00;    /* Verde */
+border-color: #0000FF;  /* Azul */
+color: #F00;            /* Rojo abreviado */</code></pre>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                      <div class="p-4 rounded" style="background-color: #FF0000;"></div>
+                      <div class="p-4 rounded" style="background-color: #00FF00;"></div>
+                      <div class="p-4 rounded" style="background-color: #0000FF;"></div>
+                  </div>
+                  <div class="mt-2 text-xs text-center">
+                      <span class="mr-2">#FF0000</span>
+                      <span class="mr-2">#00FF00</span>
+                      <span>#0000FF</span>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                  <h3 class="text-xl font-bold mb-3 text-accent">RGB / RGBA</h3>
+                  <p class="mb-4">Define colores usando valores de Rojo, Verde y Azul (0-255). RGBA añade un canal alfa para transparencia (0-1).</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>color: rgb(255, 0, 0);          /* Rojo */
+background: rgba(0, 0, 255, 0.5); /* Azul 50% opaco */</code></pre>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                      <div class="p-4 rounded" style="background-color: rgb(255, 0, 0);"></div>
+                      <div class="p-4 rounded" style="background-color: rgb(0, 255, 0);"></div>
+                      <div class="p-4 rounded" style="background-color: rgba(0, 0, 255, 0.5);"></div>
+                  </div>
+                  <div class="mt-2 text-xs text-center">
+                      <span class="mr-2">rgb(255, 0, 0)</span>
+                      <span class="mr-2">rgb(0, 255, 0)</span>
+                      <span>rgba(0, 0, 255, 0.5)</span>
+                  </div>
+              </div>
+              
+              <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300">
+                  <h3 class="text-xl font-bold mb-3 text-accent">HSL / HSLA</h3>
+                  <p class="mb-4">Define colores usando Tono (0-360), Saturación (0-100%) y Luminosidad (0-100%). HSLA añade transparencia.</p>
+                  <div class="code-block mb-3">
+                      <pre class="text-gray-300 overflow-x-auto"><code>color: hsl(0, 100%, 50%);          /* Rojo */
+background: hsla(240, 100%, 50%, 0.5); /* Azul 50% opaco */</code></pre>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                      <div class="p-4 rounded" style="background-color: hsl(0, 100%, 50%);"></div>
+                      <div class="p-4 rounded" style="background-color: hsl(120, 100%, 50%);"></div>
+                      <div class="p-4 rounded" style="background-color: hsla(240, 100%, 50%, 0.5);"></div>
+                  </div>
+                  <div class="mt-2 text-xs text-center">
+                      <span class="mr-2">hsl(0, 100%, 50%)</span>
+                      <span class="mr-2">hsl(120, 100%, 50%)</span>
+                      <span>hsla(240, 100%, 50%, 0.5)</span>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 mb-8">
+              <h3 class="text-xl font-bold mb-4 text-accent">Comparación de Formatos de Color</h3>
+              
+              <div class="overflow-x-auto">
+                  <table class="w-full text-sm">
+                      <thead>
+                          <tr class="bg-dark">
+                              <th class="p-2 text-left">Formato</th>
+                              <th class="p-2 text-left">Ventajas</th>
+                              <th class="p-2 text-left">Desventajas</th>
+                              <th class="p-2 text-left">Mejor para</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr class="border-t border-gray-700">
+                              <td class="p-2">Nombres</td>
+                              <td class="p-2">Fácil de recordar y usar</td>
+                              <td class="p-2">Limitado a 140+ colores predefinidos</td>
+                              <td class="p-2">Prototipos rápidos, colores básicos</td>
+                          </tr>
+                          <tr class="border-t border-gray-700">
+                              <td class="p-2">Hexadecimal</td>
+                              <td class="p-2">Compacto, ampliamente usado</td>
+                              <td class="p-2">Difícil de interpretar a simple vista</td>
+                              <td class="p-2">Uso general, compatibilidad</td>
+                          </tr>
+                          <tr class="border-t border-gray-700">
+                              <td class="p-2">RGB/RGBA</td>
+                              <td class="p-2">Intuitivo, soporta transparencia</td>
+                              <td class="p-2">Más verboso que hexadecimal</td>
+                              <td class="p-2">Cuando necesitas transparencia</td>
+                          </tr>
+                          <tr class="border-t border-gray-700">
+                              <td class="p-2">HSL/HSLA</td>
+                              <td class="p-2">Más intuitivo para ajustes de color</td>
+                              <td class="p-2">Menos común, más verboso</td>
+                              <td class="p-2">Generación de paletas, ajustes de color</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800">
+              <h3 class="text-xl font-bold mb-4 text-accent">Funciones Modernas de Color</h3>
+              
+              <p class="mb-4">CSS ha introducido nuevas funciones para trabajar con colores de manera más avanzada:</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="bg-dark p-4 rounded-lg">
+                      <h4 class="font-bold text-accent mb-2">color-mix()</h4>
+                      <p class="mb-2">Mezcla dos colores en un espacio de color específico.</p>
+                      <div class="code-block">
+                          <pre class="text-gray-300 overflow-x-auto"><code>color: color-mix(in srgb, #ff0000 50%, #0000ff 50%);</code></pre>
+                      </div>
+                      <div class="mt-3 flex space-x-2">
+                          <div class="w-8 h-8 rounded" style="background-color: #ff0000;"></div>
+                          <div class="w-8 h-8 rounded" style="background-color: #800080;"></div>
+                          <div class="w-8 h-8 rounded" style="background-color: #0000ff;"></div>
+                      </div>
+                  </div>
+                  
+                  <div class="bg-dark p-4 rounded-lg">
+                      <h4 class="font-bold text-accent mb-2">color-contrast()</h4>
+                      <p class="mb-2">Selecciona el color con mejor contraste de una lista.</p>
+                      <div class="code-block">
+                          <pre class="text-gray-300 overflow-x-auto"><code>color: color-contrast(#background vs #fff, #000);</code></pre>
+                      </div>
+                      <div class="mt-3 flex space-x-2">
+                          <div class="w-16 h-8 rounded flex items-center justify-center" style="background-color: #333333; color: white;">Texto</div>
+                          <div class="w-16 h-8 rounded flex items-center justify-center" style="background-color: #DDDDDD; color: black;">Texto</div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="mt-4 p-4 bg-dark rounded-lg border border-gray-700">
+                  <p class="text-amber-400"><strong>Nota:</strong> Algunas de estas funciones modernas pueden no estar disponibles en todos los navegadores. Verifica la compatibilidad antes de usarlas en producción.</p>
+              </div>
+          </div>
+      </section>
+
+      <section id="actividad" class="mb-16">
+          <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Mezclador de Colores</h2>
+          
+          <p class="mb-8 text-lg leading-relaxed">Experimenta con diferentes formatos de color y observa cómo se relacionan entre sí. Ajusta los controles para crear tu paleta de colores personalizada.</p>
+          
+          <div class="bg-darker p-8 rounded-lg border border-gray-800">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div>
+                      <h3 class="text-2xl font-bold mb-6 text-accent">Controles de Color</h3>
+                      
+                      <div class="space-y-6">
+                          <div class="bg-dark p-5 rounded-lg">
+                              <h4 class="text-xl font-bold mb-4">RGB</h4>
+                              
+                              <div class="space-y-4">
+                                  <div>
+                                      <label class="flex justify-between mb-1">
+                                          <span>Rojo (R)</span>
+                                          <span id="red-value">128</span>
+                                      </label>
+                                      <input type="range" min="0" max="255" value="128" class="color-slider w-full" id="red-slider">
+                                  </div>
+                                  
+                                  <div>
+                                      <label class="flex justify-between mb-1">
+                                          <span>Verde (G)</span>
+                                          <span id="green-value">0</span>
+                                      </label>
+                                      <input type="range" min="0" max="255" value="0" class="color-slider w-full" id="green-slider">
+                                  </div>
+                                  
+                                  <div>
+                                      <label class="flex justify-between mb-1">
+                                          <span>Azul (B)</span>
+                                          <span id="blue-value">128</span>
+                                      </label>
+                                      <input type="range" min="0" max="255" value="128" class="color-slider w-full" id="blue-slider">
+                                  </div>
+                                  
+                                  <div>
+                                      <label class="flex justify-between mb-1">
+                                          <span>Alfa (Opacidad)</span>
+                                          <span id="alpha-value">1.0</span>
+                                      </label>
+                                      <input type="range" min="0" max="1" value="1" step="0.01" class="color-slider w-full" id="alpha-slider">
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="bg-dark p-5 rounded-lg">
+                              <h4 class="text-xl font-bold mb-4">HSL</h4>
+                              
+                              <div class="space-y-4">
+                                  <div>
+                                      <label class="flex justify-between mb-1">
+                                          <span>Tono (H)</span>
+                                          <span id="hue-value">270</span>
+                                      </label>
+                                      <input type="range" min="0" max="360" value="270" class="color-slider w-full" id="hue-slider">
+                                  </div>
+                                  
+                                  <div>
+                                      <label class="flex justify-between mb-1">
+                                          <span>Saturación (S)</span>
+                                          <span id="saturation-value">100%</span>
+                                      </label>
+                                      <input type="range" min="0" max="100" value="100" class="color-slider w-full" id="saturation-slider">
+                                  </div>
+                                  
+                                  <div>
+                                      <label class="flex justify-between mb-1">
+                                          <span>Luminosidad (L)</span>
+                                          <span id="lightness-value">25%</span>
+                                      </label>
+                                      <input type="range" min="0" max="100" value="25" class="color-slider w-full" id="lightness-slider">
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div>
+                      <h3 class="text-2xl font-bold mb-6 text-accent">Vista Previa</h3>
+                      
+                      <div class="bg-dark p-5 rounded-lg mb-6">
+                          <div id="color-preview" class="w-full h-40 rounded-lg mb-4" style="background-color: rgb(128, 0, 128);"></div>
+                          
+                          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                  <h4 class="font-bold mb-2">Valores:</h4>
+                                  <div class="space-y-2">
+                                      <div class="bg-darker p-2 rounded">
+                                          <span class="text-gray-400">Hex: </span>
+                                          <span id="hex-value" class="font-mono">#800080</span>
+                                      </div>
+                                      <div class="bg-darker p-2 rounded">
+                                          <span class="text-gray-400">RGB: </span>
+                                          <span id="rgb-value" class="font-mono">rgb(128, 0, 128)</span>
+                                      </div>
+                                      <div class="bg-darker p-2 rounded">
+                                          <span class="text-gray-400">RGBA: </span>
+                                          <span id="rgba-value" class="font-mono">rgba(128, 0, 128, 1)</span>
+                                      </div>
+                                      <div class="bg-darker p-2 rounded">
+                                          <span class="text-gray-400">HSL: </span>
+                                          <span id="hsl-value" class="font-mono">hsl(270, 100%, 25%)</span>
+                                      </div>
+                                  </div>
+                              </div>
+                              
+                              <div>
+                                  <h4 class="font-bold mb-2">Ejemplos:</h4>
+                                  <div class="space-y-3">
+                                      <div class="bg-white p-3 rounded">
+                                          <p id="text-example" style="color: rgb(128, 0, 128);">Texto con este color</p>
+                                      </div>
+                                      <div class="bg-white p-3 rounded">
+                                          <div class="border-2 rounded p-2" id="border-example" style="border-color: rgb(128, 0, 128);">Borde con este color</div>
+                                      </div>
+                                      <div class="bg-white p-3 rounded flex items-center space-x-2">
+                                          <div class="w-6 h-6 rounded-full" id="bg-example" style="background-color: rgb(128, 0, 128);"></div>
+                                          <span class="text-gray-800">Fondo con este color</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="bg-dark p-5 rounded-lg">
+                          <h4 class="font-bold mb-3">Paleta de Colores</h4>
+                          <p class="mb-4">Haz clic en un cuadro para guardar el color actual en tu paleta:</p>
+                          
+                          <div class="grid grid-cols-5 gap-2 mb-4">
+                              <div class="color-swatch w-full h-12 rounded cursor-pointer bg-gray-700 hover:ring-2 hover:ring-accent"></div>
+                              <div class="color-swatch w-full h-12 rounded cursor-pointer bg-gray-700 hover:ring-2 hover:ring-accent"></div>
+                              <div class="color-swatch w-full h-12 rounded cursor-pointer bg-gray-700 hover:ring-2 hover:ring-accent"></div>
+                              <div class="color-swatch w-full h-12 rounded cursor-pointer bg-gray-700 hover:ring-2 hover:ring-accent"></div>
+                              <div class="color-swatch w-full h-12 rounded cursor-pointer bg-gray-700 hover:ring-2 hover:ring-accent"></div>
+                          </div>
+                          
+                          <div class="text-center">
+                              <button id="reset-palette" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
+                                  Reiniciar Paleta
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+      </section>
+      <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </main>
+
+  <footer class="bg-darker py-8 border-t border-gray-800">
+      <div class="container mx-auto px-4 text-center">
+          <p>CSS: Unidades de Medida y Colores - Guía completa para principiantes</p>
+      </div>
+  </footer>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Mobile menu toggle
+          const menuBtn = document.getElementById('menuBtn');
+          const mobileMenu = document.getElementById('mobileMenu');
+          
+          menuBtn.addEventListener('click', function() {
+              if (mobileMenu.classList.contains('hidden')) {
+                  mobileMenu.classList.remove('hidden');
+              } else {
+                  mobileMenu.classList.add('hidden');
+              }
+          });
+          
+          // Smooth scrolling for anchor links
+          document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+              anchor.addEventListener('click', function (e) {
+                  e.preventDefault();
+                  
+                  const targetId = this.getAttribute('href');
+                  const targetElement = document.querySelector(targetId);
+                  
+                  if (targetElement) {
+                      window.scrollTo({
+                          top: targetElement.offsetTop - 80,
+                          behavior: 'smooth'
+                      });
+                      
+                      if (!mobileMenu.classList.contains('hidden')) {
+                          mobileMenu.classList.add('hidden');
+                      }
+                  }
+              });
+          });
+          
+          // Color Mixer
+          const redSlider = document.getElementById('red-slider');
+          const greenSlider = document.getElementById('green-slider');
+          const blueSlider = document.getElementById('blue-slider');
+          const alphaSlider = document.getElementById('alpha-slider');
+          const hueSlider = document.getElementById('hue-slider');
+          const saturationSlider = document.getElementById('saturation-slider');
+          const lightnessSlider = document.getElementById('lightness-slider');
+          
+          const redValue = document.getElementById('red-value');
+          const greenValue = document.getElementById('green-value');
+          const blueValue = document.getElementById('blue-value');
+          const alphaValue = document.getElementById('alpha-value');
+          const hueValue = document.getElementById('hue-value');
+          const saturationValue = document.getElementById('saturation-value');
+          const lightnessValue = document.getElementById('lightness-value');
+          
+          const colorPreview = document.getElementById('color-preview');
+          const hexValue = document.getElementById('hex-value');
+          const rgbValue = document.getElementById('rgb-value');
+          const rgbaValue = document.getElementById('rgba-value');
+          const hslValue = document.getElementById('hsl-value');
+          
+          const textExample = document.getElementById('text-example');
+          const borderExample = document.getElementById('border-example');
+          const bgExample = document.getElementById('bg-example');
+          
+          const colorSwatches = document.querySelectorAll('.color-swatch');
+          const resetPaletteBtn = document.getElementById('reset-palette');
+          
+          // RGB to HSL conversion
+          function rgbToHsl(r, g, b) {
+              r /= 255;
+              g /= 255;
+              b /= 255;
+              
+              const max = Math.max(r, g, b);
+              const min = Math.min(r, g, b);
+              let h, s, l = (max + min) / 2;
+              
+              if (max === min) {
+                  h = s = 0; // achromatic
+              } else {
+                  const d = max - min;
+                  s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                  
+                  switch (max) {
+                      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                      case g: h = (b - r) / d + 2; break;
+                      case b: h = (r - g) / d + 4; break;
+                  }
+                  
+                  h /= 6;
+              }
+              
+              return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+          }
+          
+          // HSL to RGB conversion
+          function hslToRgb(h, s, l) {
+              h /= 360;
+              s /= 100;
+              l /= 100;
+              
+              let r, g, b;
+              
+              if (s === 0) {
+                  r = g = b = l; // achromatic
+              } else {
+                  const hue2rgb = (p, q, t) => {
+                      if (t < 0) t += 1;
+                      if (t > 1) t -= 1;
+                      if (t < 1/6) return p + (q - p) * 6 * t;
+                      if (t < 1/2) return q;
+                      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                      return p;
+                  };
+                  
+                  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                  const p = 2 * l - q;
+                  
+                  r = hue2rgb(p, q, h + 1/3);
+                  g = hue2rgb(p, q, h);
+                  b = hue2rgb(p, q, h - 1/3);
+              }
+              
+              return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+          }
+          
+          // RGB to Hex conversion
+          function rgbToHex(r, g, b) {
+              return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+          }
+          
+          // Update color from RGB sliders
+          function updateFromRgb() {
+              const r = parseInt(redSlider.value);
+              const g = parseInt(greenSlider.value);
+              const b = parseInt(blueSlider.value);
+              const a = parseFloat(alphaSlider.value);
+              
+              // Update RGB values display
+              redValue.textContent = r;
+              greenValue.textContent = g;
+              blueValue.textContent = b;
+              alphaValue.textContent = a.toFixed(2);
+              
+              // Update HSL sliders without triggering their change events
+              const [h, s, l] = rgbToHsl(r, g, b);
+              
+              hueSlider.value = h;
+              saturationSlider.value = s;
+              lightnessSlider.value = l;
+              
+              hueValue.textContent = h;
+              saturationValue.textContent = s + '%';
+              lightnessValue.textContent = l + '%';
+              
+              // Update color preview and values
+              updateColorPreview(r, g, b, a);
+          }
+          
+          // Update color from HSL sliders
+          function updateFromHsl() {
+              const h = parseInt(hueSlider.value);
+              const s = parseInt(saturationSlider.value);
+              const l = parseInt(lightnessSlider.value);
+              const a = parseFloat(alphaSlider.value);
+              
+              // Update HSL values display
+              hueValue.textContent = h;
+              saturationValue.textContent = s + '%';
+              lightnessValue.textContent = l + '%';
+              
+              // Update RGB sliders without triggering their change events
+              const [r, g, b] = hslToRgb(h, s, l);
+              
+              redSlider.value = r;
+              greenSlider.value = g;
+              blueSlider.value = b;
+              
+              redValue.textContent = r;
+              greenValue.textContent = g;
+              blueValue.textContent = b;
+              
+              // Update color preview and values
+              updateColorPreview(r, g, b, a);
+          }
+          
+          // Update color preview and text values
+          function updateColorPreview(r, g, b, a) {
+              const rgbColor = `rgb(${r}, ${g}, ${b})`;
+              const rgbaColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+              const hexColor = rgbToHex(r, g, b);
+              const [h, s, l] = rgbToHsl(r, g, b);
+              const hslColor = `hsl(${h}, ${s}%, ${l}%)`;
+              
+              // Update preview
+              colorPreview.style.backgroundColor = rgbaColor;
+              
+              // Update text values
+              hexValue.textContent = hexColor;
+              rgbValue.textContent = rgbColor;
+              rgbaValue.textContent = rgbaColor;
+              hslValue.textContent = hslColor;
+              
+              // Update examples
+              textExample.style.color = rgbaColor;
+              borderExample.style.borderColor = rgbaColor;
+              bgExample.style.backgroundColor = rgbaColor;
+          }
+          
+          // Event listeners for RGB sliders
+          redSlider.addEventListener('input', updateFromRgb);
+          greenSlider.addEventListener('input', updateFromRgb);
+          blueSlider.addEventListener('input', updateFromRgb);
+          alphaSlider.addEventListener('input', updateFromRgb);
+          
+          // Event listeners for HSL sliders
+          hueSlider.addEventListener('input', updateFromHsl);
+          saturationSlider.addEventListener('input', updateFromHsl);
+          lightnessSlider.addEventListener('input', updateFromHsl);
+          
+          // Color swatches functionality
+          colorSwatches.forEach(swatch => {
+              swatch.addEventListener('click', function() {
+                  const r = parseInt(redSlider.value);
+                  const g = parseInt(greenSlider.value);
+                  const b = parseInt(blueSlider.value);
+                  const a = parseFloat(alphaSlider.value);
+                  
+                  this.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+              });
+          });
+          
+          // Reset palette
+          resetPaletteBtn.addEventListener('click', function() {
+              colorSwatches.forEach(swatch => {
+                  swatch.style.backgroundColor = '#374151';
+              });
+          });
+          
+          // Initialize with default values
+          updateFromRgb();
+      });
+  </script>
+</body>
+</html>

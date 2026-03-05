@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introducción a HTML</title>
+  <link rel="stylesheet" href="output.css">
+</head>
+<body class="bg-black text-white">
+
+  <header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800 mx:auto md:mx-20">
+    <nav class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+            <a href="s-html.html"><h1 class="text-2xl font-bold text-orange-500">HTML<span class="text-accent text-white">Inicio</span></h1></a>
+            <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg> 
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+            <a href="#encabezados" class="block py-2 hover:text-accent transition-colors duration-300">Encabezados</a>
+            <a href="#parrafos" class="block py-2 hover:text-accent transition-colors duration-300">Párrafos</a>
+            <a href="#negrita-cursiva" class="block py-2 hover:text-accent transition-colors duration-300">Negrita y Cursiva</a>
+            <a href="#listas" class="block py-2 hover:text-accent transition-colors duration-300">Listas</a>
+            <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+        </div>
+    </nav>
+</header>
+
+  <section class="relative h-[70vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-orange-900/20 to-black/80 z-0"></div>
+    <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent"></div>
+
+    
+
+    <div class="container mx-auto px-4 z-10 text-center">
+      <a href="s-html.html"><h1 class="text-5xl md:text-7xl font-thin tracking-wider mb-4">
+        Introducción a
+        <span class="block text-6xl md:text-8xl font-bold mt-2 text-orange-500">HTML</span>
+      </h1></a>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto mt-6 text-gray-300">
+        El lenguaje fundamental para crear la estructura de cualquier página web
+      </p>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-light mb-4">
+        ¿Qué es <span class="text-orange-500 font-bold">HTML</span>?
+      </h2>
+      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+        HTML (HyperText Markup Language) es el código que se utiliza para estructurar y desplegar una página web y sus contenidos.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      <div class="bg-gradient-to-br from-gray-900 to-black p-8 rounded-lg border border-orange-800/30 hover:border-orange-500/50 transition-all">
+        <div class="bg-orange-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-orange-400">Lenguaje de Marcado</h3>
+        <p class="text-gray-300 leading-relaxed">
+          HTML no es un lenguaje de programación; es un lenguaje de marcado que define la estructura de tu contenido. HTML consiste en una serie de elementos que usarás para encerrar o envolver diferentes partes del contenido para que aparezcan o actúen de cierta manera.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Las etiquetas HTML pueden convertir una palabra o imagen en un hipervínculo, pueden poner palabras en cursiva, pueden aumentar el tamaño de la fuente y mucho más.
+        </p>
+      </div>
+
+      <div class="bg-gradient-to-br from-gray-900 to-black p-8 rounded-lg border border-orange-800/30 hover:border-orange-500/50 transition-all">
+        <div class="bg-orange-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+            <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <path d="M20.4 14.5 16 10 4 20"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-orange-400">Bloques de Construcción</h3>
+        <p class="text-gray-300 leading-relaxed">
+          HTML proporciona los bloques de construcción básicos para la web. Define la estructura y el significado del contenido, pero no su apariencia. Para definir la apariencia y el diseño, se utilizan CSS (Cascading Style Sheets) y JavaScript para la interactividad.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Cada página web que visitas está construida con HTML, incluso las más complejas y dinámicas. HTML es la base sobre la que se construye toda la web.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- History of HTML -->
+  <section class="container mx-auto px-4 py-16 bg-gradient-to-b from-black to-gray-900">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-light mb-4">
+        Historia y <span class="text-orange-500 font-bold">Evolución</span>
+      </h2>
+      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+        Desde su creación hasta la actualidad, HTML ha evolucionado significativamente
+      </p>
+    </div>
+
+    <div class="max-w-4xl mx-auto">
+      <div class="relative">
+        <!-- Timeline line -->
+        <div class="absolute left-0 md:left-1/2 rounded-full top-0 bottom-0 w-1 bg-gradient-to-b from-transparent to-orange-800/60 to-70% transform md:translate-x-[-50%]"></div>
+        
+        <div class="space-y-12">
+          <div class="relative flex flex-col md:flex-row items-center md:justify-between">
+            <div class="flex-1 md:text-right md:pr-8 order-2 md:order-1 mt-4 md:mt-0">
+              <h3 class="text-xl font-bold text-orange-400">1991: HTML 1.0</h3>
+              <p class="text-gray-300 mt-2">
+                Tim Berners-Lee crea HTML como un lenguaje para compartir documentos científicos. Incluía 18 elementos básicos.
+              </p>
+            </div>
+            <div class="z-10 order-1 md:order-2">
+              <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center">
+                <span class="text-black font-bold">1</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="relative flex flex-col md:flex-row items-center md:justify-between">
+            <div class="z-10 order-1">
+              <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center">
+                <span class="text-black font-bold">2</span>
+              </div>
+            </div>
+            <div class="flex-1 md:pl-8 order-2 mt-4 md:mt-0">
+              <h3 class="text-xl font-bold text-orange-400">1995: HTML 2.0</h3>
+              <p class="text-gray-300 mt-2">
+                Primera especificación estándar de HTML. Introdujo formularios y soporte para gráficos.
+              </p>
+            </div>
+          </div>
+          
+          <div class="relative flex flex-col md:flex-row items-center md:justify-between">
+            <div class="flex-1 md:text-right md:pr-8 order-2 md:order-1 mt-4 md:mt-0">
+              <h3 class="text-xl font-bold text-orange-400">1997: HTML 4.0</h3>
+              <p class="text-gray-300 mt-2">
+                Introdujo hojas de estilo (CSS), scripts y marcos. Separó la estructura del estilo.
+              </p>
+            </div>
+            <div class="z-10 order-1 md:order-2">
+              <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center">
+                <span class="text-black font-bold">3</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="relative flex flex-col md:flex-row items-center md:justify-between">
+            <div class="z-10 order-1">
+              <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center">
+                <span class="text-black font-bold">4</span>
+              </div>
+            </div>
+            <div class="flex-1 md:pl-8 order-2 mt-4 md:mt-0">
+              <h3 class="text-xl font-bold text-orange-400">2000: XHTML</h3>
+              <p class="text-gray-300 mt-2">
+                Reformulación de HTML como XML. Reglas más estrictas para escribir código.
+              </p>
+            </div>
+          </div>
+          
+          <!-- HTML5 -->
+          <div class="relative flex flex-col md:flex-row items-center md:justify-between">
+            <div class="flex-1 md:text-right md:pr-8 order-2 md:order-1 mt-4 md:mt-0">
+              <h3 class="text-xl font-bold text-orange-400">2014: HTML5</h3>
+              <p class="text-gray-300 mt-2">
+                Versión actual. Introdujo elementos semánticos, soporte para audio/video, canvas para gráficos y APIs para aplicaciones web.
+              </p>
+            </div>
+            <div class="z-10 order-1 md:order-2">
+              <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center">
+                <span class="text-black font-bold">5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-light mb-4">
+        Estructura <span class="text-orange-500 font-bold">Básica</span>
+      </h2>
+      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+        Todo documento HTML sigue una estructura fundamental
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <div class="bg-gradient-to-br from-gray-900 to-black p-8 rounded-lg border border-orange-800/30">
+        <h3 class="text-2xl font-bold mb-6 text-orange-400">Anatomía de un Documento HTML</h3>
+        
+        <div class="space-y-6">
+          <div class="flex items-start gap-4">
+            <div class="bg-orange-600/20 p-2 rounded-full w-10 h-10 flex items-center justify-center mt-1">
+              <span class="text-orange-500 font-bold">1</span>
+            </div>
+            <div>
+              <h4 class="text-lg font-semibold text-white">Declaración DOCTYPE</h4>
+              <p class="text-gray-300 mt-1">
+                Indica al navegador qué versión de HTML estás utilizando. Para HTML5, simplemente se usa <code class="text-orange-400 bg-black/50 px-1 rounded">&lt;!DOCTYPE html&gt;</code>
+              </p>
+            </div>
+          </div>
+          
+          <div class="flex items-start gap-4">
+            <div class="bg-orange-600/20 p-2 rounded-full w-10 h-10 flex items-center justify-center mt-1">
+              <span class="text-orange-500 font-bold">2</span>
+            </div>
+            <div>
+              <h4 class="text-lg font-semibold text-white">Elemento HTML</h4>
+              <p class="text-gray-300 mt-1">
+                El elemento raíz que envuelve todo el contenido de la página: <code class="text-orange-400 bg-black/50 px-1 rounded">&lt;html&gt;</code>
+              </p>
+            </div>
+          </div>
+          
+          <div class="flex items-start gap-4">
+            <div class="bg-orange-600/20 p-2 rounded-full w-10 h-10 flex items-center justify-center mt-1">
+              <span class="text-orange-500 font-bold">3</span>
+            </div>
+            <div>
+              <h4 class="text-lg font-semibold text-white">Cabecera (Head)</h4>
+              <p class="text-gray-300 mt-1">
+                Contiene metadatos, enlaces a CSS, título de la página y otros elementos no visibles: <code class="text-orange-400 bg-black/50 px-1 rounded">&lt;head&gt;</code>
+              </p>
+            </div>
+          </div>
+          
+          <div class="flex items-start gap-4">
+            <div class="bg-orange-600/20 p-2 rounded-full w-10 h-10 flex items-center justify-center mt-1">
+              <span class="text-orange-500 font-bold">4</span>
+            </div>
+            <div>
+              <h4 class="text-lg font-semibold text-white">Cuerpo (Body)</h4>
+              <p class="text-gray-300 mt-1">
+                Contiene todo el contenido visible de la página como texto, imágenes, enlaces, etc.: <code class="text-orange-400 bg-black/50 px-1 rounded">&lt;body&gt;</code>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-black p-6 rounded-lg">
+        <h3 class="text-2xl font-bold mb-6 text-orange-400">Ejemplo de Código</h3>
+        <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
+<code class="text-gray-300">
+<span class="text-purple-400">&lt;!DOCTYPE html&gt;</span>
+<span class="text-orange-400">&lt;html</span> <span class="text-green-400">lang="es"</span><span class="text-orange-400">&gt;</span>
+<span class="text-orange-400">&lt;head&gt;</span>
+  <span class="text-orange-400">&lt;meta</span> <span class="text-green-400">charset="UTF-8"</span><span class="text-orange-400">&gt;</span>
+  <span class="text-orange-400">&lt;meta</span> <span class="text-green-400">name="viewport"</span> <span class="text-green-400">content="width=device-width, initial-scale=1.0"</span><span class="text-orange-400">&gt;</span>
+  <span class="text-orange-400">&lt;title&gt;</span>Mi Primera Página Web<span class="text-orange-400">&lt;/title&gt;</span>
+  <span class="text-orange-400">&lt;link</span> <span class="text-green-400">rel="stylesheet"</span> <span class="text-green-400">href="estilos.css"</span><span class="text-orange-400">&gt;</span>
+<span class="text-orange-400">&lt;/head&gt;</span>
+<span class="text-orange-400">&lt;body&gt;</span>
+  <span class="text-orange-400">&lt;header&gt;</span>
+    <span class="text-orange-400">&lt;h1&gt;</span>Bienvenido a mi sitio web<span class="text-orange-400">&lt;/h1&gt;</span>
+    <span class="text-orange-400">&lt;nav&gt;</span>
+      <span class="text-orange-400">&lt;ul&gt;</span>
+        <span class="text-orange-400">&lt;li&gt;&lt;a</span> <span class="text-green-400">href="#"</span><span class="text-orange-400">&gt;</span>Inicio<span class="text-orange-400">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="text-orange-400">&lt;li&gt;&lt;a</span> <span class="text-green-400">href="#"</span><span class="text-orange-400">&gt;</span>Acerca de<span class="text-orange-400">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="text-orange-400">&lt;li&gt;&lt;a</span> <span class="text-green-400">href="#"</span><span class="text-orange-400">&gt;</span>Contacto<span class="text-orange-400">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="text-orange-400">&lt;/ul&gt;</span>
+    <span class="text-orange-400">&lt;/nav&gt;</span>
+  <span class="text-orange-400">&lt;/header&gt;</span>
+
+  <span class="text-orange-400">&lt;main&gt;</span>
+    <span class="text-orange-400">&lt;section&gt;</span>
+      <span class="text-orange-400">&lt;h2&gt;</span>Acerca de nosotros<span class="text-orange-400">&lt;/h2&gt;</span>
+      <span class="text-orange-400">&lt;p&gt;</span>Somos una empresa dedicada a...<span class="text-orange-400">&lt;/p&gt;</span>
+    <span class="text-orange-400">&lt;/section&gt;</span>
+
+    <span class="text-orange-400">&lt;section&gt;</span>
+      <span class="text-orange-400">&lt;h2&gt;</span>Nuestros servicios<span class="text-orange-400">&lt;/h2&gt;</span>
+      <span class="text-orange-400">&lt;ul&gt;</span>
+        <span class="text-orange-400">&lt;li&gt;</span>Servicio 1<span class="text-orange-400">&lt;/li&gt;</span>
+        <span class="text-orange-400">&lt;li&gt;</span>Servicio 2<span class="text-orange-400">&lt;/li&gt;</span>
+        <span class="text-orange-400">&lt;li&gt;</span>Servicio 3<span class="text-orange-400">&lt;/li&gt;</span>
+      <span class="text-orange-400">&lt;/ul&gt;</span>
+    <span class="text-orange-400">&lt;/section&gt;</span>
+  <span class="text-orange-400">&lt;/main&gt;</span>
+
+  <span class="text-orange-400">&lt;footer&gt;</span>
+    <span class="text-orange-400">&lt;p&gt;</span>&copy; 2023 Mi Empresa. Todos los derechos reservados.<span class="text-orange-400">&lt;/p&gt;</span>
+  <span class="text-orange-400">&lt;/footer&gt;</span>
+<span class="text-orange-400">&lt;/body&gt;</span>
+<span class="text-orange-400">&lt;/html&gt;</span>
+</code>
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16 bg-gradient-to-b from-gray-900 to-black">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-light mb-4">
+        Importancia de <span class="text-orange-500 font-bold">HTML</span>
+      </h2>
+      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+        ¿Por qué HTML es fundamental en el desarrollo web?
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-orange-800/30 hover:border-orange-500/50 transition-all group">
+        <div class="bg-orange-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-orange-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+            <path d="m2 12 5-5"></path>
+            <path d="M2 12h10"></path>
+            <path d="m12 12 5-5"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-3 text-orange-400">Accesibilidad</h3>
+        <p class="text-gray-300">
+          Un HTML bien estructurado permite que las personas con discapacidades puedan acceder al contenido web mediante tecnologías de asistencia como lectores de pantalla.
+        </p>
+      </div>
+
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-orange-800/30 hover:border-orange-500/50 transition-all group">
+        <div class="bg-orange-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-orange-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+            <path d="m21.21 15.89-9-9a2 2 0 0 0-2.83 0l-9 9a2 2 0 0 0 0 2.83l9 9a2 2 0 0 0 2.83 0l9-9a2 2 0 0 0 0-2.83z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-3 text-orange-400">SEO</h3>
+        <p class="text-gray-300">
+          Los motores de búsqueda utilizan el HTML para entender el contenido de una página. Un HTML semántico y bien estructurado mejora el posicionamiento en buscadores.
+        </p>
+      </div>
+
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-orange-800/30 hover:border-orange-500/50 transition-all group">
+        <div class="bg-orange-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-orange-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            <path d="M12 12 8 8"></path>
+            <path d="M12 12h.01"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-3 text-orange-400">Rendimiento</h3>
+        <p class="text-gray-300">
+          Un HTML limpio y optimizado contribuye a tiempos de carga más rápidos, lo que mejora la experiencia del usuario y el rendimiento general del sitio.
+        </p>
+      </div>
+
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-orange-800/30 hover:border-orange-500/50 transition-all group">
+        <div class="bg-orange-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-orange-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+            <path d="M2 9V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-1"></path>
+            <path d="M2 13h10"></path>
+            <path d="m9 16 3-3-3-3"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-3 text-orange-400">Compatibilidad</h3>
+        <p class="text-gray-300">
+          HTML es compatible con todos los navegadores y dispositivos, lo que garantiza que tu contenido sea accesible para todos los usuarios, independientemente de cómo accedan a la web.
+        </p>
+      </div>
+
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-orange-800/30 hover:border-orange-500/50 transition-all group">
+        <div class="bg-orange-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-orange-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+            <path d="M16 16h6"></path>
+            <path d="M19 13v6"></path>
+            <path d="M12 15V3"></path>
+            <path d="m12 15 5-5"></path>
+            <path d="M12 15v6"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-3 text-orange-400">Escalabilidad</h3>
+        <p class="text-gray-300">
+          HTML proporciona una base sólida para construir sitios web que pueden crecer y evolucionar con el tiempo, permitiendo integrar nuevas tecnologías y funcionalidades.
+        </p>
+      </div>
+
+      <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-lg border border-orange-800/30 hover:border-orange-500/50 transition-all group">
+        <div class="bg-orange-600/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4 group-hover:bg-orange-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+            <path d="M17 6.1H3"></path>
+            <path d="M21 12.1H3"></path>
+            <path d="M15.1 18H3"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-3 text-orange-400">Semántica</h3>
+        <p class="text-gray-300">
+          HTML5 introdujo elementos semánticos que dan significado al contenido, lo que mejora la estructura, la accesibilidad y la comprensión del propósito de cada parte de la página.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-light mb-4">
+        Comienza con <span class="text-orange-500 font-bold">HTML</span>
+      </h2>
+      <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+        Todo lo que necesitas para empezar a crear tus primeras páginas web
+      </p>
+    </div>
+
+    <div class="bg-gradient-to-br from-gray-900 to-black p-8 rounded-lg border border-orange-800/30 max-w-4xl mx-auto">
+      <h3 class="text-2xl font-bold mb-6 text-orange-400">Herramientas Necesarias</h3>
+      
+      <div class="space-y-6">
+        <div class="flex items-start gap-4">
+          <div class="bg-orange-600/20 p-2 rounded-full w-10 h-10 flex items-center justify-center mt-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+              <path d="M20 11.08V8l-6-6H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h6"></path>
+              <path d="M14 3v5h5M18 21v-6M15 18h6"></path>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-white">Editor de Texto</h4>
+            <p class="text-gray-300 mt-1">
+              Puedes usar editores como Visual Studio Code, Sublime Text o incluso el Bloc de notas. Un buen editor te ayudará con el resaltado de sintaxis y autocompletado.
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex items-start gap-4">
+          <div class="bg-orange-600/20 p-2 rounded-full w-10 h-10 flex items-center justify-center mt-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+              <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-white">Navegador Web</h4>
+            <p class="text-gray-300 mt-1">
+              Chrome, Firefox, Safari o Edge. Todos los navegadores modernos incluyen herramientas de desarrollo que te ayudarán a depurar tu código HTML.
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex items-start gap-4">
+          <div class="bg-orange-600/20 p-2 rounded-full w-10 h-10 flex items-center justify-center mt-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+              <path d="M12 9h.01"></path>
+              <path d="M11 12h1v4h1"></path>
+              <circle cx="12" cy="12" r="10"></circle>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-white">Recursos de Aprendizaje</h4>
+            <p class="text-gray-300 mt-1">
+              MDN Web Docs, W3Schools y freeCodeCamp son excelentes recursos para aprender HTML desde cero y consultar la documentación oficial.
+            </p>
+          </div>
+        </div>
+      </div>
+      <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'html';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-html.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <script>
+    // Añadir efecto de desplazamiento suave a los enlaces
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Añadir efecto de aparición al hacer scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.grid > div, .flex.flex-col, .flex.items-start').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

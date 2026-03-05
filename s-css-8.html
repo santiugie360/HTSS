@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS @keyframes - Animaciones</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'css-purple': {
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+              950: '#2e1065',
+            },
+            'dark-blue': {
+              900: '#0a1020',
+              950: '#050a14',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+            'bounce-slow': 'bounce 2s infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .timeline-circle {
+        @apply w-12 h-12 rounded-full bg-css-purple-500 flex items-center justify-center text-white font-bold text-lg z-10;
+      }
+      .timeline-line {
+        @apply absolute left-6 top-0 bottom-0 w-0.5 bg-css-purple-800/50 transform translate-x-0;
+      }
+      .feature-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 hover:border-css-purple-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-css-purple-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-blue-950 text-gray-200">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-blue-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="#" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-css-purple-600 rounded-lg animate-pulse"></div>
+              <div class="absolute inset-1 bg-dark-blue-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-css-purple-500">@</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">keyframes</span>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#caracteristicas" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Características</a>
+          <a href="#sintaxis" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Sintaxis</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#caracteristicas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Características</a>
+        <a href="#sintaxis" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Sintaxis</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-css-purple-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          CSS
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-css-purple-400">@keyframes</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-3xl mx-auto animate-slide-up">
+          Las animaciones CSS con @keyframes te permiten crear movimientos y transiciones complejas, dando vida a tus páginas web de forma elegante y eficiente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="caracteristicas" class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Qué son los <span class="text-css-purple-400 font-bold">@keyframes?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Definición de Animaciones</h3>
+        <p class="text-gray-300 leading-relaxed">
+          @keyframes es una regla CSS que permite definir los estilos que un elemento debe tener en diferentes momentos durante una animación. En lugar de solo tener un estado inicial y final, puedes especificar múltiples estados intermedios.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Cada fotograma clave (keyframe) representa un punto específico en el tiempo de la animación, permitiendo crear secuencias complejas y fluidas.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Control de Tiempo</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Puedes especificar estados usando porcentajes (0%, 50%, 100%) o las palabras clave "from" (0%) y "to" (100%). Esto te da control preciso sobre cuándo ocurre cada cambio en la animación.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          La propiedad animation permite controlar la duración, el timing, el retraso, la repetición y la dirección de las animaciones definidas con @keyframes.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Propiedades Animables</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Puedes animar casi cualquier propiedad CSS: posición (transform), tamaño (width/height), color (background-color, color), opacidad (opacity), y muchas más.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Las propiedades transform y opacity son especialmente eficientes ya que el navegador puede optimizar su animación usando aceleración por hardware.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-css-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-css-purple-400">Reutilización</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Una vez definida, una animación @keyframes puede aplicarse a múltiples elementos en tu página. Esto promueve la reutilización de código y mantiene tus estilos organizados.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          Puedes combinar múltiples animaciones en un solo elemento, crear bibliotecas de animaciones reutilizables y mantener tu código CSS limpio y mantenible.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Syntax Section -->
+  <section id="sintaxis" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Sintaxis <span class="text-css-purple-400 font-bold">Básica</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Aprende cómo estructurar tus animaciones con @keyframes
+      </p>
+
+      <div class="max-w-4xl mx-auto space-y-8">
+        <!-- Syntax Example 1 -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Estructura Básica</h3>
+          <pre class="code-block">
+<span class="text-css-purple-400">/* Definir la animación */</span>
+<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">nombreAnimacion</span> {
+  <span class="text-css-purple-500">from</span> {
+    <span class="text-purple-400">opacity</span>: <span class="text-orange-400">0</span>;
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateX(-100px)</span>;
+  }
+  
+  <span class="text-css-purple-500">to</span> {
+    <span class="text-purple-400">opacity</span>: <span class="text-orange-400">1</span>;
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateX(0)</span>;
+  }
+}
+
+<span class="text-css-purple-400">/* Aplicar la animación */</span>
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">nombreAnimacion 1s ease-in-out</span>;
+}</pre>
+          <p class="text-gray-400 mt-4">
+            <strong class="text-white">Explicación:</strong> La regla @keyframes define una animación llamada "nombreAnimacion". Los estados "from" y "to" representan el inicio (0%) y el final (100%) de la animación.
+          </p>
+        </div>
+
+        <!-- Syntax Example 2 -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Usando Porcentajes</h3>
+          <pre class="code-block">
+<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">rebote</span> {
+  <span class="text-css-purple-500">0%</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateY(0)</span>;
+  }
+  
+  <span class="text-css-purple-500">25%</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateY(-30px)</span>;
+  }
+  
+  <span class="text-css-purple-500">50%</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateY(0)</span>;
+  }
+  
+  <span class="text-css-purple-500">75%</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateY(-15px)</span>;
+  }
+  
+  <span class="text-css-purple-500">100%</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateY(0)</span>;
+  }
+}</pre>
+          <p class="text-gray-400 mt-4">
+            <strong class="text-white">Explicación:</strong> Los porcentajes permiten definir estados intermedios en la animación, creando efectos más complejos como este rebote.
+          </p>
+        </div>
+
+        <!-- Animation Properties -->
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Propiedades de Animation</h3>
+          <pre class="code-block">
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-css-purple-400">/* Forma abreviada */</span>
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">nombre 2s ease-in-out 0.5s infinite alternate</span>;
+  
+  <span class="text-css-purple-400">/* Forma expandida */</span>
+  <span class="text-purple-400">animation-name</span>: <span class="text-green-400">nombre</span>;
+  <span class="text-purple-400">animation-duration</span>: <span class="text-orange-400">2s</span>;
+  <span class="text-purple-400">animation-timing-function</span>: <span class="text-green-400">ease-in-out</span>;
+  <span class="text-purple-400">animation-delay</span>: <span class="text-orange-400">0.5s</span>;
+  <span class="text-purple-400">animation-iteration-count</span>: <span class="text-green-400">infinite</span>;
+  <span class="text-purple-400">animation-direction</span>: <span class="text-green-400">alternate</span>;
+  <span class="text-purple-400">animation-fill-mode</span>: <span class="text-green-400">forwards</span>;
+}</pre>
+          <div class="mt-4 space-y-2 text-gray-400">
+            <p><strong class="text-white">animation-duration:</strong> Duración total de la animación</p>
+            <p><strong class="text-white">animation-timing-function:</strong> Curva de aceleración (ease, linear, ease-in, ease-out)</p>
+            <p><strong class="text-white">animation-delay:</strong> Tiempo de espera antes de iniciar</p>
+            <p><strong class="text-white">animation-iteration-count:</strong> Número de repeticiones (número o infinite)</p>
+            <p><strong class="text-white">animation-direction:</strong> Dirección (normal, reverse, alternate, alternate-reverse)</p>
+            <p><strong class="text-white">animation-fill-mode:</strong> Estilos antes/después (none, forwards, backwards, both)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section id="ejemplos" class="container mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      Ejemplos <span class="text-css-purple-400 font-bold">Prácticos</span>
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <!-- Example 1: Fade In -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Fade In</h3>
+        <div class="bg-black p-8 rounded-lg flex items-center justify-center mb-4 h-32">
+          <div id="fadeInDemo" class="w-20 h-20 bg-css-purple-500 rounded-lg"></div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">fadeIn</span> {
+  <span class="text-css-purple-500">from</span> { <span class="text-purple-400">opacity</span>: <span class="text-orange-400">0</span>; }
+  <span class="text-css-purple-500">to</span> { <span class="text-purple-400">opacity</span>: <span class="text-orange-400">1</span>; }
+}
+
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">fadeIn 2s ease-in</span>;
+}</pre>
+      </div>
+
+      <!-- Example 2: Slide -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Deslizamiento</h3>
+        <div class="bg-black p-8 rounded-lg flex items-center justify-center mb-4 h-32">
+          <div id="slideDemo" class="w-20 h-20 bg-css-purple-500 rounded-lg"></div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">slide</span> {
+  <span class="text-css-purple-500">from</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateX(-100px)</span>;
+  }
+  <span class="text-css-purple-500">to</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateX(0)</span>;
+  }
+}
+
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">slide 1s ease-out</span>;
+}</pre>
+      </div>
+
+      <!-- Example 3: Rotate -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Rotación</h3>
+        <div class="bg-black p-8 rounded-lg flex items-center justify-center mb-4 h-32">
+          <div id="rotateDemo" class="w-20 h-20 bg-css-purple-500 rounded-lg"></div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">rotate</span> {
+  <span class="text-css-purple-500">from</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">rotate(0deg)</span>;
+  }
+  <span class="text-css-purple-500">to</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">rotate(360deg)</span>;
+  }
+}
+
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">rotate 2s linear infinite</span>;
+}</pre>
+      </div>
+
+      <!-- Example 4: Scale -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Escala Pulsante</h3>
+        <div class="bg-black p-8 rounded-lg flex items-center justify-center mb-4 h-32">
+          <div id="scaleDemo" class="w-20 h-20 bg-css-purple-500 rounded-lg"></div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">pulse</span> {
+  <span class="text-css-purple-500">0%, 100%</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">scale(1)</span>;
+  }
+  <span class="text-css-purple-500">50%</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">scale(1.2)</span>;
+  }
+}
+
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">pulse 1.5s ease-in-out infinite</span>;
+}</pre>
+      </div>
+
+      <!-- Example 5: Bounce -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Rebote</h3>
+        <div class="bg-black p-8 rounded-lg flex items-center justify-center mb-4 h-32">
+          <div id="bounceDemo" class="w-20 h-20 bg-css-purple-500 rounded-full"></div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">bounce</span> {
+  <span class="text-css-purple-500">0%, 100%</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateY(0)</span>;
+  }
+  <span class="text-css-purple-500">50%</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateY(-30px)</span>;
+  }
+}
+
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">bounce 1s ease infinite</span>;
+}</pre>
+      </div>
+
+      <!-- Example 6: Color Change -->
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-css-purple-400">Cambio de Color</h3>
+        <div class="bg-black p-8 rounded-lg flex items-center justify-center mb-4 h-32">
+          <div id="colorDemo" class="w-20 h-20 rounded-lg"></div>
+        </div>
+        <pre class="code-block text-xs">
+<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">colorChange</span> {
+  <span class="text-css-purple-500">0%</span> {
+    <span class="text-purple-400">background-color</span>: <span class="text-orange-400">#8b5cf6</span>;
+  }
+  <span class="text-css-purple-500">50%</span> {
+    <span class="text-purple-400">background-color</span>: <span class="text-orange-400">#ec4899</span>;
+  }
+  <span class="text-css-purple-500">100%</span> {
+    <span class="text-purple-400">background-color</span>: <span class="text-orange-400">#3b82f6</span>;
+  }
+}
+
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">colorChange 3s infinite</span>;
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activity Section -->
+  <section id="actividad" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-css-purple-400 font-bold">Práctica</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Crea tu propia animación personalizada ajustando los parámetros!
+      </p>
+
+      <div class="max-w-6xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Controls -->
+            <div>
+              <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Controles de Animación</h3>
+              
+              <div class="space-y-6">
+                <!-- Animation Type -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Tipo de Transformación</label>
+                  <select id="animationType" title="." class="w-full bg-gray-800 text-white p-3 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none">
+                    <option value="translateX">Deslizar Horizontal</option>
+                    <option value="translateY">Deslizar Vertical</option>
+                    <option value="rotate">Rotar</option>
+                    <option value="scale">Escalar</option>
+                    <option value="skew">Inclinar</option>
+                  </select>
+                </div>
+
+                <!-- Start Value -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Valor Inicial: <span id="startValueDisplay">0</span></label>
+                  <input type="range" title="." id="startValue" min="-200" max="200" value="0" class="w-full">
+                  <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>-200</span>
+                    <span>200</span>
+                  </div>
+                </div>
+
+                <!-- End Value -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Valor Final: <span id="endValueDisplay">100</span></label>
+                  <input type="range" title="." id="endValue" min="-200" max="200" value="100" class="w-full">
+                  <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>-200</span>
+                    <span>200</span>
+                  </div>
+                </div>
+
+                <!-- Duration -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Duración: <span id="durationDisplay">2</span>s</label>
+                  <input type="range" title="." id="duration" min="0.5" max="5" step="0.5" value="2" class="w-full">
+                  <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>0.5s</span>
+                    <span>5s</span>
+                  </div>
+                </div>
+
+                <!-- Timing Function -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Función de Tiempo</label>
+                  <select id="timingFunction" title="." class="w-full bg-gray-800 text-white p-3 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none">
+                    <option value="linear">Linear</option>
+                    <option value="ease">Ease</option>
+                    <option value="ease-in">Ease In</option>
+                    <option value="ease-out">Ease Out</option>
+                    <option value="ease-in-out">Ease In Out</option>
+                  </select>
+                </div>
+
+                <!-- Iteration -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Repeticiones</label>
+                  <select id="iteration" title="." class="w-full bg-gray-800 text-white p-3 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none">
+                    <option value="1">1 vez</option>
+                    <option value="2">2 veces</option>
+                    <option value="3">3 veces</option>
+                    <option value="infinite">Infinito</option>
+                  </select>
+                </div>
+
+                <!-- Direction -->
+                <div>
+                  <label class="block text-white font-semibold mb-2">Dirección</label>
+                  <select id="direction" title="." class="w-full bg-gray-800 text-white p-3 rounded-lg border border-gray-700 focus:border-css-purple-500 focus:outline-none">
+                    <option value="normal">Normal</option>
+                    <option value="reverse">Reversa</option>
+                    <option value="alternate">Alternada</option>
+                    <option value="alternate-reverse">Alternada Reversa</option>
+                  </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4">
+                  <button id="playAnimation" class="flex-1 bg-css-purple-500 hover:bg-css-purple-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                    ▶ Reproducir
+                  </button>
+                  <button id="resetAnimation" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                    ↻ Reiniciar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview -->
+            <div>
+              <h3 class="text-2xl font-bold mb-6 text-css-purple-400">Vista Previa</h3>
+              
+              <!-- Animation Preview -->
+              <div class="bg-black p-8 rounded-lg flex items-center justify-center mb-6" style="height: 300px;">
+                <div id="animatedElement" class="w-24 h-24 bg-gradient-to-br from-css-purple-500 to-pink-500 rounded-lg shadow-lg"></div>
+              </div>
+
+              <!-- Generated Code -->
+              <div>
+                <h4 class="text-lg font-semibold mb-3 text-white">Código CSS Generado:</h4>
+                <pre id="generatedCode" class="code-block text-xs max-h-64 overflow-y-auto">
+<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">miAnimacion</span> {
+  <span class="text-css-purple-500">from</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateX(0px)</span>;
+  }
+  <span class="text-css-purple-500">to</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">translateX(100px)</span>;
+  }
+}
+
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">miAnimacion 2s ease 1 normal</span>;
+}</pre>
+              </div>
+
+              <!-- Copy Button -->
+              <button id="copyCode" class="w-full mt-4 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <span>Copiar Código</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tips -->
+          <div class="mt-8 p-6 bg-css-purple-900/20 border border-css-purple-700/30 rounded-lg">
+            <h4 class="text-lg font-semibold mb-3 text-css-purple-400 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Consejos
+            </h4>
+            <ul class="space-y-2 text-gray-300">
+              <li>• Experimenta con diferentes combinaciones de valores para crear efectos únicos</li>
+              <li>• La función "ease-in-out" generalmente produce animaciones más naturales</li>
+              <li>• Usa "alternate" para crear efectos de ida y vuelta automáticos</li>
+              <li>• Las transformaciones (transform) son más eficientes que animar posición directamente</li>
+              <li>• Copia el código generado y úsalo en tus propios proyectos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="container mx-auto px-4 py-16 text-center">
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark-blue-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende CSS @keyframes - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Example animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeInExample {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes slideExample {
+        from { transform: translateX(-50px); }
+        to { transform: translateX(0); }
+      }
+      @keyframes rotateExample {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes pulseExample {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+      }
+      @keyframes bounceExample {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-30px); }
+      }
+      @keyframes colorChangeExample {
+        0% { background-color: #8b5cf6; }
+        50% { background-color: #ec4899; }
+        100% { background-color: #3b82f6; }
+      }
+      
+      #fadeInDemo { animation: fadeInExample 2s ease-in infinite; }
+      #slideDemo { animation: slideExample 1s ease-out infinite; }
+      #rotateDemo { animation: rotateExample 2s linear infinite; }
+      #scaleDemo { animation: pulseExample 1.5s ease-in-out infinite; }
+      #bounceDemo { animation: bounceExample 1s ease infinite; }
+      #colorDemo { animation: colorChangeExample 3s infinite; }
+    `;
+    document.head.appendChild(style);
+
+    // Activity functionality
+    const animationType = document.getElementById('animationType');
+    const startValue = document.getElementById('startValue');
+    const endValue = document.getElementById('endValue');
+    const duration = document.getElementById('duration');
+    const timingFunction = document.getElementById('timingFunction');
+    const iteration = document.getElementById('iteration');
+    const direction = document.getElementById('direction');
+    const playAnimation = document.getElementById('playAnimation');
+    const resetAnimation = document.getElementById('resetAnimation');
+    const copyCode = document.getElementById('copyCode');
+    const animatedElement = document.getElementById('animatedElement');
+    const generatedCode = document.getElementById('generatedCode');
+    const startValueDisplay = document.getElementById('startValueDisplay');
+    const endValueDisplay = document.getElementById('endValueDisplay');
+    const durationDisplay = document.getElementById('durationDisplay');
+
+    let animationStyleElement = document.createElement('style');
+    document.head.appendChild(animationStyleElement);
+
+    function getUnit(type) {
+      if (type === 'rotate') return 'deg';
+      if (type === 'scale') return '';
+      if (type === 'skew') return 'deg';
+      return 'px';
+    }
+
+    function updateDisplays() {
+      startValueDisplay.textContent = startValue.value;
+      endValueDisplay.textContent = endValue.value;
+      durationDisplay.textContent = duration.value;
+    }
+
+    function generateAnimation() {
+      const type = animationType.value;
+      const start = startValue.value;
+      const end = endValue.value;
+      const dur = duration.value;
+      const timing = timingFunction.value;
+      const iter = iteration.value;
+      const dir = direction.value;
+      const unit = getUnit(type);
+
+      const keyframes = `
+        @keyframes miAnimacion {
+          from { transform: ${type}(${start}${unit}); }
+          to { transform: ${type}(${end}${unit}); }
+        }
+      `;
+
+      animationStyleElement.textContent = keyframes;
+
+      // Update generated code display
+      generatedCode.innerHTML = `<span class="text-css-purple-500">@keyframes</span> <span class="text-green-400">miAnimacion</span> {
+  <span class="text-css-purple-500">from</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">${type}(${start}${unit})</span>;
+  }
+  <span class="text-css-purple-500">to</span> {
+    <span class="text-purple-400">transform</span>: <span class="text-green-400">${type}(${end}${unit})</span>;
+  }
+}
+
+<span class="text-css-purple-500">.elemento</span> {
+  <span class="text-purple-400">animation</span>: <span class="text-green-400">miAnimacion ${dur}s ${timing} ${iter} ${dir}</span>;
+}`;
+
+      return { dur, timing, iter, dir };
+    }
+
+    function playAnim() {
+      const { dur, timing, iter, dir } = generateAnimation();
+      animatedElement.style.animation = 'none';
+      setTimeout(() => {
+        animatedElement.style.animation = `miAnimacion ${dur}s ${timing} ${iter} ${dir}`;
+      }, 10);
+    }
+
+    function resetAnim() {
+      animatedElement.style.animation = 'none';
+      animatedElement.style.transform = 'none';
+    }
+
+    // Event listeners
+    animationType.addEventListener('change', () => {
+      generateAnimation();
+      updateDisplays();
+    });
+
+    startValue.addEventListener('input', () => {
+      generateAnimation();
+      updateDisplays();
+    });
+
+    endValue.addEventListener('input', () => {
+      generateAnimation();
+      updateDisplays();
+    });
+
+    duration.addEventListener('input', () => {
+      generateAnimation();
+      updateDisplays();
+    });
+
+    timingFunction.addEventListener('change', () => {
+      generateAnimation();
+    });
+
+    iteration.addEventListener('change', () => {
+      generateAnimation();
+    });
+
+    direction.addEventListener('change', () => {
+      generateAnimation();
+    });
+
+    playAnimation.addEventListener('click', playAnim);
+    resetAnimation.addEventListener('click', resetAnim);
+
+    copyCode.addEventListener('click', () => {
+      const codeText = generatedCode.textContent;
+      navigator.clipboard.writeText(codeText).then(() => {
+        const originalText = copyCode.innerHTML;
+        copyCode.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>¡Copiado!</span>
+        `;
+        copyCode.classList.add('bg-green-600');
+        copyCode.classList.remove('bg-gray-700');
+        
+        setTimeout(() => {
+          copyCode.innerHTML = originalText;
+          copyCode.classList.remove('bg-green-600');
+          copyCode.classList.add('bg-gray-700');
+        }, 2000);
+      });
+    });
+
+    // Initialize
+    updateDisplays();
+    generateAnimation();
+
+    // Intersection Observer for animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .timeline-circle').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

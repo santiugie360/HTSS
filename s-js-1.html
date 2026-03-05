@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript: Introducción</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+      theme: {
+          extend: {
+              colors: {
+                  dark: '#0a0f1a',
+                  darker: '#050a14',
+                  accent: '#FFD700', // Amarillo dorado
+                  accentLight: '#FFEB99', // Amarillo claro
+                  accentDark: '#B8860B' // Amarillo oscuro (dark goldenrod)
+              }
+          }
+      }
+  }
+</script>
+<style>
+  @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+  }
+  .float-animation:hover {
+      animation: float 2s ease-in-out infinite;
+  }
+  .glow-effect:hover {
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  }
+  .scale-effect:hover {
+      transform: scale(1.03);
+  }
+  .rotate-effect:hover .icon-container {
+      transform: rotate(10deg);
+  }
+  .code-block {
+      position: relative;
+      overflow: hidden;
+  }
+  .js-slider {
+      -webkit-appearance: none;
+      height: 8px;
+      border-radius: 4px;
+      background: #1f2937;
+      outline: none;
+  }
+  .js-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FFD700;
+      cursor: pointer;
+  }
+  .js-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FFD700;
+      cursor: pointer;
+  }
+  .js-container {
+      border: 2px dashed rgba(255, 215, 0, 0.3);
+      background-color: rgba(255, 215, 0, 0.05);
+      transition: all 0.3s ease;
+  }
+  .js-item {
+      background-color: rgba(255, 215, 0, 0.3);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      transition: all 0.3s ease;
+  }
+  .js-property-button {
+      transition: all 0.3s ease;
+  }
+  .js-property-button.active {
+      background-color: #FFD700;
+      color: #0a0f1a;
+  }
+  .code-editor {
+      font-family: monospace;
+      background-color: #1a1a1a;
+      color: #f8f8f8;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #333;
+      resize: none;
+      width: 100%;
+      height: 150px;
+      tab-size: 2;
+  }
+  .console-output {
+      font-family: monospace;
+      background-color: #0a0a0a;
+      color: #f8f8f8;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #333;
+      min-height: 100px;
+      max-height: 200px;
+      overflow-y: auto;
+  }
+  .console-output .error {
+      color: #ff6b6b;
+  }
+  .console-output .success {
+      color: #51cf66;
+  }
+  .console-output .info {
+      color: #FFD700;
+  }
+  .timeline-container {
+      position: relative;
+      padding-left: 2rem;
+  }
+  .timeline-container::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, #FFD700, transparent);
+  }
+  .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+  }
+  .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.5rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background-color: #FFD700;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  }
+  .quiz-option {
+      transition: all 0.3s ease;
+  }
+  .quiz-option:hover {
+      background-color: rgba(255, 215, 0, 0.1);
+  }
+  .quiz-option.selected {
+      background-color: rgba(255, 215, 0, 0.3);
+      border-color: #FFD700;
+  }
+  .quiz-option.correct {
+      background-color: rgba(80, 200, 120, 0.3);
+      border-color: #50c878;
+  }
+  .quiz-option.incorrect {
+      background-color: rgba(255, 107, 107, 0.3);
+      border-color: #ff6b6b;
+  }
+</style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+<header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+  <nav class="container mx-auto px-4 py-4">
+      <div class="flex justify-between items-center">
+          <a href="s-js.html"><h1 class="text-2xl font-bold">JS<span class="text-accent">Intro</span></h1></a>
+          <div class="hidden md:flex space-x-6">
+              <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+              <a href="#historia" class="hover:text-accent transition-colors duration-300">Historia</a>
+              <a href="#caracteristicas" class="hover:text-accent transition-colors duration-300">Características</a>
+              <a href="#usos" class="hover:text-accent transition-colors duration-300">Usos</a>
+              <a href="#actividades" class="hover:text-accent transition-colors duration-300">Actividades</a>
+          </div>
+          <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+          </button>
+      </div>
+      <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+          <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+          <a href="#historia" class="block py-2 hover:text-accent transition-colors duration-300">Historia</a>
+          <a href="#caracteristicas" class="block py-2 hover:text-accent transition-colors duration-300">Características</a>
+          <a href="#usos" class="block py-2 hover:text-accent transition-colors duration-300">Usos</a>
+          <a href="#actividades" class="block py-2 hover:text-accent transition-colors duration-300">Actividades</a>
+      </div>
+  </nav>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+  <section class="text-center py-16">
+      <h1 class="text-5xl font-bold mb-4">Introducción a <span class="text-accent">JavaScript</span></h1>
+      <p class="text-xl max-w-3xl mx-auto">Aprende los fundamentos del lenguaje de programación más popular de la web</p>
+  </section>
+
+  <section id="introduccion" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">¿Qué es JavaScript y para qué sirve?</h2>
+      <p class="mb-8 text-lg leading-relaxed">JavaScript es un lenguaje de programación interpretado, orientado a objetos, basado en prototipos, imperativo, débilmente tipado y dinámico. Es uno de los tres pilares fundamentales del desarrollo web moderno, junto con HTML y CSS.</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+              <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-4 text-accent">Definición</h3>
+              <p class="text-base mb-4">JavaScript es un lenguaje de programación que permite implementar funcionalidades complejas en páginas web. Cada vez que una página web hace más que simplemente mostrar información estática, JavaScript probablemente está involucrado.</p>
+              <ul class="list-disc pl-5 space-y-1">
+                  <li>Lenguaje de programación de alto nivel</li>
+                  <li>Interpretado (no necesita compilación)</li>
+                  <li>Orientado a objetos y basado en prototipos</li>
+                  <li>Dinámico y de tipado débil</li>
+                  <li>Multiparadigma (soporta programación funcional)</li>
+              </ul>
+          </div>
+          <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+              <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-4 text-accent">¿Para qué sirve?</h3>
+              <p class="text-base mb-4">JavaScript permite crear experiencias interactivas en la web, transformando páginas estáticas en aplicaciones dinámicas.</p>
+              <ul class="list-disc pl-5 space-y-1">
+                  <li><strong>Interactividad:</strong> Responder a acciones del usuario</li>
+                  <li><strong>Dinamismo:</strong> Modificar el contenido de la página en tiempo real</li>
+                  <li><strong>Validación:</strong> Verificar datos de formularios antes de enviarlos</li>
+                  <li><strong>Animaciones:</strong> Crear efectos visuales y movimientos</li>
+                  <li><strong>Comunicación:</strong> Intercambiar datos con servidores (AJAX)</li>
+                  <li><strong>Aplicaciones:</strong> Desarrollar aplicaciones web completas</li>
+              </ul>
+          </div>
+      </div>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Los tres pilares del desarrollo web</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div class="bg-dark p-5 rounded-lg">
+                  <div class="bg-orange-500/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                      </svg>
+                  </div>
+                  <h4 class="text-xl font-bold mb-3 text-orange-500">HTML</h4>
+                  <p>El lenguaje de marcado que define la estructura y el contenido de la página web. Es el esqueleto de cualquier sitio web.</p>
+              </div>
+              
+              <div class="bg-dark p-5 rounded-lg">
+                  <div class="bg-blue-500/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                  </div>
+                  <h4 class="text-xl font-bold mb-3 text-blue-500">CSS</h4>
+                  <p>El lenguaje de estilos que define la apariencia y el diseño de los elementos HTML. Es responsable de la presentación visual.</p>
+              </div>
+              
+              <div class="bg-dark p-5 rounded-lg">
+                  <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                      </svg>
+                  </div>
+                  <h4 class="text-xl font-bold mb-3 text-accent">JavaScript</h4>
+                  <p>El lenguaje de programación que añade interactividad y comportamiento dinámico a la página web. Es el responsable de la funcionalidad.</p>
+              </div>
+          </div>
+          
+          <div class="mt-8 p-4 bg-dark rounded-lg border border-gray-700">
+              <p class="text-amber-400"><strong>Nota:</strong> Aunque JavaScript comparte parte de su nombre con Java, son lenguajes completamente diferentes. JavaScript fue nombrado así por razones de marketing, pero su sintaxis está más influenciada por lenguajes como C y Scheme.</p>
+          </div>
+      </div>
+  </section>
+
+  <section id="historia" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">Historia y evolución del lenguaje</h2>
+      
+      <p class="mb-8 text-lg">JavaScript ha recorrido un largo camino desde su creación en 1995. Veamos cómo ha evolucionado a lo largo de los años y cómo se ha convertido en uno de los lenguajes más importantes del desarrollo web.</p>
+      
+      <div class="timeline-container mb-8">
+          <div class="timeline-item">
+              <h3 class="text-xl font-bold mb-2 text-accent">1995: El nacimiento de JavaScript</h3>
+              <p class="mb-2">Brendan Eich crea JavaScript (inicialmente llamado Mocha, luego LiveScript) en solo 10 días mientras trabajaba en Netscape. El objetivo era añadir interactividad a las páginas web.</p>
+              <div class="bg-darker p-4 rounded-lg">
+                  <p class="text-sm italic">"JavaScript fue diseñado para ser un lenguaje de script ligero para Netscape Navigator." - Brendan Eich</p>
+              </div>
+          </div>
+          
+          <div class="timeline-item">
+              <h3 class="text-xl font-bold mb-2 text-accent">1997: Estandarización (ECMAScript)</h3>
+              <p class="mb-2">JavaScript se estandariza bajo el nombre de ECMAScript (ECMA-262) por la organización ECMA International. Esta primera versión establece las bases del lenguaje.</p>
+              <div class="bg-darker p-4 rounded-lg">
+                  <p class="text-sm">ECMAScript es el nombre oficial del estándar, mientras que JavaScript es la implementación más conocida de este estándar.</p>
+              </div>
+          </div>
+          
+          <div class="timeline-item">
+              <h3 class="text-xl font-bold mb-2 text-accent">1999-2005: Evolución y estancamiento</h3>
+              <p class="mb-2">Se lanzan ECMAScript 2 (1998) y ECMAScript 3 (1999), que añaden nuevas características. Luego sigue un período de estancamiento debido a desacuerdos sobre la dirección del lenguaje.</p>
+              <div class="bg-darker p-4 rounded-lg">
+                  <p class="text-sm">ECMAScript 4 fue abandonado debido a diferencias fundamentales entre los miembros del comité sobre la complejidad del lenguaje.</p>
+              </div>
+          </div>
+          
+          <div class="timeline-item">
+              <h3 class="text-xl font-bold mb-2 text-accent">2005-2008: El auge de AJAX y jQuery</h3>
+              <p class="mb-2">AJAX (Asynchronous JavaScript and XML) revoluciona la web permitiendo actualizaciones de página sin recargar. jQuery simplifica la programación JavaScript y soluciona problemas de compatibilidad entre navegadores.</p>
+              <div class="bg-darker p-4 rounded-lg">
+                  <p class="text-sm">Gmail y Google Maps fueron de las primeras aplicaciones en utilizar AJAX extensivamente, demostrando el potencial de JavaScript para crear aplicaciones web complejas.</p>
+              </div>
+          </div>
+          
+          <div class="timeline-item">
+              <h3 class="text-xl font-bold mb-2 text-accent">2009: ECMAScript 5</h3>
+              <p class="mb-2">Después de una década, se lanza ECMAScript 5 con mejoras importantes como el modo estricto, métodos de array, JSON nativo y mejores propiedades de objetos.</p>
+              <div class="bg-darker p-4 rounded-lg">
+                  <p class="text-sm">El modo estricto ("use strict") introduce un contexto de ejecución más seguro, eliminando errores silenciosos y optimizando el rendimiento.</p>
+              </div>
+          </div>
+          
+          <div class="timeline-item">
+              <h3 class="text-xl font-bold mb-2 text-accent">2009-2010: Node.js y el JavaScript del lado del servidor</h3>
+              <p class="mb-2">Ryan Dahl crea Node.js, permitiendo ejecutar JavaScript fuera del navegador. Esto abre la puerta al desarrollo full-stack con un solo lenguaje.</p>
+              <div class="bg-darker p-4 rounded-lg">
+                  <p class="text-sm">Node.js utiliza el motor V8 de Google Chrome para ejecutar JavaScript en el servidor, con un enfoque en operaciones asíncronas y no bloqueantes.</p>
+              </div>
+          </div>
+          
+          <div class="timeline-item">
+              <h3 class="text-xl font-bold mb-2 text-accent">2015: ECMAScript 6 (ES2015)</h3>
+              <p class="mb-2">La mayor actualización de JavaScript hasta la fecha, con características como clases, módulos, promesas, arrow functions, destructuring, y muchas más.</p>
+              <div class="bg-darker p-4 rounded-lg">
+                  <p class="text-sm">A partir de ES2015, el comité adopta un ciclo de lanzamiento anual, con nuevas versiones cada año (ES2016, ES2017, etc.).</p>
+              </div>
+          </div>
+          
+          <div class="timeline-item">
+              <h3 class="text-xl font-bold mb-2 text-accent">2015-Presente: La era de los frameworks</h3>
+              <p class="mb-2">Frameworks como React, Angular y Vue.js transforman el desarrollo frontend. Herramientas como Webpack, Babel y TypeScript mejoran el ecosistema JavaScript.</p>
+              <div class="bg-darker p-4 rounded-lg">
+                  <p class="text-sm">El concepto de "JavaScript fatigue" surge debido a la rápida evolución del ecosistema y la proliferación de herramientas y frameworks.</p>
+              </div>
+          </div>
+          
+          <div class="timeline-item">
+              <h3 class="text-xl font-bold mb-2 text-accent">2020-Presente: JavaScript moderno</h3>
+              <p class="mb-2">JavaScript continúa evolucionando con nuevas características como operadores de coalescencia nula, encadenamiento opcional, y top-level await. WebAssembly abre nuevas posibilidades para el rendimiento web.</p>
+              <div class="bg-darker p-4 rounded-lg">
+                  <p class="text-sm">JavaScript se ha convertido en el lenguaje más utilizado según GitHub, con una comunidad enorme y un ecosistema vibrante.</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Versiones principales de ECMAScript</h3>
+          
+          <div class="overflow-x-auto">
+              <table class="min-w-full bg-dark">
+                  <thead>
+                      <tr>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">Versión</th>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">Año</th>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">Características destacadas</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES1</td>
+                          <td class="py-3 px-4 border-b border-gray-700">1997</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Primera versión estandarizada</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES3</td>
+                          <td class="py-3 px-4 border-b border-gray-700">1999</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Expresiones regulares, try/catch, switch</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES5</td>
+                          <td class="py-3 px-4 border-b border-gray-700">2009</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Modo estricto, JSON, métodos de array (map, filter, etc.)</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES6 (ES2015)</td>
+                          <td class="py-3 px-4 border-b border-gray-700">2015</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Clases, módulos, promesas, arrow functions, let/const, template literals</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES2016</td>
+                          <td class="py-3 px-4 border-b border-gray-700">2016</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Operador exponencial (**), Array.prototype.includes</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES2017</td>
+                          <td class="py-3 px-4 border-b border-gray-700">2017</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Async/await, Object.entries/values, String padding</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES2018</td>
+                          <td class="py-3 px-4 border-b border-gray-700">2018</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Rest/spread para objetos, promesas finalmente, iteración asíncrona</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES2019</td>
+                          <td class="py-3 px-4 border-b border-gray-700">2019</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Array.flat(), Object.fromEntries(), String.trimStart()/trimEnd()</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES2020</td>
+                          <td class="py-3 px-4 border-b border-gray-700">2020</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Operador de coalescencia nula (??), encadenamiento opcional (?.)</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">ES2021</td>
+                          <td class="py-3 px-4 border-b border-gray-700">2021</td>
+                          <td class="py-3 px-4 border-b border-gray-700">String.replaceAll(), Promise.any(), operadores lógicos de asignación</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4">ES2022</td>
+                          <td class="py-3 px-4">2022</td>
+                          <td class="py-3 px-4">Top-level await, métodos privados de clase, RegExp match indices</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </section>
+
+  <section id="caracteristicas" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">Características principales de JavaScript</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Lenguaje interpretado</h3>
+              
+              <p class="mb-4">JavaScript es un lenguaje interpretado, lo que significa que el código se ejecuta directamente sin necesidad de una compilación previa. El navegador lee el código línea por línea y lo ejecuta inmediatamente.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// El navegador interpreta y ejecuta este código directamente
+console.log("Hola mundo");
+alert("Bienvenido a JavaScript");</code></pre>
+              </div>
+              
+              <p class="text-sm">A diferencia de lenguajes como C++ o Java, no es necesario compilar JavaScript antes de ejecutarlo. Esto facilita el desarrollo y la depuración, pero puede afectar el rendimiento en aplicaciones complejas.</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Tipado dinámico</h3>
+              
+              <p class="mb-4">JavaScript utiliza tipado dinámico, lo que significa que las variables pueden cambiar de tipo durante la ejecución del programa. No es necesario declarar el tipo de datos al crear una variable.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// La misma variable puede contener diferentes tipos de datos
+let variable = 42;        // Número
+variable = "Hola";        // Ahora es una cadena de texto
+variable = true;          // Ahora es un booleano
+variable = [1, 2, 3];     // Ahora es un array</code></pre>
+              </div>
+              
+              <p class="text-sm">El tipado dinámico ofrece flexibilidad, pero también puede llevar a errores sutiles si no se maneja con cuidado. TypeScript extiende JavaScript añadiendo tipado estático opcional.</p>
+          </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Orientado a objetos basado en prototipos</h3>
+              
+              <p class="mb-4">A diferencia de lenguajes como Java o C++ que utilizan clases, JavaScript tradicionalmente ha usado un sistema basado en prototipos para la herencia. Cada objeto puede servir como prototipo para otro objeto, pasándole sus propiedades y métodos.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Creación de objetos y herencia prototípica
+const animal = {
+  estaVivo: true,
+  comer: function() {
+    return "Comiendo...";
+  }
+};
+
+// Perro hereda de animal
+const perro = Object.create(animal);
+perro.ladrar = function() {
+  return "¡Guau!";
+};
+
+console.log(perro.estaVivo);  // true (heredado de animal)
+console.log(perro.comer());    // "Comiendo..." (heredado de animal)
+console.log(perro.ladrar());   // "¡Guau!" (propio de perro)</code></pre>
+              </div>
+              
+              <p class="text-sm">Desde ES6 (2015), JavaScript también soporta una sintaxis de clases, aunque internamente sigue utilizando prototipos.</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Funciones de primera clase</h3>
+              
+              <p class="mb-4">En JavaScript, las funciones son "ciudadanos de primera clase", lo que significa que pueden ser asignadas a variables, pasadas como argumentos a otras funciones, retornadas desde funciones y almacenadas en estructuras de datos.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Asignar una función a una variable
+const saludar = function(nombre) {
+  return `Hola, ${nombre}!`;
+};
+
+// Pasar una función como argumento
+function ejecutar(fn, valor) {
+  return fn(valor);
+}
+
+// Usar la función
+console.log(ejecutar(saludar, "María"));  // "Hola, María!"
+
+// Retornar una función desde otra función
+function crearMultiplicador(factor) {
+  return function(numero) {
+    return numero * factor;
+  };
+}
+
+const duplicar = crearMultiplicador(2);
+console.log(duplicar(5));  // 10</code></pre>
+              </div>
+              
+              <p class="text-sm">Esta característica hace que JavaScript sea excelente para la programación funcional y permite patrones como las funciones de orden superior y las clausuras (closures).</p>
+          </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Asincronía</h3>
+              
+              <p class="mb-4">JavaScript es naturalmente asíncrono y no bloqueante, lo que lo hace ideal para operaciones como peticiones de red, temporizadores y eventos de usuario. Utiliza un modelo de concurrencia basado en un "event loop" (bucle de eventos).</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo de código asíncrono con callbacks
+console.log("Inicio");
+
+setTimeout(function() {
+  console.log("Esto se ejecuta después de 2 segundos");
+}, 2000);
+
+console.log("Fin");
+
+// La salida será:
+// "Inicio"
+// "Fin"
+// "Esto se ejecuta después de 2 segundos"</code></pre>
+              </div>
+              
+              <p class="text-sm">JavaScript moderno ofrece Promesas y async/await para manejar la asincronía de forma más elegante que los callbacks tradicionales.</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Multiparadigma</h3>
+              
+              <p class="mb-4">JavaScript es un lenguaje multiparadigma que soporta estilos de programación imperativa, funcional y orientada a objetos. Esto permite a los desarrolladores elegir el enfoque que mejor se adapte a cada situación.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Programación imperativa
+let total = 0;
+for (let i = 1; i <= 5; i++) {
+  total += i;
+}
+console.log(total);  // 15
+
+// Programación funcional
+const suma = [1, 2, 3, 4, 5].reduce(
+  (acumulador, valor) => acumulador + valor, 0
+);
+console.log(suma);  // 15
+
+// Programación orientada a objetos
+class Contador {
+  constructor() {
+    this.valor = 0;
+  }
+  
+  incrementar() {
+    this.valor++;
+  }
+  
+  obtenerValor() {
+    return this.valor;
+  }
+}
+
+const miContador = new Contador();
+miContador.incrementar();
+miContador.incrementar();
+console.log(miContador.obtenerValor());  // 2</code></pre>
+              </div>
+              
+              <p class="text-sm">Esta flexibilidad permite a los desarrolladores adaptar su código según las necesidades del proyecto, aunque también puede llevar a diferentes estilos de código en un mismo proyecto.</p>
+          </div>
+      </div>
+  </section>
+
+  <section id="usos" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">Usos comunes de JavaScript</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-3 text-accent">Desarrollo Web Frontend</h3>
+              <ul class="list-disc pl-5 space-y-2">
+                  <li>Manipulación del DOM (Document Object Model)</li>
+                  <li>Validación de formularios</li>
+                  <li>Animaciones y efectos visuales</li>
+                  <li>Peticiones AJAX y fetch</li>
+                  <li>Frameworks como React, Angular y Vue.js</li>
+                  <li>Aplicaciones de página única (SPA)</li>
+              </ul>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-3 text-accent">Desarrollo Backend</h3>
+              <ul class="list-disc pl-5 space-y-2">
+                  <li>Servidores con Node.js</li>
+                  <li>APIs RESTful</li>
+                  <li>Microservicios</li>
+                  <li>Aplicaciones en tiempo real (con Socket.io)</li>
+                  <li>Acceso a bases de datos</li>
+                  <li>Frameworks como Express, Nest.js, Koa</li>
+              </ul>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-3 text-accent">Desarrollo Móvil</h3>
+              <ul class="list-disc pl-5 space-y-2">
+                  <li>Aplicaciones híbridas con Ionic</li>
+                  <li>Aplicaciones nativas con React Native</li>
+                  <li>Progressive Web Apps (PWA)</li>
+                  <li>Aplicaciones multiplataforma con NativeScript</li>
+                  <li>Aplicaciones móviles con Cordova/PhoneGap</li>
+              </ul>
+          </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-3 text-accent">Aplicaciones de Escritorio</h3>
+              <ul class="list-disc pl-5 space-y-2">
+                  <li>Electron (VS Code, Slack, Discord)</li>
+                  <li>NW.js (anteriormente node-webkit)</li>
+                  <li>Tauri (alternativa más ligera a Electron)</li>
+              </ul>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-3 text-accent">Juegos y Gráficos</h3>
+              <ul class="list-disc pl-5 space-y-2">
+                  <li>Juegos en canvas y WebGL</li>
+                  <li>Bibliotecas como Three.js para 3D</li>
+                  <li>Motores de juegos como Phaser y Babylon.js</li>
+                  <li>Visualización de datos con D3.js</li>
+                  <li>Animaciones con GSAP</li>
+              </ul>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-3 text-accent">Otros usos</h3>
+              <ul class="list-disc pl-5 space-y-2">
+                  <li>Internet de las cosas (IoT) con Johnny-Five</li>
+                  <li>Scripting de automatización con Puppeteer</li>
+                  <li>Desarrollo de extensiones de navegador</li>
+                  <li>Aplicaciones de realidad virtual/aumentada</li>
+                  <li>Inteligencia artificial con TensorFlow.js</li>
+                  <li>Blockchain y contratos inteligentes</li>
+              </ul>
+          </div>
+      </div>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Ecosistema JavaScript</h3>
+          
+          <p class="mb-6">JavaScript cuenta con uno de los ecosistemas más grandes y activos en el mundo de la programación. Algunos componentes clave de este ecosistema incluyen:</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                  <h4 class="text-xl font-bold mb-4 text-accent">Herramientas y entornos</h4>
+                  <ul class="list-disc pl-5 space-y-2">
+                      <li><strong>npm y yarn:</strong> Gestores de paquetes</li>
+                      <li><strong>Webpack, Rollup, Vite:</strong> Empaquetadores (bundlers)</li>
+                      <li><strong>Babel:</strong> Transpilador para compatibilidad</li>
+                      <li><strong>ESLint:</strong> Analizador de código estático</li>
+                      <li><strong>Jest, Mocha, Cypress:</strong> Frameworks de testing</li>
+                      <li><strong>TypeScript:</strong> Superset tipado de JavaScript</li>
+                      <li><strong>VS Code:</strong> Editor popular (escrito en JavaScript)</li>
+                  </ul>
+              </div>
+              
+              <div>
+                  <h4 class="text-xl font-bold mb-4 text-accent">Frameworks y bibliotecas</h4>
+                  <ul class="list-disc pl-5 space-y-2">
+                      <li><strong>Frontend:</strong> React, Angular, Vue, Svelte</li>
+                      <li><strong>Backend:</strong> Express, Nest.js, Fastify, Koa</li>
+                      <li><strong>Full-stack:</strong> Next.js, Nuxt.js, Remix</li>
+                      <li><strong>Mobile:</strong> React Native, Ionic, NativeScript</li>
+                      <li><strong>Desktop:</strong> Electron, NW.js, Tauri</li>
+                      <li><strong>Testing:</strong> Jest, Mocha, Jasmine, Cypress</li>
+                      <li><strong>Utilidades:</strong> Lodash, Moment.js, Axios</li>
+                  </ul>
+              </div>
+          </div>
+          
+          <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+              <p class="text-amber-400"><strong>Dato interesante:</strong> Según GitHub, JavaScript ha sido el lenguaje de programación más popular durante varios años consecutivos, con más de 2.8 millones de repositorios activos.</p>
+          </div>
+      </div>
+  </section>
+
+  <section id="actividades" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">Actividades interactivas</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800">
+              <h3 class="text-xl font-bold mb-6 text-accent">Editor de código JavaScript</h3>
+              
+              <p class="mb-4">Escribe código JavaScript y ejecútalo para ver los resultados inmediatamente.</p>
+              
+              <div class="mb-4">
+                  <textarea id="code-editor" class="code-editor" title="." spellcheck="false">// Escribe tu código JavaScript aquí
+console.log("¡Hola, mundo!");
+
+// Prueba a modificar este código
+let nombre = "Estudiante";
+console.log(`Bienvenido, ${nombre}!`);
+
+// O crea una función
+function sumar(a, b) {
+  return a + b;
+}
+
+console.log(`2 + 3 = ${sumar(2, 3)}`);
+</textarea>
+              </div>
+              
+              <div class="flex justify-end mb-4">
+                  <button id="run-code" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                      Ejecutar código
+                  </button>
+              </div>
+              
+              <div class="mb-4">
+                  <h4 class="font-bold mb-2">Consola:</h4>
+                  <div id="console-output" class="console-output"></div>
+              </div>
+              
+              <div class="bg-dark p-4 rounded-lg">
+                  <p class="text-sm"><strong>Sugerencias:</strong></p>
+                  <ul class="list-disc pl-5 text-sm space-y-1">
+                      <li>Prueba a crear variables con <code>let</code> y <code>const</code></li>
+                      <li>Experimenta con diferentes tipos de datos (números, strings, arrays, objetos)</li>
+                      <li>Crea funciones y llámalas con diferentes parámetros</li>
+                      <li>Usa estructuras de control como <code>if</code>, <code>for</code> y <code>while</code></li>
+                  </ul>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800">
+              <h3 class="text-xl font-bold mb-6 text-accent">Quiz de JavaScript</h3>
+              
+              <div id="quiz-container">
+                  <div id="quiz-question" class="mb-6">
+                      <h4 class="font-bold mb-2">Pregunta 1:</h4>
+                      <p class="text-lg">¿En qué año fue creado JavaScript?</p>
+                  </div>
+                  
+                  <div id="quiz-options" class="space-y-3 mb-6">
+                      <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                          <p>1990</p>
+                      </div>
+                      <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="true">
+                          <p>1995</p>
+                      </div>
+                      <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                          <p>2000</p>
+                      </div>
+                      <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                          <p>2005</p>
+                      </div>
+                  </div>
+                  
+                  <div id="quiz-feedback" class="mb-6 hidden">
+                      <p class="font-bold"></p>
+                  </div>
+                  
+                  <div class="flex justify-between">
+                      <button id="quiz-prev" class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                          Anterior
+                      </button>
+                      <button id="quiz-next" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                          Siguiente
+                      </button>
+                  </div>
+                  
+                  <div id="quiz-progress" class="mt-4">
+                      <div class="flex justify-between text-sm mb-1">
+                          <span>Progreso</span>
+                          <span id="quiz-progress-text">1/5</span>
+                      </div>
+                      <div class="bg-gray-700 h-2 rounded-full">
+                          <div id="quiz-progress-bar" class="bg-accent h-2 rounded-full" style="width: 20%"></div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div id="quiz-results" class="hidden">
+                  <h4 class="font-bold text-xl mb-4 text-accent">Resultados del Quiz</h4>
+                  <p class="text-lg mb-4">Has acertado <span id="quiz-score">0</span> de 5 preguntas.</p>
+                  <div id="quiz-message" class="p-4 rounded-md mb-6"></div>
+                  <button id="quiz-restart" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                      Reiniciar Quiz
+                  </button>
+              </div>
+          </div>
+      </div>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Ejemplos interactivos</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="bg-dark p-5 rounded-lg">
+                  <h4 class="text-xl font-bold mb-4 text-accent">Manipulación del DOM</h4>
+                  
+                  <div class="mb-4">
+                      <p class="mb-2">Cambia el texto y el estilo del siguiente elemento:</p>
+                      <div id="dom-example" class="p-4 bg-gray-800 rounded-md text-center">
+                          Texto original
+                      </div>
+                  </div>
+                  
+                  <div class="grid grid-cols-2 gap-2 mb-4">
+                      <button id="change-text-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">
+                          Cambiar texto
+                      </button>
+                      <button id="change-color-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">
+                          Cambiar color
+                      </button>
+                      <button id="add-border-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">
+                          Añadir borde
+                      </button>
+                      <button id="reset-dom-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">
+                          Reiniciar
+                      </button>
+                  </div>
+                  
+                  <div class="bg-gray-900 p-3 rounded-md">
+                      <pre class="text-sm text-gray-300 overflow-x-auto"><code id="dom-code">// El código se mostrará aquí</code></pre>
+                  </div>
+              </div>
+              
+              <div class="bg-dark p-5 rounded-lg">
+                  <h4 class="text-xl font-bold mb-4 text-accent">Contador interactivo</h4>
+                  
+                  <div class="mb-4 text-center">
+                      <p class="mb-2">Valor actual:</p>
+                      <div id="counter-value" class="text-4xl font-bold mb-4 text-accent">0</div>
+                      
+                      <div class="flex justify-center space-x-4">
+                          <button id="decrement-btn" class="bg-gray-700 hover:bg-gray-600 py-2 px-6 rounded text-xl">
+                              -
+                          </button>
+                          <button id="increment-btn" class="bg-accent text-dark py-2 px-6 rounded text-xl hover:bg-accent/80">
+                              +
+                          </button>
+                      </div>
+                  </div>
+                  
+                  <div class="mt-6">
+                      <p class="mb-2 font-bold">Historial de operaciones:</p>
+                      <ul id="counter-history" class="bg-gray-800 p-3 rounded-md h-32 overflow-y-auto">
+                          <li class="text-sm">Contador inicializado a 0</li>
+                      </ul>
+                  </div>
+                  
+                  <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+              </div>
+          </div>
+      </div>
+  </section>
+</main>
+
+<footer class="bg-darker py-8 border-t border-gray-800">
+  <div class="container mx-auto px-4 text-center">
+      <p>JavaScript: Introducción - Guía completa para principiantes</p>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Mobile menu toggle
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      menuBtn.addEventListener('click', function() {
+          if (mobileMenu.classList.contains('hidden')) {
+              mobileMenu.classList.remove('hidden');
+          } else {
+              mobileMenu.classList.add('hidden');
+          }
+      });
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+              e.preventDefault();
+              
+              const targetId = this.getAttribute('href');
+              const targetElement = document.querySelector(targetId);
+              
+              if (targetElement) {
+                  window.scrollTo({
+                      top: targetElement.offsetTop - 80,
+                      behavior: 'smooth'
+                  });
+                  
+                  if (!mobileMenu.classList.contains('hidden')) {
+                      mobileMenu.classList.add('hidden');
+                  }
+              }
+          });
+      });
+      
+      // JavaScript Editor
+      const codeEditor = document.getElementById('code-editor');
+      const runCodeBtn = document.getElementById('run-code');
+      const consoleOutput = document.getElementById('console-output');
+      
+      if (runCodeBtn && codeEditor && consoleOutput) {
+          runCodeBtn.addEventListener('click', function() {
+              // Clear previous output
+              consoleOutput.innerHTML = '';
+              
+              // Get code from editor
+              const code = codeEditor.value;
+              
+              // Override console.log
+              const originalConsoleLog = console.log;
+              console.log = function(...args) {
+                  // Call original console.log
+                  originalConsoleLog.apply(console, args);
+                  
+                  // Add to our output
+                  const logItem = document.createElement('div');
+                  logItem.textContent = args.map(arg => {
+                      if (typeof arg === 'object') {
+                          return JSON.stringify(arg);
+                      }
+                      return arg;
+                  }).join(' ');
+                  consoleOutput.appendChild(logItem);
+              };
+              
+              // Execute code
+              try {
+                  eval(code);
+                  
+                  // Add success message if no output
+                  if (consoleOutput.innerHTML === '') {
+                      const successMsg = document.createElement('div');
+                      successMsg.textContent = 'Código ejecutado correctamente (sin salida en consola)';
+                      successMsg.classList.add('success');
+                      consoleOutput.appendChild(successMsg);
+                  }
+              } catch (error) {
+                  // Show error
+                  const errorMsg = document.createElement('div');
+                  errorMsg.textContent = `Error: ${error.message}`;
+                  errorMsg.classList.add('error');
+                  consoleOutput.appendChild(errorMsg);
+              }
+              
+              // Restore original console.log
+              console.log = originalConsoleLog;
+          });
+      }
+      
+      // Quiz functionality
+      const quizContainer = document.getElementById('quiz-container');
+      const quizResults = document.getElementById('quiz-results');
+      const quizQuestion = document.getElementById('quiz-question');
+      const quizOptions = document.getElementById('quiz-options');
+      const quizFeedback = document.getElementById('quiz-feedback');
+      const quizPrev = document.getElementById('quiz-prev');
+      const quizNext = document.getElementById('quiz-next');
+      const quizProgressBar = document.getElementById('quiz-progress-bar');
+      const quizProgressText = document.getElementById('quiz-progress-text');
+      const quizScore = document.getElementById('quiz-score');
+      const quizMessage = document.getElementById('quiz-message');
+      const quizRestart = document.getElementById('quiz-restart');
+      
+      // Quiz questions
+      const questions = [
+          {
+              question: "¿En qué año fue creado JavaScript?",
+              options: ["1990", "1995", "2000", "2005"],
+              correctIndex: 1
+          },
+          {
+              question: "¿Quién creó JavaScript?",
+              options: ["Bill Gates", "Brendan Eich", "Tim Berners-Lee", "Linus Torvalds"],
+              correctIndex: 1
+          },
+          {
+              question: "¿Cuál de estos NO es un tipo de dato en JavaScript?",
+              options: ["String", "Number", "Boolean", "Integer"],
+              correctIndex: 3
+          },
+          {
+              question: "¿Qué significa DOM en JavaScript?",
+              options: ["Document Object Model", "Data Object Model", "Document Oriented Model", "Digital Object Model"],
+              correctIndex: 0
+          },
+          {
+              question: "¿Cuál es la forma correcta de declarar una variable en JavaScript moderno?",
+              options: ["var x = 5;", "let x = 5;", "const x = 5;", "Tanto let como const son correctas"],
+              correctIndex: 3
+          }
+      ];
+      
+      let currentQuestion = 0;
+      let score = 0;
+      let answered = false;
+      
+      // Initialize quiz
+      function initQuiz() {
+          if (!quizContainer || !quizOptions) return;
+          
+          showQuestion(currentQuestion);
+          
+          // Add event listeners to options
+          quizOptions.addEventListener('click', function(e) {
+              if (answered) return;
+              
+              const option = e.target.closest('.quiz-option');
+              if (!option) return;
+              
+              const options = quizOptions.querySelectorAll('.quiz-option');
+              options.forEach(opt => opt.classList.remove('selected'));
+              option.classList.add('selected');
+              
+              // Check answer
+              const isCorrect = option.dataset.correct === 'true';
+              
+              if (isCorrect) {
+                  option.classList.add('correct');
+                  quizFeedback.querySelector('p').textContent = '¡Correcto!';
+                  quizFeedback.querySelector('p').classList.add('text-green-500');
+                  score++;
+              } else {
+                  option.classList.add('incorrect');
+                  
+                  // Show correct answer
+                  options.forEach(opt => {
+                      if (opt.dataset.correct === 'true') {
+                          opt.classList.add('correct');
+                      }
+                  });
+                  
+                  quizFeedback.querySelector('p').textContent = 'Incorrecto. La respuesta correcta está marcada en verde.';
+                  quizFeedback.querySelector('p').classList.add('text-red-500');
+              }
+              
+              quizFeedback.classList.remove('hidden');
+              answered = true;
+              
+              // Enable next button
+              quizNext.disabled = false;
+          });
+          
+          // Next button
+          if (quizNext) {
+              quizNext.addEventListener('click', function() {
+                  if (!answered && currentQuestion < questions.length - 1) {
+                      // Skip question
+                      currentQuestion++;
+                      showQuestion(currentQuestion);
+                  } else if (answered && currentQuestion < questions.length - 1) {
+                      // Next question
+                      currentQuestion++;
+                      showQuestion(currentQuestion);
+                      answered = false;
+                  } else if (currentQuestion === questions.length - 1) {
+                      // Show results
+                      showResults();
+                  }
+              });
+          }
+          
+          // Previous button
+          if (quizPrev) {
+              quizPrev.addEventListener('click', function() {
+                  if (currentQuestion > 0) {
+                      currentQuestion--;
+                      showQuestion(currentQuestion);
+                      answered = false;
+                  }
+              });
+          }
+          
+          // Restart button
+          if (quizRestart) {
+              quizRestart.addEventListener('click', function() {
+                  currentQuestion = 0;
+                  score = 0;
+                  answered = false;
+                  quizContainer.classList.remove('hidden');
+                  quizResults.classList.add('hidden');
+                  showQuestion(currentQuestion);
+              });
+          }
+      }
+      
+      // Show question
+      function showQuestion(index) {
+          if (!quizQuestion || !quizOptions || !quizFeedback) return;
+          
+          const question = questions[index];
+          
+          // Update question
+          quizQuestion.innerHTML = `
+              <h4 class="font-bold mb-2">Pregunta ${index + 1}:</h4>
+              <p class="text-lg">${question.question}</p>
+          `;
+          
+          // Update options
+          quizOptions.innerHTML = '';
+          question.options.forEach((option, i) => {
+              const isCorrect = i === question.correctIndex;
+              quizOptions.innerHTML += `
+                  <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="${isCorrect}">
+                      <p>${option}</p>
+                  </div>
+              `;
+          });
+          
+          // Reset feedback
+          quizFeedback.classList.add('hidden');
+          quizFeedback.querySelector('p').textContent = '';
+          quizFeedback.querySelector('p').classList.remove('text-green-500', 'text-red-500');
+          
+          // Update buttons
+          if (quizPrev) quizPrev.disabled = index === 0;
+          if (quizNext) {
+              quizNext.disabled = answered ? false : index === questions.length - 1;
+              quizNext.textContent = index === questions.length - 1 ? 'Ver resultados' : 'Siguiente';
+          }
+          
+          // Update progress
+          if (quizProgressBar) quizProgressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+          if (quizProgressText) quizProgressText.textContent = `${index + 1}/${questions.length}`;
+      }
+      
+      // Show results
+      function showResults() {
+          if (!quizContainer || !quizResults || !quizScore || !quizMessage) return;
+          
+          quizContainer.classList.add('hidden');
+          quizResults.classList.remove('hidden');
+          
+          quizScore.textContent = score;
+          
+          // Show message based on score
+          let message = '';
+          let messageClass = '';
+          
+          if (score === questions.length) {
+              message = '¡Perfecto! Dominas los conceptos básicos de JavaScript.';
+              messageClass = 'bg-green-800/30 border border-green-700 text-green-400';
+          } else if (score >= questions.length * 0.7) {
+              message = '¡Muy bien! Tienes un buen conocimiento de JavaScript.';
+              messageClass = 'bg-green-800/30 border border-green-700 text-green-400';
+          } else if (score >= questions.length * 0.5) {
+              message = 'No está mal, pero podrías mejorar tu conocimiento de JavaScript.';
+              messageClass = 'bg-yellow-800/30 border border-yellow-700 text-yellow-400';
+          } else {
+              message = 'Necesitas estudiar más los conceptos básicos de JavaScript.';
+              messageClass = 'bg-red-800/30 border border-red-700 text-red-400';
+          }
+          
+          quizMessage.className = `p-4 rounded-md mb-6 ${messageClass}`;
+          quizMessage.textContent = message;
+      }
+      
+      // DOM Manipulation Example
+      const domExample = document.getElementById('dom-example');
+      const changeTextBtn = document.getElementById('change-text-btn');
+      const changeColorBtn = document.getElementById('change-color-btn');
+      const addBorderBtn = document.getElementById('add-border-btn');
+      const resetDomBtn = document.getElementById('reset-dom-btn');
+      const domCode = document.getElementById('dom-code');
+      
+      if (domExample && changeTextBtn && changeColorBtn && addBorderBtn && resetDomBtn && domCode) {
+          // Initial state
+          domCode.textContent = '// Haz clic en los botones para ver el código JavaScript';
+          
+          // Change text
+          changeTextBtn.addEventListener('click', function() {
+              domExample.textContent = '¡Texto modificado con JavaScript!';
+              domCode.textContent = `// Cambiar el texto de un elemento
+const elemento = document.getElementById('dom-example');
+elemento.textContent = '¡Texto modificado con JavaScript!';`;
+          });
+          
+          // Change color
+          changeColorBtn.addEventListener('click', function() {
+              domExample.style.backgroundColor = '#FFD700';
+              domExample.style.color = '#0a0f1a';
+              domCode.textContent = `// Cambiar el color de un elemento
+const elemento = document.getElementById('dom-example');
+elemento.style.backgroundColor = '#FFD700';
+elemento.style.color = '#0a0f1a';`;
+          });
+          
+          // Add border
+          addBorderBtn.addEventListener('click', function() {
+              domExample.style.border = '2px solid #FFD700';
+              domCode.textContent = `// Añadir un borde a un elemento
+const elemento = document.getElementById('dom-example');
+elemento.style.border = '2px solid #FFD700';`;
+          });
+          
+          // Reset
+          resetDomBtn.addEventListener('click', function() {
+              domExample.textContent = 'Texto original';
+              domExample.style.backgroundColor = '';
+              domExample.style.color = '';
+              domExample.style.border = '';
+              domCode.textContent = `// Restablecer un elemento a su estado original
+const elemento = document.getElementById('dom-example');
+elemento.textContent = 'Texto original';
+elemento.style.backgroundColor = '';
+elemento.style.color = '';
+elemento.style.border = '';`;
+          });
+      }
+      
+      // Counter Example
+      const counterValue = document.getElementById('counter-value');
+      const incrementBtn = document.getElementById('increment-btn');
+      const decrementBtn = document.getElementById('decrement-btn');
+      const resetCounterBtn = document.getElementById('reset-counter-btn');
+      const counterHistory = document.getElementById('counter-history');
+      
+      if (counterValue && incrementBtn && decrementBtn && resetCounterBtn && counterHistory) {
+          let count = 0;
+          
+          // Add to history
+          function addToHistory(action) {
+              const item = document.createElement('li');
+              item.textContent = action;
+              item.classList.add('text-sm');
+              counterHistory.appendChild(item);
+              counterHistory.scrollTop = counterHistory.scrollHeight;
+          }
+          
+          // Increment
+          incrementBtn.addEventListener('click', function() {
+              count++;
+              counterValue.textContent = count;
+              addToHistory(`Incrementado a ${count}`);
+          });
+          
+          // Decrement
+          decrementBtn.addEventListener('click', function() {
+              count--;
+              counterValue.textContent = count;
+              addToHistory(`Decrementado a ${count}`);
+          });
+          
+          // Reset
+          resetCounterBtn.addEventListener('click', function() {
+              count = 0;
+              counterValue.textContent = count;
+              addToHistory('Contador reiniciado a 0');
+          });
+      }
+      
+      // Initialize quiz
+      initQuiz();
+  });
+</script>
+</body>
+</html>

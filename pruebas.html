@@ -1,0 +1,33 @@
+class Animal {
+  constructor(nombre, edad) {
+    this.nombre = nombre;
+    this.edad = edad;
+  }
+
+  comer() {
+    return 'El animal está comiendo';
+  }
+
+  dormir() {
+    return 'El animal está durmiendo';
+  }
+
+  hacerSonido() {
+    return 'El animal hace un sonido';
+  }
+}
+
+class Perro extends Animal {
+  constructor(nombre, edad, raza) {
+    super(nombre, edad);
+    this.raza = raza;
+  }
+
+  hacerSonido() {
+    return '🐕 ¡Guau guau!';
+  }
+
+  jugar() {
+    return 'El perro está jugando';
+  }
+}

@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript: Sintaxis y Tipos de Datos</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+      theme: {
+          extend: {
+              colors: {
+                  dark: '#0a0f1a',
+                  darker: '#050a14',
+                  accent: '#FFD700', // Amarillo dorado
+                  accentLight: '#FFEB99', // Amarillo claro
+                  accentDark: '#B8860B' // Amarillo oscuro (dark goldenrod)
+              }
+          }
+      }
+  }
+</script>
+<style>
+  @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+  }
+  .float-animation:hover {
+      animation: float 2s ease-in-out infinite;
+  }
+  .glow-effect:hover {
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  }
+  .scale-effect:hover {
+      transform: scale(1.03);
+  }
+  .rotate-effect:hover .icon-container {
+      transform: rotate(10deg);
+  }
+  .code-block {
+      position: relative;
+      overflow: hidden;
+  }
+  .js-slider {
+      -webkit-appearance: none;
+      height: 8px;
+      border-radius: 4px;
+      background: #1f2937;
+      outline: none;
+  }
+  .js-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FFD700;
+      cursor: pointer;
+  }
+  .js-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FFD700;
+      cursor: pointer;
+  }
+  .js-container {
+      border: 2px dashed rgba(255, 215, 0, 0.3);
+      background-color: rgba(255, 215, 0, 0.05);
+      transition: all 0.3s ease;
+  }
+  .js-item {
+      background-color: rgba(255, 215, 0, 0.3);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      transition: all 0.3s ease;
+  }
+  .js-property-button {
+      transition: all 0.3s ease;
+  }
+  .js-property-button.active {
+      background-color: #FFD700;
+      color: #0a0f1a;
+  }
+  .code-editor {
+      font-family: monospace;
+      background-color: #1a1a1a;
+      color: #f8f8f8;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #333;
+      resize: none;
+      width: 100%;
+      height: 150px;
+      tab-size: 2;
+  }
+  .console-output {
+      font-family: monospace;
+      background-color: #0a0a0a;
+      color: #f8f8f8;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #333;
+      min-height: 100px;
+      max-height: 200px;
+      overflow-y: auto;
+  }
+  .console-output .error {
+      color: #ff6b6b;
+  }
+  .console-output .success {
+      color: #51cf66;
+  }
+  .console-output .info {
+      color: #FFD700;
+  }
+  .type-card {
+      transition: all 0.3s ease;
+  }
+  .type-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  .type-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+  }
+  .type-string {
+      background-color: rgba(52, 211, 153, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.5);
+  }
+  .type-number {
+      background-color: rgba(96, 165, 250, 0.2);
+      color: #60a5fa;
+      border: 1px solid rgba(96, 165, 250, 0.5);
+  }
+  .type-boolean {
+      background-color: rgba(248, 113, 113, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(248, 113, 113, 0.5);
+  }
+  .type-null {
+      background-color: rgba(167, 139, 250, 0.2);
+      color: #a78bfa;
+      border: 1px solid rgba(167, 139, 250, 0.5);
+  }
+  .type-undefined {
+      background-color: rgba(251, 191, 36, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.5);
+  }
+  .type-symbol {
+      background-color: rgba(236, 72, 153, 0.2);
+      color: #ec4899;
+      border: 1px solid rgba(236, 72, 153, 0.5);
+  }
+  .type-bigint {
+      background-color: rgba(129, 140, 248, 0.2);
+      color: #818cf8;
+      border: 1px solid rgba(129, 140, 248, 0.5);
+  }
+  .type-object {
+      background-color: rgba(249, 115, 22, 0.2);
+      color: #f97316;
+      border: 1px solid rgba(249, 115, 22, 0.5);
+  }
+  .type-function {
+      background-color: rgba(217, 70, 239, 0.2);
+      color: #d946ef;
+      border: 1px solid rgba(217, 70, 239, 0.5);
+  }
+  .type-game-card {
+      perspective: 1000px;
+      height: 200px;
+  }
+  .type-game-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+  }
+  .type-game-card.flipped .type-game-card-inner {
+      transform: rotateY(180deg);
+  }
+  .type-game-card-front, .type-game-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0.5rem;
+      padding: 1rem;
+  }
+  .type-game-card-back {
+      transform: rotateY(180deg);
+  }
+  .type-converter-input {
+      font-family: monospace;
+      background-color: #1a1a1a;
+      color: #f8f8f8;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid #333;
+      width: 100%;
+  }
+  .type-converter-result {
+      font-family: monospace;
+      background-color: #0a0a0a;
+      color: #f8f8f8;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid #333;
+      width: 100%;
+      min-height: 2.5rem;
+  }
+</style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+<header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+  <nav class="container mx-auto px-4 py-4">
+      <div class="flex justify-between items-center">
+          <a href="s-js.html"><h1 class="text-2xl font-bold">JS<span class="text-accent">Sintaxis</span></h1></a>
+          <div class="hidden md:flex space-x-6">
+              <a href="#variables" class="hover:text-accent transition-colors duration-300">Variables</a>
+              <a href="#tipos-datos" class="hover:text-accent transition-colors duration-300">Tipos de Datos</a>
+              <a href="#conversion" class="hover:text-accent transition-colors duration-300">Conversión</a>
+              <a href="#operadores" class="hover:text-accent transition-colors duration-300">Operadores</a>
+              <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+          </div>
+          <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+          </button>
+      </div>
+      <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+          <a href="#variables" class="block py-2 hover:text-accent transition-colors duration-300">Variables</a>
+          <a href="#tipos-datos" class="block py-2 hover:text-accent transition-colors duration-300">Tipos de Datos</a>
+          <a href="#conversion" class="block py-2 hover:text-accent transition-colors duration-300">Conversión</a>
+          <a href="#operadores" class="block py-2 hover:text-accent transition-colors duration-300">Operadores</a>
+          <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+      </div>
+  </nav>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+  <section class="text-center py-16">
+      <h1 class="text-5xl font-bold mb-4">Sintaxis y <span class="text-accent">Tipos de Datos</span></h1>
+      <p class="text-xl max-w-3xl mx-auto">Aprende los fundamentos de la sintaxis de JavaScript y sus tipos de datos</p>
+  </section>
+
+  <section id="variables" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">Variables en JavaScript</h2>
+      <p class="mb-8 text-lg leading-relaxed">Las variables son contenedores para almacenar datos. En JavaScript, existen tres formas de declarar variables: <code>var</code>, <code>let</code> y <code>const</code>, cada una con diferentes características y alcances.</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+              <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-4 text-accent">var</h3>
+              <p class="text-base mb-4">La forma tradicional de declarar variables en JavaScript. Tiene alcance de función o global, pero no de bloque.</p>
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>var edad = 25;
+var nombre = "Juan";
+var esEstudiante = true;
+
+// Redeclaración permitida
+var edad = 26;
+
+// Reasignación permitida
+edad = 27;</code></pre>
+              </div>
+              <ul class="list-disc pl-5 space-y-1 text-sm">
+                  <li>Alcance de función o global</li>
+                  <li>Se puede redeclarar</li>
+                  <li>Se puede reasignar</li>
+                  <li>Se eleva (hoisting) con valor undefined</li>
+              </ul>
+          </div>
+          
+          <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+              <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-4 text-accent">let</h3>
+              <p class="text-base mb-4">Introducida en ES6 (2015), tiene alcance de bloque y es la forma recomendada para declarar variables que cambiarán de valor.</p>
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>let edad = 25;
+let nombre = "Juan";
+let esEstudiante = true;
+
+// Redeclaración NO permitida
+// let edad = 26; // Error
+
+// Reasignación permitida
+edad = 27;
+
+// Alcance de bloque
+if (true) {
+  let x = 10; // Solo existe dentro del bloque
+}
+// console.log(x); // Error</code></pre>
+              </div>
+              <ul class="list-disc pl-5 space-y-1 text-sm">
+                  <li>Alcance de bloque</li>
+                  <li>No se puede redeclarar en el mismo ámbito</li>
+                  <li>Se puede reasignar</li>
+                  <li>Se eleva (hoisting) sin inicializar (zona muerta temporal)</li>
+              </ul>
+          </div>
+          
+          <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+              <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-4 text-accent">const</h3>
+              <p class="text-base mb-4">También introducida en ES6, se utiliza para declarar constantes cuyo valor no cambiará. Tiene alcance de bloque.</p>
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>const PI = 3.14159;
+const NOMBRE = "Juan";
+const ES_ESTUDIANTE = true;
+
+// Redeclaración NO permitida
+// const PI = 3.14; // Error
+
+// Reasignación NO permitida
+// PI = 3.14; // Error
+
+// Pero los objetos y arrays pueden modificarse
+const persona = { nombre: "Ana" };
+persona.nombre = "Luis"; // Válido
+persona.edad = 30; // Válido</code></pre>
+              </div>
+              <ul class="list-disc pl-5 space-y-1 text-sm">
+                  <li>Alcance de bloque</li>
+                  <li>No se puede redeclarar</li>
+                  <li>No se puede reasignar</li>
+                  <li>Los objetos y arrays pueden modificarse internamente</li>
+                  <li>Se eleva (hoisting) sin inicializar (zona muerta temporal)</li>
+              </ul>
+          </div>
+      </div>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Comparación de declaraciones de variables</h3>
+          
+          <div class="overflow-x-auto">
+              <table class="min-w-full bg-dark">
+                  <thead>
+                      <tr>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">Característica</th>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">var</th>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">let</th>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">const</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">Alcance</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Función o global</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Bloque</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Bloque</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">Redeclaración</td>
+                          <td class="py-3 px-4 border-b border-gray-700">✅ Permitida</td>
+                          <td class="py-3 px-4 border-b border-gray-700">❌ No permitida</td>
+                          <td class="py-3 px-4 border-b border-gray-700">❌ No permitida</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">Reasignación</td>
+                          <td class="py-3 px-4 border-b border-gray-700">✅ Permitida</td>
+                          <td class="py-3 px-4 border-b border-gray-700">✅ Permitida</td>
+                          <td class="py-3 px-4 border-b border-gray-700">❌ No permitida</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">Hoisting</td>
+                          <td class="py-3 px-4 border-b border-gray-700">✅ Con valor undefined</td>
+                          <td class="py-3 px-4 border-b border-gray-700">✅ Sin inicializar (TDZ)</td>
+                          <td class="py-3 px-4 border-b border-gray-700">✅ Sin inicializar (TDZ)</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4">Uso recomendado</td>
+                          <td class="py-3 px-4">Código legacy</td>
+                          <td class="py-3 px-4">Variables que cambiarán</td>
+                          <td class="py-3 px-4">Variables que no cambiarán</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+          
+          <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+              <p class="text-amber-400"><strong>Buena práctica:</strong> En JavaScript moderno, se recomienda usar <code>const</code> por defecto y cambiar a <code>let</code> solo cuando sea necesario reasignar la variable. Evita usar <code>var</code> en código nuevo.</p>
+          </div>
+      </div>
+  </section>
+
+  <section id="tipos-datos" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">Tipos de Datos Primitivos</h2>
+      
+      <p class="mb-8 text-lg">JavaScript tiene siete tipos de datos primitivos, que son valores inmutables que se pasan por valor. Estos son los bloques de construcción básicos para cualquier programa JavaScript.</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 type-card">
+              <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-xl font-bold text-accent">String</h3>
+                  <span class="type-badge type-string">string</span>
+              </div>
+              
+              <p class="mb-4">Representa texto. Se puede definir con comillas simples, dobles o backticks (template literals).</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Formas de crear strings
+let nombre = 'Ana';
+let apellido = "García";
+let saludo = `Hola, ${nombre}!`;  // Template literal
+
+// Métodos comunes
+nombre.length;         // 3
+nombre.toUpperCase();  // "ANA"
+nombre.charAt(0);      // "A"
+nombre.indexOf('n');   // 1
+nombre.slice(1);       // "na"</code></pre>
+              </div>
+              
+              <p class="text-sm">Los strings son inmutables, lo que significa que los métodos que parecen modificarlos en realidad devuelven nuevos strings.</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 type-card">
+              <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-xl font-bold text-accent">Number</h3>
+                  <span class="type-badge type-number">number</span>
+              </div>
+              
+              <p class="mb-4">Representa números, tanto enteros como de punto flotante. JavaScript no distingue entre ellos.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Números enteros y decimales
+let entero = 42;
+let decimal = 3.14159;
+let negativo = -10;
+let exponente = 2.5e6;  // 2500000
+
+// Valores especiales
+let infinito = Infinity;
+let noEsNumero = NaN;  // Not a Number
+
+// Métodos y propiedades
+Number.MAX_VALUE;      // El mayor número posible
+(123.456).toFixed(2);  // "123.46"
+parseInt("42");        // 42
+parseFloat("3.14");    // 3.14</code></pre>
+              </div>
+              
+              <p class="text-sm">JavaScript utiliza el estándar IEEE 754 para números, lo que puede llevar a imprecisiones en cálculos con decimales (ej: 0.1 + 0.2 !== 0.3).</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 type-card">
+              <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-xl font-bold text-accent">Boolean</h3>
+                  <span class="type-badge type-boolean">boolean</span>
+              </div>
+              
+              <p class="mb-4">Representa un valor lógico: verdadero o falso. Se utiliza para tomar decisiones en el código.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Valores booleanos
+let verdadero = true;
+let falso = false;
+
+// Operaciones lógicas
+let and = true && false;  // false
+let or = true || false;   // true
+let not = !true;          // false
+
+// Expresiones que devuelven booleanos
+let mayorQue = 5 > 3;     // true
+let igualdad = 5 === "5"; // false
+let desigualdad = 5 !== 4; // true</code></pre>
+              </div>
+              
+              <p class="text-sm">Los booleanos son fundamentales para las estructuras de control como if, while y for, que ejecutan código basado en condiciones.</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 type-card">
+              <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-xl font-bold text-accent">Undefined</h3>
+                  <span class="type-badge type-undefined">undefined</span>
+              </div>
+              
+              <p class="mb-4">Representa una variable que ha sido declarada pero no inicializada, o una propiedad que no existe.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Variables sin inicializar
+let sinValor;
+console.log(sinValor);  // undefined
+
+// Parámetros de función no proporcionados
+function saludar(nombre) {
+  console.log(nombre);  // undefined si no se pasa
+}
+saludar();
+
+// Propiedades inexistentes
+let obj = {};
+console.log(obj.propiedad);  // undefined
+
+// Comprobación
+typeof sinValor === "undefined";  // true</code></pre>
+              </div>
+              
+              <p class="text-sm">Undefined indica la ausencia de valor asignado, a diferencia de null que indica la ausencia intencional de valor.</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 type-card">
+              <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-xl font-bold text-accent">Null</h3>
+                  <span class="type-badge type-null">null</span>
+              </div>
+              
+              <p class="mb-4">Representa la ausencia intencional de cualquier valor u objeto. Es un valor asignado explícitamente.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Asignación explícita de null
+let valorNulo = null;
+
+// Uso común para inicializar variables
+let usuario = null;  // Aún no hay usuario
+
+// Comprobación
+valorNulo === null;  // true
+
+// Curiosidad
+console.log(typeof null);  // "object" (esto es un error histórico)
+</code></pre>
+              </div>
+              
+              <p class="text-sm">Null es un valor primitivo, pero curiosamente typeof null devuelve "object", lo cual es considerado un error en el diseño de JavaScript que no se ha corregido por razones de compatibilidad.</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 type-card">
+              <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-xl font-bold text-accent">Symbol</h3>
+                  <span class="type-badge type-symbol">symbol</span>
+              </div>
+              
+              <p class="mb-4">Introducido en ES6, representa un identificador único e inmutable. Se utiliza principalmente como claves de propiedades de objetos.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Creación de símbolos
+let id = Symbol();
+let id2 = Symbol('id');  // Con descripción
+
+// Símbolos son siempre únicos
+Symbol('id') === Symbol('id');  // false
+
+// Uso como claves de propiedades
+let obj = {};
+obj[id] = 'Valor secreto';
+
+// Símbolos no son enumerables
+console.log(Object.keys(obj));  // []
+
+// Símbolos globales
+let globalId = Symbol.for('id');
+let sameId = Symbol.for('id');
+globalId === sameId;  // true</code></pre>
+              </div>
+              
+              <p class="text-sm">Los símbolos son útiles para añadir propiedades a objetos que no entren en conflicto con otras propiedades, incluso si tienen el mismo nombre.</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 type-card">
+              <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-xl font-bold text-accent">BigInt</h3>
+                  <span class="type-badge type-bigint">bigint</span>
+              </div>
+              
+              <p class="mb-4">Introducido en ES2020, representa números enteros de precisión arbitraria, superando las limitaciones de Number.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Creación de BigInt
+let numeroGrande = 9007199254740991n;  // Con sufijo n
+let otroGrande = BigInt("9007199254740991");
+
+// Operaciones
+let suma = numeroGrande + 1n;  // 9007199254740992n
+let producto = numeroGrande * 2n;  // 18014398509481982n
+
+// No se pueden mezclar con Number
+// numeroGrande + 1;  // Error
+
+// Conversión
+Number(numeroGrande);  // 9007199254740991
+BigInt(Number.MAX_SAFE_INTEGER);  // 9007199254740991n</code></pre>
+              </div>
+              
+              <p class="text-sm">BigInt es útil para trabajar con números enteros muy grandes, como identificadores de bases de datos, criptografía o cálculos científicos de alta precisión.</p>
+          </div>
+      </div>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800 mb-8">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Verificación de tipos</h3>
+          
+          <p class="mb-6">JavaScript proporciona varias formas de verificar el tipo de un valor:</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                  <h4 class="text-xl font-bold mb-4 text-accent">Operador typeof</h4>
+                  <div class="code-block mb-4">
+                      <pre class="text-gray-300 overflow-x-auto"><code>typeof "Hola";        // "string"
+typeof 42;            // "number"
+typeof true;          // "boolean"
+typeof undefined;     // "undefined"
+typeof null;          // "object" (error histórico)
+typeof Symbol();      // "symbol"
+typeof 42n;           // "bigint"
+typeof {};            // "object"
+typeof [];            // "object"
+typeof function(){};  // "function"</code></pre>
+                  </div>
+                  <p class="text-sm">El operador typeof devuelve una cadena que indica el tipo del operando. Tiene algunas peculiaridades, como devolver "object" para null y arrays.</p>
+              </div>
+              
+              <div>
+                  <h4 class="text-xl font-bold mb-4 text-accent">Métodos de verificación</h4>
+                  <div class="code-block mb-4">
+                      <pre class="text-gray-300 overflow-x-auto"><code>// Para arrays
+Array.isArray([]);  // true
+Array.isArray({});  // false
+
+// Para NaN
+isNaN(NaN);        // true
+isNaN("texto");    // true (convierte a número primero)
+Number.isNaN(NaN); // true
+Number.isNaN("texto"); // false (más estricto)
+
+// Para números finitos
+isFinite(42);      // true
+isFinite(Infinity); // false
+Number.isFinite(42); // true</code></pre>
+                  </div>
+                  <p class="text-sm">Estos métodos proporcionan verificaciones más precisas para casos específicos donde typeof puede ser ambiguo o engañoso.</p>
+              </div>
+          </div>
+          
+          <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+              <p class="text-amber-400"><strong>Consejo:</strong> En JavaScript moderno, se recomienda usar <code>Array.isArray()</code> para verificar arrays y <code>Number.isNaN()</code> en lugar de <code>isNaN()</code> para verificaciones más precisas.</p>
+          </div>
+      </div>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Tipos de datos no primitivos</h3>
+          
+          <p class="mb-6">Además de los tipos primitivos, JavaScript tiene tipos de datos no primitivos (objetos) que se pasan por referencia:</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                  <div class="flex justify-between items-start mb-4">
+                      <h4 class="text-xl font-bold text-accent">Object</h4>
+                      <span class="type-badge type-object">object</span>
+                  </div>
+                  <div class="code-block mb-4">
+                      <pre class="text-gray-300 overflow-x-auto"><code>// Objetos literales
+let persona = {
+  nombre: "Ana",
+  edad: 28,
+  saludar: function() {
+    return `Hola, soy ${this.nombre}`;
+  }
+};
+
+// Acceso a propiedades
+persona.nombre;  // "Ana"
+persona["edad"]; // 28
+
+// Métodos
+persona.saludar();  // "Hola, soy Ana"
+
+// Añadir/modificar propiedades
+persona.ciudad = "Madrid";
+persona.edad = 29;</code></pre>
+                  </div>
+              </div>
+              
+              <div>
+                  <div class="flex justify-between items-start mb-4">
+                      <h4 class="text-xl font-bold text-accent">Array</h4>
+                      <span class="type-badge type-object">object</span>
+                  </div>
+                  <div class="code-block mb-4">
+                      <pre class="text-gray-300 overflow-x-auto"><code>// Arrays
+let colores = ["rojo", "verde", "azul"];
+let mixto = [1, "dos", true, null, {a: 1}];
+
+// Acceso a elementos
+colores[0];  // "rojo"
+colores.length;  // 3
+
+// Métodos comunes
+colores.push("amarillo");  // Añade al final
+colores.pop();  // Elimina del final
+colores.unshift("negro");  // Añade al inicio
+colores.shift();  // Elimina del inicio
+colores.slice(1, 3);  // Subarray
+colores.splice(1, 1, "púrpura");  // Reemplaza</code></pre>
+                  </div>
+              </div>
+              
+              <div>
+                  <div class="flex justify-between items-start mb-4">
+                      <h4 class="text-xl font-bold text-accent">Function</h4>
+                      <span class="type-badge type-function">function</span>
+                  </div>
+                  <div class="code-block mb-4">
+                      <pre class="text-gray-300 overflow-x-auto"><code>// Declaración de función
+function sumar(a, b) {
+  return a + b;
+}
+
+// Expresión de función
+const restar = function(a, b) {
+  return a - b;
+};
+
+// Arrow function (ES6)
+const multiplicar = (a, b) => a * b;
+
+// Funciones como objetos
+sumar.descripcion = "Función que suma dos números";
+console.log(sumar.descripcion);
+
+// Funciones como argumentos
+[1, 2, 3].map(x => x * 2);  // [2, 4, 6]</code></pre>
+                  </div>
+              </div>
+              
+              <div>
+                  <div class="flex justify-between items-start mb-4">
+                      <h4 class="text-xl font-bold text-accent">Otros objetos</h4>
+                      <span class="type-badge type-object">object</span>
+                  </div>
+                  <div class="code-block mb-4">
+                      <pre class="text-gray-300 overflow-x-auto"><code>// Date
+let ahora = new Date();
+let navidad = new Date(2023, 11, 25);
+
+// RegExp
+let patron = /[a-z]+/g;
+let coincide = "Hola123".match(patron);  // ["ola"]
+
+// Map
+let mapa = new Map();
+mapa.set("clave", "valor");
+
+// Set
+let conjunto = new Set([1, 2, 2, 3]);  // {1, 2, 3}
+
+// Promise
+let promesa = new Promise((resolve) => {
+  setTimeout(() => resolve("Completado"), 1000);
+});</code></pre>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <section id="conversion" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">Conversión de Tipos</h2>
+      
+      <p class="mb-8 text-lg">JavaScript es un lenguaje de tipado dinámico, lo que significa que las variables pueden cambiar de tipo. La conversión de tipos puede ser explícita (cuando el programador la realiza intencionalmente) o implícita (cuando JavaScript la realiza automáticamente).</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Conversión explícita (Type Casting)</h3>
+              
+              <p class="mb-4">Es cuando convertimos un tipo a otro de forma intencional usando funciones o métodos específicos.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// String a Number
+Number("42");        // 42
+parseInt("42");      // 42
+parseFloat("3.14");  // 3.14
++"42";               // 42 (operador unario +)
+
+// Number a String
+String(42);          // "42"
+(42).toString();     // "42"
+42 + "";             // "42" (concatenación)
+
+// A Boolean
+Boolean(1);          // true
+Boolean(0);          // false
+Boolean("");         // false
+Boolean("texto");    // true
+!!"texto";           // true (doble negación)
+
+// A Number
+Number(true);        // 1
+Number(false);       // 0
+
+// A Object
+Object(42);          // Number {42}
+Object("texto");     // String {"texto"}
+
+// De Object a primitivo
+Number([1]);         // 1
+Number([1,2]);       // NaN
+String([1,2]);       // "1,2"</code></pre>
+              </div>
+              
+              <p class="text-sm">La conversión explícita es más clara y predecible, por lo que se recomienda usarla cuando sea posible para evitar comportamientos inesperados.</p>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Conversión implícita (Coerción)</h3>
+              
+              <p class="mb-4">Ocurre cuando JavaScript convierte automáticamente un tipo a otro durante la ejecución de operaciones.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Operador +
+"5" + 3;             // "53" (string concatenation)
+3 + "5";             // "35" (string concatenation)
+true + 1;            // 2 (true se convierte a 1)
+null + 1;            // 1 (null se convierte a 0)
+undefined + 1;       // NaN (undefined se convierte a NaN)
+
+// Otros operadores aritméticos
+"5" - 3;             // 2 (string se convierte a number)
+"5" * 3;             // 15 (string se convierte a number)
+"5" / "2";           // 2.5 (ambos se convierten a number)
+
+// Operadores de comparación
+"5" == 5;            // true (comparación con coerción)
+"5" === 5;           // false (comparación estricta, sin coerción)
+0 == false;          // true (coerción)
+0 === false;         // false (sin coerción)
+null == undefined;   // true (coerción)
+null === undefined;  // false (sin coerción)
+
+// Operadores lógicos
+"texto" && 1;        // 1 (ambos son truthy)
+"" || "alternativa"; // "alternativa" (el primero es falsy)
+!0;                  // true (0 es falsy)</code></pre>
+              </div>
+              
+              <p class="text-sm">La coerción puede llevar a comportamientos inesperados si no se comprende bien. Por eso se recomienda usar el operador de igualdad estricta (===) en lugar del de igualdad abstracta (==).</p>
+          </div>
+      </div>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Valores Truthy y Falsy</h3>
+          
+          <p class="mb-6">En JavaScript, cualquier valor puede ser convertido a booleano en contextos que requieren un booleano (como condiciones if). Los valores se clasifican como "truthy" (se convierten a true) o "falsy" (se convierten a false).</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                  <h4 class="text-xl font-bold mb-4 text-accent">Valores Falsy</h4>
+                  <p class="mb-2">Estos son todos los valores que se convierten a false:</p>
+                  <ul class="list-disc pl-5 space-y-2">
+                      <li><code>false</code> - El valor booleano false</li>
+                      <li><code>0</code> - El número cero</li>
+                      <li><code>-0</code> - El número cero negativo</li>
+                      <li><code>0n</code> - BigInt cero</li>
+                      <li><code>""</code>, <code>''</code>, <code>``</code> - String vacío</li>
+                      <li><code>null</code> - Ausencia de valor</li>
+                      <li><code>undefined</code> - Valor no definido</li>
+                      <li><code>NaN</code> - Not a Number</li>
+                  </ul>
+                  <div class="code-block mt-4">
+                      <pre class="text-gray-300 overflow-x-auto"><code>if (0) {
+  // Este bloque no se ejecuta
+}
+
+if ("") {
+  // Este bloque no se ejecuta
+}
+
+if (null || undefined) {
+  // Este bloque no se ejecuta
+}</code></pre>
+                  </div>
+              </div>
+              
+              <div>
+                  <h4 class="text-xl font-bold mb-4 text-accent">Valores Truthy</h4>
+                  <p class="mb-2">Todos los demás valores se convierten a true, incluyendo:</p>
+                  <ul class="list-disc pl-5 space-y-2">
+                      <li><code>true</code> - El valor booleano true</li>
+                      <li>Cualquier número distinto de cero (positivo o negativo)</li>
+                      <li>Cualquier string no vacío</li>
+                      <li>Objetos (incluso vacíos)</li>
+                      <li>Arrays (incluso vacíos)</li>
+                      <li>Funciones</li>
+                      <li>Símbolos</li>
+                  </ul>
+                  <div class="code-block mt-4">
+                      <pre class="text-gray-300 overflow-x-auto"><code>if (1) {
+  // Este bloque se ejecuta
+}
+
+if ("texto") {
+  // Este bloque se ejecuta
+}
+
+if ({} || []) {
+  // Este bloque se ejecuta
+}</code></pre>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+              <p class="text-amber-400"><strong>Aplicación práctica:</strong> Los valores truthy y falsy son útiles para verificaciones condicionales simplificadas. Por ejemplo, <code>if (valor)</code> en lugar de <code>if (valor !== null && valor !== undefined && valor !== '')</code>.</p>
+          </div>
+      </div>
+  </section>
+
+  <section id="operadores" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">Operadores y Expresiones</h2>
+      
+      <p class="mb-8 text-lg">Los operadores permiten realizar operaciones con variables y valores. JavaScript proporciona varios tipos de operadores para diferentes propósitos.</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Operadores aritméticos</h3>
+              
+              <p class="mb-4">Realizan operaciones matemáticas básicas.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Operadores básicos
+5 + 3;      // 8 (suma)
+5 - 3;      // 2 (resta)
+5 * 3;      // 15 (multiplicación)
+5 / 3;      // 1.6666... (división)
+5 % 3;      // 2 (módulo - resto de la división)
+5 ** 3;     // 125 (exponenciación - ES2016)
+
+// Incremento y decremento
+let x = 5;
+x++;        // Post-incremento (devuelve 5, luego x = 6)
+++x;        // Pre-incremento (x = 7, devuelve 7)
+x--;        // Post-decremento (devuelve 7, luego x = 6)
+--x;        // Pre-decremento (x = 5, devuelve 5)
+
+// Operadores de asignación compuesta
+x = 5;
+x += 3;     // x = x + 3 (x = 8)
+x -= 2;     // x = x - 2 (x = 6)
+x *= 2;     // x = x * 2 (x = 12)
+x /= 4;     // x = x / 4 (x = 3)
+x %= 2;     // x = x % 2 (x = 1)
+x **= 3;    // x = x ** 3 (x = 1)</code></pre>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Operadores de comparación</h3>
+              
+              <p class="mb-4">Comparan valores y devuelven un resultado booleano.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Comparaciones básicas
+5 > 3;       // true (mayor que)
+5 < 3;       // false (menor que)
+5 >= 5;      // true (mayor o igual que)
+5 <= 4;      // false (menor o igual que)
+
+// Igualdad abstracta (con coerción)
+5 == 5;      // true
+5 == "5";    // true (string se convierte a number)
+0 == false;  // true (false se convierte a 0)
+null == undefined;  // true
+
+// Igualdad estricta (sin coerción)
+5 === 5;     // true
+5 === "5";   // false (tipos diferentes)
+0 === false; // false (tipos diferentes)
+null === undefined; // false (tipos diferentes)
+
+// Desigualdad
+5 != 3;      // true (con coerción)
+5 != "5";    // false (con coerción)
+5 !== "5";   // true (estricta, sin coerción)</code></pre>
+              </div>
+              
+              <div class="bg-dark p-4 rounded-lg">
+                  <p class="text-amber-400 text-sm"><strong>Buena práctica:</strong> Utiliza siempre los operadores de igualdad estricta (=== y !==) para evitar conversiones de tipo inesperadas.</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Operadores lógicos</h3>
+              
+              <p class="mb-4">Realizan operaciones lógicas y se utilizan frecuentemente en estructuras de control.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Operadores lógicos básicos
+true && true;   // true (AND lógico)
+true && false;  // false
+true || false;  // true (OR lógico)
+false || false; // false
+!true;          // false (NOT lógico)
+!false;         // true
+
+// Evaluación de cortocircuito
+false && cualquierCosa;  // false (no evalúa cualquierCosa)
+true || cualquierCosa;   // true (no evalúa cualquierCosa)
+
+// Usos comunes
+let edad = 20;
+let tienePermiso = true;
+
+if (edad >= 18 && tienePermiso) {
+  // Se ejecuta si ambas condiciones son true
+}
+
+// Valores por defecto (antes de ES6)
+let nombre = nombreUsuario || "Invitado";
+
+// Ejecución condicional
+isAdmin && ejecutarFuncionAdmin();</code></pre>
+              </div>
+          </div>
+          
+          <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+              <h3 class="text-xl font-bold mb-4 text-accent">Operadores modernos (ES2020+)</h3>
+              
+              <p class="mb-4">JavaScript ha introducido nuevos operadores en versiones recientes que simplifican tareas comunes.</p>
+              
+              <div class="code-block mb-4">
+                  <pre class="text-gray-300 overflow-x-auto"><code>// Operador de coalescencia nula (??)
+// Devuelve el operando derecho cuando el izquierdo es null o undefined
+let valor = null ?? "valor por defecto";  // "valor por defecto"
+let cero = 0 ?? 42;  // 0 (0 no es null ni undefined)
+let vacio = "" ?? "valor por defecto";  // "" (string vacío no es null)
+
+// Operador de encadenamiento opcional (?.)
+// Evita errores al acceder a propiedades de objetos potencialmente nulos
+let usuario = null;
+let nombre = usuario?.nombre;  // undefined (no error)
+let subProp = usuario?.direccion?.ciudad;  // undefined (no error)
+let metodo = usuario?.saludar?.();  // undefined (no error)
+
+// Asignación lógica (ES2021)
+let x;
+// Asignación con AND lógico
+x &&= 5;  // Equivale a: x && (x = 5)
+// Asignación con OR lógico
+x ||= 5;  // Equivale a: x || (x = 5)
+// Asignación con coalescencia nula
+x ??= 5;  // Equivale a: x ?? (x = 5)</code></pre>
+              </div>
+              
+              <div class="bg-dark p-4 rounded-lg">
+                  <p class="text-amber-400 text-sm"><strong>Nota:</strong> Estos operadores modernos pueden no estar disponibles en navegadores antiguos sin un transpilador como Babel.</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Precedencia y asociatividad de operadores</h3>
+          
+          <p class="mb-6">La precedencia determina el orden en que se evalúan los operadores. Los operadores con mayor precedencia se evalúan antes que los de menor precedencia. La asociatividad determina el orden de evaluación cuando hay varios operadores con la misma precedencia.</p>
+          
+          <div class="overflow-x-auto">
+              <table class="min-w-full bg-dark">
+                  <thead>
+                      <tr>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">Precedencia</th>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">Operador</th>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">Asociatividad</th>
+                          <th class="py-3 px-4 text-left border-b border-gray-700">Ejemplo</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">19</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Agrupación ( ... )</td>
+                          <td class="py-3 px-4 border-b border-gray-700">n/a</td>
+                          <td class="py-3 px-4 border-b border-gray-700">(3 + 4) * 5</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">17</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Acceso a miembros . []</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Izquierda a derecha</td>
+                          <td class="py-3 px-4 border-b border-gray-700">objeto.propiedad, array[0]</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">16</td>
+                          <td class="py-3 px-4 border-b border-gray-700">++ -- ! typeof</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Derecha a izquierda</td>
+                          <td class="py-3 px-4 border-b border-gray-700">!false, typeof x</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">15</td>
+                          <td class="py-3 px-4 border-b border-gray-700">** (exponenciación)</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Derecha a izquierda</td>
+                          <td class="py-3 px-4 border-b border-gray-700">2 ** 3 ** 2 (2 ** 9)</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">14</td>
+                          <td class="py-3 px-4 border-b border-gray-700">* / %</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Izquierda a derecha</td>
+                          <td class="py-3 px-4 border-b border-gray-700">15 * 5 / 3</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">13</td>
+                          <td class="py-3 px-4 border-b border-gray-700">+ -</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Izquierda a derecha</td>
+                          <td class="py-3 px-4 border-b border-gray-700">10 + 5 - 3</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">11</td>
+                          <td class="py-3 px-4 border-b border-gray-700">< <= > >=</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Izquierda a derecha</td>
+                          <td class="py-3 px-4 border-b border-gray-700">x > y >= z</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">10</td>
+                          <td class="py-3 px-4 border-b border-gray-700">== != === !==</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Izquierda a derecha</td>
+                          <td class="py-3 px-4 border-b border-gray-700">x === y !== z</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">6</td>
+                          <td class="py-3 px-4 border-b border-gray-700">&&</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Izquierda a derecha</td>
+                          <td class="py-3 px-4 border-b border-gray-700">x > 0 && y < 10</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4 border-b border-gray-700">5</td>
+                          <td class="py-3 px-4 border-b border-gray-700">||</td>
+                          <td class="py-3 px-4 border-b border-gray-700">Izquierda a derecha</td>
+                          <td class="py-3 px-4 border-b border-gray-700">x || y || z</td>
+                      </tr>
+                      <tr>
+                          <td class="py-3 px-4">3</td>
+                          <td class="py-3 px-4">= += -= *= /= %=</td>
+                          <td class="py-3 px-4">Derecha a izquierda</td>
+                          <td class="py-3 px-4">x = y = z</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+          
+          <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+              <p class="text-amber-400"><strong>Consejo:</strong> Cuando tengas dudas sobre la precedencia, usa paréntesis para hacer explícito el orden de evaluación. Esto mejora la legibilidad y evita errores sutiles.</p>
+          </div>
+      </div>
+  </section>
+
+  <section id="actividad" class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Conversor de Tipos</h2>
+      
+      <p class="mb-8 text-lg leading-relaxed">Experimenta con la conversión de tipos en JavaScript y observa cómo diferentes valores se convierten entre distintos tipos.</p>
+      
+      <div class="bg-darker p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div>
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Conversor de Tipos</h3>
+                  
+                  <div class="space-y-6">
+                      <div class="bg-dark p-5 rounded-lg">
+                          <h4 class="text-xl font-bold mb-4">Ingresa un valor</h4>
+                          
+                          <div class="mb-4">
+                              <label class="block mb-2">Valor:</label>
+                              <input type="text" id="type-input" class="type-converter-input" placeholder="Ingresa cualquier valor (ej: 42, 'texto', true)">
+                          </div>
+                          
+                          <div class="grid grid-cols-2 gap-2 mb-4">
+                              <button id="convert-string-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">A String</button>
+                              <button id="convert-number-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">A Number</button>
+                              <button id="convert-boolean-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">A Boolean</button>
+                              <button id="convert-object-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">A Object</button>
+                          </div>
+                      </div>
+                      
+                      <div class="bg-dark p-5 rounded-lg">
+                          <h4 class="text-xl font-bold mb-4">Operaciones comunes</h4>
+                          
+                          <div class="grid grid-cols-2 gap-2 mb-4">
+                              <button id="operation-plus-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">valor + 5</button>
+                              <button id="operation-minus-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">valor - 5</button>
+                              <button id="operation-equals-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">valor == "5"</button>
+                              <button id="operation-strict-equals-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">valor === "5"</button>
+                              <button id="operation-typeof-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">typeof valor</button>
+                              <button id="operation-truthy-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">!!valor</button>
+                          </div>
+                      </div>
+                      
+                      <div class="bg-dark p-5 rounded-lg">
+                          <h4 class="text-xl font-bold mb-4">Valores predefinidos</h4>
+                          
+                          <div class="grid grid-cols-3 gap-2 mb-4">
+                              <button id="preset-string-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">"42"</button>
+                              <button id="preset-number-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">42</button>
+                              <button id="preset-boolean-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">true</button>
+                              <button id="preset-array-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">[1,2,3]</button>
+                              <button id="preset-object-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">{}</button>
+                              <button id="preset-null-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">null</button>
+                              <button id="preset-undefined-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">undefined</button>
+                              <button id="preset-nan-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">NaN</button>
+                              <button id="preset-empty-string-btn" class="js-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">""</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div>
+                  <h3 class="text-2xl font-bold mb-6 text-accent">Resultados</h3>
+                  
+                  <div class="bg-dark p-5 rounded-lg mb-6">
+                      <h4 class="font-bold mb-3">Valor original:</h4>
+                      <div id="original-value" class="type-converter-result mb-4">-</div>
+                      
+                      <h4 class="font-bold mb-3">Tipo original:</h4>
+                      <div id="original-type" class="type-converter-result mb-4">-</div>
+                      
+                      <h4 class="font-bold mb-3">Resultado de la conversión:</h4>
+                      <div id="conversion-result" class="type-converter-result mb-4">-</div>
+                      
+                      <h4 class="font-bold mb-3">Tipo del resultado:</h4>
+                      <div id="result-type" class="type-converter-result mb-4">-</div>
+                      
+                      <div class="mt-6">
+                          <h4 class="font-bold mb-3">Código JavaScript:</h4>
+                          <div class="bg-gray-800 p-4 rounded-lg">
+                              <pre id="conversion-code" class="text-gray-300 overflow-x-auto">// El código se mostrará aquí</pre>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="bg-dark p-5 rounded-lg">
+                      <h4 class="text-xl font-bold mb-4">Tabla de conversiones comunes</h4>
+                      
+                      <div class="overflow-x-auto">
+                          <table class="min-w-full bg-darker">
+                              <thead>
+                                  <tr>
+                                      <th class="py-2 px-3 text-left border-b border-gray-700">Valor</th>
+                                      <th class="py-2 px-3 text-left border-b border-gray-700">String(x)</th>
+                                      <th class="py-2 px-3 text-left border-b border-gray-700">Number(x)</th>
+                                      <th class="py-2 px-3 text-left border-b border-gray-700">Boolean(x)</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td class="py-2 px-3 border-b border-gray-700">"42"</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">"42"</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">42</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">true</td>
+                                  </tr>
+                                  <tr>
+                                      <td class="py-2 px-3 border-b border-gray-700">42</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">"42"</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">42</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">true</td>
+                                  </tr>
+                                  <tr>
+                                      <td class="py-2 px-3 border-b border-gray-700">true</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">"true"</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">1</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">true</td>
+                                  </tr>
+                                  <tr>
+                                      <td class="py-2 px-3 border-b border-gray-700">false</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">"false"</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">0</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">false</td>
+                                  </tr>
+                                  <tr>
+                                      <td class="py-2 px-3 border-b border-gray-700">null</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">"null"</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">0</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">false</td>
+                                  </tr>
+                                  <tr>
+                                      <td class="py-2 px-3 border-b border-gray-700">undefined</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">"undefined"</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">NaN</td>
+                                      <td class="py-2 px-3 border-b border-gray-700">false</td>
+                                  </tr>
+                                  <tr>
+                                      <td class="py-2 px-3">[1,2,3]</td>
+                                      <td class="py-2 px-3">"1,2,3"</td>
+                                      <td class="py-2 px-3">NaN</td>
+                                      <td class="py-2 px-3">true</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <div class="mt-8 bg-darker p-8 rounded-lg border border-gray-800">
+          <h3 class="text-2xl font-bold mb-6 text-accent">Juego: Adivina el Tipo</h3>
+          
+          <p class="mb-6">Pon a prueba tus conocimientos sobre tipos de datos y conversiones en JavaScript. ¿Puedes adivinar qué tipo de dato devolverá cada expresión?</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6" id="type-game-container">
+              <!-- Las tarjetas del juego se generarán dinámicamente con JavaScript -->
+          </div>
+          
+          <div class="flex justify-between items-center">
+              <div>
+                  <span class="font-bold">Puntuación: </span>
+                  <span id="type-game-score">0</span> / <span id="type-game-total">0</span>
+              </div>
+              <button id="type-game-new" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                  Nueva ronda
+              </button>
+          </div>
+      </div>
+      <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+</main>
+
+<footer class="bg-darker py-8 border-t border-gray-800">
+  <div class="container mx-auto px-4 text-center">
+      <p>JavaScript: Sintaxis y Tipos de Datos - Guía completa para principiantes</p>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Mobile menu toggle
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      menuBtn.addEventListener('click', function() {
+          if (mobileMenu.classList.contains('hidden')) {
+              mobileMenu.classList.remove('hidden');
+          } else {
+              mobileMenu.classList.add('hidden');
+          }
+      });
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+              e.preventDefault();
+              
+              const targetId = this.getAttribute('href');
+              const targetElement = document.querySelector(targetId);
+              
+              if (targetElement) {
+                  window.scrollTo({
+                      top: targetElement.offsetTop - 80,
+                      behavior: 'smooth'
+                  });
+                  
+                  if (!mobileMenu.classList.contains('hidden')) {
+                      mobileMenu.classList.add('hidden');
+                  }
+              }
+          });
+      });
+      
+      // Type Converter
+      const typeInput = document.getElementById('type-input');
+      const originalValue = document.getElementById('original-value');
+      const originalType = document.getElementById('original-type');
+      const conversionResult = document.getElementById('conversion-result');
+      const resultType = document.getElementById('result-type');
+      const conversionCode = document.getElementById('conversion-code');
+      
+      // Conversion buttons
+      const convertStringBtn = document.getElementById('convert-string-btn');
+      const convertNumberBtn = document.getElementById('convert-number-btn');
+      const convertBooleanBtn = document.getElementById('convert-boolean-btn');
+      const convertObjectBtn = document.getElementById('convert-object-btn');
+      
+      // Operation buttons
+      const operationPlusBtn = document.getElementById('operation-plus-btn');
+      const operationMinusBtn = document.getElementById('operation-minus-btn');
+      const operationEqualsBtn = document.getElementById('operation-equals-btn');
+      const operationStrictEqualsBtn = document.getElementById('operation-strict-equals-btn');
+      const operationTypeofBtn = document.getElementById('operation-typeof-btn');
+      const operationTruthyBtn = document.getElementById('operation-truthy-btn');
+      
+      // Preset buttons
+      const presetStringBtn = document.getElementById('preset-string-btn');
+      const presetNumberBtn = document.getElementById('preset-number-btn');
+      const presetBooleanBtn = document.getElementById('preset-boolean-btn');
+      const presetArrayBtn = document.getElementById('preset-array-btn');
+      const presetObjectBtn = document.getElementById('preset-object-btn');
+      const presetNullBtn = document.getElementById('preset-null-btn');
+      const presetUndefinedBtn = document.getElementById('preset-undefined-btn');
+      const presetNanBtn = document.getElementById('preset-nan-btn');
+      const presetEmptyStringBtn = document.getElementById('preset-empty-string-btn');
+      
+      // Helper function to safely evaluate input
+      function safeEval(input) {
+          try {
+              // Handle special cases
+              if (input === 'undefined') return undefined;
+              if (input === 'null') return null;
+              if (input === 'NaN') return NaN;
+              if (input === '{}') return {};
+              if (input === '[]') return [];
+              if (input === 'true') return true;
+              if (input === 'false') return false;
+              
+              // Check if it's a number
+              if (!isNaN(input) && input !== '') {
+                  return Number(input);
+              }
+              
+              // Check if it's a string (with or without quotes)
+              if ((input.startsWith('"') && input.endsWith('"')) || 
+                  (input.startsWith("'") && input.endsWith("'"))) {
+                  return input.substring(1, input.length - 1);
+              }
+              
+              // Check if it's an array
+              if (input.startsWith('[') && input.endsWith(']')) {
+                  try {
+                      return JSON.parse(input);
+                  } catch (e) {
+                      return input;
+                  }
+              }
+              
+              // Default to treating as a string
+              return input;
+          } catch (e) {
+              console.error('Error evaluating input:', e);
+              return input;
+          }
+      }
+      
+      // Update the display with the original value and type
+      function updateOriginalDisplay(value) {
+          let displayValue;
+          
+          if (value === undefined) {
+              displayValue = 'undefined';
+          } else if (value === null) {
+              displayValue = 'null';
+          } else if (typeof value === 'object') {
+              displayValue = JSON.stringify(value);
+          } else {
+              displayValue = String(value);
+          }
+          
+          originalValue.textContent = displayValue;
+          originalType.textContent = typeof value;
+      }
+      
+      // Update the display with the conversion result
+      function updateResultDisplay(result, code) {
+          let displayResult;
+          
+          if (result === undefined) {
+              displayResult = 'undefined';
+          } else if (result === null) {
+              displayResult = 'null';
+          } else if (typeof result === 'object') {
+              displayResult = JSON.stringify(result);
+          } else {
+              displayResult = String(result);
+          }
+          
+          conversionResult.textContent = displayResult;
+          resultType.textContent = typeof result;
+          conversionCode.textContent = code;
+      }
+      
+      // Handle input changes
+      typeInput.addEventListener('input', function() {
+          const value = safeEval(this.value);
+          updateOriginalDisplay(value);
+      });
+      
+      // Conversion button handlers
+      if (convertStringBtn) {
+          convertStringBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = String(value);
+              const code = `String(${typeInput.value}); // Resultado: "${result}"`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      if (convertNumberBtn) {
+          convertNumberBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = Number(value);
+              const code = `Number(${typeInput.value}); // Resultado: ${result}`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      if (convertBooleanBtn) {
+          convertBooleanBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = Boolean(value);
+              const code = `Boolean(${typeInput.value}); // Resultado: ${result}`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      if (convertObjectBtn) {
+          convertObjectBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = Object(value);
+              const code = `Object(${typeInput.value}); // Resultado: ${JSON.stringify(result)}`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      // Operation button handlers
+      if (operationPlusBtn) {
+          operationPlusBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = value + 5;
+              const code = `${typeInput.value} + 5; // Resultado: ${result}`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      if (operationMinusBtn) {
+          operationMinusBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = value - 5;
+              const code = `${typeInput.value} - 5; // Resultado: ${result}`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      if (operationEqualsBtn) {
+          operationEqualsBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = value == "5";
+              const code = `${typeInput.value} == "5"; // Resultado: ${result}`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      if (operationStrictEqualsBtn) {
+          operationStrictEqualsBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = value === "5";
+              const code = `${typeInput.value} === "5"; // Resultado: ${result}`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      if (operationTypeofBtn) {
+          operationTypeofBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = typeof value;
+              const code = `typeof ${typeInput.value}; // Resultado: "${result}"`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      if (operationTruthyBtn) {
+          operationTruthyBtn.addEventListener('click', function() {
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+              
+              const result = !!value;
+              const code = `!!${typeInput.value}; // Resultado: ${result}`;
+              
+              updateResultDisplay(result, code);
+          });
+      }
+      
+      // Preset button handlers
+      if (presetStringBtn) {
+          presetStringBtn.addEventListener('click', function() {
+              typeInput.value = '"42"';
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+          });
+      }
+      
+      if (presetNumberBtn) {
+          presetNumberBtn.addEventListener('click', function() {
+              typeInput.value = '42';
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+          });
+      }
+      
+      if (presetBooleanBtn) {
+          presetBooleanBtn.addEventListener('click', function() {
+              typeInput.value = 'true';
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+          });
+      }
+      
+      if (presetArrayBtn) {
+          presetArrayBtn.addEventListener('click', function() {
+              typeInput.value = '[1,2,3]';
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+          });
+      }
+      
+      if (presetObjectBtn) {
+          presetObjectBtn.addEventListener('click', function() {
+              typeInput.value = '{}';
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+          });
+      }
+      
+      if (presetNullBtn) {
+          presetNullBtn.addEventListener('click', function() {
+              typeInput.value = 'null';
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+          });
+      }
+      
+      if (presetUndefinedBtn) {
+          presetUndefinedBtn.addEventListener('click', function() {
+              typeInput.value = 'undefined';
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+          });
+      }
+      
+      if (presetNanBtn) {
+          presetNanBtn.addEventListener('click', function() {
+              typeInput.value = 'NaN';
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+          });
+      }
+      
+      if (presetEmptyStringBtn) {
+          presetEmptyStringBtn.addEventListener('click', function() {
+              typeInput.value = '""';
+              const value = safeEval(typeInput.value);
+              updateOriginalDisplay(value);
+          });
+      }
+      
+      // Type Game
+      const typeGameContainer = document.getElementById('type-game-container');
+      const typeGameScore = document.getElementById('type-game-score');
+      const typeGameTotal = document.getElementById('type-game-total');
+      const typeGameNewBtn = document.getElementById('type-game-new');
+      
+      let score = 0;
+      let total = 0;
+      
+      // Game expressions
+      const gameExpressions = [
+          { expression: '"5" + 3', result: '53', type: 'string' },
+          { expression: '"5" - 3', result: '2', type: 'number' },
+          { expression: 'Number("5")', result: '5', type: 'number' },
+          { expression: 'String(5)', result: '"5"', type: 'string' },
+          { expression: 'Boolean("")', result: 'false', type: 'boolean' },
+          { expression: 'Boolean("0")', result: 'true', type: 'boolean' },
+          { expression: '!!0', result: 'false', type: 'boolean' },
+          { expression: '!![]', result: 'true', type: 'boolean' },
+          { expression: 'typeof null', result: '"object"', type: 'string' },
+          { expression: 'typeof NaN', result: '"number"', type: 'string' },
+          { expression: '[] + {}', result: '[object Object]', type: 'string' },
+          { expression: '{} + []', result: '0', type: 'number' },
+          { expression: '[] == 0', result: 'true', type: 'boolean' },
+          { expression: '[1] == 1', result: 'true', type: 'boolean' },
+          { expression: 'true + true', result: '2', type: 'number' },
+          { expression: '10 / "2"', result: '5', type: 'number' },
+          { expression: 'typeof typeof 1', result: '"string"', type: 'string' },
+          { expression: 'null == undefined', result: 'true', type: 'boolean' },
+          { expression: 'null === undefined', result: 'false', type: 'boolean' },
+          { expression: '0 == false', result: 'true', type: 'boolean' },
+          { expression: '0 === false', result: 'false', type: 'boolean' },
+          { expression: 'Number(null)', result: '0', type: 'number' },
+          { expression: 'Number(undefined)', result: 'NaN', type: 'number' },
+          { expression: 'String(null)', result: '"null"', type: 'string' },
+          { expression: 'String(undefined)', result: '"undefined"', type: 'string' },
+      ];
+      
+      // Initialize game
+      function initGame() {
+          if (!typeGameContainer) return;
+          
+          // Reset scores
+          score = 0;
+          total = 0;
+          updateScore();
+          
+          // Clear container
+          typeGameContainer.innerHTML = '';
+          
+          // Get random expressions
+          const shuffled = [...gameExpressions].sort(() => 0.5 - Math.random());
+          const selected = shuffled.slice(0, 6);
+          
+          // Create cards
+          selected.forEach((item, index) => {
+              createGameCard(item, index);
+          });
+      }
+      
+      // Create a game card
+      function createGameCard(item, index) {
+          const card = document.createElement('div');
+          card.className = 'type-game-card';
+          card.dataset.index = index;
+          card.dataset.type = item.type;
+          
+          card.innerHTML = `
+              <div class="type-game-card-inner">
+                  <div class="type-game-card-front bg-dark border border-gray-700">
+                      <h4 class="text-xl font-bold mb-4">${item.expression}</h4>
+                      <p class="text-sm">¿Qué tipo devolverá esta expresión?</p>
+                      <div class="flex justify-center space-x-2 mt-4">
+                          <button class="type-guess-btn js-property-button bg-gray-700 hover:bg-gray-600 py-1 px-3 rounded text-sm" data-type="string">string</button>
+                          <button class="type-guess-btn js-property-button bg-gray-700 hover:bg-gray-600 py-1 px-3 rounded text-sm" data-type="number">number</button>
+                          <button class="type-guess-btn js-property-button bg-gray-700 hover:bg-gray-600 py-1 px-3 rounded text-sm" data-type="boolean">boolean</button>
+                      </div>
+                  </div>
+                  <div class="type-game-card-back bg-dark border border-gray-700">
+                      <h4 class="text-xl font-bold mb-2">${item.expression}</h4>
+                      <div class="mb-2">
+                          <span class="type-badge type-${item.type}">${item.type}</span>
+                      </div>
+                      <p class="mb-4">Resultado: ${item.result}</p>
+                      <p class="text-sm" id="guess-result-${index}"></p>
+                  </div>
+              </div>
+          `;
+          
+          typeGameContainer.appendChild(card);
+          
+          // Add event listeners to guess buttons
+          const buttons = card.querySelectorAll('.type-guess-btn');
+          buttons.forEach(button => {
+              button.addEventListener('click', function() {
+                  const guessType = this.dataset.type;
+                  const correctType = item.type;
+                  const resultElement = document.getElementById(`guess-result-${index}`);
+                  
+                  // Flip the card
+                  card.classList.add('flipped');
+                  
+                  // Update score
+                  total++;
+                  if (guessType === correctType) {
+                      score++;
+                      resultElement.textContent = '¡Correcto!';
+                      resultElement.className = 'text-green-400';
+                  } else {
+                      resultElement.textContent = `Incorrecto. La respuesta correcta es ${correctType}.`;
+                      resultElement.className = 'text-red-400';
+                  }
+                  
+                  updateScore();
+              });
+          });
+      }
+      
+      // Update score display
+      function updateScore() {
+          if (typeGameScore && typeGameTotal) {
+              typeGameScore.textContent = score;
+              typeGameTotal.textContent = total;
+          }
+      }
+      
+      // New game button
+      if (typeGameNewBtn) {
+          typeGameNewBtn.addEventListener('click', initGame);
+      }
+      
+      // Initialize the game
+      initGame();
+      
+      // Initialize with a default value
+      if (typeInput) {
+          typeInput.value = '42';
+          const value = safeEval(typeInput.value);
+          updateOriginalDisplay(value);
+      }
+  });
+</script>
+</body>
+</html>

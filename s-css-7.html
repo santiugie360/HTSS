@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS: Diseño con Flexbox</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    dark: '#0a0f1a',
+                    darker: '#050a14',
+                    accent: '#663399', // rebeccapurple
+                    accentLight: '#9370DB', // mediumPurple
+                    accentDark: '#4B0082' // indigo
+                }
+            }
+        }
+    }
+</script>
+<style>
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    .float-animation:hover {
+        animation: float 2s ease-in-out infinite;
+    }
+    .glow-effect:hover {
+        box-shadow: 0 0 15px rgba(102, 51, 153, 0.5);
+    }
+    .scale-effect:hover {
+        transform: scale(1.03);
+    }
+    .rotate-effect:hover .icon-container {
+        transform: rotate(10deg);
+    }
+    .code-block {
+        position: relative;
+        overflow: hidden;
+    }
+    .flex-slider {
+        -webkit-appearance: none;
+        height: 8px;
+        border-radius: 4px;
+        background: #1f2937;
+        outline: none;
+    }
+    .flex-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #663399;
+        cursor: pointer;
+    }
+    .flex-slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #663399;
+        cursor: pointer;
+    }
+    .flex-container {
+        border: 2px dashed rgba(102, 51, 153, 0.3);
+        background-color: rgba(102, 51, 153, 0.05);
+        transition: all 0.3s ease;
+    }
+    .flex-item {
+        background-color: rgba(102, 51, 153, 0.3);
+        border: 1px solid rgba(102, 51, 153, 0.5);
+        transition: all 0.3s ease;
+    }
+    .flex-property-button {
+        transition: all 0.3s ease;
+    }
+    .flex-property-button.active {
+        background-color: #663399;
+        color: white;
+    }
+    .flex-axis {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.3);
+        z-index: 1;
+    }
+    .flex-main-axis {
+        height: 2px;
+    }
+    .flex-cross-axis {
+        width: 2px;
+    }
+    .flex-axis-arrow {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-style: solid;
+    }
+    .flex-main-arrow-start {
+        border-width: 5px 8px 5px 0;
+        border-color: transparent rgba(255, 255, 255, 0.5) transparent transparent;
+    }
+    .flex-main-arrow-end {
+        border-width: 5px 0 5px 8px;
+        border-color: transparent transparent transparent rgba(255, 255, 255, 0.5);
+    }
+    .flex-cross-arrow-start {
+        border-width: 0 5px 8px 5px;
+        border-color: transparent transparent rgba(255, 255, 255, 0.5) transparent;
+    }
+    .flex-cross-arrow-end {
+        border-width: 8px 5px 0 5px;
+        border-color: rgba(255, 255, 255, 0.5) transparent transparent transparent;
+    }
+    .flex-axis-label {
+        position: absolute;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 12px;
+        white-space: nowrap;
+    }
+</style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+<header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+    <nav class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+            <a href="s-css.html"><h1 class="text-2xl font-bold">CSS<span class="text-accent">Flexbox</span></h1></a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                <a href="#contenedor" class="hover:text-accent transition-colors duration-300">Contenedor Flex</a>
+                <a href="#elementos" class="hover:text-accent transition-colors duration-300">Elementos Flex</a>
+                <a href="#ejemplos" class="hover:text-accent transition-colors duration-300">Ejemplos</a>
+                <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+            </div>
+            <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+            <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+            <a href="#contenedor" class="block py-2 hover:text-accent transition-colors duration-300">Contenedor Flex</a>
+            <a href="#elementos" class="block py-2 hover:text-accent transition-colors duration-300">Elementos Flex</a>
+            <a href="#ejemplos" class="block py-2 hover:text-accent transition-colors duration-300">Ejemplos</a>
+            <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+    <section class="text-center py-16">
+        <h1 class="text-5xl font-bold mb-4">Diseño con <span class="text-accent">Flexbox</span></h1>
+        <p class="text-xl max-w-3xl mx-auto">Aprende a crear layouts flexibles y responsivos con el módulo Flexbox de CSS</p>
+    </section>
+
+    <section id="introduccion" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Introducción a Flexbox</h2>
+        <p class="mb-8 text-lg leading-relaxed">Flexbox (Flexible Box Layout) es un modelo de diseño unidimensional que permite crear layouts flexibles y distribuir el espacio entre elementos de manera eficiente, incluso cuando sus tamaños son desconocidos o dinámicos.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+                <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-accent">¿Qué es Flexbox?</h3>
+                <p class="text-base mb-4">Flexbox es un modelo de layout diseñado para proporcionar una forma más eficiente de organizar, alinear y distribuir el espacio entre los elementos de un contenedor, incluso cuando su tamaño es desconocido o dinámico.</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Diseñado específicamente para crear layouts</li>
+                    <li>Distribución unidimensional (filas o columnas)</li>
+                    <li>Control sobre alineación, orden y tamaño</li>
+                    <li>Adaptable a diferentes tamaños de pantalla</li>
+                </ul>
+            </div>
+            <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+                <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-accent">Conceptos Básicos</h3>
+                <p class="text-base mb-4">Flexbox se basa en dos tipos de elementos y dos ejes principales:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>Contenedor flex:</strong> El elemento padre con <code>display: flex</code></li>
+                    <li><strong>Elementos flex:</strong> Los hijos directos del contenedor flex</li>
+                    <li><strong>Eje principal:</strong> Dirección principal del layout (horizontal o vertical)</li>
+                    <li><strong>Eje transversal:</strong> Perpendicular al eje principal</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Ventajas de Flexbox</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-dark p-5 rounded-lg">
+                    <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-accent">Flexibilidad</h4>
+                    <p>Los elementos pueden crecer o encogerse para adaptarse al espacio disponible, facilitando diseños responsivos.</p>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-accent">Alineación</h4>
+                    <p>Control preciso sobre la alineación de elementos, tanto horizontal como verticalmente, sin necesidad de hacks.</p>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-accent">Orden</h4>
+                    <p>Permite cambiar el orden visual de los elementos sin modificar el HTML, mejorando la accesibilidad y SEO.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contenedor" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Propiedades del Contenedor Flex</h2>
+        
+        <p class="mb-8 text-lg">El contenedor flex es el elemento padre que tiene <code>display: flex</code> o <code>display: inline-flex</code>. Sus propiedades controlan la disposición de los elementos flex (hijos).</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">display: flex</h3>
+                
+                <p class="mb-4">Esta propiedad define un contenedor flex, transformando todos sus hijos directos en elementos flex.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    display: flex;
+    /* o */
+    display: inline-flex; /* Para comportamiento inline */
+}</code></pre>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="mb-2 font-medium">Ejemplo:</p>
+                    <div class="flex-container p-4 flex">
+                        <div class="flex-item p-2 m-1">1</div>
+                        <div class="flex-item p-2 m-1">2</div>
+                        <div class="flex-item p-2 m-1">3</div>
+                    </div>
+                    <p class="text-sm text-center mt-2">display: flex</p>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">flex-direction</h3>
+                
+                <p class="mb-4">Define la dirección del eje principal, determinando cómo se colocan los elementos flex en el contenedor.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    display: flex;
+    flex-direction: row; /* Valor predeterminado */
+    /* Otros valores */
+    flex-direction: row-reverse;
+    flex-direction: column;
+    flex-direction: column-reverse;
+}</code></pre>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <div class="flex-container p-4 flex">
+                            <div class="flex-item p-2 m-1">1</div>
+                            <div class="flex-item p-2 m-1">2</div>
+                            <div class="flex-item p-2 m-1">3</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">row</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex flex-col h-32">
+                            <div class="flex-item p-2 m-1">1</div>
+                            <div class="flex-item p-2 m-1">2</div>
+                            <div class="flex-item p-2 m-1">3</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">column</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">justify-content</h3>
+                
+                <p class="mb-4">Define cómo se distribuyen los elementos a lo largo del <strong>eje principal</strong>.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    display: flex;
+    justify-content: flex-start; /* Valor predeterminado */
+    /* Otros valores */
+    justify-content: flex-end;
+    justify-content: center;
+    justify-content: space-between;
+    justify-content: space-around;
+    justify-content: space-evenly;
+}</code></pre>
+                </div>
+                
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <div class="flex-container p-4 flex justify-start">
+                            <div class="flex-item p-2 m-1">1</div>
+                            <div class="flex-item p-2 m-1">2</div>
+                            <div class="flex-item p-2 m-1">3</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">flex-start</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex justify-center">
+                            <div class="flex-item p-2 m-1">1</div>
+                            <div class="flex-item p-2 m-1">2</div>
+                            <div class="flex-item p-2 m-1">3</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">center</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex justify-between">
+                            <div class="flex-item p-2 m-1">1</div>
+                            <div class="flex-item p-2 m-1">2</div>
+                            <div class="flex-item p-2 m-1">3</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">space-between</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">align-items</h3>
+                
+                <p class="mb-4">Define cómo se distribuyen los elementos a lo largo del <strong>eje transversal</strong> (perpendicular al eje principal).</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    display: flex;
+    align-items: stretch; /* Valor predeterminado */
+    /* Otros valores */
+    align-items: flex-start;
+    align-items: flex-end;
+    align-items: center;
+    align-items: baseline;
+}</code></pre>
+                </div>
+                
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <div class="flex-container p-4 flex align-stretch h-24">
+                            <div class="flex-item p-2 m-1">1</div>
+                            <div class="flex-item p-2 m-1">2</div>
+                            <div class="flex-item p-2 m-1">3</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">stretch</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex items-start h-24">
+                            <div class="flex-item p-2 m-1">1</div>
+                            <div class="flex-item p-2 m-1 py-4">2</div>
+                            <div class="flex-item p-2 m-1">3</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">flex-start</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex items-center h-24">
+                            <div class="flex-item p-2 m-1">1</div>
+                            <div class="flex-item p-2 m-1 py-4">2</div>
+                            <div class="flex-item p-2 m-1">3</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">center</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">flex-wrap</h3>
+                
+                <p class="mb-4">Define si los elementos flex deben envolverse (wrap) o no cuando no caben en una sola línea.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    display: flex;
+    flex-wrap: nowrap; /* Valor predeterminado */
+    /* Otros valores */
+    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
+}</code></pre>
+                </div>
+                
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <div class="flex-container p-4 flex flex-nowrap">
+                            <div class="flex-item p-2 m-1" style="width: 30%;">1</div>
+                            <div class="flex-item p-2 m-1" style="width: 30%;">2</div>
+                            <div class="flex-item p-2 m-1" style="width: 30%;">3</div>
+                            <div class="flex-item p-2 m-1" style="width: 30%;">4</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">nowrap (los elementos pueden desbordarse)</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex flex-wrap">
+                            <div class="flex-item p-2 m-1" style="width: 30%;">1</div>
+                            <div class="flex-item p-2 m-1" style="width: 30%;">2</div>
+                            <div class="flex-item p-2 m-1" style="width: 30%;">3</div>
+                            <div class="flex-item p-2 m-1" style="width: 30%;">4</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">wrap</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">gap</h3>
+                
+                <p class="mb-4">Controla el espacio entre elementos flex, sin afectar los márgenes externos del contenedor.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    display: flex;
+    gap: 20px; /* Espacio entre elementos en ambas direcciones */
+    row-gap: 20px; /* Solo espacio vertical */
+    column-gap: 10px; /* Solo espacio horizontal */
+}</code></pre>
+                </div>
+                
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <div class="flex-container p-4 flex gap-4">
+                            <div class="flex-item p-2">1</div>
+                            <div class="flex-item p-2">2</div>
+                            <div class="flex-item p-2">3</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">gap: 1rem</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex flex-wrap gap-x-8 gap-y-2">
+                            <div class="flex-item p-2" style="width: 30%;">1</div>
+                            <div class="flex-item p-2" style="width: 30%;">2</div>
+                            <div class="flex-item p-2" style="width: 30%;">3</div>
+                            <div class="flex-item p-2" style="width: 30%;">4</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">column-gap: 2rem; row-gap: 0.5rem</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="elementos" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Propiedades de los Elementos Flex</h2>
+        
+        <p class="mb-8 text-lg">Los elementos flex son los hijos directos de un contenedor flex. Estas propiedades controlan cómo se comportan individualmente dentro del contenedor.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">flex-grow</h3>
+                
+                <p class="mb-4">Define la capacidad de un elemento flex para crecer si es necesario. Acepta un valor numérico sin unidades que determina qué cantidad de espacio disponible dentro del contenedor debe ocupar el elemento.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    flex-grow: 0; /* Valor predeterminado */
+    /* Otros valores */
+    flex-grow: 1; /* Crecerá */
+    flex-grow: 2; /* Crecerá el doble que flex-grow: 1 */
+}</code></pre>
+                </div>
+                
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <div class="flex-container p-4 flex">
+                            <div class="flex-item p-2 m-1" style="flex-grow: 0;">0</div>
+                            <div class="flex-item p-2 m-1" style="flex-grow: 0;">0</div>
+                            <div class="flex-item p-2 m-1" style="flex-grow: 0;">0</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">Todos con flex-grow: 0</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex">
+                            <div class="flex-item p-2 m-1" style="flex-grow: 1;">1</div>
+                            <div class="flex-item p-2 m-1" style="flex-grow: 1;">1</div>
+                            <div class="flex-item p-2 m-1" style="flex-grow: 1;">1</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">Todos con flex-grow: 1</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex">
+                            <div class="flex-item p-2 m-1" style="flex-grow: 1;">1</div>
+                            <div class="flex-item p-2 m-1" style="flex-grow: 2;">2</div>
+                            <div class="flex-item p-2 m-1" style="flex-grow: 1;">1</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">flex-grow: 1, 2, 1</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">flex-shrink</h3>
+                
+                <p class="mb-4">Define la capacidad de un elemento flex para encogerse si es necesario. Funciona de manera similar a <code>flex-grow</code>, pero en la dirección opuesta.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    flex-shrink: 1; /* Valor predeterminado */
+    /* Otros valores */
+    flex-shrink: 0; /* No se encogerá */
+    flex-shrink: 2; /* Se encogerá el doble que flex-shrink: 1 */
+}</code></pre>
+                </div>
+                
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <div class="flex-container p-4 flex" style="width: 100%;">
+                            <div class="flex-item p-2 m-1" style="flex-shrink: 1; width: 40%;">1</div>
+                            <div class="flex-item p-2 m-1" style="flex-shrink: 1; width: 40%;">1</div>
+                            <div class="flex-item p-2 m-1" style="flex-shrink: 1; width: 40%;">1</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">Todos con flex-shrink: 1</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex" style="width: 100%;">
+                            <div class="flex-item p-2 m-1" style="flex-shrink: 0; width: 40%;">0</div>
+                            <div class="flex-item p-2 m-1" style="flex-shrink: 1; width: 40%;">1</div>
+                            <div class="flex-item p-2 m-1" style="flex-shrink: 1; width: 40%;">1</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">flex-shrink: 0, 1, 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">flex-basis</h3>
+                
+                <p class="mb-4">Define el tamaño inicial de un elemento flex antes de que se apliquen <code>flex-grow</code> o <code>flex-shrink</code>. Puede ser una longitud (px, em, etc.) o un porcentaje.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    flex-basis: auto; /* Valor predeterminado */
+    /* Otros valores */
+    flex-basis: 0;
+    flex-basis: 100px;
+    flex-basis: 25%;
+}</code></pre>
+                </div>
+                
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <div class="flex-container p-4 flex">
+                            <div class="flex-item p-2 m-1" style="flex-basis: auto;">auto</div>
+                            <div class="flex-item p-2 m-1" style="flex-basis: auto;">auto (contenido más largo)</div>
+                            <div class="flex-item p-2 m-1" style="flex-basis: auto;">auto</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">flex-basis: auto</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex">
+                            <div class="flex-item p-2 m-1" style="flex-basis: 100px;">100px</div>
+                            <div class="flex-item p-2 m-1" style="flex-basis: 150px;">150px</div>
+                            <div class="flex-item p-2 m-1" style="flex-basis: 50px;">50px</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">flex-basis: 100px, 150px, 50px</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">flex (shorthand)</h3>
+                
+                <p class="mb-4">La propiedad abreviada <code>flex</code> combina <code>flex-grow</code>, <code>flex-shrink</code> y <code>flex-basis</code> en una sola declaración.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    flex: 0 1 auto; /* Valor predeterminado (grow shrink basis) */
+    /* Valores comunes */
+    flex: 1; /* Equivale a flex: 1 1 0% */
+    flex: auto; /* Equivale a flex: 1 1 auto */
+    flex: none; /* Equivale a flex: 0 0 auto */
+}</code></pre>
+                </div>
+                
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <div class="flex-container p-4 flex">
+                            <div class="flex-item p-2 m-1" style="flex: 1;">1</div>
+                            <div class="flex-item p-2 m-1" style="flex: 1;">1</div>
+                            <div class="flex-item p-2 m-1" style="flex: 1;">1</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">flex: 1</p>
+                    </div>
+                    <div>
+                        <div class="flex-container p-4 flex">
+                            <div class="flex-item p-2 m-1" style="flex: none;">none</div>
+                            <div class="flex-item p-2 m-1" style="flex: none;">none</div>
+                            <div class="flex-item p-2 m-1" style="flex: 1;">1</div>
+                        </div>
+                        <p class="text-sm text-center mt-1">flex: none, none, 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">align-self</h3>
+                
+                <p class="mb-4">Permite sobrescribir la alineación definida por <code>align-items</code> para elementos flex individuales.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    align-self: auto; /* Valor predeterminado (hereda de align-items) */
+    /* Otros valores */
+    align-self: flex-start;
+    align-self: flex-end;
+    align-self: center;
+    align-self: stretch;
+}</code></pre>
+                </div>
+                
+                <div class="flex-container p-4 flex items-center h-40 mb-4">
+                    <div class="flex-item p-2 m-1">center</div>
+                    <div class="flex-item p-2 m-1" style="align-self: flex-start;">flex-start</div>
+                    <div class="flex-item p-2 m-1">center</div>
+                    <div class="flex-item p-2 m-1" style="align-self: flex-end;">flex-end</div>
+                    <div class="flex-item p-2 m-1">center</div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">order</h3>
+                
+                <p class="mb-4">Controla el orden en que aparecen los elementos flex, independientemente de su orden en el HTML.</p>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    order: 0; /* Valor predeterminado */
+    /* Otros valores */
+    order: 1; /* Aparecerá después de los elementos con order menor */
+    order: -1; /* Aparecerá antes de los elementos con order mayor */
+}</code></pre>
+                </div>
+                
+                <div class="flex-container p-4 flex mb-4">
+                    <div class="flex-item p-2 m-1" style="order: 3;">order: 3</div>
+                    <div class="flex-item p-2 m-1" style="order: 1;">order: 1</div>
+                    <div class="flex-item p-2 m-1" style="order: 2;">order: 2</div>
+                    <div class="flex-item p-2 m-1" style="order: 0;">order: 0</div>
+                    <div class="flex-item p-2 m-1" style="order: -1;">order: -1</div>
+                </div>
+                
+                <div class="bg-dark p-4 rounded-lg">
+                    <p class="text-amber-400 text-sm"><strong>Importante:</strong> Aunque <code>order</code> cambia el orden visual, no afecta el orden de navegación por teclado o lectores de pantalla.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ejemplos" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Ejemplos Prácticos</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Barra de Navegación</h3>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}</code></pre>
+                </div>
+                
+                <div class="bg-gray-800 p-4 rounded-lg mb-4">
+                    <div class="flex justify-between items-center">
+                        <div class="text-accent font-bold">Logo</div>
+                        <div class="flex gap-4">
+                            <a href="#" class="text-gray-300 hover:text-accent">Inicio</a>
+                            <a href="#" class="text-gray-300 hover:text-accent">Acerca</a>
+                            <a href="#" class="text-gray-300 hover:text-accent">Contacto</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Tarjeta de Producto</h3>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-body {
+    flex: 1;
+}
+
+.card-footer {
+    margin-top: auto;
+}</code></pre>
+                </div>
+                
+                <div class="bg-gray-800 p-4 rounded-lg mb-4">
+                    <div class="flex flex-col h-64">
+                        <div class="bg-accent/20 h-32 rounded-t flex items-center justify-center">
+                            Imagen del Producto
+                        </div>
+                        <div class="p-4 flex-1">
+                            <h4 class="font-bold">Nombre del Producto</h4>
+                            <p class="text-sm text-gray-400">Descripción breve del producto.</p>
+                        </div>
+                        <div class="p-4 mt-auto border-t border-gray-700">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold">$99.99</span>
+                                <button class="bg-accent text-white px-3 py-1 rounded">Comprar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Layout Responsivo con Flexbox</h3>
+            
+            <div class="code-block mb-6">
+                <pre class="text-gray-300 overflow-x-auto"><code>.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.item {
+    flex: 1 1 300px; /* Grow, shrink, basis */
+    /* Cada elemento tendrá al menos 300px de ancho
+       y crecerá para ocupar el espacio disponible */
+}</code></pre>
+            </div>
+            
+            <div class="bg-gray-800 p-4 rounded-lg mb-6">
+                <div class="flex flex-wrap gap-4">
+                    <div class="bg-accent/30 p-4 rounded flex-1 basis-64 min-w-64">Elemento 1</div>
+                    <div class="bg-accent/40 p-4 rounded flex-1 basis-64 min-w-64">Elemento 2</div>
+                    <div class="bg-accent/50 p-4 rounded flex-1 basis-64 min-w-64">Elemento 3</div>
+                </div>
+            </div>
+            
+            <p class="text-sm mb-4">Este layout se adapta automáticamente al tamaño de la pantalla. En pantallas grandes, los elementos se muestran en una fila. En pantallas pequeñas, se envuelven para formar múltiples filas.</p>
+        </div>
+    </section>
+
+    <section id="actividad" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Laboratorio de Flexbox</h2>
+        
+        <p class="mb-8 text-lg leading-relaxed">Experimenta con las diferentes propiedades de Flexbox para ver cómo afectan al layout de los elementos.</p>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Controles</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">flex-direction</h4>
+                            
+                            <div class="grid grid-cols-2 gap-2 mb-4">
+                                <button id="flex-row-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded active">row</button>
+                                <button id="flex-col-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">column</button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">justify-content</h4>
+                            
+                            <div class="grid grid-cols-2 gap-2 mb-4">
+                                <button id="justify-start-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded active">flex-start</button>
+                                <button id="justify-center-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">center</button>
+                                <button id="justify-end-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">flex-end</button>
+                                <button id="justify-between-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">space-between</button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">align-items</h4>
+                            
+                            <div class="grid grid-cols-2 gap-2 mb-4">
+                                <button id="align-stretch-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded active">stretch</button>
+                                <button id="align-start-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">flex-start</button>
+                                <button id="align-center-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">center</button>
+                                <button id="align-end-btn" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">flex-end</button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">gap</h4>
+                            
+                            <div>
+                                <label class="flex justify-between mb-1">
+                                    <span>gap</span>
+                                    <span id="gap-value">0px</span>
+                                </label>
+                                <input type="range" title="." min="0" max="30" value="0" class="flex-slider w-full" id="gap-slider">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold my-6 text-accent">Elemento Seleccionado</h3>
+                    
+                    <div class="bg-dark p-5 rounded-lg">
+                        <div class="grid grid-cols-3 gap-2 mb-4">
+                            <button id="select-item-1" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded active">Elemento 1</button>
+                            <button id="select-item-2" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">Elemento 2</button>
+                            <button id="select-item-3" class="flex-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">Elemento 3</button>
+                        </div>
+                        
+                        <div class="space-y-4 mt-4">
+                            <div>
+                                <label class="flex justify-between mb-1">
+                                    <span>flex-grow</span>
+                                    <span id="flex-grow-value">0</span>
+                                </label>
+                                <input type="range" title="." min="0" max="5" value="0" class="flex-slider w-full" id="flex-grow-slider">
+                            </div>
+                            
+                            <div>
+                                <label class="flex justify-between mb-1">
+                                    <span>order</span>
+                                    <span id="order-value">0</span>
+                                </label>
+                                <input type="range" title="." min="-3" max="3" value="0" class="flex-slider w-full" id="order-slider">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Vista Previa</h3>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <div id="flex-container" class="flex-container p-4 flex h-64">
+                            <div id="flex-item-1" class="flex-item p-4 m-1">1</div>
+                            <div id="flex-item-2" class="flex-item p-4 m-1">2</div>
+                            <div id="flex-item-3" class="flex-item p-4 m-1">3</div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h4 class="font-bold mb-3">Código CSS Generado:</h4>
+                            <div class="bg-gray-800 p-4 rounded-lg">
+                                <pre id="container-css" class="text-gray-300 overflow-x-auto mb-2"></pre>
+                                <pre id="items-css" class="text-gray-300 overflow-x-auto"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+</main>
+
+<footer class="bg-darker py-8 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center">
+        <p>CSS: Diseño con Flexbox - Guía completa para principiantes</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', function() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // Flexbox Laboratory
+        const flexContainer = document.getElementById('flex-container');
+        const flexItem1 = document.getElementById('flex-item-1');
+        const flexItem2 = document.getElementById('flex-item-2');
+        const flexItem3 = document.getElementById('flex-item-3');
+        const containerCss = document.getElementById('container-css');
+        const itemsCss = document.getElementById('items-css');
+        
+        // Direction buttons
+        const flexRowBtn = document.getElementById('flex-row-btn');
+        const flexColBtn = document.getElementById('flex-col-btn');
+        
+        // Justify content buttons
+        const justifyStartBtn = document.getElementById('justify-start-btn');
+        const justifyEndBtn = document.getElementById('justify-end-btn');
+        const justifyCenterBtn = document.getElementById('justify-center-btn');
+        const justifyBetweenBtn = document.getElementById('justify-between-btn');
+        
+        // Align items buttons
+        const alignStretchBtn = document.getElementById('align-stretch-btn');
+        const alignStartBtn = document.getElementById('align-start-btn');
+        const alignEndBtn = document.getElementById('align-end-btn');
+        const alignCenterBtn = document.getElementById('align-center-btn');
+        
+        // Gap slider
+        const gapSlider = document.getElementById('gap-slider');
+        const gapValue = document.getElementById('gap-value');
+        
+        // Item selection buttons
+        const selectItem1 = document.getElementById('select-item-1');
+        const selectItem2 = document.getElementById('select-item-2');
+        const selectItem3 = document.getElementById('select-item-3');
+        
+        // Item property sliders
+        const flexGrowSlider = document.getElementById('flex-grow-slider');
+        const orderSlider = document.getElementById('order-slider');
+        
+        // Item property values
+        const flexGrowValue = document.getElementById('flex-grow-value');
+        const orderValue = document.getElementById('order-value');
+        
+        // Current state
+        let currentDirection = 'row';
+        let currentJustify = 'flex-start';
+        let currentAlign = 'stretch';
+        let currentGap = 0;
+        let currentItem = flexItem1;
+        let currentItemNumber = 1;
+        
+        // Set active button
+        function setActiveButton(buttons, activeButton) {
+            buttons.forEach(button => {
+                if (button) {
+                    button.classList.remove('active');
+                }
+            });
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+        
+        // Update container properties
+        function updateContainer() {
+            if (flexContainer) {
+                flexContainer.style.flexDirection = currentDirection;
+                flexContainer.style.justifyContent = currentJustify;
+                flexContainer.style.alignItems = currentAlign;
+                flexContainer.style.gap = currentGap + 'px';
+                
+                // Update container CSS display
+                if (containerCss) {
+                    containerCss.textContent = `.container {
+  display: flex;
+  flex-direction: ${currentDirection};
+  justify-content: ${currentJustify};
+  align-items: ${currentAlign};
+  gap: ${currentGap}px;
+}`;
+                }
+            }
+        }
+        
+        // Update item properties
+        function updateItem() {
+            if (currentItem) {
+                const grow = flexGrowSlider.value;
+                const order = orderSlider.value;
+                
+                currentItem.style.flexGrow = grow;
+                currentItem.style.order = order;
+                
+                // Update item CSS display
+                if (itemsCss) {
+                    itemsCss.textContent = `.item-${currentItemNumber} {
+  flex-grow: ${grow};
+  order: ${order};
+}`;
+                }
+            }
+        }
+        
+        // Event listeners for direction buttons
+        if (flexRowBtn) {
+            flexRowBtn.addEventListener('click', function() {
+                currentDirection = 'row';
+                setActiveButton([flexRowBtn, flexColBtn], this);
+                updateContainer();
+            });
+        }
+        
+        if (flexColBtn) {
+            flexColBtn.addEventListener('click', function() {
+                currentDirection = 'column';
+                setActiveButton([flexRowBtn, flexColBtn], this);
+                updateContainer();
+            });
+        }
+        
+        // Event listeners for justify content buttons
+        if (justifyStartBtn) {
+            justifyStartBtn.addEventListener('click', function() {
+                currentJustify = 'flex-start';
+                setActiveButton([justifyStartBtn, justifyEndBtn, justifyCenterBtn, justifyBetweenBtn], this);
+                updateContainer();
+            });
+        }
+        
+        if (justifyEndBtn) {
+            justifyEndBtn.addEventListener('click', function() {
+                currentJustify = 'flex-end';
+                setActiveButton([justifyStartBtn, justifyEndBtn, justifyCenterBtn, justifyBetweenBtn], this);
+                updateContainer();
+            });
+        }
+        
+        if (justifyCenterBtn) {
+            justifyCenterBtn.addEventListener('click', function() {
+                currentJustify = 'center';
+                setActiveButton([justifyStartBtn, justifyEndBtn, justifyCenterBtn, justifyBetweenBtn], this);
+                updateContainer();
+            });
+        }
+        
+        if (justifyBetweenBtn) {
+            justifyBetweenBtn.addEventListener('click', function() {
+                currentJustify = 'space-between';
+                setActiveButton([justifyStartBtn, justifyEndBtn, justifyCenterBtn, justifyBetweenBtn], this);
+                updateContainer();
+            });
+        }
+        
+        // Event listeners for align items buttons
+        if (alignStretchBtn) {
+            alignStretchBtn.addEventListener('click', function() {
+                currentAlign = 'stretch';
+                setActiveButton([alignStretchBtn, alignStartBtn, alignEndBtn, alignCenterBtn], this);
+                updateContainer();
+            });
+        }
+        
+        if (alignStartBtn) {
+            alignStartBtn.addEventListener('click', function() {
+                currentAlign = 'flex-start';
+                setActiveButton([alignStretchBtn, alignStartBtn, alignEndBtn, alignCenterBtn], this);
+                updateContainer();
+            });
+        }
+        
+        if (alignEndBtn) {
+            alignEndBtn.addEventListener('click', function() {
+                currentAlign = 'flex-end';
+                setActiveButton([alignStretchBtn, alignStartBtn, alignEndBtn, alignCenterBtn], this);
+                updateContainer();
+            });
+        }
+        
+        if (alignCenterBtn) {
+            alignCenterBtn.addEventListener('click', function() {
+                currentAlign = 'center';
+                setActiveButton([alignStretchBtn, alignStartBtn, alignEndBtn, alignCenterBtn], this);
+                updateContainer();
+            });
+        }
+        
+        // Event listener for gap slider
+        if (gapSlider && gapValue) {
+            gapSlider.addEventListener('input', function() {
+                currentGap = this.value;
+                gapValue.textContent = this.value + 'px';
+                updateContainer();
+            });
+        }
+        
+        // Event listeners for item selection
+        if (selectItem1) {
+            selectItem1.addEventListener('click', function() {
+                currentItem = flexItem1;
+                currentItemNumber = 1;
+                setActiveButton([selectItem1, selectItem2, selectItem3], this);
+                flexGrowSlider.value = currentItem.style.flexGrow || 0;
+                flexGrowValue.textContent = flexGrowSlider.value;
+                orderSlider.value = currentItem.style.order || 0;
+                orderValue.textContent = orderSlider.value;
+                updateItem();
+            });
+        }
+        
+        if (selectItem2) {
+            selectItem2.addEventListener('click', function() {
+                currentItem = flexItem2;
+                currentItemNumber = 2;
+                setActiveButton([selectItem1, selectItem2, selectItem3], this);
+                flexGrowSlider.value = currentItem.style.flexGrow || 0;
+                flexGrowValue.textContent = flexGrowSlider.value;
+                orderSlider.value = currentItem.style.order || 0;
+                orderValue.textContent = orderSlider.value;
+                updateItem();
+            });
+        }
+        
+        if (selectItem3) {
+            selectItem3.addEventListener('click', function() {
+                currentItem = flexItem3;
+                currentItemNumber = 3;
+                setActiveButton([selectItem1, selectItem2, selectItem3], this);
+                flexGrowSlider.value = currentItem.style.flexGrow || 0;
+                flexGrowValue.textContent = flexGrowSlider.value;
+                orderSlider.value = currentItem.style.order || 0;
+                orderValue.textContent = orderSlider.value;
+                updateItem();
+            });
+        }
+        
+        // Event listeners for item properties
+        if (flexGrowSlider && flexGrowValue) {
+            flexGrowSlider.addEventListener('input', function() {
+                flexGrowValue.textContent = this.value;
+                updateItem();
+            });
+        }
+        
+        if (orderSlider && orderValue) {
+            orderSlider.addEventListener('input', function() {
+                orderValue.textContent = this.value;
+                updateItem();
+            });
+        }
+        
+        // Initialize
+        updateContainer();
+        updateItem();
+    });
+</script>
+</body>
+</html>

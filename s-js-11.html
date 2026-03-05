@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programación Orientada a Objetos - JavaScript POO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'js-yellow': {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+              950: '#451a03',
+            },
+            'dark-blue': {
+              900: '#0a1020',
+              950: '#050a14',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+            'bounce-slow': 'bounce 3s infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .timeline-circle {
+        @apply w-12 h-12 rounded-full bg-js-yellow-500 flex items-center justify-center text-white font-bold text-lg z-10;
+      }
+      .timeline-line {
+        @apply absolute left-6 top-0 bottom-0 w-0.5 bg-js-yellow-800/50 transform translate-x-0;
+      }
+      .feature-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 hover:border-js-yellow-700/50 transition-all duration-300;
+      }
+      .feature-icon {
+        @apply w-14 h-14 rounded-full bg-js-yellow-600/20 flex items-center justify-center mb-6;
+      }
+      .code-block {
+        @apply bg-black p-4 rounded-lg overflow-x-auto text-sm font-mono text-gray-300;
+      }
+      .pillar-card {
+        @apply bg-dark-blue-900/80 p-8 rounded-lg border-2 border-js-yellow-700/30 hover:border-js-yellow-500 transition-all duration-300 hover:transform hover:scale-105;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark-blue-950 text-gray-200"> 
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-dark-blue-950/80 border-b border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16"> 
+        <div class="flex-shrink-0 flex items-center">
+          <a href="s-js.html" class="flex items-center gap-2">
+            <div class="relative w-10 h-10 overflow-hidden">
+              <div class="absolute inset-0 bg-js-yellow-600 rounded-lg"></div>
+              <div class="absolute inset-1 bg-dark-blue-950 rounded-md flex items-center justify-center">
+                <span class="text-xl font-bold text-js-yellow-500">⚙️</span>
+              </div>
+            </div>
+            <span class="text-2xl font-extrabold text-white">POO JS</span>
+          </a>
+        </div> 
+        <nav class="hidden md:flex space-x-8">
+          <a href="#introduccion" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Introducción</a>
+          <a href="#pilares" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Pilares</a>
+          <a href="#clases" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Clases</a>
+          <a href="#herencia" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Herencia</a>
+          <a href="#ejemplos" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Ejemplos</a>
+          <a href="#actividad" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Actividad</a>
+        </nav>
+
+        <div class="md:hidden">
+          <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#introduccion" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Introducción</a>
+        <a href="#pilares" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Pilares</a>
+        <a href="#clases" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Clases</a>
+        <a href="#herencia" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Herencia</a>
+        <a href="#ejemplos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Ejemplos</a>
+        <a href="#actividad" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800">Actividad</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="introduccion" class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-js-yellow-900/20 to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 scale-150"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-5xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-thin tracking-tight mb-4 animate-fade-in">
+          Programación
+          <span class="block text-6xl md:text-8xl font-bold mt-2 text-js-yellow-400">Orientada a Objetos</span>
+        </h1>
+        <p class="text-xl text-gray-400 mt-6 max-w-4xl mx-auto animate-slide-up">
+          La Programación Orientada a Objetos (POO) es un paradigma de programación que organiza el código en "objetos" que representan entidades del mundo real. Cada objeto tiene propiedades (datos) y métodos (comportamientos), permitiendo crear código más modular, reutilizable y fácil de mantener.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <div class="bg-js-yellow-600/20 border border-js-yellow-600/50 rounded-lg px-6 py-3">
+            <span class="text-js-yellow-400 font-bold">Modular</span>
+          </div>
+          <div class="bg-js-yellow-600/20 border border-js-yellow-600/50 rounded-lg px-6 py-3">
+            <span class="text-js-yellow-400 font-bold">Reutilizable</span>
+          </div>
+          <div class="bg-js-yellow-600/20 border border-js-yellow-600/50 rounded-lg px-6 py-3">
+            <span class="text-js-yellow-400 font-bold">Escalable</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      ¿Por qué usar <span class="text-js-yellow-400 font-bold">POO?</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"> 
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Organización</h3>
+        <p class="text-gray-300 leading-relaxed">
+          La POO permite organizar el código en estructuras lógicas que representan entidades reales, haciendo que el código sea más intuitivo y fácil de entender.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Reutilización</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Mediante la herencia y la composición, puedes reutilizar código existente, evitando duplicación y facilitando el mantenimiento del proyecto.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Encapsulación</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Oculta la complejidad interna y expone solo lo necesario, protegiendo los datos y reduciendo la posibilidad de errores accidentales.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Mantenimiento</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Los cambios en una clase afectan solo a esa clase, haciendo que el código sea más fácil de mantener y actualizar sin romper otras partes del sistema.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Escalabilidad</h3>
+        <p class="text-gray-300 leading-relaxed">
+          La POO facilita agregar nuevas funcionalidades sin modificar el código existente, permitiendo que tu aplicación crezca de forma ordenada.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-js-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-js-yellow-400">Colaboración</h3>
+        <p class="text-gray-300 leading-relaxed">
+          Múltiples desarrolladores pueden trabajar en diferentes clases simultáneamente, mejorando la productividad del equipo y reduciendo conflictos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="pilares" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Los Cuatro <span class="text-js-yellow-400 font-bold">Pilares de la POO</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Estos son los conceptos fundamentales que definen la Programación Orientada a Objetos
+      </p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          
+        <div class="pillar-card">
+          <div class="flex items-center mb-6">
+            <div class="w-16 h-16 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+              <span class="text-3xl">🔒</span>
+            </div>
+            <h3 class="text-3xl font-bold text-js-yellow-400">Encapsulación</h3>
+          </div>
+          <p class="text-gray-300 leading-relaxed mb-6">
+            La encapsulación es el proceso de ocultar los detalles internos de un objeto y exponer solo lo necesario. Protege los datos al hacer que las propiedades sean privadas y accesibles solo mediante métodos públicos (getters y setters).
+          </p>
+          
+          <div class="bg-black/50 rounded-lg p-4 mb-4">
+            <h4 class="text-sm font-semibold text-js-yellow-400 mb-2">Analogía del Mundo Real:</h4>
+            <p class="text-sm text-gray-400">
+              Un cajero automático encapsula su funcionamiento interno. No necesitas saber cómo funciona por dentro; solo usas los botones (interfaz pública) para realizar operaciones.
+            </p>
+          </div>
+
+          <pre class="code-block text-xs">
+<span class="text-purple-400">class</span> <span class="text-blue-400">CuentaBancaria</span> {
+  <span class="text-gray-500">// Propiedad privada (con #)</span>
+  #saldo = <span class="text-green-400">0</span>;
+
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">saldoInicial</span>) {
+    <span class="text-purple-400">this</span>.#saldo = saldoInicial;
+  }
+
+  <span class="text-gray-500">// Método público (getter)</span>
+  <span class="text-purple-400">getSaldo</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>.#saldo;
+  }
+
+  <span class="text-gray-500">// Método público</span>
+  <span class="text-purple-400">depositar</span>(<span class="text-blue-400">cantidad</span>) {
+    <span class="text-purple-400">if</span> (cantidad &gt; <span class="text-green-400">0</span>) {
+      <span class="text-purple-400">this</span>.#saldo += cantidad;
+      <span class="text-purple-400">return</span> <span class="text-purple-400">true</span>;
+    }
+    <span class="text-purple-400">return</span> <span class="text-purple-400">false</span>;
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">cuenta</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">CuentaBancaria</span>(<span class="text-green-400">1000</span>);
+cuenta.<span class="text-green-400">depositar</span>(<span class="text-green-400">500</span>);
+console.<span class="text-green-400">log</span>(cuenta.<span class="text-green-400">getSaldo</span>()); <span class="text-gray-500">// 1500</span>
+<span class="text-gray-500">// cuenta.#saldo; // ❌ Error: propiedad privada</span></pre>
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Protección de datos</span>
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Control de acceso</span>
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Validación</span>
+          </div>
+        </div>
+ 
+        <div class="pillar-card">
+          <div class="flex items-center mb-6">
+            <div class="w-16 h-16 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+              <span class="text-3xl">🎭</span>
+            </div>
+            <h3 class="text-3xl font-bold text-js-yellow-400">Abstracción</h3>
+          </div>
+          <p class="text-gray-300 leading-relaxed mb-6">
+            La abstracción consiste en mostrar solo la información esencial y ocultar los detalles complejos de implementación. Permite trabajar con conceptos de alto nivel sin preocuparse por los detalles internos.
+          </p>
+          
+          <div class="bg-black/50 rounded-lg p-4 mb-4">
+            <h4 class="text-sm font-semibold text-js-yellow-400 mb-2">Analogía del Mundo Real:</h4>
+            <p class="text-sm text-gray-400">
+              Cuando conduces un auto, solo necesitas saber usar el volante, pedales y palanca de cambios. No necesitas entender cómo funciona el motor internamente.
+            </p>
+          </div>
+
+          <pre class="code-block text-xs">
+<span class="text-purple-400">class</span> <span class="text-blue-400">ReproductorMusica</span> {
+  #archivoActual;
+  #volumen = <span class="text-green-400">50</span>;
+
+  <span class="text-gray-500">// Interfaz simple para el usuario</span>
+  <span class="text-purple-400">reproducir</span>(<span class="text-blue-400">cancion</span>) {
+    <span class="text-purple-400">this</span>.#archivoActual = cancion;
+    <span class="text-purple-400">this</span>.#cargarArchivo();
+    <span class="text-purple-400">this</span>.#decodificarAudio();
+    <span class="text-purple-400">this</span>.#reproducirAudio();
+    console.<span class="text-green-400">log</span>(<span class="text-orange-400">'▶️ Reproduciendo: '</span> + cancion);
+  }
+
+  <span class="text-purple-400">pausar</span>() {
+    console.<span class="text-green-400">log</span>(<span class="text-orange-400">'⏸️ Pausado'</span>);
+  }
+
+  <span class="text-gray-500">// Métodos privados (complejidad oculta)</span>
+  #cargarArchivo() { <span class="text-gray-500">/* lógica compleja */</span> }
+  #decodificarAudio() { <span class="text-gray-500">/* lógica compleja */</span> }
+  #reproducirAudio() { <span class="text-gray-500">/* lógica compleja */</span> }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">player</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">ReproductorMusica</span>();
+player.<span class="text-green-400">reproducir</span>(<span class="text-orange-400">'cancion.mp3'</span>); <span class="text-gray-500">// Simple y claro</span></pre>
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Simplicidad</span>
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Interfaz clara</span>
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Ocultar complejidad</span>
+          </div>
+        </div>
+
+        <div class="pillar-card">
+          <div class="flex items-center mb-6">
+            <div class="w-16 h-16 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+              <span class="text-3xl">🧬</span>
+            </div>
+            <h3 class="text-3xl font-bold text-js-yellow-400">Herencia</h3>
+          </div>
+          <p class="text-gray-300 leading-relaxed mb-6">
+            La herencia permite crear nuevas clases basadas en clases existentes, heredando sus propiedades y métodos. Esto facilita la reutilización de código y la creación de jerarquías de clases.
+          </p>
+          
+          <div class="bg-black/50 rounded-lg p-4 mb-4">
+            <h4 class="text-sm font-semibold text-js-yellow-400 mb-2">Analogía del Mundo Real:</h4>
+            <p class="text-sm text-gray-400">
+              Un "Perro" y un "Gato" heredan características comunes de "Animal" (respirar, comer), pero cada uno tiene sus propias características específicas (ladrar, maullar).
+            </p>
+          </div>
+
+          <pre class="code-block text-xs">
+<span class="text-gray-500">// Clase base (padre)</span>
+<span class="text-purple-400">class</span> <span class="text-blue-400">Animal</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>) {
+    <span class="text-purple-400">this</span>.nombre = nombre;
+  }
+
+  <span class="text-purple-400">comer</span>() {
+    console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Comiendo...'</span>);
+  }
+}
+
+<span class="text-gray-500">// Clase derivada (hija)</span>
+<span class="text-purple-400">class</span> <span class="text-blue-400">Perro</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Animal</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">raza</span>) {
+    <span class="text-purple-400">super</span>(nombre); <span class="text-gray-500">// Llama al constructor padre</span>
+    <span class="text-purple-400">this</span>.raza = raza;
+  }
+
+  <span class="text-purple-400">ladrar</span>() {
+    console.<span class="text-green-400">log</span>(<span class="text-orange-400">'🐕 ¡Guau guau!'</span>);
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">miPerro</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Perro</span>(<span class="text-orange-400">'Rex'</span>, <span class="text-orange-400">'Labrador'</span>);
+miPerro.<span class="text-green-400">comer</span>();  <span class="text-gray-500">// Heredado de Animal</span>
+miPerro.<span class="text-green-400">ladrar</span>(); <span class="text-gray-500">// Específico de Perro</span></pre>
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Reutilización</span>
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Jerarquías</span>
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Especialización</span>
+          </div>
+        </div>
+
+        <div class="pillar-card">
+          <div class="flex items-center mb-6">
+            <div class="w-16 h-16 rounded-full bg-js-yellow-500 flex items-center justify-center mr-4">
+              <span class="text-3xl">🎨</span>
+            </div>
+            <h3 class="text-3xl font-bold text-js-yellow-400">Polimorfismo</h3>
+          </div>
+          <p class="text-gray-300 leading-relaxed mb-6">
+            El polimorfismo permite que objetos de diferentes clases respondan de manera diferente al mismo método. Una misma interfaz puede tener múltiples implementaciones según el contexto.
+          </p>
+          
+          <div class="bg-black/50 rounded-lg p-4 mb-4">
+            <h4 class="text-sm font-semibold text-js-yellow-400 mb-2">Analogía del Mundo Real:</h4>
+            <p class="text-sm text-gray-400">
+              El botón "Play" funciona diferente en un reproductor de música, un videojuego o un reproductor de video, pero todos responden al mismo comando básico.
+            </p>
+          </div>
+
+          <pre class="code-block text-xs">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Figura</span> {
+  <span class="text-purple-400">calcularArea</span>() {
+    <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-green-400">Error</span>(<span class="text-orange-400">'Método debe ser implementado'</span>);
+  }
+}
+
+<span class="text-purple-400">class</span> <span class="text-blue-400">Circulo</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Figura</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">radio</span>) {
+    <span class="text-purple-400">super</span>();
+    <span class="text-purple-400">this</span>.radio = radio;
+  }
+
+  <span class="text-purple-400">calcularArea</span>() {
+    <span class="text-purple-400">return</span> Math.PI * <span class="text-purple-400">this</span>.radio ** <span class="text-green-400">2</span>;
+  }
+}
+
+<span class="text-purple-400">class</span> <span class="text-blue-400">Rectangulo</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Figura</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">ancho</span>, <span class="text-blue-400">alto</span>) {
+    <span class="text-purple-400">super</span>();
+    <span class="text-purple-400">this</span>.ancho = ancho;
+    <span class="text-purple-400">this</span>.alto = alto;
+  }
+
+  <span class="text-purple-400">calcularArea</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>.ancho * <span class="text-purple-400">this</span>.alto;
+  }
+}
+
+<span class="text-gray-500">// Mismo método, diferentes comportamientos</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">figuras</span> = [
+  <span class="text-purple-400">new</span> <span class="text-blue-400">Circulo</span>(<span class="text-green-400">5</span>),
+  <span class="text-purple-400">new</span> <span class="text-blue-400">Rectangulo</span>(<span class="text-green-400">4</span>, <span class="text-green-400">6</span>)
+];
+
+figuras.<span class="text-green-400">forEach</span>(<span class="text-blue-400">f</span> =&gt; console.<span class="text-green-400">log</span>(f.<span class="text-green-400">calcularArea</span>()));</pre>
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Flexibilidad</span>
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Interfaz única</span>
+            <span class="text-xs bg-js-yellow-600/20 text-js-yellow-400 px-3 py-1 rounded-full">Sobrescritura</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clases" class="container mx-auto px-4 py-20">
+    <h2 class="text-4xl font-light text-center mb-4">
+      Clases en <span class="text-js-yellow-400 font-bold">JavaScript</span>
+    </h2>
+    <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+      Las clases son plantillas para crear objetos con propiedades y métodos predefinidos
+    </p>
+
+    <div class="max-w-6xl mx-auto">
+        
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+        <h3 class="text-2xl font-bold mb-6 text-js-yellow-400">Estructura Básica de una Clase</h3>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-4">Componentes de una Clase:</h4>
+            <ul class="space-y-3 text-gray-300">
+              <li class="flex items-start">
+                <span class="text-js-yellow-400 mr-2">•</span>
+                <div>
+                  <strong class="text-white">Constructor:</strong> Método especial que inicializa la clase
+                </div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-js-yellow-400 mr-2">•</span>
+                <div>
+                  <strong class="text-white">Propiedades:</strong> Variables que pertenecen al objeto
+                </div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-js-yellow-400 mr-2">•</span>
+                <div>
+                  <strong class="text-white">Métodos:</strong> Funciones que pertenecen al objeto
+                </div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-js-yellow-400 mr-2">•</span>
+                <div>
+                  <strong class="text-white">Getters/Setters:</strong> Acceso controlado a propiedades
+                </div>
+              </li>
+              <li class="flex items-start">
+                <span class="text-js-yellow-400 mr-2">•</span>
+                <div>
+                  <strong class="text-white">Métodos Estáticos:</strong> Pertenecen a la clase, no a instancias
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <pre class="code-block text-xs">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Persona</span> {
+  <span class="text-gray-500">// Propiedad privada</span>
+  #edad;
+
+  <span class="text-gray-500">// Constructor</span>
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">edad</span>) {
+    <span class="text-purple-400">this</span>.nombre = nombre;
+    <span class="text-purple-400">this</span>.#edad = edad;
+  }
+
+  <span class="text-gray-500">// Getter</span>
+  <span class="text-purple-400">get</span> <span class="text-blue-400">edad</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>.#edad;
+  }
+
+  <span class="text-gray-500">// Setter</span>
+  <span class="text-purple-400">set</span> <span class="text-blue-400">edad</span>(<span class="text-blue-400">valor</span>) {
+    <span class="text-purple-400">if</span> (valor &gt; <span class="text-green-400">0</span>) {
+      <span class="text-purple-400">this</span>.#edad = valor;
+    }
+  }
+
+  <span class="text-gray-500">// Método</span>
+  <span class="text-purple-400">saludar</span>() {
+    console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Hola, soy '</span> + <span class="text-purple-400">this</span>.nombre);
+  }
+
+  <span class="text-gray-500">// Método estático</span>
+  <span class="text-purple-400">static</span> <span class="text-purple-400">crear</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">edad</span>) {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">new</span> <span class="text-blue-400">Persona</span>(nombre, edad);
+  }
+}
+
+<span class="text-gray-500">// Uso</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">p1</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Persona</span>(<span class="text-orange-400">'Ana'</span>, <span class="text-green-400">25</span>);
+<span class="text-purple-400">const</span> <span class="text-blue-400">p2</span> = Persona.<span class="text-green-400">crear</span>(<span class="text-orange-400">'Luis'</span>, <span class="text-green-400">30</span>);</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Constructor</h3>
+          <p class="text-gray-300 mb-4">
+            El constructor es un método especial que se ejecuta automáticamente al crear una instancia de la clase. Se usa para inicializar propiedades.
+          </p>
+          <pre class="code-block text-xs">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Producto</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">precio</span>) {
+    <span class="text-purple-400">this</span>.nombre = nombre;
+    <span class="text-purple-400">this</span>.precio = precio;
+    <span class="text-purple-400">this</span>.id = Date.<span class="text-green-400">now</span>();
+    console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Producto creado'</span>);
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">laptop</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Producto</span>(<span class="text-orange-400">'Laptop'</span>, <span class="text-green-400">999</span>);
+<span class="text-gray-500">// "Producto creado"</span></pre>
+        </div>
+
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Métodos Estáticos</h3>
+          <p class="text-gray-300 mb-4">
+            Los métodos estáticos pertenecen a la clase, no a las instancias. Se usan para funcionalidades que no requieren datos de instancia.
+          </p>
+          <pre class="code-block text-xs">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Matematica</span> {
+  <span class="text-purple-400">static</span> <span class="text-purple-400">sumar</span>(<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>) {
+    <span class="text-purple-400">return</span> a + b;
+  }
+
+  <span class="text-purple-400">static</span> <span class="text-purple-400">multiplicar</span>(<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>) {
+    <span class="text-purple-400">return</span> a * b;
+  }
+}
+
+<span class="text-gray-500">// No necesitas crear instancia</span>
+console.<span class="text-green-400">log</span>(Matematica.<span class="text-green-400">sumar</span>(<span class="text-green-400">5</span>, <span class="text-green-400">3</span>)); <span class="text-gray-500">// 8</span></pre>
+        </div>
+
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Getters y Setters</h3>
+          <p class="text-gray-300 mb-4">
+            Getters y Setters permiten controlar el acceso y modification de propiedades, añadiendo validación o lógica adicional.
+          </p>
+          <pre class="code-block text-xs">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Temperatura</span> {
+  #celsius = <span class="text-green-400">0</span>;
+
+  <span class="text-purple-400">get</span> <span class="text-blue-400">fahrenheit</span>() {
+    <span class="text-purple-400">return</span> (<span class="text-purple-400">this</span>.#celsius * <span class="text-green-400">9</span>/<span class="text-green-400">5</span>) + <span class="text-green-400">32</span>;
+  }
+
+  <span class="text-purple-400">set</span> <span class="text-blue-400">celsius</span>(<span class="text-blue-400">valor</span>) {
+    <span class="text-purple-400">if</span> (valor < -<span class="text-green-400">273.15</span>) {
+      <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-green-400">Error</span>(<span class="text-orange-400">'Temp imposible'</span>);
+    }
+    <span class="text-purple-400">this</span>.#celsius = valor;
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">temp</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Temperatura</span>();
+temp.celsius = <span class="text-green-400">25</span>;
+console.<span class="text-green-400">log</span>(temp.fahrenheit); <span class="text-gray-500">// 77</span></pre>
+        </div>
+
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Propiedades Privadas</h3>
+          <p class="text-gray-300 mb-4">
+            Las propiedades privadas (con #) solo son accesibles dentro de la clase, implementando verdadera encapsulación.
+          </p>
+          <pre class="code-block text-xs">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Usuario</span> {
+  #contraseña;
+
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">pass</span>) {
+    <span class="text-purple-400">this</span>.nombre = nombre;
+    <span class="text-purple-400">this</span>.#contraseña = <span class="text-purple-400">this</span>.#hash(pass);
+  }
+
+  #hash(<span class="text-blue-400">str</span>) {
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'hashed_'</span> + str;
+  }
+
+  <span class="text-purple-400">verificar</span>(<span class="text-blue-400">pass</span>) {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>.#contraseña === <span class="text-purple-400">this</span>.#hash(pass);
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">user</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Usuario</span>(<span class="text-orange-400">'Ana'</span>, <span class="text-orange-400">'1234'</span>);
+<span class="text-gray-500">// user.#contraseña; // ❌ Error</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="herencia" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Herencia <span class="text-js-yellow-400 font-bold">y Jerarquías</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        Crea relaciones entre clases para reutilizar y extender funcionalidad
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+          
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 mb-8">
+          <h3 class="text-2xl font-bold mb-8 text-js-yellow-400 text-center">Jerarquía de Clases</h3>
+          
+          <div class="flex flex-col items-center space-y-4">
+            <div class="bg-js-yellow-600/20 border-2 border-js-yellow-500 rounded-lg p-6 w-64 text-center">
+              <div class="text-2xl mb-2">👤</div>
+              <h4 class="text-xl font-bold text-js-yellow-400">Persona</h4>
+              <p class="text-sm text-gray-400 mt-2">Clase base</p>
+              <div class="text-xs text-gray-400 mt-2">
+                nombre, edad<br/>
+                saludar()
+              </div>
+            </div>
+
+            <div class="text-js-yellow-400 text-3xl">↓</div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
+              <div class="bg-blue-600/20 border-2 border-blue-500 rounded-lg p-6 text-center">
+                <div class="text-2xl mb-2">👨‍💼</div>
+                <h4 class="text-lg font-bold text-blue-400">Empleado</h4>
+                <p class="text-xs text-gray-400 mt-2">Hereda de Persona</p>
+                <div class="text-xs text-gray-400 mt-2">
+                  + salario<br/>
+                  + trabajar()
+                </div>
+              </div>
+
+              <div class="bg-green-600/20 border-2 border-green-500 rounded-lg p-6 text-center">
+                <div class="text-2xl mb-2">👨‍🎓</div>
+                <h4 class="text-lg font-bold text-green-400">Estudiante</h4>
+                <p class="text-xs text-gray-400 mt-2">Hereda de Persona</p>
+                <div class="text-xs text-gray-400 mt-2">
+                  + carrera<br/>
+                  + estudiar()
+                </div>
+              </div>
+
+              <div class="bg-purple-600/20 border-2 border-purple-500 rounded-lg p-6 text-center">
+                <div class="text-2xl mb-2">👨‍🏫</div>
+                <h4 class="text-lg font-bold text-purple-400">Profesor</h4>
+                <p class="text-xs text-gray-400 mt-2">Hereda de Persona</p>
+                <div class="text-xs text-gray-400 mt-2">
+                  + materia<br/>
+                  + enseñar()
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        
+ 
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+            <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Implementación de Herencia</h3>
+            <pre class="code-block text-xs">
+<span class="text-gray-500">// Clase padre</span>
+<span class="text-purple-400">class</span> <span class="text-blue-400">Persona</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">edad</span>) {
+    <span class="text-purple-400">this</span>.nombre = nombre;
+    <span class="text-purple-400">this</span>.edad = edad;
+  }
+
+  <span class="text-purple-400">saludar</span>() {
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'Hola, soy '</span> + <span class="text-purple-400">this</span>.nombre;
+  }
+}
+
+<span class="text-gray-500">// Clase hija</span>
+<span class="text-purple-400">class</span> <span class="text-blue-400">Estudiante</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Persona</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">edad</span>, <span class="text-blue-400">carrera</span>) {
+    <span class="text-purple-400">super</span>(nombre, edad); <span class="text-gray-500">// Llama al padre</span>
+    <span class="text-purple-400">this</span>.carrera = carrera;
+  }
+
+  <span class="text-purple-400">estudiar</span>() {
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'Estudiando '</span> + <span class="text-purple-400">this</span>.carrera;
+  }
+
+  <span class="text-gray-500">// Sobrescribe método del padre</span>
+  <span class="text-purple-400">saludar</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">super</span>.<span class="text-green-400">saludar</span>() + <span class="text-orange-400">', estudio '</span> + <span class="text-purple-400">this</span>.carrera;
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">est</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Estudiante</span>(<span class="text-orange-400">'Ana'</span>, <span class="text-green-400">20</span>, <span class="text-orange-400">'Ing. Software'</span>);
+console.<span class="text-green-400">log</span>(est.<span class="text-green-400">saludar</span>());
+console.<span class="text-green-400">log</span>(est.<span class="text-green-400">estudiar</span>());</pre>
+          </div>
+
+          <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+            <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Método super()</h3>
+            <p class="text-gray-300 mb-4 text-sm">
+              La palabra clave <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">super</code> se usa para:
+            </p>
+            <ul class="space-y-2 text-gray-300 text-sm mb-4">
+              <li class="flex items-start">
+                <span class="text-js-yellow-400 mr-2">1.</span>
+                Llamar al constructor de la clase padre
+              </li>
+              <li class="flex items-start">
+                <span class="text-js-yellow-400 mr-2">2.</span>
+                Acceder a métodos de la clase padre
+              </li>
+            </ul>
+            <pre class="code-block text-xs">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Empleado</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Persona</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">edad</span>, <span class="text-blue-400">salario</span>) {
+    <span class="text-gray-500">// 1. Llamar constructor padre</span>
+    <span class="text-purple-400">super</span>(nombre, edad);
+    <span class="text-purple-400">this</span>.salario = salario;
+  }
+
+  <span class="text-purple-400">presentarse</span>() {
+    <span class="text-gray-500">// 2. Llamar método padre</span>
+    <span class="text-purple-400">const</span> <span class="text-blue-400">saludo</span> = <span class="text-purple-400">super</span>.<span class="text-green-400">saludar</span>();
+    <span class="text-purple-400">return</span> saludo + <span class="text-orange-400">' y gano $'</span> + <span class="text-purple-400">this</span>.salario;
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">emp</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Empleado</span>(<span class="text-orange-400">'Carlos'</span>, <span class="text-green-400">30</span>, <span class="text-green-400">50000</span>);
+console.<span class="text-green-400">log</span>(emp.<span class="text-green-400">presentarse</span>());</pre>
+
+            <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg mt-4">
+              <p class="text-xs text-gray-300">
+                <strong class="text-js-yellow-400">Importante:</strong> Debes llamar a <code class="text-js-yellow-400">super()</code> antes de usar <code class="text-js-yellow-400">this</code> en el constructor de una clase hija.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+ 
+  <section id="ejemplos" class="container mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-5xl font-light mb-16 text-center">
+      Ejemplos <span class="text-js-yellow-400 font-bold">Prácticos</span>
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Sistema de Tienda Online</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Producto</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">precio</span>, <span class="text-blue-400">stock</span>) {
+    <span class="text-purple-400">this</span>.nombre = nombre;
+    <span class="text-purple-400">this</span>.precio = precio;
+    <span class="text-purple-400">this</span>.stock = stock;
+  }
+
+  <span class="text-purple-400">vender</span>(<span class="text-blue-400">cantidad</span>) {
+    <span class="text-purple-400">if</span> (<span class="text-purple-400">this</span>.stock &gt;= cantidad) {
+      <span class="text-purple-400">this</span>.stock -= cantidad;
+      <span class="text-purple-400">return</span> <span class="text-purple-400">true</span>;
+    }
+    <span class="text-purple-400">return</span> <span class="text-purple-400">false</span>;
+  }
+}
+
+<span class="text-purple-400">class</span> <span class="text-blue-400">ProductoDigital</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Producto</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">nombre</span>, <span class="text-blue-400">precio</span>, <span class="text-blue-400">formato</span>) {
+    <span class="text-purple-400">super</span>(nombre, precio, <span class="text-green-400">Infinity</span>);
+    <span class="text-purple-400">this</span>.formato = formato;
+  }
+
+  <span class="text-purple-400">descargar</span>() {
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'Descargando '</span> + <span class="text-purple-400">this</span>.nombre + <span class="text-orange-400">'.'</span> + <span class="text-purple-400">this</span>.formato;
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">ebook</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">ProductoDigital</span>(<span class="text-orange-400">'JS Guide'</span>, <span class="text-green-400">29.99</span>, <span class="text-orange-400">'pdf'</span>);
+console.<span class="text-green-400">log</span>(ebook.<span class="text-green-400">descargar</span>());</pre>
+        <p class="text-gray-400 text-sm">
+          Sistema de productos con herencia para diferenciar productos físicos y digitales.
+        </p>
+      </div>
+
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Sistema Bancario</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">class</span> <span class="text-blue-400">CuentaBancaria</span> {
+  #saldo = <span class="text-green-400">0</span>;
+  #transacciones = [];
+
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">titular</span>, <span class="text-blue-400">saldoInicial</span>) {
+    <span class="text-purple-400">this</span>.titular = titular;
+    <span class="text-purple-400">this</span>.#saldo = saldoInicial;
+    <span class="text-purple-400">this</span>.#registrar(<span class="text-orange-400">'Apertura'</span>, saldoInicial);
+  }
+
+  <span class="text-purple-400">depositar</span>(<span class="text-blue-400">monto</span>) {
+    <span class="text-purple-400">this</span>.#saldo += monto;
+    <span class="text-purple-400">this</span>.#registrar(<span class="text-orange-400">'Depósito'</span>, monto);
+  }
+
+  <span class="text-purple-400">retirar</span>(<span class="text-blue-400">monto</span>) {
+    <span class="text-purple-400">if</span> (<span class="text-purple-400">this</span>.#saldo &gt;= monto) {
+      <span class="text-purple-400">this</span>.#saldo -= monto;
+      <span class="text-purple-400">this</span>.#registrar(<span class="text-orange-400">'Retiro'</span>, monto);
+      <span class="text-purple-400">return</span> <span class="text-purple-400">true</span>;
+    }
+    <span class="text-purple-400">return</span> <span class="text-purple-400">false</span>;
+  }
+
+  #registrar(<span class="text-blue-400">tipo</span>, <span class="text-blue-400">monto</span>) {
+    <span class="text-purple-400">this</span>.#transacciones.<span class="text-green-400">push</span>({
+      tipo, monto,
+      fecha: <span class="text-purple-400">new</span> <span class="text-green-400">Date</span>()
+    });
+  }
+
+  <span class="text-purple-400">get</span> <span class="text-blue-400">saldo</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>.#saldo;
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">cuenta</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">CuentaBancaria</span>(<span class="text-orange-400">'Ana'</span>, <span class="text-green-400">1000</span>);
+cuenta.<span class="text-green-400">depositar</span>(<span class="text-green-400">500</span>);
+cuenta.<span class="text-green-400">retirar</span>(<span class="text-green-400">200</span>);
+console.<span class="text-green-400">log</span>(cuenta.saldo); <span class="text-gray-500">// 1300</span></pre>
+        <p class="text-gray-400 text-sm">
+          Cuenta bancaria con encapsulación de saldo y registro de transacciones.
+        </p>
+      </div>
+
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Sistema de Vehículos</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Vehiculo</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">marca</span>, <span class="text-blue-400">modelo</span>) {
+    <span class="text-purple-400">this</span>.marca = marca;
+    <span class="text-purple-400">this</span>.modelo = modelo;
+    <span class="text-purple-400">this</span>.velocidad = <span class="text-green-400">0</span>;
+  }
+
+  <span class="text-purple-400">acelerar</span>(<span class="text-blue-400">incremento</span>) {
+    <span class="text-purple-400">this</span>.velocidad += incremento;
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'Velocidad: '</span> + <span class="text-purple-400">this</span>.velocidad + <span class="text-orange-400">' km/h'</span>;
+  }
+
+  <span class="text-purple-400">frenar</span>() {
+    <span class="text-purple-400">this</span>.velocidad = <span class="text-green-400">0</span>;
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'Detenido'</span>;
+  }
+}
+
+<span class="text-purple-400">class</span> <span class="text-blue-400">Moto</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Vehiculo</span> {
+  <span class="text-purple-400">hacerCaballito</span>() {
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'🏍️ ¡Caballito!'</span>;
+  }
+}
+
+<span class="text-purple-400">class</span> <span class="text-blue-400">Auto</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Vehiculo</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">marca</span>, <span class="text-blue-400">modelo</span>, <span class="text-blue-400">puertas</span>) {
+    <span class="text-purple-400">super</span>(marca, modelo);
+    <span class="text-purple-400">this</span>.puertas = puertas;
+  }
+
+  <span class="text-purple-400">tocarBocina</span>() {
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'🚗 ¡Beep beep!'</span>;
+
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">moto</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Moto</span>(<span class="text-orange-400">'Yamaha'</span>, <span class="text-orange-400">'R1'</span>);
+<span class="text-purple-400">const</span> <span class="text-blue-400">auto</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Auto</span>(<span class="text-orange-400">'Toyota'</span>, <span class="text-orange-400">'Corolla'</span>, <span class="text-green-400">4</span>);</pre>
+        <p class="text-gray-400 text-sm">
+          Jerarquía de vehículos con comportamientos comunes y específicos.
+        </p>
+      </div>
+
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Gestión de Usuarios</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Usuario</span> {
+  #password;
+  
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">username</span>, <span class="text-blue-400">password</span>) {
+    <span class="text-purple-400">this</span>.username = username;
+    <span class="text-purple-400">this</span>.#password = <span class="text-purple-400">this</span>.#encriptar(password);
+    <span class="text-purple-400">this</span>.fechaCreacion = <span class="text-purple-400">new</span> <span class="text-green-400">Date</span>();
+  }
+
+  #encriptar(<span class="text-blue-400">pass</span>) {
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'***'</span> + pass + <span class="text-orange-400">'***'</span>;
+  }
+
+  <span class="text-purple-400">verificar</span>(<span class="text-blue-400">pass</span>) {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>.#password === <span class="text-purple-400">this</span>.#encriptar(pass);
+  }
+}
+
+<span class="text-purple-400">class</span> <span class="text-blue-400">Admin</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Usuario</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">username</span>, <span class="text-blue-400">password</span>) {
+    <span class="text-purple-400">super</span>(username, password);
+    <span class="text-purple-400">this</span>.permisos = [<span class="text-orange-400">'leer'</span>, <span class="text-orange-400">'escribir'</span>, <span class="text-orange-400">'eliminar'</span>];
+  }
+
+  <span class="text-purple-400">eliminarUsuario</span>(<span class="text-blue-400">user</span>) {
+    console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Usuario '</span> + user + <span class="text-orange-400">' eliminado'</span>);
+  }
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">admin</span> = <span class="text-purple-400">new</span> <span class="text-blue-400">Admin</span>(<span class="text-orange-400">'admin1'</span>, <span class="text-orange-400">'secret'</span>);
+console.<span class="text-green-400">log</span>(admin.<span class="text-green-400">verificar</span>(<span class="text-orange-400">'secret'</span>)); <span class="text-gray-500">// true</span></pre>
+        <p class="text-gray-400 text-sm">
+          Sistema de usuarios con roles y permisos diferenciados.
+        </p>
+      </div>
+
+      <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800 lg:col-span-2">
+        <h3 class="text-xl font-bold mb-4 text-js-yellow-400">Sistema de Figuras Geométricas (Polimorfismo)</h3>
+        <pre class="code-block text-xs mb-4">
+<span class="text-purple-400">class</span> <span class="text-blue-400">Figura</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">color</span>) {
+    <span class="text-purple-400">this</span>.color = color;
+  }
+
+  <span class="text-purple-400">calcularArea</span>() {
+    <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-green-400">Error</span>(<span class="text-orange-400">'Método debe ser implementado'</span>);
+  }
+
+  <span class="text-purple-400">describir</span>() {
+    <span class="text-purple-400">return</span> <span class="text-orange-400">'Figura de color '</span> + <span class="text-purple-400">this</span>.color;
+  }
+}
+
+<span class="text-purple-400">class</span> <span class="text-blue-400">Circulo</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Figura</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">color</span>, <span class="text-blue-400">radio</span>) {
+    <span class="text-purple-400">super</span>(color);
+    <span class="text-purple-400">this</span>.radio = radio;
+  }
+
+  <span class="text-purple-400">calcularArea</span>() {
+    <span class="text-purple-400">return</span> Math.PI * <span class="text-purple-400">this</span>.radio ** <span class="text-green-400">2</span>;
+  }
+
+  <span class="text-purple-400">describir</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">super</span>.<span class="text-green-400">describir</span>() + <span class="text-orange-400">' - Círculo con radio '</span> + <span class="text-purple-400">this</span>.radio;
+  }
+}
+
+<span class="text-purple-400">class</span> <span class="text-blue-400">Rectangulo</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Figura</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">color</span>, <span class="text-blue-400">ancho</span>, <span class="text-blue-400">alto</span>) {
+    <span class="text-purple-400">super</span>(color);
+    <span class="text-purple-400">this</span>.ancho = ancho;
+    <span class="text-purple-400">this</span>.alto = alto;
+  }
+
+  <span class="text-purple-400">calcularArea</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">this</span>.ancho * <span class="text-purple-400">this</span>.alto;
+  }
+
+  <span class="text-purple-400">describir</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">super</span>.<span class="text-green-400">describir</span>() + <span class="text-orange-400">' - Rectángulo '</span> + <span class="text-purple-400">this</span>.ancho + <span class="text-orange-400">'x'</span> + <span class="text-purple-400">this</span>.alto;
+  }
+}
+
+<span class="text-purple-400">class</span> <span class="text-blue-400">Triangulo</span> <span class="text-purple-400">extends</span> <span class="text-blue-400">Figura</span> {
+  <span class="text-purple-400">constructor</span>(<span class="text-blue-400">color</span>, <span class="text-blue-400">base</span>, <span class="text-blue-400">altura</span>) {
+    <span class="text-purple-400">super</span>(color);
+    <span class="text-purple-400">this</span>.base = base;
+    <span class="text-purple-400">this</span>.altura = altura;
+  }
+
+  <span class="text-purple-400">calcularArea</span>() {
+    <span class="text-purple-400">return</span> (<span class="text-purple-400">this</span>.base * <span class="text-purple-400">this</span>.altura) / <span class="text-green-400">2</span>;
+  }
+
+  <span class="text-purple-400">describir</span>() {
+    <span class="text-purple-400">return</span> <span class="text-purple-400">super</span>.<span class="text-green-400">describir</span>() + <span class="text-orange-400">' - Triángulo base:'</span> + <span class="text-purple-400">this</span>.base + <span class="text-orange-400">' altura:'</span> + <span class="text-purple-400">this</span>.altura;
+  }
+}
+
+<span class="text-gray-500">// Polimorfismo en acción: mismo método, diferentes comportamientos</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">figuras</span> = [
+  <span class="text-purple-400">new</span> <span class="text-blue-400">Circulo</span>(<span class="text-orange-400">'rojo'</span>, <span class="text-green-400">5</span>),
+  <span class="text-purple-400">new</span> <span class="text-blue-400">Rectangulo</span>(<span class="text-orange-400">'azul'</span>, <span class="text-green-400">4</span>, <span class="text-green-400">6</span>),
+  <span class="text-purple-400">new</span> <span class="text-blue-400">Triangulo</span>(<span class="text-orange-400">'verde'</span>, <span class="text-green-400">5</span>, <span class="text-green-400">8</span>)
+];
+
+figuras.<span class="text-green-400">forEach</span>(<span class="text-blue-400">figura</span> =&gt; {
+  console.<span class="text-green-400">log</span>(figura.<span class="text-green-400">describir</span>());
+  console.<span class="text-green-400">log</span>(<span class="text-orange-400">'Área: '</span> + figura.<span class="text-green-400">calcularArea</span>().<span class="text-green-400">toFixed</span>(<span class="text-green-400">2</span>));
+});</pre>
+        <p class="text-gray-400 text-sm">
+          Ejemplo completo de polimorfismo: diferentes figuras implementan el mismo método <code class="text-js-yellow-400 bg-gray-800 px-2 py-1 rounded">calcularArea()</code> de manera diferente, pero todas pueden usarse de forma intercambiable.
+        </p>
+      </div>
+    </div>
+  </section>
+
+    
+  <section id="actividad" class="py-20 bg-gradient-to-b from-dark-blue-950 to-dark-blue-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-light text-center mb-4">
+        Actividad <span class="text-js-yellow-400 font-bold">Interactiva</span>
+      </h2>
+      <p class="text-xl text-gray-400 text-center max-w-3xl mx-auto mb-16">
+        ¡Crea y gestiona clases con POO en tiempo real!
+      </p>
+
+      <div class="max-w-7xl mx-auto">
+        <div class="bg-dark-blue-900/80 p-8 rounded-lg border border-gray-800">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 
+            <div class="space-y-6">
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Constructor de Clases</h3>
+
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Plantillas Rápidas</h4>
+                <div class="grid grid-cols-2 gap-3">
+                  <button 
+                    id="createAnimal"
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🐾 Animal
+                  </button>
+                  <button 
+                    id="createVehicle"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🚗 Vehículo
+                  </button>
+                  <button 
+                    id="createPerson"
+                    class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    👤 Persona
+                  </button>
+                  <button 
+                    id="createProduct"
+                    class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    📦 Producto
+                  </button>
+                </div>
+              </div>
+
+                
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Crear Instancia</h4>
+                <div class="space-y-3">
+                  <input 
+                    type="text" 
+                    id="instanceName" 
+                    placeholder="Nombre de la instancia (ej: miPerro)"
+                    class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none text-sm"
+                  />
+                  <input 
+                    type="text" 
+                    id="instanceParams" 
+                    placeholder="Parámetros separados por coma (ej: Max, 3)"
+                    class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none text-sm"
+                  />
+                  <button 
+                    id="createInstance"
+                    class="w-full bg-js-yellow-500 hover:bg-js-yellow-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                  >
+                    ➕ Crear Instancia
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Llamar Método</h4>
+                <div class="space-y-3">
+                  <select 
+                    id="selectInstance"
+                    class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none text-sm"
+                    title="."
+                  >
+                    <option value="">Selecciona una instancia</option>
+                  </select>
+                  <select 
+                    id="selectMethod"
+                    class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none text-sm"
+                    title="."
+                  >
+                    <option value="">Selecciona un método</option>
+                  </select>
+                  <input 
+                    type="text" 
+                    id="methodParams" 
+                    placeholder="Parámetros (si los requiere)"
+                    class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-js-yellow-500 focus:outline-none text-sm"
+                  />
+                  <button 
+                    id="callMethod"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                  >
+                    ▶️ Ejecutar Método
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <h4 class="text-white font-semibold mb-4">Acciones</h4>
+                <div class="grid grid-cols-2 gap-3">
+                  <button 
+                    id="showHierarchy"
+                    class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🌳 Jerarquía
+                  </button>
+                  <button 
+                    id="clearAll"
+                    class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🗑️ Limpiar
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-js-yellow-900/20 border border-js-yellow-700/30 p-4 rounded-lg">
+                <h4 class="text-sm font-semibold mb-2 text-js-yellow-400">Estadísticas</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                  <div class="text-gray-300">Clases: <span id="classCount" class="text-js-yellow-400 font-bold">0</span></div>
+                  <div class="text-gray-300">Instancias: <span id="instanceCount" class="text-js-yellow-400 font-bold">0</span></div>
+                  <div class="text-gray-300">Llamadas: <span id="methodCallCount" class="text-js-yellow-400 font-bold">0</span></div>
+                  <div class="text-gray-300">Clase actual: <span id="currentClass" class="text-js-yellow-400 font-bold">Ninguna</span></div>
+                </div>
+              </div>
+            </div 
+            <div>
+              <h3 class="text-xl font-bold mb-6 text-js-yellow-400">Visualización</h3>
+              
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                  <h4 class="text-white font-semibold">Código de la Clase</h4>
+                  <button id="copyCode" class="text-js-yellow-400 hover:text-js-yellow-300 text-sm font-semibold">
+                    📋 Copiar
+                  </button>
+                </div>
+                
+                <div id="codeDisplay" class="bg-black/50 rounded-lg p-4 min-h-[300px] max-h-[400px] overflow-y-auto font-mono text-xs">
+                  <div class="text-gray-500 italic text-center py-8">
+                    Selecciona una plantilla para ver el código...
+                  </div>
+                </div>
+              </div>
+ 
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700 mb-6">
+                <h4 class="text-white font-semibold mb-4">Instancias Creadas</h4>
+                <div id="instancesList" class="space-y-2 max-h-[200px] overflow-y-auto">
+                  <div class="text-gray-500 italic text-sm text-center py-4">
+                    No hay instancias aún
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-dark-blue-900/50 p-6 rounded-lg border border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                  <h4 class="text-white font-semibold">Consola de Salida</h4>
+                  <button id="clearConsoleOOP" class="text-red-400 hover:text-red-300 text-sm font-semibold">
+                    Limpiar
+                  </button>
+                </div>
+                <div id="consoleOOP" class="bg-black/50 rounded-lg p-4 h-[150px] overflow-y-auto font-mono text-xs space-y-1">
+                  <div class="text-gray-500">
+                    <span class="text-green-400">></span> Consola POO lista...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16 text-center">
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+  </section>
+
+  <footer class="bg-dark-blue-950 py-8 mt-16 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+      <p>© 2025 Aprende Programación Orientada a Objetos - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // POO Activity
+    const classes = {
+      Animal: {
+        code: `class Animal {
+  constructor(nombre, edad) {
+    this.nombre = nombre;
+    this.edad = edad;
+  }
+
+  comer() {
+    return 'El animal está comiendo';
+  }
+
+  dormir() {
+    return 'El animal está durmiendo';
+  }
+
+  hacerSonido() {
+    return 'El animal hace un sonido';
+  }
+}
+
+class Perro extends Animal {
+  constructor(nombre, edad, raza) {
+    super(nombre, edad);
+    this.raza = raza;
+  }
+
+  hacerSonido() {
+    return '🐕 ¡Guau guau!';
+  }
+
+  jugar() {
+    return 'El perro está jugando';
+  }
+}`,
+        baseClass: 'Animal',
+        childClass: 'Perro',
+        params: ['nombre', 'edad', 'raza'],
+        methods: ['comer', 'dormir', 'hacerSonido', 'jugar']
+      },
+      Vehiculo: {
+        code: `class Vehiculo {
+  constructor(marca, modelo) {
+    this.marca = marca;
+    this.modelo = modelo;
+    this.velocidad = 0;
+  }
+
+  acelerar(incremento) {
+    this.velocidad += incremento;
+    return 'Velocidad: ' + this.velocidad + ' km/h';
+  }
+
+  frenar() {
+    this.velocidad = 0;
+    return 'Vehículo detenido';
+  }
+}
+
+class Auto extends Vehiculo {
+  constructor(marca, modelo, puertas) {
+    super(marca, modelo);
+    this.puertas = puertas;
+  }
+
+  tocarBocina() {
+    return '🚗 ¡Beep beep!';
+  }
+}`,
+        baseClass: 'Vehiculo',
+        childClass: 'Auto',
+        params: ['marca', 'modelo', 'puertas'],
+        methods: ['acelerar', 'frenar', 'tocarBocina']
+      },
+      Persona: {
+        code: `class Persona {
+  constructor(nombre, edad) {
+    this.nombre = nombre;
+    this.edad = edad;
+  }
+
+  saludar() {
+    return 'Hola, soy ' + this.nombre;
+  }
+
+  cumplirAños() {
+    this.edad++;
+    return 'Ahora tengo ' + this.edad + ' años';
+  }
+}
+
+class Estudiante extends Persona {
+  constructor(nombre, edad, carrera) {
+    super(nombre, edad);
+    this.carrera = carrera;
+  }
+
+  estudiar() {
+    return 'Estudiando ' + this.carrera;
+  }
+}`,
+        baseClass: 'Persona',
+        childClass: 'Estudiante',
+        params: ['nombre', 'edad', 'carrera'],
+        methods: ['saludar', 'cumplirAños', 'estudiar']
+      },
+      Producto: {
+        code: `class Producto {
+  constructor(nombre, precio) {
+    this.nombre = nombre;
+    this.precio = precio;
+    this.stock = 0;
+  }
+
+  agregarStock(cantidad) {
+    this.stock += cantidad;
+    return 'Stock: ' + this.stock;
+  }
+
+  vender(cantidad) {
+    if (this.stock >= cantidad) {
+      this.stock -= cantidad;
+      return 'Vendidos ' + cantidad + '. Stock: ' + this.stock;
+    }
+    return 'Stock insuficiente';
+  }
+}
+
+class ProductoDigital extends Producto {
+  constructor(nombre, precio, formato) {
+    super(nombre, precio);
+    this.formato = formato;
+    this.stock = Infinity;
+  }
+
+  descargar() {
+    return 'Descargando ' + this.nombre + '.' + this.formato;
+  }
+}`,
+        baseClass: 'Producto',
+        childClass: 'ProductoDigital',
+        params: ['nombre', 'precio', 'formato'],
+        methods: ['agregarStock', 'vender', 'descargar']
+      }
+    };
+
+    let currentClassType = null;
+    let instances = {};
+    let methodCallCount = 0;
+
+    const codeDisplay = document.getElementById('codeDisplay');
+    const instancesList = document.getElementById('instancesList');
+    const consoleOOP = document.getElementById('consoleOOP');
+    const instanceNameInput = document.getElementById('instanceName');
+    const instanceParamsInput = document.getElementById('instanceParams');
+    const selectInstance = document.getElementById('selectInstance');
+    const selectMethod = document.getElementById('selectMethod');
+    const methodParamsInput = document.getElementById('methodParams');
+    const classCountSpan = document.getElementById('classCount');
+    const instanceCountSpan = document.getElementById('instanceCount');
+    const methodCallCountSpan = document.getElementById('methodCallCount');
+    const currentClassSpan = document.getElementById('currentClass');
+
+    function syntaxHighlight(code) {
+      return code
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\b(class|constructor|extends|super|return|this|if|new)\b/g, '<span class="text-purple-400">$1</span>')
+        .replace(/\b(const|let|var)\b/g, '<span class="text-blue-400">$1</span>')
+        .replace(/'([^']*)'/g, '<span class="text-orange-400">\'$1\'</span>')
+        .replace(/`([^`]*)`/g, '<span class="text-orange-400">`$1`</span>')
+        .replace(/\/\/(.*)/g, '<span class="text-gray-500">//$1</span>')
+        .replace(/\b(\d+)\b/g, '<span class="text-green-400">$1</span>');
+    }
+
+    function logConsole(message, type = 'info') {
+      const timestamp = new Date().toLocaleTimeString();
+      const colors = {
+        info: 'text-blue-400',
+        success: 'text-green-400',
+        warning: 'text-yellow-400',
+        error: 'text-red-400'
+      };
+      
+      const log = document.createElement('div');
+      log.className = colors[type];
+      log.innerHTML = '<span class="text-gray-500">[' + timestamp + ']</span> ' + message;
+      
+      consoleOOP.appendChild(log);
+      consoleOOP.scrollTop = consoleOOP.scrollHeight;
+    }
+
+    function updateDisplay() {
+      // Update instances list
+      if (Object.keys(instances).length === 0) {
+        instancesList.innerHTML = '<div class="text-gray-500 italic text-sm text-center py-4">No hay instancias aún</div>';
+        selectInstance.innerHTML = '<option value="">Selecciona una instancia</option>';
+      } else {
+        instancesList.innerHTML = Object.entries(instances).map(([name, instance]) => `
+          <div class="bg-gray-800 rounded p-3 flex items-center justify-between">
+            <div>
+              <span class="text-blue-400 font-mono text-sm">` + name + `</span>
+              <span class="text-gray-400 text-xs ml-2">(` + instance.constructor.name + `)</span>
+            </div>
+            <button class="delete-instance text-red-400 hover:text-red-300" data-name="` + name + `">
+              ✕
+            </button>
+          </div>
+        `).join('');
+
+        selectInstance.innerHTML = '<option value="">Selecciona una instancia</option>' + 
+          Object.keys(instances).map(name => '<option value="' + name + '">' + name + '</option>').join('');
+
+        // Add delete listeners
+        document.querySelectorAll('.delete-instance').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const name = e.target.dataset.name;
+            delete instances[name];
+            updateDisplay();
+            logConsole('Instancia "' + name + '" eliminada', 'warning');
+          });
+        });
+      }
+
+      // Update stats
+      classCountSpan.textContent = currentClassType ? 2 : 0; // Base + Child
+      instanceCountSpan.textContent = Object.keys(instances).length;
+      methodCallCountSpan.textContent = methodCallCount;
+      currentClassSpan.textContent = currentClassType || 'Ninguna';
+    }
+
+    function loadClass(classType) {
+      currentClassType = classType;
+      const classData = classes[classType];
+      codeDisplay.innerHTML = '<pre class="text-green-400">' + syntaxHighlight(classData.code) + '</pre>';
+      
+      // Update method select
+      selectMethod.innerHTML = '<option value="">Selecciona un método</option>' + 
+        classData.methods.map(method => '<option value="' + method + '">' + method + '()</option>').join('');
+      
+      logConsole('Clase ' + classType + ' cargada', 'success');
+      updateDisplay();
+    }
+
+    // Template buttons
+    document.getElementById('createAnimal').addEventListener('click', () => loadClass('Animal'));
+    document.getElementById('createVehicle').addEventListener('click', () => loadClass('Vehiculo'));
+    document.getElementById('createPerson').addEventListener('click', () => loadClass('Persona'));
+    document.getElementById('createProduct').addEventListener('click', () => loadClass('Producto'));
+
+    // 
+    document.getElementById('createInstance').addEventListener('click', () => {
+      if (!currentClassType) {
+        logConsole('Selecciona primero una plantilla de clase', 'error');
+        return;
+      }
+
+      const instanceName = instanceNameInput.value.trim();
+      const paramsStr = instanceParamsInput.value.trim();
+
+      if (!instanceName) {
+        logConsole('Ingresa un nombre para la instancia', 'error');
+        return;
+      }
+
+      if (instances[instanceName]) {
+        logConsole('La instancia "' + instanceName + '" ya existe', 'error');
+        return;
+      }
+
+      const params = paramsStr.split(',').map(p => {
+        p = p.trim();
+        // Try to parse as number
+        const num = Number(p);
+        if (!isNaN(num) && p !== '') return num;
+        // Remove quotes if present
+        return p.replace(/^["']|["']$/g, '');
+      });
+
+      try {
+        const classData = classes[currentClassType];
+        //  dynamically
+        const ClassConstructor = eval(classData.childClass);
+        instances[instanceName] = new ClassConstructor(...params);
+        
+        logConsole('Instancia "' + instanceName + '" creada: new ' + classData.childClass + '(' + params.map(p => typeof p === 'string' ? '"' + p + '"' : p).join(', ') + ')', 'success');
+        
+        instanceNameInput.value = '';
+        instanceParamsInput.value = '';
+        updateDisplay();
+      } catch (error) {
+        logConsole('Error al crear instancia: ' + error.message, 'error');
+      }
+    });
+
+    // Call method
+    document.getElementById('callMethod').addEventListener('click', () => {
+      const instanceName = selectInstance.value;
+      const methodName = selectMethod.value;
+      const paramsStr = methodParamsInput.value.trim();
+
+      if (!instanceName) {
+        logConsole('Selecciona una instancia', 'error');
+        return;
+      }
+
+      if (!methodName) {
+        logConsole('Selecciona un método', 'error');
+        return;
+      }
+
+      const instance = instances[instanceName];
+      const params = paramsStr ? paramsStr.split(',').map(p => {
+        p = p.trim();
+        const num = Number(p);
+        if (!isNaN(num) && p !== '') return num;
+        return p.replace(/^["']|["']$/g, '');
+      }) : [];
+
+      try {
+        const result = instance[methodName](...params);
+        methodCallCount++;
+        
+        const paramsDisplay = params.length > 0 ? '(' + params.map(p => typeof p === 'string' ? '"' + p + '"' : p).join(', ') + ')' : '()';
+        logConsole(instanceName + '.' + methodName + paramsDisplay + ' \u2192 ' + result, 'success');
+        
+        methodParamsInput.value = '';
+        updateDisplay();
+      } catch (error) {
+        logConsole('Error: ' + error.message, 'error');
+      }
+    });
+
+    // Show hierarchy
+    document.getElementById('showHierarchy').addEventListener('click', () => {
+      if (!currentClassType) {
+        logConsole('No hay clase cargada', 'warning');
+        return;
+      }
+
+      const classData = classes[currentClassType];
+      logConsole('Jerarquía: ' + classData.baseClass + ' \u2190 ' + classData.childClass, 'info');
+      logConsole('Parámetros: ' + classData.params.join(', '), 'info');
+      logConsole('Métodos: ' + classData.methods.join(', '), 'info');
+    });
+
+    // Clear all
+    document.getElementById('clearAll').addEventListener('click', () => {
+      currentClassType = null;
+      instances = {};
+      methodCallCount = 0;
+      codeDisplay.innerHTML = '<div class="text-gray-500 italic text-center py-8">Selecciona una plantilla para ver el código...</div>';
+      selectMethod.innerHTML = '<option value="">Selecciona un método</option>';
+      logConsole('Todo limpiado', 'warning');
+      updateDisplay();
+    });
+
+    // Copy code
+    document.getElementById('copyCode').addEventListener('click', () => {
+      if (!currentClassType) {
+        logConsole('No hay código para copiar', 'error');
+        return;
+      }
+
+      const code = classes[currentClassType].code;
+      navigator.clipboard.writeText(code).then(() => {
+        logConsole('Código copiado al portapapeles', 'success');
+      }).catch(() => {
+        logConsole('Error al copiar código', 'error');
+      });
+    });
+
+    // Clear console
+    document.getElementById('clearConsoleOOP').addEventListener('click', () => {
+      consoleOOP.innerHTML = '<div class="text-gray-500"><span class="text-green-400">></span> Consola limpiada...</div>';
+    });
+
+    // Evaluate classes in global scope for dynamic instantiation
+    Object.values(classes).forEach(classData => {
+      eval(classData.code);
+    });
+
+    updateDisplay();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .pillar-card').forEach(element => {
+      element.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>

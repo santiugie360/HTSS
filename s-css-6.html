@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS: Display y Visibilidad</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    dark: '#0a0f1a',
+                    darker: '#050a14',
+                    accent: '#663399', // rebeccapurple
+                    accentLight: '#9370DB', // mediumPurple
+                    accentDark: '#4B0082' // indigo
+                }
+            }
+        }
+    }
+</script>
+<style>
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    .float-animation:hover {
+        animation: float 2s ease-in-out infinite;
+    }
+    .glow-effect:hover {
+        box-shadow: 0 0 15px rgba(102, 51, 153, 0.5);
+    }
+    .scale-effect:hover {
+        transform: scale(1.03);
+    }
+    .rotate-effect:hover .icon-container {
+        transform: rotate(10deg);
+    }
+    .code-block {
+        position: relative;
+        overflow: hidden;
+    }
+    .display-example {
+        transition: all 0.3s ease;
+    }
+    .display-container {
+        border: 2px dashed rgba(102, 51, 153, 0.3);
+        background-color: rgba(102, 51, 153, 0.05);
+    }
+    .display-element {
+        transition: all 0.3s ease;
+    }
+    .display-block {
+        display: block;
+        background-color: rgba(102, 51, 153, 0.3);
+    }
+    .display-inline {
+        display: inline;
+        background-color: rgba(102, 51, 153, 0.5);
+    }
+    .display-inline-block {
+        display: inline-block;
+        background-color: rgba(102, 51, 153, 0.7);
+    }
+    .display-none {
+        display: none;
+    }
+    .visibility-visible {
+        visibility: visible;
+    }
+    .visibility-hidden {
+        visibility: hidden;
+    }
+    .opacity-full {
+        opacity: 1;
+    }
+    .opacity-half {
+        opacity: 0.5;
+    }
+    .opacity-zero {
+        opacity: 0;
+    }
+    .display-slider {
+        -webkit-appearance: none;
+        height: 8px;
+        border-radius: 4px;
+        background: #1f2937;
+        outline: none;
+    }
+    .display-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #663399;
+        cursor: pointer;
+    }
+    .display-slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #663399;
+        cursor: pointer;
+    }
+    .display-demo-container {
+        min-height: 200px;
+        border: 2px solid rgba(102, 51, 153, 0.3);
+    }
+    .display-demo-element {
+        padding: 10px;
+        margin: 5px;
+        background-color: rgba(102, 51, 153, 0.3);
+        border: 1px solid rgba(102, 51, 153, 0.5);
+        transition: all 0.3s ease;
+    }
+    .display-demo-element.active {
+        background-color: rgba(102, 51, 153, 0.7);
+    }
+    .display-property-button {
+        transition: all 0.3s ease;
+    }
+    .display-property-button.active {
+        background-color: #663399;
+        color: white;
+    }
+</style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+<header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+    <nav class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+            <a href="s-css.html"><h1 class="text-2xl font-bold">CSS<span class="text-accent">Display</span></h1></a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                <a href="#display" class="hover:text-accent transition-colors duration-300">Display</a>
+                <a href="#visibilidad" class="hover:text-accent transition-colors duration-300">Visibilidad</a>
+                <a href="#comparacion" class="hover:text-accent transition-colors duration-300">Comparación</a>
+                <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+            </div>
+            <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+            <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+            <a href="#display" class="block py-2 hover:text-accent transition-colors duration-300">Display</a>
+            <a href="#visibilidad" class="block py-2 hover:text-accent transition-colors duration-300">Visibilidad</a>
+            <a href="#comparacion" class="block py-2 hover:text-accent transition-colors duration-300">Comparación</a>
+            <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+    <section class="text-center py-16">
+        <h1 class="text-5xl font-bold mb-4">Display y <span class="text-accent">Visibilidad</span></h1>
+        <p class="text-xl max-w-3xl mx-auto">Aprende a controlar cómo se muestran los elementos y su visibilidad en CSS</p>
+    </section>
+
+    <section id="introduccion" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Introducción</h2>
+        <p class="mb-8 text-lg leading-relaxed">Las propiedades de display y visibilidad en CSS controlan cómo se muestran los elementos en la página y cómo interactúan con otros elementos. Estas propiedades son fundamentales para crear layouts y controlar la presentación visual de los elementos HTML.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+                <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-accent">Propiedad Display</h3>
+                <p class="text-base mb-4">La propiedad <code>display</code> determina cómo se muestra un elemento en el flujo del documento y cómo interactúa con otros elementos.</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>block:</strong> Ocupa todo el ancho disponible y crea una nueva línea</li>
+                    <li><strong>inline:</strong> Ocupa solo el espacio necesario y no crea nuevas líneas</li>
+                    <li><strong>inline-block:</strong> Combinación de block e inline</li>
+                    <li><strong>none:</strong> Oculta el elemento y elimina su espacio</li>
+                    <li><strong>flex, grid, table:</strong> Otros valores para layouts específicos</li>
+                </ul>
+            </div>
+            <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+                <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-accent">Propiedades de Visibilidad</h3>
+                <p class="text-base mb-4">Estas propiedades controlan si un elemento es visible o no, sin necesariamente afectar su espacio en el layout.</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>visibility:</strong> Controla si un elemento es visible (hidden/visible)</li>
+                    <li><strong>opacity:</strong> Controla la transparencia de un elemento (0-1)</li>
+                    <li><strong>display: none:</strong> Oculta el elemento y elimina su espacio</li>
+                </ul>
+                <p class="text-base mt-4">Estas propiedades tienen comportamientos diferentes en cuanto a:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Espacio ocupado en el layout</li>
+                    <li>Interactividad (eventos de clic, etc.)</li>
+                    <li>Accesibilidad y lectores de pantalla</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">¿Por qué son importantes?</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-dark p-5 rounded-lg">
+                    <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-accent">Layouts</h4>
+                    <p>Las propiedades de display son fundamentales para crear layouts y estructurar el contenido de una página web.</p>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-accent">Interactividad</h4>
+                    <p>Controlar la visibilidad de los elementos permite crear interfaces interactivas como menús desplegables, modales y tooltips.</p>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <div class="bg-accent/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-accent">Responsividad</h4>
+                    <p>Cambiar el display de los elementos permite crear diseños responsivos que se adaptan a diferentes tamaños de pantalla.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="display" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Propiedad Display</h2>
+        
+        <p class="mb-8 text-lg">La propiedad <code>display</code> determina cómo se muestra un elemento en el flujo del documento y cómo interactúa con otros elementos. Veamos los valores más comunes:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">display: block</h3>
+                
+                <ul class="list-disc pl-6 space-y-2 mb-4">
+                    <li>Ocupa todo el ancho disponible de su contenedor</li>
+                    <li>Siempre comienza en una nueva línea</li>
+                    <li>Respeta propiedades de ancho y alto</li>
+                    <li>Respeta márgenes en todos los lados</li>
+                    <li>Ejemplos: div, p, h1-h6, section, article, form</li>
+                </ul>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    display: block;
+    width: 50%;
+    height: 100px;
+    margin: 10px;
+}</code></pre>
+                </div>
+                
+                <div class="display-container p-4 mb-2">
+                    <div class="display-element display-block p-2 mb-2">Elemento block 1</div>
+                    <div class="display-element display-block p-2 mb-2" style="width: 50%;">Elemento block 2 (width: 50%)</div>
+                    <div class="display-element display-block p-2">Elemento block 3</div>
+                </div>
+                <p class="text-sm text-center">Cada elemento block comienza en una nueva línea</p>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">display: inline</h3>
+                
+                <ul class="list-disc pl-6 space-y-2 mb-4">
+                    <li>Ocupa solo el espacio necesario para su contenido</li>
+                    <li>No crea nuevas líneas</li>
+                    <li>Ignora propiedades de ancho y alto</li>
+                    <li>Solo respeta márgenes horizontales (left/right)</li>
+                    <li>Ejemplos: span, a, strong, em, img</li>
+                </ul>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    display: inline;
+    /* width y height no tendrán efecto */
+    width: 100px;
+    height: 100px;
+    /* Solo se aplican márgenes horizontales */
+    margin: 10px;
+}</code></pre>
+                </div>
+                
+                <div class="display-container p-4 mb-2">
+                    <div class="display-element display-inline p-2">Elemento inline 1</div>
+                    <div class="display-element display-inline p-2">Elemento inline 2</div>
+                    <div class="display-element display-inline p-2">Elemento inline 3</div>
+                    <div class="display-element display-inline p-2">Elemento inline 4 con texto más largo</div>
+                </div>
+                <p class="text-sm text-center">Los elementos inline fluyen uno tras otro sin crear nuevas líneas</p>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">display: inline-block</h3>
+                
+                <ul class="list-disc pl-6 space-y-2 mb-4">
+                    <li>Combinación de block e inline</li>
+                    <li>No crea nuevas líneas (como inline)</li>
+                    <li>Respeta propiedades de ancho y alto (como block)</li>
+                    <li>Respeta márgenes en todos los lados (como block)</li>
+                    <li>Ejemplos: button, input, select</li>
+                </ul>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+}</code></pre>
+                </div>
+                
+                <div class="display-container p-4 mb-2">
+                    <div class="display-element display-inline-block p-2" style="width: 100px; height: 100px;">100x100</div>
+                    <div class="display-element display-inline-block p-2" style="width: 150px; height: 70px;">150x70</div>
+                    <div class="display-element display-inline-block p-2" style="width: 80px; height: 120px;">80x120</div>
+                </div>
+                <p class="text-sm text-center">Los elementos inline-block fluyen en línea pero respetan width y height</p>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">display: none</h3>
+                
+                <ul class="list-disc pl-6 space-y-2 mb-4">
+                    <li>Oculta completamente el elemento</li>
+                    <li>Elimina el elemento del flujo del documento</li>
+                    <li>No ocupa espacio en la página</li>
+                    <li>No es accesible para lectores de pantalla</li>
+                    <li>Útil para elementos que deben mostrarse/ocultarse dinámicamente</li>
+                </ul>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    display: none;
+    /* Estas propiedades no tendrán efecto */
+    width: 100px;
+    height: 100px;
+}</code></pre>
+                </div>
+                
+                <div class="display-container p-4 mb-2">
+                    <div class="display-element display-block p-2 mb-2">Elemento visible</div>
+                    <div class="display-element display-none p-2 mb-2">Este elemento no se ve (display: none)</div>
+                    <div class="display-element display-block p-2">Otro elemento visible</div>
+                </div>
+                <p class="text-sm text-center">El elemento con display: none no se muestra y no ocupa espacio</p>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Otros Valores de Display</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-dark p-5 rounded-lg">
+                    <h4 class="text-xl font-bold mb-3 text-accent">display: flex</h4>
+                    <p class="mb-3">Convierte un elemento en un contenedor flexible, permitiendo un control avanzado sobre la alineación y distribución de sus elementos hijos.</p>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    display: flex;
+    justify-content: space-between;
+}</code></pre>
+                    </div>
+                    <div class="bg-gray-800 p-3 rounded-lg flex justify-between">
+                        <div class="bg-accent/50 p-2 rounded">Item 1</div>
+                        <div class="bg-accent/50 p-2 rounded">Item 2</div>
+                        <div class="bg-accent/50 p-2 rounded">Item 3</div>
+                    </div>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <h4 class="text-xl font-bold mb-3 text-accent">display: grid</h4>
+                    <p class="mb-3">Crea un contenedor de cuadrícula bidimensional, ideal para layouts complejos y responsivos.</p>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}</code></pre>
+                    </div>
+                    <div class="bg-gray-800 p-3 rounded-lg grid grid-cols-2 gap-2">
+                        <div class="bg-accent/50 p-2 rounded">Item 1</div>
+                        <div class="bg-accent/50 p-2 rounded">Item 2</div>
+                        <div class="bg-accent/50 p-2 rounded">Item 3</div>
+                        <div class="bg-accent/50 p-2 rounded">Item 4</div>
+                    </div>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <h4 class="text-xl font-bold mb-3 text-accent">display: table</h4>
+                    <p class="mb-3">Hace que un elemento se comporte como una tabla HTML, útil para layouts tabulares sin usar elementos table.</p>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    display: table;
+}
+.fila {
+    display: table-row;
+}
+.celda {
+    display: table-cell;
+}</code></pre>
+                    </div>
+                    <div class="bg-gray-800 p-3 rounded-lg" style="display: table; width: 100%;">
+                        <div style="display: table-row;">
+                            <div style="display: table-cell; padding: 5px;" class="bg-accent/30">Celda 1</div>
+                            <div style="display: table-cell; padding: 5px;" class="bg-accent/50">Celda 2</div>
+                        </div>
+                        <div style="display: table-row;">
+                            <div style="display: table-cell; padding: 5px;" class="bg-accent/50">Celda 3</div>
+                            <div style="display: table-cell; padding: 5px;" class="bg-accent/30">Celda 4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-amber-400"><strong>Nota:</strong> Existen muchos otros valores para la propiedad <code>display</code> como <code>contents</code>, <code>flow-root</code>, <code>list-item</code>, etc. Cada uno tiene casos de uso específicos y comportamientos particulares.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="visibilidad" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Propiedades de Visibilidad</h2>
+        
+        <p class="mb-8 text-lg">Existen varias formas de controlar la visibilidad de un elemento en CSS, cada una con comportamientos diferentes en cuanto al espacio ocupado, la interactividad y la accesibilidad.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">visibility: visible / hidden</h3>
+                
+                <ul class="list-disc pl-6 space-y-2 mb-4">
+                    <li><strong>visible:</strong> Estado normal, el elemento es visible (valor predeterminado)</li>
+                    <li><strong>hidden:</strong> Oculta el elemento pero mantiene su espacio en el layout</li>
+                    <li>El elemento no es interactivo cuando está oculto</li>
+                    <li>Los lectores de pantalla generalmente ignoran elementos con visibility: hidden</li>
+                </ul>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento-visible {
+    visibility: visible; /* Valor predeterminado */
+}
+
+.elemento-oculto {
+    visibility: hidden;
+    /* El elemento sigue ocup  /* Valor predeterminado */
+}
+
+.elemento-oculto {
+    visibility: hidden;
+    /* El elemento sigue ocupando espacio en el layout */
+}</code></pre>
+                </div>
+                
+                <div class="display-container p-4 mb-2">
+                    <div class="display-element display-block p-2 mb-2">Elemento visible</div>
+                    <div class="display-element display-block p-2 mb-2 visibility-hidden">Este elemento no se ve (visibility: hidden)</div>
+                    <div class="display-element display-block p-2">Otro elemento visible</div>
+                </div>
+                <p class="text-sm text-center">El elemento con visibility: hidden no se ve pero mantiene su espacio</p>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">opacity: 0 - 1</h3>
+                
+                <ul class="list-disc pl-6 space-y-2 mb-4">
+                    <li>Controla la transparencia de un elemento</li>
+                    <li><strong>opacity: 1:</strong> Completamente visible (valor predeterminado)</li>
+                    <li><strong>opacity: 0:</strong> Completamente transparente (invisible)</li>
+                    <li>Mantiene el espacio del elemento en el layout</li>
+                    <li>El elemento sigue siendo interactivo incluso cuando es transparente</li>
+                    <li>Permite valores intermedios para transparencia parcial</li>
+                </ul>
+                
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento-visible {
+    opacity: 1; /* Completamente visible */
+}
+
+.elemento-semi-transparente {
+    opacity: 0.5; /* 50% transparente */
+}
+
+.elemento-invisible {
+    opacity: 0; /* Completamente transparente */
+}</code></pre>
+                </div>
+                
+                <div class="display-container p-4 mb-2">
+                    <div class="display-element display-block p-2 mb-2 opacity-full">Elemento con opacity: 1</div>
+                    <div class="display-element display-block p-2 mb-2 opacity-half">Elemento con opacity: 0.5</div>
+                    <div class="display-element display-block p-2 mb-2 opacity-zero">Elemento con opacity: 0</div>
+                    <div class="display-element display-block p-2">Otro elemento visible</div>
+                </div>
+                <p class="text-sm text-center">Los elementos con opacity reducida mantienen su espacio</p>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Casos de Uso</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-dark p-5 rounded-lg">
+                    <h4 class="font-bold mb-3 text-accent">Tooltips y Popups</h4>
+                    <p class="mb-3">Usar <code>visibility</code> u <code>opacity</code> para mostrar/ocultar elementos informativos al pasar el cursor.</p>
+                    <div class="relative inline-block">
+                        <button class="bg-accent text-white px-3 py-1 rounded">Hover me</button>
+                        <div class="absolute left-0 top-full mt-2 bg-white text-gray-800 p-2 rounded shadow-lg opacity-0 hover:opacity-100 transition-opacity duration-300">
+                            Este es un tooltip que aparece con opacity
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <h4 class="font-bold mb-3 text-accent">Transiciones Suaves</h4>
+                    <p class="mb-3">Usar <code>opacity</code> para crear transiciones suaves entre estados visibles e invisibles.</p>
+                    <div class="bg-accent/30 p-3 rounded hover:opacity-100 opacity-50 transition-opacity duration-300">
+                        Hover para ver a plena opacidad
+                    </div>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <h4 class="font-bold mb-3 text-accent">Contenido Condicional</h4>
+                    <p class="mb-3">Usar <code>display: none</code> para contenido que debe mostrarse/ocultarse según ciertas condiciones.</p>
+                    <div>
+                        <button id="toggleButton" class="bg-accent text-white px-3 py-1 rounded mb-2">Mostrar/Ocultar</button>
+                        <div id="toggleContent" class="bg-accent/30 p-3 rounded hidden">
+                            Contenido condicional
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-green-400"><strong>Consejo:</strong> Para crear animaciones suaves al mostrar/ocultar elementos, combina <code>opacity</code> con <code>visibility</code> usando transiciones CSS. Primero cambia la opacidad y luego, después de un retraso, cambia la visibilidad.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="comparacion" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Comparación: display: none vs. visibility: hidden</h2>
+        
+        <p class="mb-8 text-lg">Aunque ambas propiedades pueden ocultar elementos, tienen diferencias importantes en su comportamiento que afectan al layout, la interactividad y la accesibilidad.</p>
+        
+        <div class="overflow-x-auto mb-8">
+            <table class="w-full bg-darker border border-gray-800 rounded-lg">
+                <thead>
+                    <tr class="bg-dark">
+                        <th class="p-4 text-left">Característica</th>
+                        <th class="p-4 text-left">display: none</th>
+                        <th class="p-4 text-left">visibility: hidden</th>
+                        <th class="p-4 text-left">opacity: 0</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t border-gray-800">
+                        <td class="p-4 font-medium">Espacio en el layout</td>
+                        <td class="p-4">No ocupa espacio</td>
+                        <td class="p-4">Mantiene su espacio</td>
+                        <td class="p-4">Mantiene su espacio</td>
+                    </tr>
+                    <tr class="border-t border-gray-800">
+                        <td class="p-4 font-medium">Interactividad</td>
+                        <td class="p-4">No interactivo</td>
+                        <td class="p-4">No interactivo</td>
+                        <td class="p-4">Sigue siendo interactivo</td>
+                    </tr>
+                    <tr class="border-t border-gray-800">
+                        <td class="p-4 font-medium">Accesibilidad</td>
+                        <td class="p-4">No accesible para lectores de pantalla</td>
+                        <td class="p-4">Generalmente no accesible</td>
+                        <td class="p-4">Accesible para lectores de pantalla</td>
+                    </tr>
+                    <tr class="border-t border-gray-800">
+                        <td class="p-4 font-medium">Transiciones/Animaciones</td>
+                        <td class="p-4">No se puede animar</td>
+                        <td class="p-4">No se puede animar</td>
+                        <td class="p-4">Se puede animar</td>
+                    </tr>
+                    <tr class="border-t border-gray-800">
+                        <td class="p-4 font-medium">Elementos hijos</td>
+                        <td class="p-4">Todos los hijos se ocultan</td>
+                        <td class="p-4">Los hijos pueden anular con visibility: visible</td>
+                        <td class="p-4">Todos los hijos heredan la transparencia</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">display: none</h3>
+                
+                <div class="display-container p-4 mb-4 h-40">
+                    <div class="display-element display-block p-2 mb-2">Elemento visible</div>
+                    <div class="display-element display-none p-2 mb-2">Este elemento no se ve</div>
+                    <div class="display-element display-block p-2">Otro elemento visible</div>
+                </div>
+                
+                <h4 class="font-bold mb-2">Cuándo usar:</h4>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Cuando quieres eliminar completamente el elemento del layout</li>
+                    <li>Para contenido que debe mostrarse/ocultarse dinámicamente</li>
+                    <li>Para elementos que no deben ser accesibles cuando están ocultos</li>
+                </ul>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">visibility: hidden</h3>
+                
+                <div class="display-container p-4 mb-4 h-40">
+                    <div class="display-element display-block p-2 mb-2">Elemento visible</div>
+                    <div class="display-element display-block p-2 mb-2 visibility-hidden">Este elemento no se ve</div>
+                    <div class="display-element display-block p-2">Otro elemento visible</div>
+                </div>
+                
+                <h4 class="font-bold mb-2">Cuándo usar:</h4>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Cuando necesitas mantener el espacio del elemento en el layout</li>
+                    <li>Para evitar que el contenido "salte" al mostrar/ocultar elementos</li>
+                    <li>Cuando necesitas que los hijos puedan ser visibles independientemente</li>
+                </ul>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">opacity: 0</h3>
+                
+                <div class="display-container p-4 mb-4 h-40">
+                    <div class="display-element display-block p-2 mb-2">Elemento visible</div>
+                    <div class="display-element display-block p-2 mb-2 opacity-zero">Este elemento no se ve</div>
+                    <div class="display-element display-block p-2">Otro elemento visible</div>
+                </div>
+                
+                <h4 class="font-bold mb-2">Cuándo usar:</h4>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Para crear transiciones suaves entre estados visibles e invisibles</li>
+                    <li>Cuando necesitas que el elemento siga siendo interactivo</li>
+                    <li>Para efectos de desvanecimiento (fade in/out)</li>
+                    <li>Para mantener la accesibilidad para lectores de pantalla</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Combinando Propiedades</h3>
+            
+            <p class="mb-4">A menudo, la mejor solución es combinar estas propiedades para lograr el comportamiento deseado:</p>
+            
+            <div class="code-block mb-6">
+                <pre class="text-gray-300 overflow-x-auto"><code>/* Para transiciones suaves al mostrar/ocultar */
+.elemento {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+
+.elemento.oculto {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}</code></pre>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-bold mb-3">Ejemplo: Modal con transición suave</h4>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0s 0.3s;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s;
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-3">Ejemplo: Menú desplegable responsivo</h4>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>/* En pantallas pequeñas */
+@media (max-width: 768px) {
+    .menu {
+        display: none;
+    }
+}
+
+/* En pantallas grandes */
+@media (min-width: 769px) {
+    .menu {
+        display: block;
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-amber-400"><strong>Importante:</strong> La elección entre <code>display: none</code>, <code>visibility: hidden</code> y <code>opacity: 0</code> debe basarse en el comportamiento específico que necesitas para tu interfaz de usuario, considerando el layout, la interactividad, la accesibilidad y las animaciones.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="actividad" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Laboratorio de Display y Visibilidad</h2>
+        
+        <p class="mb-8 text-lg leading-relaxed">Experimenta con las diferentes propiedades de display y visibilidad para ver cómo afectan al layout y a la presentación de los elementos.</p>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Controles</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">Propiedades de Display</h4>
+                            
+                            <div class="grid grid-cols-2 gap-2 mb-4">
+                                <button id="display-block-btn" class="display-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded active">block</button>
+                                <button id="display-inline-btn" class="display-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">inline</button>
+                                <button id="display-inline-block-btn" class="display-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">inline-block</button>
+                                <button id="display-none-btn" class="display-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">none</button>
+                                <button id="display-flex-btn" class="display-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">flex</button>
+                                <button id="display-grid-btn" class="display-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">grid</button>
+                            </div>
+                            
+                            <div id="display-code" class="bg-gray-800 p-3 rounded-lg">
+                                <code class="text-gray-300">.elemento {
+  display: block;
+}</code>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">Propiedades de Visibilidad</h4>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Visibility</span>
+                                    </label>
+                                    <div class="grid grid-cols-2 gap-2 mb-4">
+                                        <button id="visibility-visible-btn" class="display-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded active">visible</button>
+                                        <button id="visibility-hidden-btn" class="display-property-button bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded">hidden</button>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Opacity</span>
+                                        <span id="opacity-value">1</span>
+                                    </label>
+                                    <input type="range" title="." min="0" max="1" step="0.1" value="1" class="display-slider w-full" id="opacity-slider">
+                                </div>
+                            </div>
+                            
+                            <div id="visibility-code" class="bg-gray-800 p-3 rounded-lg mt-4">
+                                <code class="text-gray-300">.elemento {
+  visibility: visible;
+  opacity: 1;
+}</code>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">Dimensiones y Márgenes</h4>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Width</span>
+                                        <span id="width-value">100px</span>
+                                    </label>
+                                    <input type="range" title="." min="50" max="200" value="100" class="display-slider w-full" id="width-slider">
+                                </div>
+                                
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Height</span>
+                                        <span id="height-value">50px</span>
+                                    </label>
+                                    <input type="range" title="." min="30" max="100" value="50" class="display-slider w-full" id="height-slider">
+                                </div>
+                                
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Margin</span>
+                                        <span id="margin-value">10px</span>
+                                    </label>
+                                    <input type="range" title="." min="0" max="30" value="10" class="display-slider w-full" id="margin-slider">
+                                </div>
+                                
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Padding</span>
+                                        <span id="padding-value">10px</span>
+                                    </label>
+                                    <input type="range" title="." min="0" max="30" value="10" class="display-slider w-full" id="padding-slider">
+                                </div>
+                            </div>
+                            
+                            <div id="dimensions-code" class="bg-gray-800 p-3 rounded-lg mt-4">
+                                <code class="text-gray-300">.elemento {
+  width: 100px;
+  height: 50px;
+  margin: 10px;
+  padding: 10px;
+}</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Vista Previa</h3>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <div class="display-demo-container p-4 mb-4" id="display-preview">
+                            <div class="display-demo-element" id="element1">Elemento 1</div>
+                            <div class="display-demo-element active" id="element2">Elemento 2</div>
+                            <div class="display-demo-element" id="element3">Elemento 3</div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h4 class="font-bold mb-3">Código CSS Completo:</h4>
+                            <div class="bg-gray-800 p-4 rounded-lg">
+                                <pre id="css-output" class="text-gray-300 overflow-x-auto"></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="font-bold mb-3">Explicación:</h4>
+                        <p id="display-explanation" class="text-sm">
+                            El elemento tiene <strong>display: block</strong>, que ocupa todo el ancho disponible y crea una nueva línea antes y después del elemento. Las propiedades de ancho, alto, margen y relleno se aplican normalmente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Mejores Prácticas</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Cuándo usar cada propiedad</h3>
+                
+                <ul class="list-disc pl-6 space-y-3">
+                    <li><strong>display: block/inline/inline-block:</strong> Para controlar el flujo y layout básico de los elementos.</li>
+                    <li><strong>display: flex/grid:</strong> Para layouts más complejos y responsivos.</li>
+                    <li><strong>display: none:</strong> Cuando necesitas eliminar completamente un elemento del layout.</li>
+                    <li><strong>visibility: hidden:</strong> Cuando necesitas ocultar un elemento pero mantener su espacio.</li>
+                    <li><strong>opacity: 0:</strong> Para transiciones suaves o cuando necesitas que el elemento siga siendo interactivo.</li>
+                </ul>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Consideraciones de Accesibilidad</h3>
+                
+                <ul class="list-disc pl-6 space-y-3">
+                    <li>Los elementos con <code>display: none</code> o <code>visibility: hidden</code> generalmente son ignorados por los lectores de pantalla.</li>
+                    <li>Los elementos con <code>opacity: 0</code> siguen siendo accesibles para los lectores de pantalla, lo que puede ser confuso si no deberían serlo.</li>
+                    <li>Para contenido que debe estar disponible solo para lectores de pantalla, usa técnicas como <code>position: absolute; left: -9999px;</code> en lugar de ocultar con <code>display: none</code>.</li>
+                    <li>Asegúrate de que los elementos interactivos ocultos no puedan recibir el foco del teclado si no son visibles.</li>
+                </ul>
+            </div>
+        </div>
+        
+    </section>
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+</main>
+
+<footer class="bg-darker py-8 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center">
+        <p>CSS: Display y Visibilidad - Guía completa para principiantes</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', function() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // Toggle button for content example
+        const toggleButton = document.getElementById('toggleButton');
+        const toggleContent = document.getElementById('toggleContent');
+        
+        if (toggleButton && toggleContent) {
+            toggleButton.addEventListener('click', function() {
+                toggleContent.classList.toggle('hidden');
+            });
+        }
+        
+        // Display and Visibility Laboratory
+        const displayButtons = [
+            document.getElementById('display-block-btn'),
+            document.getElementById('display-inline-btn'),
+            document.getElementById('display-inline-block-btn'),
+            document.getElementById('display-none-btn'),
+            document.getElementById('display-flex-btn'),
+            document.getElementById('display-grid-btn')
+        ];
+        
+        const visibilityButtons = [
+            document.getElementById('visibility-visible-btn'),
+            document.getElementById('visibility-hidden-btn')
+        ];
+        
+        const opacitySlider = document.getElementById('opacity-slider');
+        const opacityValue = document.getElementById('opacity-value');
+        
+        const widthSlider = document.getElementById('width-slider');
+        const heightSlider = document.getElementById('height-slider');
+        const marginSlider = document.getElementById('margin-slider');
+        const paddingSlider = document.getElementById('padding-slider');
+        
+        const widthValue = document.getElementById('width-value');
+        const heightValue = document.getElementById('height-value');
+        const marginValue = document.getElementById('margin-value');
+        const paddingValue = document.getElementById('padding-value');
+        
+        const element2 = document.getElementById('element2');
+        const displayCode = document.getElementById('display-code');
+        const visibilityCode = document.getElementById('visibility-code');
+        const dimensionsCode = document.getElementById('dimensions-code');
+        const cssOutput = document.getElementById('css-output');
+        const displayExplanation = document.getElementById('display-explanation');
+        
+        // Set active button
+        function setActiveButton(buttons, activeButton) {
+            buttons.forEach(button => {
+                if (button) {
+                    button.classList.remove('active');
+                }
+            });
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+        
+        // Update display property
+        function updateDisplay(displayType) {
+            if (element2) {
+                element2.style.display = displayType;
+                
+                // Update display code
+                if (displayCode) {
+                    displayCode.innerHTML = `<code class="text-gray-300">.elemento {
+  display: ${displayType};
+}</code>`;
+                }
+                
+                updateCSSOutput();
+                updateExplanation();
+            }
+        }
+        
+        // Update visibility properties
+        function updateVisibility(visibilityType, opacityValue) {
+            if (element2) {
+                element2.style.visibility = visibilityType;
+                element2.style.opacity = opacityValue;
+                
+                // Update visibility code
+                if (visibilityCode) {
+                    visibilityCode.innerHTML = `<code class="text-gray-300">.elemento {
+  visibility: ${visibilityType};
+  opacity: ${opacityValue};
+}</code>`;
+                }
+                
+                updateCSSOutput();
+                updateExplanation();
+            }
+        }
+        
+        // Update dimensions
+        function updateDimensions(width, height, margin, padding) {
+            if (element2) {
+                element2.style.width = width + 'px';
+                element2.style.height = height + 'px';
+                element2.style.margin = margin + 'px';
+                element2.style.padding = padding + 'px';
+                
+                // Update dimensions code
+                if (dimensionsCode) {
+                    dimensionsCode.innerHTML = `<code class="text-gray-300">.elemento {
+  width: ${width}px;
+  height: ${height}px;
+  margin: ${margin}px;
+  padding: ${padding}px;
+}</code>`;
+                }
+                
+                updateCSSOutput();
+            }
+        }
+        
+        // Update CSS output
+        function updateCSSOutput() {
+            if (cssOutput && element2) {
+                const display = element2.style.display;
+                const visibility = element2.style.visibility;
+                const opacity = element2.style.opacity;
+                const width = element2.style.width;
+                const height = element2.style.height;
+                const margin = element2.style.margin;
+                const padding = element2.style.padding;
+                
+                cssOutput.innerHTML = `.elemento {
+  display: ${display};
+  visibility: ${visibility || 'visible'};
+  opacity: ${opacity || '1'};
+  width: ${width || 'auto'};
+  height: ${height || 'auto'};
+  margin: ${margin || '0'};
+  padding: ${padding || '0'};
+}`;
+            }
+        }
+        
+        // Update explanation
+        function updateExplanation() {
+            if (displayExplanation && element2) {
+                const display = element2.style.display;
+                const visibility = element2.style.visibility;
+                const opacity = element2.style.opacity;
+                
+                let explanation = '';
+                
+                // Display explanation
+                switch(display) {
+                    case 'block':
+                        explanation = 'El elemento tiene <strong>display: block</strong>, que ocupa todo el ancho disponible y crea una nueva línea antes y después del elemento. Las propiedades de ancho, alto, margen y relleno se aplican normalmente.';
+                        break;
+                    case 'inline':
+                        explanation = 'El elemento tiene <strong>display: inline</strong>, que ocupa solo el espacio necesario para su contenido y no crea nuevas líneas. Las propiedades de ancho y alto no tienen efecto, y solo se aplican los márgenes horizontales.';
+                        break;
+                    case 'inline-block':
+                        explanation = 'El elemento tiene <strong>display: inline-block</strong>, que combina características de block e inline. No crea nuevas líneas pero respeta las propiedades de ancho, alto y todos los márgenes.';
+                        break;
+                    case 'none':
+                        explanation = 'El elemento tiene <strong>display: none</strong>, que lo oculta completamente y elimina su espacio del layout. No es accesible para lectores de pantalla y no es interactivo.';
+                        break;
+                    case 'flex':
+                        explanation = 'El elemento tiene <strong>display: flex</strong>, que lo convierte en un contenedor flexible. Sus elementos hijos se distribuyen según las propiedades de flexbox.';
+                        break;
+                    case 'grid':
+                        explanation = 'El elemento tiene <strong>display: grid</strong>, que lo convierte en un contenedor de cuadrícula. Sus elementos hijos se distribuyen en filas y columnas según las propiedades de grid.';
+                        break;
+                }
+                
+                // Visibility explanation
+                if (visibility === 'hidden') {
+                    explanation += ' Además, tiene <strong>visibility: hidden</strong>, lo que lo hace invisible pero mantiene su espacio en el layout.';
+                }
+                
+                // Opacity explanation
+                if (opacity && opacity < 1) {
+                    explanation += ` La <strong>opacity: ${opacity}</strong> hace que el elemento sea parcialmente transparente.`;
+                }
+                
+                displayExplanation.innerHTML = explanation;
+            }
+        }
+        
+        // Add event listeners to display buttons
+        displayButtons.forEach(button => {
+            if (button) {
+                button.addEventListener('click', function() {
+                    const displayType = this.textContent;
+                    setActiveButton(displayButtons, this);
+                    updateDisplay(displayType);
+                });
+            }
+        });
+        
+        // Add event listeners to visibility buttons
+        visibilityButtons.forEach(button => {
+            if (button) {
+                button.addEventListener('click', function() {
+                    const visibilityType = this.textContent;
+                    setActiveButton(visibilityButtons, this);
+                    updateVisibility(visibilityType, opacitySlider.value);
+                });
+            }
+        });
+        
+        // Add event listener to opacity slider
+        if (opacitySlider && opacityValue) {
+            opacitySlider.addEventListener('input', function() {
+                opacityValue.textContent = this.value;
+                updateVisibility(element2.style.visibility || 'visible', this.value);
+            });
+        }
+        
+        // Add event listeners to dimension sliders
+        if (widthSlider && heightSlider && marginSlider && paddingSlider) {
+            widthSlider.addEventListener('input', function() {
+                widthValue.textContent = this.value + 'px';
+                updateDimensions(
+                    parseInt(widthSlider.value),
+                    parseInt(heightSlider.value),
+                    parseInt(marginSlider.value),
+                    parseInt(paddingSlider.value)
+                );
+            });
+            
+            heightSlider.addEventListener('input', function() {
+                heightValue.textContent = this.value + 'px';
+                updateDimensions(
+                    parseInt(widthSlider.value),
+                    parseInt(heightSlider.value),
+                    parseInt(marginSlider.value),
+                    parseInt(paddingSlider.value)
+                );
+            });
+            
+            marginSlider.addEventListener('input', function() {
+                marginValue.textContent = this.value + 'px';
+                updateDimensions(
+                    parseInt(widthSlider.value),
+                    parseInt(heightSlider.value),
+                    parseInt(marginSlider.value),
+                    parseInt(paddingSlider.value)
+                );
+            });
+            
+            paddingSlider.addEventListener('input', function() {
+                paddingValue.textContent = this.value + 'px';
+                updateDimensions(
+                    parseInt(widthSlider.value),
+                    parseInt(heightSlider.value),
+                    parseInt(marginSlider.value),
+                    parseInt(paddingSlider.value)
+                );
+            });
+        }
+        
+        // Initialize with default values
+        if (element2) {
+            element2.style.display = 'block';
+            element2.style.width = '100px';
+            element2.style.height = '50px';
+            element2.style.margin = '10px';
+            element2.style.padding = '10px';
+            updateCSSOutput();
+            updateExplanation();
+        }
+    });
+</script>
+</body>
+</html>

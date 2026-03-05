@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS: Posicionamiento de Elementos</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    dark: '#0a0f1a',
+                    darker: '#050a14',
+                    accent: '#663399', // rebeccapurple
+                    accentLight: '#9370DB', // mediumPurple
+                    accentDark: '#4B0082' // indigo
+                }
+            }
+        }
+    }
+</script>
+<style>
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    .float-animation:hover {
+        animation: float 2s ease-in-out infinite;
+    }
+    .glow-effect:hover {
+        box-shadow: 0 0 15px rgba(102, 51, 153, 0.5);
+    }
+    .scale-effect:hover {
+        transform: scale(1.03);
+    }
+    .rotate-effect:hover .icon-container {
+        transform: rotate(10deg);
+    }
+    .code-block {
+        position: relative;
+        overflow: hidden;
+    }
+    .position-slider {
+        -webkit-appearance: none;
+        height: 8px;
+        border-radius: 4px;
+        background: #1f2937;
+        outline: none;
+    }
+    .position-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #663399;
+        cursor: pointer;
+    }
+    .position-slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #663399;
+        cursor: pointer;
+    }
+    .position-example {
+        transition: all 0.3s ease;
+    }
+    .position-container {
+        position: relative;
+        overflow: hidden;
+        border: 2px dashed rgba(102, 51, 153, 0.3);
+        background-color: rgba(102, 51, 153, 0.05);
+    }
+    .position-element {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .position-static {
+        position: static;
+        background-color: rgba(102, 51, 153, 0.3);
+    }
+    .position-relative {
+        position: relative;
+        background-color: rgba(102, 51, 153, 0.5);
+    }
+    .position-absolute {
+        position: absolute;
+        background-color: rgba(102, 51, 153, 0.7);
+    }
+    .position-fixed {
+        position: fixed;
+        background-color: rgba(102, 51, 153, 0.9);
+    }
+    .position-sticky {
+        position: sticky;
+        background-color: rgba(102, 51, 153, 0.6);
+    }
+    .position-demo-container {
+        height: 300px;
+        overflow-y: auto;
+        border: 2px solid rgba(102, 51, 153, 0.3);
+        position: relative;
+    }
+    .position-demo-content {
+        height: 600px;
+        background: linear-gradient(to bottom, rgba(102, 51, 153, 0.05), rgba(102, 51, 153, 0.2));
+    }
+    .z-index-container {
+        position: relative;
+        height: 200px;
+    }
+    .z-index-element {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+</style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+<header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+    <nav class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+            <a href="s-css.html"><h1 class="text-2xl font-bold">CSS<span class="text-accent">Position</span></h1></a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#introduccion" class="hover:text-accent transition-colors duration-300">Introducción</a>
+                <a href="#static" class="hover:text-accent transition-colors duration-300">Static</a>
+                <a href="#relative" class="hover:text-accent transition-colors duration-300">Relative</a>
+                <a href="#absolute" class="hover:text-accent transition-colors duration-300">Absolute</a>
+                <a href="#fixed" class="hover:text-accent transition-colors duration-300">Fixed</a>
+                <a href="#sticky" class="hover:text-accent transition-colors duration-300">Sticky</a>
+                <a href="#z-index" class="hover:text-accent transition-colors duration-300">Z-Index</a>
+                <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+            </div>
+            <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+            <a href="#introduccion" class="block py-2 hover:text-accent transition-colors duration-300">Introducción</a>
+            <a href="#static" class="block py-2 hover:text-accent transition-colors duration-300">Static</a>
+            <a href="#relative" class="block py-2 hover:text-accent transition-colors duration-300">Relative</a>
+            <a href="#absolute" class="block py-2 hover:text-accent transition-colors duration-300">Absolute</a>
+            <a href="#fixed" class="block py-2 hover:text-accent transition-colors duration-300">Fixed</a>
+            <a href="#sticky" class="block py-2 hover:text-accent transition-colors duration-300">Sticky</a>
+            <a href="#z-index" class="block py-2 hover:text-accent transition-colors duration-300">Z-Index</a>
+            <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+    <section class="text-center py-16">
+        <h1 class="text-5xl font-bold mb-4">Posicionamiento de <span class="text-accent">Elementos</span></h1>
+        <p class="text-xl max-w-3xl mx-auto">Aprende a controlar la posición de los elementos en CSS con las propiedades position y z-index</p>
+    </section>
+
+    <section id="introduccion" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Introducción al Posicionamiento</h2>
+        <p class="mb-8 text-lg leading-relaxed">El posicionamiento en CSS permite controlar cómo se ubican los elementos en la página. La propiedad <code>position</code> determina el método de posicionamiento utilizado para un elemento.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+                <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-accent">Tipos de Posicionamiento</h3>
+                <p class="text-base mb-4">CSS ofrece cinco valores principales para la propiedad <code>position</code>:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>static:</strong> Posicionamiento normal (predeterminado)</li>
+                    <li><strong>relative:</strong> Relativo a su posición normal</li>
+                    <li><strong>absolute:</strong> Relativo al ancestro posicionado más cercano</li>
+                    <li><strong>fixed:</strong> Relativo a la ventana del navegador</li>
+                    <li><strong>sticky:</strong> Híbrido entre relative y fixed</li>
+                </ul>
+            </div>
+            <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+                <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-accent">Propiedades de Desplazamiento</h3>
+                <p class="text-base mb-4">Una vez que un elemento tiene un valor de <code>position</code> distinto de <code>static</code>, puedes usar estas propiedades para ajustar su posición:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>top:</strong> Distancia desde el borde superior</li>
+                    <li><strong>right:</strong> Distancia desde el borde derecho</li>
+                    <li><strong>bottom:</strong> Distancia desde el borde inferior</li>
+                    <li><strong>left:</strong> Distancia desde el borde izquierdo</li>
+                    <li><strong>z-index:</strong> Controla el orden de apilamiento</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Flujo Normal del Documento</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <p class="mb-4">Por defecto, los elementos HTML siguen el "flujo normal" del documento:</p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Los elementos de bloque (como <code>div</code>, <code>p</code>, <code>h1</code>) ocupan todo el ancho disponible y crean una nueva línea.</li>
+                        <li>Los elementos en línea (como <code>span</code>, <code>a</code>, <code>strong</code>) solo ocupan el espacio necesario y no crean nuevas líneas.</li>
+                        <li>Cada elemento se coloca después del anterior, siguiendo el orden del código HTML.</li>
+                    </ul>
+                    <p class="mt-4">El posicionamiento CSS permite alterar este flujo normal para crear diseños más complejos y dinámicos.</p>
+                </div>
+                
+                <div>
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <div class="bg-accent/30 p-4 mb-4 rounded">Elemento de bloque 1</div>
+                        <div class="bg-accent/50 p-4 mb-4 rounded">Elemento de bloque 2</div>
+                        <div class="p-4 rounded">
+                            Texto con elementos 
+                            <span class="bg-accent/30 px-2 py-1 rounded">en línea</span> 
+                            que se muestran 
+                            <span class="bg-accent/50 px-2 py-1 rounded">uno tras otro</span> 
+                            sin crear nuevas líneas.
+                        </div>
+                    </div>
+                    <p class="mt-2 text-sm text-center">Flujo normal del documento</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="static" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Position: Static</h2>
+        
+        <p class="mb-8 text-lg">El valor <code>static</code> es el posicionamiento predeterminado para todos los elementos HTML. Un elemento con <code>position: static</code> sigue el flujo normal del documento y no se ve afectado por las propiedades <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> o <code>z-index</code>.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Características</h3>
+                
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Es el valor predeterminado para todos los elementos HTML.</li>
+                    <li>El elemento sigue el flujo normal del documento.</li>
+                    <li>Las propiedades de desplazamiento (top, right, bottom, left) no tienen efecto.</li>
+                    <li>La propiedad z-index no tiene efecto.</li>
+                    <li>No se puede usar como referencia para elementos con position: absolute.</li>
+                </ul>
+                
+                <div class="code-block mt-6">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    position: static;
+    /* Las siguientes propiedades no tendrán efecto */
+    top: 20px;
+    left: 30px;
+    z-index: 10;
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Ejemplo Visual</h3>
+                
+                <div class="position-container h-64 p-4 mb-4">
+                    <div class="bg-gray-700 p-2 mb-4">Elemento anterior</div>
+                    <div class="position-element position-static">Static</div>
+                    <div class="bg-gray-700 p-2 mt-4">Elemento posterior</div>
+                </div>
+                
+                <p class="text-sm">El elemento con <code>position: static</code> se muestra en su posición natural dentro del flujo del documento, entre los elementos anterior y posterior.</p>
+                <p class="text-sm mt-2">Aunque se especifiquen valores para <code>top</code>, <code>left</code>, etc., estos no tendrán ningún efecto en el elemento.</p>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">¿Cuándo usar position: static?</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-bold mb-3">Casos de uso:</h4>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Para la mayoría de los elementos en un diseño normal.</li>
+                        <li>Cuando quieres que un elemento siga el flujo natural del documento.</li>
+                        <li>Para "resetear" el posicionamiento de un elemento que podría haber heredado otro tipo de posicionamiento.</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-3">Consideraciones:</h4>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Es el valor predeterminado, por lo que generalmente no es necesario especificarlo explícitamente.</li>
+                        <li>No proporciona control sobre la posición exacta de un elemento.</li>
+                        <li>Para diseños complejos o elementos que necesitan superponerse, necesitarás otros valores de position.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-amber-400"><strong>Nota:</strong> Aunque <code>position: static</code> es el valor predeterminado, a veces es útil establecerlo explícitamente para anular otros estilos que podrían estar aplicando un posicionamiento diferente.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="relative" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Position: Relative</h2>
+        
+        <p class="mb-8 text-lg">El valor <code>relative</code> posiciona un elemento en relación con su posición normal en el flujo del documento. El elemento mantiene su espacio original en el flujo, pero puede desplazarse usando las propiedades <code>top</code>, <code>right</code>, <code>bottom</code> y <code>left</code>.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Características</h3>
+                
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>El elemento mantiene su espacio original en el flujo del documento.</li>
+                    <li>Se puede desplazar usando top, right, bottom y left.</li>
+                    <li>El desplazamiento es relativo a su posición original.</li>
+                    <li>Puede crear superposiciones con otros elementos.</li>
+                    <li>Establece un contexto de posicionamiento para elementos descendientes con position: absolute.</li>
+                </ul>
+                
+                <div class="code-block mt-6">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    position: relative;
+    top: 20px;    /* Desplaza 20px hacia abajo */
+    left: 30px;   /* Desplaza 30px hacia la derecha */
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Ejemplo Visual</h3>
+                
+                <div class="position-container h-64 p-4 mb-4">
+                    <div class="bg-gray-700 p-2 mb-4">Elemento anterior</div>
+                    <div class="position-element position-relative" style="top: 20px; left: 30px;">Relative</div>
+                    <div class="bg-gray-700 p-2 mt-20">Elemento posterior</div>
+                </div>
+                
+                <p class="text-sm">El elemento con <code>position: relative</code> se ha desplazado 20px hacia abajo y 30px hacia la derecha desde su posición original.</p>
+                <p class="text-sm mt-2">Observa que el espacio original del elemento se mantiene (hay un "hueco" donde debería estar), y el elemento posterior respeta esa posición original.</p>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Valores Negativos y Contexto de Posicionamiento</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-bold mb-3">Valores Negativos:</h4>
+                    <p class="mb-3">Las propiedades de desplazamiento pueden tener valores negativos:</p>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li><code>top: -20px</code> desplaza el elemento 20px hacia arriba</li>
+                        <li><code>left: -30px</code> desplaza el elemento 30px hacia la izquierda</li>
+                    </ul>
+                    <div class="mt-4 bg-gray-800 p-4 rounded-lg">
+                        <div class="position-element position-relative mx-auto" style="top: -10px; left: -10px;">
+                            -10px, -10px
+                        </div>
+                        <div class="h-10"></div>
+                        <div class="position-element position-static mx-auto">
+                            Original
+                        </div>
+                        <div class="h-10"></div>
+                        <div class="position-element position-relative mx-auto" style="top: 10px; left: 10px;">
+                            10px, 10px
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-3">Contexto de Posicionamiento:</h4>
+                    <p class="mb-3">Un elemento con <code>position: relative</code> establece un contexto de posicionamiento para sus descendientes con <code>position: absolute</code>.</p>
+                    <div class="mt-4 bg-gray-800 p-4 rounded-lg">
+                        <div class="position-container h-40 relative">
+                            <div class="p-2">Elemento padre (relative)</div>
+                            <div class="position-element position-absolute" style="top: 50px; left: 50px;">
+                                Absolute
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm mt-2">El elemento absolute se posiciona en relación al elemento padre que tiene position: relative.</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-green-400"><strong>Consejo:</strong> <code>position: relative</code> es muy útil para ajustes finos en la posición de un elemento sin alterar el flujo del documento, o para crear un contexto de posicionamiento para elementos absolute.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="absolute" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Position: Absolute</h2>
+        
+        <p class="mb-8 text-lg">El valor <code>absolute</code> posiciona un elemento en relación con su ancestro posicionado más cercano (cualquier elemento cuya posición no sea <code>static</code>). Si no existe tal ancestro, se posiciona en relación al documento HTML.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Características</h3>
+                
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>El elemento se elimina del flujo normal del documento.</li>
+                    <li>No deja espacio para el elemento en la página.</li>
+                    <li>Se posiciona en relación a su ancestro posicionado más cercano.</li>
+                    <li>Si no hay ancestros posicionados, se posiciona en relación al documento HTML.</li>
+                    <li>Puede superponerse a otros elementos.</li>
+                </ul>
+                
+                <div class="code-block mt-6">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.contenedor {
+    position: relative;
+    height: 200px;
+}
+
+.elemento {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    /* Se posiciona 20px desde arriba y 30px desde la izquierda
+       del contenedor posicionado más cercano */
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Ejemplo Visual</h3>
+                
+                <div class="position-container h-64 p-4 mb-4 relative">
+                    <div class="bg-gray-700 p-2 mb-4">Elemento anterior</div>
+                    <div class="position-element position-absolute" style="top: 60px; left: 40px;">Absolute</div>
+                    <div class="bg-gray-700 p-2">Elemento posterior</div>
+                </div>
+                
+                <p class="text-sm">El elemento con <code>position: absolute</code> se ha posicionado a 60px desde la parte superior y 40px desde la izquierda de su contenedor.</p>
+                <p class="text-sm mt-2">Observa que el elemento se ha eliminado del flujo normal, por lo que el elemento posterior ocupa el espacio donde debería estar el elemento absolute.</p>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Posicionamiento Avanzado con Absolute</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-bold mb-3">Centrado Absoluto:</h4>
+                    <p class="mb-3">Puedes centrar perfectamente un elemento con position: absolute:</p>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.centrado {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Centrado perfecto horizontal y vertical */
+}</code></pre>
+                    </div>
+                    <div class="mt-4 bg-gray-800 p-4 rounded-lg relative h-40">
+                        <div class="position-element position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            Centrado
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-3">Posicionamiento en Esquinas:</h4>
+                    <p class="mb-3">Puedes posicionar elementos en las esquinas de un contenedor:</p>
+                    <div class="mt-4 bg-gray-800 p-4 rounded-lg relative h-40">
+                        <div class="position-element position-absolute" style="top: 0; left: 0; width: 40px; height: 40px;">
+                            TL
+                        </div>
+                        <div class="position-element position-absolute" style="top: 0; right: 0; width: 40px; height: 40px;">
+                            TR
+                        </div>
+                        <div class="position-element position-absolute" style="bottom: 0; left: 0; width: 40px; height: 40px;">
+                            BL
+                        </div>
+                        <div class="position-element position-absolute" style="bottom: 0; right: 0; width: 40px; height: 40px;">
+                            BR
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-amber-400"><strong>Importante:</strong> Cuando uses <code>position: absolute</code>, asegúrate de que el elemento padre tenga una posición definida (normalmente <code>relative</code>) para evitar que el elemento se posicione en relación al documento HTML.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="fixed" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Position: Fixed</h2>
+        
+        <p class="mb-8 text-lg">El valor <code>fixed</code> posiciona un elemento en relación con la ventana del navegador. El elemento permanece en la misma posición incluso cuando se desplaza la página.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Características</h3>
+                
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>El elemento se elimina del flujo normal del documento.</li>
+                    <li>Se posiciona en relación a la ventana del navegador.</li>
+                    <li>Permanece en la misma posición incluso al desplazarse.</li>
+                    <li>No se ve afectado por el desplazamiento de la página.</li>
+                    <li>Puede superponerse a otros elementos.</li>
+                </ul>
+                
+                <div class="code-block mt-6">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    /* Se posiciona 20px desde arriba y 30px desde la derecha
+       de la ventana del navegador */
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Ejemplo Visual</h3>
+                
+                <div class="position-demo-container mb-4">
+                    <div class="position-demo-content p-4">
+                        <div class="bg-gray-700 p-2 mb-4">Contenido de la página</div>
+                        <div class="position-element" style="position: fixed; top: 350px; right: 30px; z-index: 5;">Fixed</div>
+                        <div class="bg-gray-700 p-2 mb-4">Más contenido...</div>
+                        <div class="bg-gray-700 p-2 mb-4">Desplázate para ver el efecto</div>
+                        <div class="bg-gray-700 p-2 mb-4">El elemento fixed permanece visible</div>
+                        <div class="bg-gray-700 p-2 mb-4">Mientras te desplazas por la página</div>
+                        <div class="bg-gray-700 p-2 mb-4">Sigue desplazándote...</div>
+                        <div class="bg-gray-700 p-2">Fin del contenido</div>
+                    </div>
+                </div>
+                
+                <p class="text-sm">El elemento con <code>position: fixed</code> permanece en la misma posición aunque desplaces la página.</p>
+                <p class="text-sm mt-2">Este tipo de posicionamiento es ideal para elementos como barras de navegación fijas, botones de "volver arriba", o chats flotantes.</p>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Casos de Uso Comunes</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-dark p-5 rounded-lg">
+                    <h4 class="font-bold text-accent mb-3">Barras de Navegación Fijas</h4>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* La barra permanece visible al desplazarse */
+}</code></pre>
+                    </div>
+                    <div class="mt-4 bg-gray-800 p-2 rounded-lg text-center">
+                        Barra de navegación fija
+                    </div>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <h4 class="font-bold text-accent mb-3">Botones Flotantes</h4>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.boton-flotante {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    /* Botón siempre visible en la esquina */
+}</code></pre>
+                    </div>
+                    <div class="mt-4 bg-gray-800 p-4 rounded-lg relative h-20">
+                        <div class="absolute bottom-2 right-2 bg-accent text-white rounded-full w-10 h-10 flex items-center justify-center">
+                            +
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-dark p-5 rounded-lg">
+                    <h4 class="font-bold text-accent mb-3">Banners y Avisos</h4>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Banner siempre visible en la parte superior */
+}</code></pre>
+                    </div>
+                    <div class="mt-4 bg-gray-800 p-2 rounded-lg text-center text-sm">
+                        🍪 Este sitio usa cookies para mejorar tu experiencia
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-green-400"><strong>Consejo:</strong> Cuando uses elementos con <code>position: fixed</code>, asegúrate de que no bloqueen contenido importante de la página. Considera añadir un margen o padding al elemento body para compensar el espacio ocupado por elementos fijos.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="sticky" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Position: Sticky</h2>
+        
+        <p class="mb-8 text-lg">El valor <code>sticky</code> es un híbrido entre <code>relative</code> y <code>fixed</code>. El elemento se comporta como <code>relative</code> hasta que cruza un punto de desplazamiento especificado, momento en el que se comporta como <code>fixed</code>.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Características</h3>
+                
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Inicialmente se comporta como position: relative.</li>
+                    <li>Se convierte en position: fixed cuando alcanza un umbral de desplazamiento.</li>
+                    <li>El umbral se define con top, right, bottom o left.</li>
+                    <li>Permanece "pegado" dentro de su contenedor padre.</li>
+                    <li>Requiere al menos una propiedad de desplazamiento (top, right, bottom, left).</li>
+                </ul>
+                
+                <div class="code-block mt-6">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento {
+    position: sticky;
+    top: 20px;
+    /* El elemento se "pegará" a 20px del borde superior
+       cuando se desplace más allá de ese punto */
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Ejemplo Visual</h3>
+                
+                <div class="position-demo-container mb-4">
+                    <div class="position-demo-content p-4">
+                        <div class="bg-gray-700 p-2 mb-4">Contenido inicial</div>
+                        <div class="position-element position-sticky" style="top: 0;">Sticky</div>
+                        <div class="bg-gray-700 p-2 mt-4 mb-4">Contenido posterior</div>
+                        <div class="bg-gray-700 p-2 mb-4">Desplázate para ver el efecto</div>
+                        <div class="bg-gray-700 p-2 mb-4">El elemento sticky se "pegará" en la parte superior</div>
+                        <div class="bg-gray-700 p-2 mb-4">Mientras te desplazas por la página</div>
+                        <div class="bg-gray-700 p-2 mb-4">Sigue desplazándote...</div>
+                        <div class="bg-gray-700 p-2">Fin del contenido</div>
+                    </div>
+                </div>
+                
+                <p class="text-sm">El elemento con <code>position: sticky</code> se comporta como <code>relative</code> hasta que alcanza la parte superior, momento en el que se "pega" y se comporta como <code>fixed</code>.</p>
+                <p class="text-sm mt-2">Observa que el elemento sticky permanece dentro de su contenedor padre y no se desplaza más allá de él.</p>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Aplicaciones Prácticas</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-bold mb-3">Encabezados de Sección:</h4>
+                    <p class="mb-3">Ideal para encabezados que deben permanecer visibles mientras se lee su contenido:</p>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.section-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+}</code></pre>
+                    </div>
+                    <div class="mt-4 bg-gray-800 p-4 rounded-lg h-40 overflow-y-auto">
+                        <div class="bg-accent/50 p-2 sticky top-0">Sección 1</div>
+                        <div class="p-2">Contenido de la sección 1...</div>
+                        <div class="p-2">Más contenido...</div>
+                        <div class="bg-accent/50 p-2 sticky top-0">Sección 2</div>
+                        <div class="p-2">Contenido de la sección 2...</div>
+                        <div class="p-2">Más contenido...</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-3">Barras de Navegación:</h4>
+                    <p class="mb-3">Barras que inicialmente están en su posición normal, pero se pegan al desplazarse:</p>
+                    <div class="code-block mb-3">
+                        <pre class="text-gray-300 overflow-x-auto"><code>.navbar {
+    position: sticky;
+    top: 0;
+    background-color: #333;
+    z-index: 100;
+}</code></pre>
+                    </div>
+                    <div class="mt-4 bg-gray-800 p-4 rounded-lg h-40 overflow-y-auto">
+                        <div class="h-20 bg-gray-700 mb-2">Banner</div>
+                        <div class="bg-accent p-2 sticky top-0">Menú de navegación</div>
+                        <div class="p-2">Contenido del sitio...</div>
+                        <div class="p-2">Más contenido...</div>
+                        <div class="p-2">Sigue desplazándote...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-amber-400"><strong>Nota:</strong> El soporte para <code>position: sticky</code> es bueno en navegadores modernos, pero puede haber problemas en versiones antiguas. Además, para que funcione correctamente, el elemento padre debe tener suficiente altura para permitir el desplazamiento.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="z-index" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Z-Index</h2>
+        
+        <p class="mb-8 text-lg">La propiedad <code>z-index</code> controla el orden de apilamiento de elementos posicionados que se superponen. Un elemento con un valor de z-index mayor aparecerá encima de un elemento con un valor menor.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Cómo Funciona</h3>
+                
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Solo afecta a elementos posicionados (no static).</li>
+                    <li>Acepta valores enteros (positivos, negativos o cero).</li>
+                    <li>Un valor mayor coloca el elemento más arriba en la pila.</li>
+                    <li>Sin z-index, los elementos se apilan en el orden en que aparecen en el HTML.</li>
+                    <li>Los elementos con z-index negativo aparecen detrás de los elementos sin z-index.</li>
+                </ul>
+                
+                <div class="code-block mt-6">
+                    <pre class="text-gray-300 overflow-x-auto"><code>.elemento-atras {
+    position: absolute;
+    z-index: 1;
+}
+
+.elemento-medio {
+    position: absolute;
+    z-index: 2;
+}
+
+.elemento-frente {
+    position: absolute;
+    z-index: 3;
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+                <h3 class="text-xl font-bold mb-4 text-accent">Ejemplo Visual</h3>
+                
+                <div class="z-index-container mb-4">
+                    <div class="z-index-element" style="background-color: rgba(255, 0, 0, 0.7); top: 20px; left: 20px; z-index: 1;">
+                        z-index: 1
+                    </div>
+                    <div class="z-index-element" style="background-color: rgba(0, 255, 0, 0.7); top: 50px; left: 50px; z-index: 2;">
+                        z-index: 2
+                    </div>
+                    <div class="z-index-element" style="background-color: rgba(0, 0, 255, 0.7); top: 80px; left: 80px; z-index: 3;">
+                        z-index: 3
+                    </div>
+                </div>
+                
+                <p class="text-sm">Los elementos con valores de z-index más altos aparecen encima de los elementos con valores más bajos.</p>
+                <p class="text-sm mt-2">En este ejemplo, el elemento azul (z-index: 3) está encima del verde (z-index: 2), que a su vez está encima del rojo (z-index: 1).</p>
+            </div>
+        </div>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <h3 class="text-2xl font-bold mb-6 text-accent">Contextos de Apilamiento</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-bold mb-3">¿Qué son los contextos de apilamiento?</h4>
+                    <p class="mb-3">Un contexto de apilamiento es una estructura conceptual tridimensional donde los elementos se apilan uno encima de otro. Cada contexto de apilamiento es independiente de los demás.</p>
+                    <p class="mb-3">Un nuevo contexto de apilamiento se crea cuando:</p>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li>Un elemento tiene position distinto de static y un z-index distinto de auto</li>
+                        <li>Un elemento tiene opacity menor que 1</li>
+                        <li>Un elemento tiene transform, filter, perspective, clip-path, mask, etc.</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-3">Ejemplo de Contextos de Apilamiento:</h4>
+                    <div class="mt-4 bg-gray-800 p-4 rounded-lg relative h-60">
+                        <div class="absolute top-10 left-10 w-32 h-32 bg-red-500/50 p-2" style="z-index: 10;">
+                            Padre (z-index: 10)
+                            <div class="absolute top-20 left-20 w-24 h-24 bg-blue-500/50 p-2" style="z-index: 5;">
+                                Hijo (z-index: 5)
+                            </div>
+                        </div>
+                        <div class="absolute top-30 left-30 w-32 h-32 bg-green-500/50 p-2" style="z-index: 5;">
+                            Elemento (z-index: 5)
+                        </div>
+                    </div>
+                    <p class="text-sm mt-2">Aunque el elemento hijo azul tiene z-index: 5, aparece encima del elemento verde con z-index: 5 porque su padre (rojo) tiene z-index: 10, creando un contexto de apilamiento separado.</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+                <p class="text-green-400"><strong>Buena práctica:</strong> Usa valores de z-index con incrementos (como 10, 20, 30) en lugar de valores consecutivos (1, 2, 3) para facilitar la inserción de nuevos elementos en el futuro sin tener que redefinir todos los valores.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="actividad" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Laboratorio de Posicionamiento</h2>
+        
+        <p class="mb-8 text-lg leading-relaxed">Experimenta con las diferentes propiedades de posicionamiento y observa cómo afectan a la ubicación de los elementos.</p>
+        
+        <div class="bg-darker p-8 rounded-lg border border-gray-800">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Controles</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">Tipo de Posicionamiento</h4>
+                            
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="position-type" value="static" checked class="mr-2">
+                                    <span>static</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="position-type" value="relative" class="mr-2">
+                                    <span>relative</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="position-type" value="absolute" class="mr-2">
+                                    <span>absolute</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="position-type" value="fixed" class="mr-2">
+                                    <span>fixed</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="position-type" value="sticky" class="mr-2">
+                                    <span>sticky</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">Propiedades de Desplazamiento</h4>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Top</span>
+                                        <span id="top-value">0px</span>
+                                    </label>
+                                    <input type="range" title="." min="-50" max="150" value="0" class="position-slider w-full" id="top-slider">
+                                </div>
+                                
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Right</span>
+                                        <span id="right-value">0px</span>
+                                    </label>
+                                    <input type="range" title="." min="-50" max="150" value="0" class="position-slider w-full" id="right-slider">
+                                </div>
+                                
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Bottom</span>
+                                        <span id="bottom-value">0px</span>
+                                    </label>
+                                    <input type="range" title="." min="-50" max="150" value="0" class="position-slider w-full" id="bottom-slider">
+                                </div>
+                                
+                                <div>
+                                    <label class="flex justify-between mb-1">
+                                        <span>Left</span>
+                                        <span id="left-value">0px</span>
+                                    </label>
+                                    <input type="range" title="." min="-50" max="150" value="0" class="position-slider w-full" id="left-slider">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-dark p-5 rounded-lg">
+                            <h4 class="text-xl font-bold mb-4">Z-Index</h4>
+                            
+                            <div>
+                                <label class="flex justify-between mb-1">
+                                    <span>Z-Index</span>
+                                    <span id="z-index-value">0</span>
+                                </label>
+                                <input type="range" title="." min="-10" max="10" value="0" class="position-slider w-full" id="z-index-slider">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-accent">Vista Previa</h3>
+                    
+                    <div class="bg-dark p-5 rounded-lg mb-6">
+                        <div class="position-demo-container h-80 mb-4" id="position-preview">
+                            <div class="position-demo-content p-4">
+                                <div class="bg-gray-700 p-2 mb-4">Elemento anterior</div>
+                                <div id="position-element" class="position-element position-static">
+                                    Elemento
+                                </div>
+                                <div class="bg-gray-700 p-2 mt-4 mb-4">Elemento posterior</div>
+                                <div class="bg-gray-700 p-2 mb-4">Contenido adicional</div>
+                                <div class="bg-gray-700 p-2 mb-4">Más contenido...</div>
+                                <div class="bg-gray-700 p-2 mb-4">Desplázate para ver efectos</div>
+                                <div class="bg-gray-700 p-2 mb-4">Especialmente para sticky y fixed</div>
+                                <div class="bg-gray-700 p-2">Fin del contenido</div>
+                                
+                                <!-- Elementos de referencia para z-index -->
+                                <div class="z-index-element" style="background-color: rgba(255, 0, 0, 0.5); top: 120px; left: 40px; z-index: 1;">
+                                    z-index: 1
+                                </div>
+                                <div class="z-index-element" style="background-color: rgba(0, 0, 255, 0.5); top: 150px; left: 80px; z-index: 3;">
+                                    z-index: 3
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h4 class="font-bold mb-3">Código CSS Generado:</h4>
+                            <div class="bg-darker p-4 rounded-lg">
+                                <pre id="css-output" class="text-gray-300 overflow-x-auto"></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-dark p-5 rounded-lg">
+                        <h4 class="font-bold mb-3">Explicación:</h4>
+                        <p id="position-explanation" class="text-sm">
+                            El elemento tiene <strong>position: static</strong>, que es el valor predeterminado. Sigue el flujo normal del documento y las propiedades de desplazamiento (top, right, bottom, left) no tienen efecto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    <button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'css';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-css.html'; // Archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+</main>
+
+<footer class="bg-darker py-8 border-t border-gray-800">
+    <div class="container mx-auto px-4 text-center">
+        <p>CSS: Posicionamiento de Elementos - Guía completa para principiantes</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', function() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // Position Laboratory
+        const positionTypeRadios = document.querySelectorAll('input[name="position-type"]');
+        const topSlider = document.getElementById('top-slider');
+        const rightSlider = document.getElementById('right-slider');
+        const bottomSlider = document.getElementById('bottom-slider');
+        const leftSlider = document.getElementById('left-slider');
+        const zIndexSlider = document.getElementById('z-index-slider');
+        
+        const topValue = document.getElementById('top-value');
+        const rightValue = document.getElementById('right-value');
+        const bottomValue = document.getElementById('bottom-value');
+        const leftValue = document.getElementById('left-value');
+        const zIndexValue = document.getElementById('z-index-value');
+        
+        const positionElement = document.getElementById('position-element');
+        const cssOutput = document.getElementById('css-output');
+        const positionExplanation = document.getElementById('position-explanation');
+        
+        // Update position
+        function updatePosition() {
+            const positionType = document.querySelector('input[name="position-type"]:checked').value;
+            const topVal = parseInt(topSlider.value);
+            const rightVal = parseInt(rightSlider.value);
+            const bottomVal = parseInt(bottomSlider.value);
+            const leftVal = parseInt(leftSlider.value);
+            const zIndexVal = parseInt(zIndexSlider.value);
+            
+            // Update value displays
+            topValue.textContent = topVal + 'px';
+            rightValue.textContent = rightVal + 'px';
+            bottomValue.textContent = bottomVal + 'px';
+            leftValue.textContent = leftVal + 'px';
+            zIndexValue.textContent = zIndexVal;
+            
+            // Remove all position classes
+            positionElement.classList.remove('position-static', 'position-relative', 'position-absolute', 'position-fixed', 'position-sticky');
+            
+            // Add the selected position class
+            positionElement.classList.add('position-' + positionType);
+            
+            // Apply position styles
+            positionElement.style.position = positionType;
+            
+            // Apply offset properties based on position type
+            if (positionType !== 'static') {
+                positionElement.style.top = topVal ? topVal + 'px' : '';
+                positionElement.style.right = rightVal ? rightVal + 'px' : '';
+                positionElement.style.bottom = bottomVal ? bottomVal + 'px' : '';
+                positionElement.style.left = leftVal ? leftVal + 'px' : '';
+                positionElement.style.zIndex = zIndexVal ? zIndexVal : '';
+            } else {
+                // Reset styles for static positioning
+                positionElement.style.top = '';
+                positionElement.style.right = '';
+                positionElement.style.bottom = '';
+                positionElement.style.left = '';
+                positionElement.style.zIndex = '';
+            }
+            
+            // Generate CSS code
+            let css = `.elemento {
+  position: ${positionType};`;
+            
+            if (positionType !== 'static') {
+                if (topVal) css += `\n  top: ${topVal}px;`;
+                if (rightVal) css += `\n  right: ${rightVal}px;`;
+                if (bottomVal) css += `\n  bottom: ${bottomVal}px;`;
+                if (leftVal) css += `\n  left: ${leftVal}px;`;
+                if (zIndexVal) css += `\n  z-index: ${zIndexVal};`;
+            }
+            
+            css += `\n}`;
+            cssOutput.textContent = css;
+            
+            // Update explanation
+            updateExplanation(positionType, topVal, rightVal, bottomVal, leftVal, zIndexVal);
+        }
+        
+        // Update explanation text
+        function updateExplanation(positionType, top, right, bottom, left, zIndex) {
+            let explanation = '';
+            
+            switch(positionType) {
+                case 'static':
+                    explanation = `El elemento tiene <strong>position: static</strong>, que es el valor predeterminado. Sigue el flujo normal del documento y las propiedades de desplazamiento (top, right, bottom, left) no tienen efecto.`;
+                    break;
+                case 'relative':
+                    explanation = `El elemento tiene <strong>position: relative</strong>. Se desplaza desde su posición normal en el flujo del documento, pero mantiene su espacio original. Se ha desplazado ${top}px desde arriba, ${right}px desde la derecha, ${bottom}px desde abajo y ${left}px desde la izquierda.`;
+                    break;
+                case 'absolute':
+                    explanation = `El elemento tiene <strong>position: absolute</strong>. Se ha eliminado del flujo normal del documento y se posiciona en relación a su ancestro posicionado más cercano (en este caso, el contenedor de vista previa). Se posiciona a ${top}px desde arriba, ${right}px desde la derecha, ${bottom}px desde abajo y ${left}px desde la izquierda.`;
+                    break;
+                case 'fixed':
+                    explanation = `El elemento tiene <strong>position: fixed</strong>. Se ha eliminado del flujo normal del documento y se posiciona en relación a la ventana del navegador. Permanecerá en la misma posición incluso al desplazarse. Se posiciona a ${top}px desde arriba, ${right}px desde la derecha, ${bottom}px desde abajo y ${left}px desde la izquierda.`;
+                    break;
+                case 'sticky':
+                    explanation = `El elemento tiene <strong>position: sticky</strong>. Se comporta como relative hasta que cruza un punto de desplazamiento especificado, momento en el que se comporta como fixed. El umbral de desplazamiento es ${top}px desde arriba, ${right}px desde la derecha, ${bottom}px desde abajo y ${left}px desde la izquierda.`;
+                    break;
+            }
+            
+            if (zIndex && positionType !== 'static') {
+                explanation += ` El valor de <strong>z-index: ${zIndex}</strong> controla su posición en el eje Z (profundidad) en relación a otros elementos.`;
+            }
+            
+            positionExplanation.innerHTML = explanation;
+        }
+        
+        // Add event listeners to all controls
+        positionTypeRadios.forEach(radio => {
+            radio.addEventListener('change', updatePosition);
+        });
+        
+        topSlider.addEventListener('input', updatePosition);
+        rightSlider.addEventListener('input', updatePosition);
+        bottomSlider.addEventListener('input', updatePosition);
+        leftSlider.addEventListener('input', updatePosition);
+        zIndexSlider.addEventListener('input', updatePosition);
+        
+        // Initialize position
+        updatePosition();
+    });
+</script>
+</body>
+</html>

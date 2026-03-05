@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript: Estructuras de Control</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                dark: '#0a0f1a',
+                darker: '#050a14',
+                accent: '#FFD700', // Amarillo dorado
+                accentLight: '#FFEB99', // Amarillo claro
+                accentDark: '#B8860B' // Amarillo oscuro (dark goldenrod)
+            }
+        }
+    }
+}
+</script>
+<style>
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+.float-animation:hover {
+    animation: float 2s ease-in-out infinite;
+}
+.glow-effect:hover {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+.scale-effect:hover {
+    transform: scale(1.03);
+}
+.rotate-effect:hover .icon-container {
+    transform: rotate(10deg);
+}
+.code-block {
+    position: relative;
+    overflow: hidden;
+}
+.js-slider {
+    -webkit-appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: #1f2937;
+    outline: none;
+}
+.js-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #FFD700;
+    cursor: pointer;
+}
+.js-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #FFD700;
+    cursor: pointer;
+}
+.js-container {
+    border: 2px dashed rgba(255, 215, 0, 0.3);
+    background-color: rgba(255, 215, 0, 0.05);
+    transition: all 0.3s ease;
+}
+.js-item {
+    background-color: rgba(255, 215, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    transition: all 0.3s ease;
+}
+.js-property-button {
+    transition: all 0.3s ease;
+}
+.js-property-button.active {
+    background-color: #FFD700;
+    color: #0a0f1a;
+}
+.code-editor {
+    font-family: monospace;
+    background-color: #1a1a1a;
+    color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #333;
+    resize: none;
+    width: 100%;
+    height: 150px;
+    tab-size: 2;
+}
+.console-output {
+    font-family: monospace;
+    background-color: #0a0a0a;
+    color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #333;
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.console-output .error {
+    color: #ff6b6b;
+}
+.console-output .success {
+    color: #51cf66;
+}
+.console-output .info {
+    color: #FFD700;
+}
+.quiz-option {
+    transition: all 0.3s ease;
+}
+.quiz-option:hover {
+    background-color: rgba(255, 215, 0, 0.1);
+}
+.quiz-option.selected {
+    background-color: rgba(255, 215, 0, 0.3);
+    border-color: #FFD700;
+}
+.quiz-option.correct {
+    background-color: rgba(80, 200, 120, 0.3);
+    border-color: #50c878;
+}
+.quiz-option.incorrect {
+    background-color: rgba(255, 107, 107, 0.3);
+    border-color: #ff6b6b;
+}
+</style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen mx-auto md:mx-20">
+<header class="sticky top-0 bg-darker shadow-lg z-10 border-b border-gray-800">
+<nav class="container mx-auto px-4 py-4">
+    <div class="flex justify-between items-center">
+        <a href="s-js.html"><h1 class="text-2xl font-bold">JS<span class="text-accent">Control</span></h1></a>
+        <div class="hidden md:flex space-x-6">
+            <a href="#condicionales" class="hover:text-accent transition-colors duration-300">Condicionales</a>
+            <a href="#bucles" class="hover:text-accent transition-colors duration-300">Bucles</a>
+            <a href="#control-flujo" class="hover:text-accent transition-colors duration-300">Control de Flujo</a>
+            <a href="#actividad" class="hover:text-accent transition-colors duration-300">Actividad</a>
+        </div>
+        <button id="menuBtn" class="md:hidden text-white hover:text-accent transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-2">
+        <a href="#condicionales" class="block py-2 hover:text-accent transition-colors duration-300">Condicionales</a>
+        <a href="#bucles" class="block py-2 hover:text-accent transition-colors duration-300">Bucles</a>
+        <a href="#control-flujo" class="block py-2 hover:text-accent transition-colors duration-300">Control de Flujo</a>
+        <a href="#actividad" class="block py-2 hover:text-accent transition-colors duration-300">Actividad</a>
+    </div>
+</nav>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+<section class="text-center py-16">
+    <h1 class="text-5xl font-bold mb-4">Estructuras de <span class="text-accent">Control</span></h1>
+    <p class="text-xl max-w-3xl mx-auto">Aprende a tomar decisiones y repetir acciones en tus programas JavaScript</p>
+</section>
+
+<section id="condicionales" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Estructuras Condicionales</h2>
+    <p class="mb-8 text-lg leading-relaxed">Las estructuras condicionales son como las "decisiones" en tu código. Te permiten ejecutar diferentes acciones dependiendo de si una condición es verdadera o falsa. Es como decir "Si ocurre esto, haz aquello".</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">if</h3>
+            <p class="text-base mb-4">La estructura más básica. Es como decir "SI esta condición es verdadera, entonces haz esto".</p>
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo
+let edad = 18;
+
+if (edad >= 18) {
+  console.log("Eres mayor de edad");
+}</code></pre>
+            </div>
+            <p class="text-sm">Si la condición entre paréntesis es verdadera, se ejecuta el código entre llaves. Si es falsa, se salta ese código.</p>
+        </div>
+        
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">if...else</h3>
+            <p class="text-base mb-4">Añade una alternativa. Es como decir "SI esta condición es verdadera, haz esto, SINO, haz esto otro".</p>
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo
+let edad = 16;
+
+if (edad >= 18) {
+  console.log("Eres mayor de edad");
+} else {
+  console.log("Eres menor de edad");
+}</code></pre>
+            </div>
+            <p class="text-sm">Con if...else siempre se ejecutará uno de los dos bloques de código, nunca ambos ni ninguno.</p>
+        </div>
+        
+        <div class="bg-darker rounded-lg p-6 border border-gray-800 hover:border-accent transition-all duration-500 glow-effect scale-effect h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">switch</h3>
+            <p class="text-base mb-4">Útil cuando tienes muchas opciones posibles. Es como un menú de opciones para una variable.</p>
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo
+let dia = 3;
+let nombreDia;
+
+switch (dia) {
+  case 1:
+    nombreDia = "Lunes";
+    break;
+  case 2:
+    nombreDia = "Martes";
+    break;
+  case 3:
+    nombreDia = "Miércoles";
+    break;
+  default:
+    nombreDia = "Otro día";
+}
+
+console.log(nombreDia); // "Miércoles"</code></pre>
+            </div>
+            <p class="text-sm">El switch compara el valor entre paréntesis con cada "case". Cuando encuentra una coincidencia, ejecuta ese código hasta encontrar un "break".</p>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Operador Ternario</h3>
+        
+        <p class="mb-6">Es una forma corta de escribir un if...else en una sola línea. Es como hacer una pregunta y dar dos respuestas posibles.</p>
+        
+        <div class="code-block mb-4">
+            <pre class="text-gray-300 overflow-x-auto"><code>// Sintaxis
+condición ? valorSiVerdadero : valorSiFalso
+
+// Ejemplo
+let edad = 20;
+let mensaje = edad >= 18 ? "Mayor de edad" : "Menor de edad";
+console.log(mensaje); // "Mayor de edad"</code></pre>
+        </div>
+        
+        <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+            <p class="text-amber-400"><strong>Consejo:</strong> El operador ternario es perfecto para asignaciones simples, pero para lógica más compleja es mejor usar if...else normal para que tu código sea más fácil de leer.</p>
+        </div>
+    </div>
+</section>
+
+<section id="bucles" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Estructuras de Bucles</h2>
+    
+    <p class="mb-8 text-lg">Los bucles te permiten repetir acciones varias veces sin tener que escribir el mismo código una y otra vez. Es como decirle a tu programa "haz esto varias veces".</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">for</h3>
+            
+            <p class="mb-4">El bucle for es como un contador automático. Es perfecto cuando sabes exactamente cuántas veces quieres repetir algo.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo: Contar del 1 al 5
+for (let i = 1; i <= 5; i++) {
+  console.log(i);
+}
+// Salida: 1, 2, 3, 4, 5
+
+// Recorrer un array
+const frutas = ["manzana", "banana", "naranja"];
+for (let i = 0; i < frutas.length; i++) {
+  console.log(frutas[i]);
+}
+// Salida: manzana, banana, naranja</code></pre>
+            </div>
+            
+            <p class="text-sm">El bucle for tiene tres partes: inicialización (dónde empezar), condición (hasta dónde llegar) y actualización (cómo avanzar).</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">while</h3>
+            
+            <p class="mb-4">El bucle while es como decir "mientras esta condición sea verdadera, sigue haciendo esto". Es útil cuando no sabes cuántas repeticiones necesitarás.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo: Contar del 1 al 5
+let i = 1;
+while (i <= 5) {
+  console.log(i);
+  i++;
+}
+// Salida: 1, 2, 3, 4, 5
+
+// Ejemplo: Lanzar un dado hasta sacar un 6
+let dado;
+while (dado !== 6) {
+  dado = Math.floor(Math.random() * 6) + 1;
+  console.log("Resultado del dado:", dado);
+}</code></pre>
+            </div>
+            
+            <p class="text-sm">Es importante asegurarse de que la condición eventualmente se vuelva falsa, o tendrás un bucle infinito que nunca terminará.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">do...while</h3>
+            
+            <p class="mb-4">Similar al bucle while, pero garantiza que el código se ejecute al menos una vez, incluso si la condición es falsa desde el principio.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo: Se ejecuta al menos una vez
+let numero = 10;
+do {
+  console.log("Este número es:", numero);
+  numero -= 2;
+} while (numero > 0);
+// Salida: 10, 8, 6, 4, 2
+
+// Incluso si la condición es falsa al inicio
+let x = 0;
+do {
+  console.log("Esto se muestra una vez");
+} while (x > 0);</code></pre>
+            </div>
+            
+            <p class="text-sm">Usa do...while cuando necesites ejecutar un bloque de código al menos una vez, independientemente de la condición.</p>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Bucles for especiales</h3>
+        
+        <p class="mb-6">JavaScript tiene dos formas especiales del bucle for que hacen más fácil trabajar con objetos y arrays.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">for...in</h4>
+                <p class="mb-4">Perfecto para recorrer las propiedades de un objeto. Es como revisar cada "cajón" de un mueble.</p>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo: Recorrer propiedades de un objeto
+const persona = {
+  nombre: "Ana",
+  edad: 28,
+  profesion: "Ingeniera"
+};
+
+for (let propiedad in persona) {
+  console.log(propiedad + ": " + persona[propiedad]);
+}
+// Salida:
+// nombre: Ana
+// edad: 28
+// profesion: Ingeniera</code></pre>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">for...of</h4>
+                <p class="mb-4">Ideal para recorrer elementos de arrays, strings y otros iterables. Es como revisar cada elemento de una lista.</p>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo: Recorrer elementos de un array
+const colores = ["rojo", "verde", "azul"];
+
+for (let color of colores) {
+  console.log(color);
+}
+// Salida: rojo, verde, azul
+
+// Ejemplo: Recorrer caracteres de un string
+for (let letra of "Hola") {
+  console.log(letra);
+}
+// Salida: H, o, l, a</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-dark rounded-lg border border-gray-700">
+            <p class="text-amber-400"><strong>Consejo:</strong> Usa for...of para arrays y for...in para objetos. Mezclarlos puede dar resultados inesperados.</p>
+        </div>
+    </div>
+</section>
+
+<section id="control-flujo" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Control de Flujo</h2>
+    
+    <p class="mb-8 text-lg">A veces necesitas alterar el flujo normal de tus bucles o condicionales. Para eso existen las sentencias break y continue, que te permiten tener más control sobre cómo se ejecuta tu código.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">break</h3>
+            
+            <p class="mb-4">La sentencia break es como un botón de "salir" para tu bucle. Cuando JavaScript encuentra un break, sale inmediatamente del bucle, sin importar si la condición sigue siendo verdadera.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo: Salir de un bucle cuando se cumple una condición
+for (let i = 1; i <= 10; i++) {
+  if (i === 5) {
+    console.log("Encontrado el 5, saliendo del bucle");
+    break;
+  }
+  console.log(i);
+}
+// Salida: 1, 2, 3, 4, "Encontrado el 5, saliendo del bucle"
+
+// Ejemplo: Buscar un elemento en un array
+const numeros = [10, 20, 30, 40, 50];
+let indice = -1;
+
+for (let i = 0; i < numeros.length; i++) {
+  if (numeros[i] === 30) {
+    indice = i;
+    break; // No necesitamos seguir buscando
+  }
+}
+
+console.log("El número 30 está en el índice:", indice);</code></pre>
+            </div>
+            
+            <p class="text-sm">El break es útil cuando encuentras lo que buscabas y no necesitas seguir recorriendo el resto del bucle.</p>
+        </div>
+        
+        <div class="bg-darker p-6 rounded-lg border border-gray-800 hover:border-accent transition-all duration-300 h-full">
+            <div class="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 icon-container transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-accent">continue</h3>
+            
+            <p class="mb-4">La sentencia continue es como decir "salta este paso y sigue con el siguiente". A diferencia de break, no sale del bucle, solo salta a la siguiente iteración.</p>
+            
+            <div class="code-block mb-4">
+                <pre class="text-gray-300 overflow-x-auto"><code>// Ejemplo: Imprimir solo números impares
+for (let i = 1; i <= 10; i++) {
+  if (i % 2 === 0) {
+    continue; // Salta los números pares
+  }
+  console.log(i);
+}
+// Salida: 1, 3, 5, 7, 9
+
+// Ejemplo: Filtrar elementos de un array
+const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const impares = [];
+
+for (let i = 0; i < numeros.length; i++) {
+  if (numeros[i] % 2 === 0) {
+    continue; // Salta los números pares
+  }
+  impares.push(numeros[i]);
+}
+
+console.log("Números impares:", impares);
+// Salida: [1, 3, 5, 7, 9]</code></pre>
+            </div>
+            
+            <p class="text-sm">El continue es útil cuando quieres saltarte ciertos elementos en un bucle sin tener que usar condiciones anidadas.</p>
+        </div>
+    </div>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Ejemplos prácticos</h3>
+        
+        <p class="mb-6">Veamos algunos ejemplos de la vida real donde estas estructuras de control son útiles:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Validación de formularios</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Validar un formulario de registro
+function validarFormulario(usuario) {
+  let errores = [];
+  
+  if (!usuario.nombre) {
+    errores.push("El nombre es obligatorio");
+  }
+  
+  if (!usuario.email) {
+    errores.push("El email es obligatorio");
+  } else if (!usuario.email.includes("@")) {
+    errores.push("El email no es válido");
+  }
+  
+  if (usuario.edad < 18) {
+    errores.push("Debes ser mayor de 18 años");
+  }
+  
+  return errores.length === 0;
+}</code></pre>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-accent">Procesamiento de datos</h4>
+                <div class="code-block mb-4">
+                    <pre class="text-gray-300 overflow-x-auto"><code>// Calcular el total de una compra
+function calcularTotal(productos) {
+  let total = 0;
+  
+  for (let producto of productos) {
+    // Saltamos productos sin precio
+    if (!producto.precio) {
+      continue;
+    }
+    
+    // Aplicamos descuento si existe
+    if (producto.descuento) {
+      total += producto.precio * (1 - producto.descuento);
+    } else {
+      total += producto.precio;
+    }
+  }
+  
+  return total;
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="actividad" class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-accent">Actividad: Quiz de Estructuras de Control</h2>
+    
+    <p class="mb-8 text-lg leading-relaxed">Pon a prueba tus conocimientos sobre estructuras de control en JavaScript con este quiz interactivo.</p>
+    
+    <div class="bg-darker p-8 rounded-lg border border-gray-800">
+        <div id="quiz-container">
+            <div id="quiz-question" class="mb-6">
+                <h4 class="font-bold mb-2">Pregunta 1:</h4>
+                <p class="text-lg">¿Qué estructura de control usarías para ejecutar un bloque de código solo si se cumple una condición?</p>
+            </div>
+            
+            <div id="quiz-options" class="space-y-3 mb-6">
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="true">
+                    <p>if</p>
+                </div>
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                    <p>for</p>
+                </div>
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                    <p>while</p>
+                </div>
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="false">
+                    <p>switch</p>
+                </div>
+            </div>
+            
+            <div id="quiz-feedback" class="mb-6 hidden">
+                <p class="font-bold"></p>
+            </div>
+            
+            <div class="flex justify-between">
+                <button id="quiz-prev" class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Anterior
+                </button>
+                <button id="quiz-next" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                    Siguiente
+                </button>
+            </div>
+            
+            <div id="quiz-progress" class="mt-4">
+                <div class="flex justify-between text-sm mb-1">
+                    <span>Progreso</span>
+                    <span id="quiz-progress-text">1/5</span>
+                </div>
+                <div class="bg-gray-700 h-2 rounded-full">
+                    <div id="quiz-progress-bar" class="bg-accent h-2 rounded-full" style="width: 20%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="quiz-results" class="hidden">
+            <h4 class="font-bold text-xl mb-4 text-accent">Resultados del Quiz</h4>
+            <p class="text-lg mb-4">Has acertado <span id="quiz-score">0</span> de 5 preguntas.</p>
+            <div id="quiz-message" class="p-4 rounded-md mb-6"></div>
+            <button id="quiz-restart" class="bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
+                Reiniciar Quiz
+            </button>
+        </div>
+    </div>
+    
+    <div class="mt-8 bg-darker p-8 rounded-lg border border-gray-800">
+        <h3 class="text-2xl font-bold mb-6 text-accent">Ejercicios para practicar</h3>
+        
+        <p class="mb-6">Aquí tienes algunos ejercicios sencillos para practicar lo que has aprendido:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-dark p-5 rounded-lg">
+                <h4 class="text-xl font-bold mb-4">Ejercicio 1: Tabla de multiplicar</h4>
+                <p class="mb-4">Escribe un programa que muestre la tabla de multiplicar del 5 (del 1 al 10) usando un bucle for.</p>
+                <div class="mt-4">
+                    <button class="ver-solucion-btn bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors" data-ejercicio="1">
+                        Ver solución
+                    </button>
+                    <div class="solucion hidden mt-4 p-4 bg-gray-800 rounded-lg">
+                        <h5 class="font-bold mb-2">Solución:</h5>
+                        <pre class="text-gray-300 overflow-x-auto"><code>// Tabla de multiplicar del 5
+for (let i = 1; i <= 10; i++) {
+  let resultado = 5 * i;
+  console.log(`5 x ${i} = ${resultado}`);
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-dark p-5 rounded-lg">
+                <h4 class="text-xl font-bold mb-4">Ejercicio 2: Números pares</h4>
+                <p class="mb-4">Escribe un programa que muestre todos los números pares del 1 al 20 usando un bucle while y la sentencia continue.</p>
+                <div class="mt-4">
+                    <button class="ver-solucion-btn bg-accent text-dark px-4 py-2 rounded-md hover:bg-accent/80 transition-colors" data-ejercicio="2">
+                        Ver solución
+                    </button>
+                    <div class="solucion hidden mt-4 p-4 bg-gray-800 rounded-lg">
+                        <h5 class="font-bold mb-2">Solución:</h5>
+                        <pre class="text-gray-300 overflow-x-auto"><code>// Números pares del 1 al 20
+let i = 1;
+while (i <= 20) {
+  if (i % 2 !== 0) {
+    i++;
+    continue;
+  }
+  console.log(i);
+  i++;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<button id="btnCompletarTema" class="px-8 py-4 bg-gray-600 text-white rounded-lg font-bold text-lg opacity-50 cursor-not-allowed transition-colors mt-10" disabled>
+    Completar Tema (Espera 60s)
+</button>
+
+<script>
+    // ==========================================
+    // 1. CONFIGURACIÓN (Cambia esto según la página)
+    // ==========================================
+    const materiaActual = 'js';          // Opciones: 'js', 'css' o 'html'
+    const siguientePagina = 's-js.html'; // Pon aquí el nombre del archivo al que irá después
+    
+    // ==========================================
+    // 2. LÓGICA DEL TEMPORIZADOR Y EL BOTÓN
+    // ==========================================
+    const btnCompletar = document.getElementById('btnCompletarTema');
+    let tiempoRestante = 60; // Segundos de espera (1 minuto)
+
+    // Cuenta regresiva
+    const intervalo = setInterval(() => {
+        tiempoRestante--;
+        
+        if (tiempoRestante > 0) {
+            btnCompletar.innerText = `Completar Tema (Espera ${tiempoRestante}s)`;
+        } else {
+            // Cuando llega a 0, activamos el botón
+            clearInterval(intervalo);
+            btnCompletar.innerText = "Completar Tema";
+            btnCompletar.disabled = false;
+            
+            // Cambiamos las clases de Tailwind para que se vea activo
+            btnCompletar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCompletar.classList.add('hover:bg-gray-700', 'cursor-pointer');
+        }
+    }, 1000); // 1000 ms = 1 segundo
+
+    // ==========================================
+    // 3. QUÉ PASA AL DARLE CLIC
+    // ==========================================
+    btnCompletar.addEventListener('click', function() {
+        // Bloquear el botón rápido para evitar doble clic
+        btnCompletar.disabled = true;
+        btnCompletar.innerText = "Guardando progreso...";
+
+        // Buscar el número de control del alumno en la memoria del navegador
+        const usuarioActivo = localStorage.getItem('usuario_activo');
+
+        if (!usuarioActivo) {
+            alert("Error: No se encontró tu sesión. Por favor, vuelve a iniciar sesión o regístrate.");
+            return;
+        }
+
+        // Mandar los datos ocultos a 'sumar_tema.php'
+        fetch('sumar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'no_control=' + encodeURIComponent(usuarioActivo) + '&materia=' + materiaActual
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Se guardó en la BD, lo mandamos a la siguiente lección
+            window.location.href = siguientePagina;
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            // Si el internet falla, de todos modos lo dejamos avanzar
+            window.location.href = siguientePagina; 
+        });
+    });
+</script>
+</main>
+
+<footer class="bg-darker py-8 border-t border-gray-800">
+<div class="container mx-auto px-4 text-center">
+    <p>JavaScript: Estructuras de Control - Guía completa para principiantes</p>
+</div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    menuBtn.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.remove('hidden');
+        } else {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            }
+        });
+    });
+    
+    // Ver solución buttons
+    document.querySelectorAll('.ver-solucion-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const ejercicio = this.dataset.ejercicio;
+            const solucion = this.nextElementSibling;
+            
+            if (solucion.classList.contains('hidden')) {
+                solucion.classList.remove('hidden');
+                this.textContent = 'Ocultar solución';
+            } else {
+                solucion.classList.add('hidden');
+                this.textContent = 'Ver solución';
+            }
+        });
+    });
+    
+    // Quiz functionality
+    const quizContainer = document.getElementById('quiz-container');
+    const quizResults = document.getElementById('quiz-results');
+    const quizQuestion = document.getElementById('quiz-question');
+    const quizOptions = document.getElementById('quiz-options');
+    const quizFeedback = document.getElementById('quiz-feedback');
+    const quizPrev = document.getElementById('quiz-prev');
+    const quizNext = document.getElementById('quiz-next');
+    const quizProgressBar = document.getElementById('quiz-progress-bar');
+    const quizProgressText = document.getElementById('quiz-progress-text');
+    const quizScore = document.getElementById('quiz-score');
+    const quizMessage = document.getElementById('quiz-message');
+    const quizRestart = document.getElementById('quiz-restart');
+    
+    // Quiz questions
+    const questions = [
+        {
+            question: "¿Qué estructura de control usarías para ejecutar un bloque de código solo si se cumple una condición?",
+            options: ["if", "for", "while", "switch"],
+            correctIndex: 0
+        },
+        {
+            question: "¿Qué bucle garantiza que el código se ejecute al menos una vez?",
+            options: ["for", "while", "do...while", "for...in"],
+            correctIndex: 2
+        },
+        {
+            question: "¿Qué sentencia se usa para salir completamente de un bucle?",
+            options: ["continue", "break", "return", "exit"],
+            correctIndex: 1
+        },
+        {
+            question: "¿Qué bucle es mejor para recorrer las propiedades de un objeto?",
+            options: ["for", "while", "for...of", "for...in"],
+            correctIndex: 3
+        },
+        {
+            question: "¿Qué hace la sentencia continue en un bucle?",
+            options: ["Termina el bucle", "Pausa el bucle", "Salta a la siguiente iteración", "Reinicia el bucle"],
+            correctIndex: 2
+        }
+    ];
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+    
+    // Initialize quiz
+    function initQuiz() {
+        if (!quizContainer || !quizOptions) return;
+        
+        showQuestion(currentQuestion);
+        
+        // Add event listeners to options
+        quizOptions.addEventListener('click', function(e) {
+            if (answered) return;
+            
+            const option = e.target.closest('.quiz-option');
+            if (!option) return;
+            
+            const options = quizOptions.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            // Check answer
+            const isCorrect = option.dataset.correct === 'true';
+            
+            if (isCorrect) {
+                option.classList.add('correct');
+                quizFeedback.querySelector('p').textContent = '¡Correcto!';
+                quizFeedback.querySelector('p').classList.add('text-green-500');
+                score++;
+            } else {
+                option.classList.add('incorrect');
+                
+                // Show correct answer
+                options.forEach(opt => {
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+                
+                quizFeedback.querySelector('p').textContent = 'Incorrecto. La respuesta correcta está marcada en verde.';
+                quizFeedback.querySelector('p').classList.add('text-red-500');
+            }
+            
+            quizFeedback.classList.remove('hidden');
+            answered = true;
+            
+            // Enable next button
+            quizNext.disabled = false;
+        });
+        
+        // Next button
+        if (quizNext) {
+            quizNext.addEventListener('click', function() {
+                if (!answered && currentQuestion < questions.length - 1) {
+                    // Skip question
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                } else if (answered && currentQuestion < questions.length - 1) {
+                    // Next question
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    answered = false;
+                } else if (currentQuestion === questions.length - 1) {
+                    // Show results
+                    showResults();
+                }
+            });
+        }
+        
+        // Previous button
+        if (quizPrev) {
+            quizPrev.addEventListener('click', function() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    answered = false;
+                }
+            });
+        }
+        
+        // Restart button
+        if (quizRestart) {
+            quizRestart.addEventListener('click', function() {
+                currentQuestion = 0;
+                score = 0;
+                answered = false;
+                quizContainer.classList.remove('hidden');
+                quizResults.classList.add('hidden');
+                showQuestion(currentQuestion);
+            });
+        }
+    }
+    
+    // Show question
+    function showQuestion(index) {
+        if (!quizQuestion || !quizOptions || !quizFeedback) return;
+        
+        const question = questions[index];
+        
+        // Update question
+        quizQuestion.innerHTML = `
+            <h4 class="font-bold mb-2">Pregunta ${index + 1}:</h4>
+            <p class="text-lg">${question.question}</p>
+        `;
+        
+        // Update options
+        quizOptions.innerHTML = '';
+        question.options.forEach((option, i) => {
+            const isCorrect = i === question.correctIndex;
+            quizOptions.innerHTML += `
+                <div class="quiz-option p-3 border border-gray-700 rounded-md cursor-pointer" data-correct="${isCorrect}">
+                    <p>${option}</p>
+                </div>
+            `;
+        });
+        
+        // Reset feedback
+        quizFeedback.classList.add('hidden');
+        quizFeedback.querySelector('p').textContent = '';
+        quizFeedback.querySelector('p').classList.remove('text-green-500', 'text-red-500');
+        
+        // Update buttons
+        if (quizPrev) quizPrev.disabled = index === 0;
+        if (quizNext) {
+            quizNext.disabled = answered ? false : index === questions.length - 1;
+            quizNext.textContent = index === questions.length - 1 ? 'Ver resultados' : 'Siguiente';
+        }
+        
+        // Update progress
+        if (quizProgressBar) quizProgressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+        if (quizProgressText) quizProgressText.textContent = `${index + 1}/${questions.length}`;
+    }
+    
+    // Show results
+    function showResults() {
+        if (!quizContainer || !quizResults || !quizScore || !quizMessage) return;
+        
+        quizContainer.classList.add('hidden');
+        quizResults.classList.remove('hidden');
+        
+        quizScore.textContent = score;
+        
+        // Show message based on score
+        let message = '';
+        let messageClass = '';
+        
+        if (score === questions.length) {
+            message = '¡Perfecto! Dominas las estructuras de control en JavaScript.';
+            messageClass = 'bg-green-800/30 border border-green-700 text-green-400';
+        } else if (score >= questions.length * 0.7) {
+            message = '¡Muy bien! Tienes un buen conocimiento de las estructuras de control.';
+            messageClass = 'bg-green-800/30 border border-green-700 text-green-400';
+        } else if (score >= questions.length * 0.5) {
+            message = 'No está mal, pero podrías mejorar tu conocimiento de las estructuras de control.';
+            messageClass = 'bg-yellow-800/30 border border-yellow-700 text-yellow-400';
+        } else {
+            message = 'Necesitas estudiar más las estructuras de control en JavaScript.';
+            messageClass = 'bg-red-800/30 border border-red-700 text-red-400';
+        }
+        
+        quizMessage.className = `p-4 rounded-md mb-6 ${messageClass}`;
+        quizMessage.textContent = message;
+    }
+    
+    // Initialize the quiz
+    initQuiz();
+});
+</script>
+</body>
+</html>
